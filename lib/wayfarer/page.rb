@@ -20,7 +20,7 @@ module Wayfarer
       return @doc if @doc
 
       # If no Content-Type field is present, assume HTML/XML
-      # TODO Tests
+      # TODO Test
       unless @headers["content-type"]
         return Parsers::XMLParser.parse_html(@body)
       end

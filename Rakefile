@@ -42,6 +42,7 @@ end
 
 desc "Install the RubyGem"
 task :install do
+  sh "gem uninstall wayfarer"
   sh "gem install build/*.gem"
 end
 
