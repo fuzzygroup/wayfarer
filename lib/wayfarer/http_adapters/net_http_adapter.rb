@@ -29,7 +29,7 @@ module Wayfarer
 
         res = @conn.request(uri)
 
-        if res.is_a? Net::HTTPRedirection
+        if res.is_a?(Net::HTTPRedirection)
           redirect_uri = URI(res["location"])
           return fetch(redirect_uri, redirects_followed + 1)
         end
