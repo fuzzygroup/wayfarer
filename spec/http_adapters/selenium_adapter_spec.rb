@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Wayfarer::HTTPAdapters::SeleniumAdapter, live: true do
+describe Wayfarer::HTTPAdapters::SeleniumAdapter, selenium: true do
   subject(:adapter) { Wayfarer::HTTPAdapters::SeleniumAdapter.new }
   after { adapter.free }
 

@@ -12,7 +12,7 @@ describe Wayfarer::HTTPAdapters::AdapterPool do
       end
     end
 
-    context "when using Selenium", live: true do
+    context "when using Selenium", selenium: true do
       before { Wayfarer.config.http_adapter = :selenium }
       after  { Wayfarer.config.reset! }
 
