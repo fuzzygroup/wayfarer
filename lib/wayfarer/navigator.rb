@@ -1,5 +1,6 @@
 require "set"
 
+# TODO Switch from an Actor to a traditional Ruby class as a Navigator is never accessed by more than one thread
 module Wayfarer
   class Navigator
     include Celluloid

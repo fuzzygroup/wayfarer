@@ -1,20 +1,20 @@
+# TODO OpenStructs break on JRuby?
 module Wayfarer
   class Configuration
     DEFAULTS = {
       # Whether to print full stacktraces
-      print_stacktraces: false,
+      print_stacktraces: true,
 
-      # Whether to crash when encountering unhandled exceptions in actors
+      # Whether to crash when encountering unhandled exceptions
       reraise_exceptions: false,
 
       # Whether URIs may be visited twice
       allow_circulation: false,
 
-      # Whether trailing slashes and fragment identifiers should be ignored
+      # Whether trailing slashes and fragment identifiers should be considered insignificant when comparing URIs
       normalize_uris: true,
 
       # How many HTTP connections/Selenium drivers to use
-      # Should be >= scraper_thread_count
       connection_count: 4,
 
       # Which HTTP adapter to use. Supported are :net_http and :selenium
@@ -24,13 +24,13 @@ module Wayfarer
       # Scrapers that exceed his limit fail with an exception.
       connection_timeout: 5.0,
 
-      # How many 3xx redirects to follow. Does not apply to Selenium drivers
+      # How many 3xx redirects to follow. Has no effect when using Selenium
       max_http_redirects: 3,
 
       # Argument vector for instantiating Selenium drivers
       selenium_argv: [:firefox],
 
-      # Size of browser windows (screenshots)
+      # Size of browser windows
       window_size: [1024, 768],
 
       # Which Mustermann pattern type to use when matching URI paths
@@ -56,6 +56,7 @@ module Wayfarer
       end
     end
 
+    # TODO Does not include writers
     def respond_to_missing?(method, private = false)
       @config.key?(method) || super
     end

@@ -1,86 +1,75 @@
-### Recognized keys and values
-* __`threads`__
+# Configuration
+Currently, configuration can only bet set globally, i.e. changing a value effects all 
 
-	Number of threads to spawn.
-	* Recognized values: Integers
-	* Default value: `4`
+## Recognized keys
+See [lib/wayfarer/configuration.rb]().
 
-* __`user_agent`__
+### `print_stacktraces`
+* Default: `true`
+* Recognized values: Booleans
 
-	Number of threads to spawn.
-	* Recognized values: Strings
-	* Default value: `"Schablone"`
+Whether to print full stacktraces.
 
-* __`http_adapter`__
+### `reraise_exceptions`
+* Default: `false`
+* Recognized values: Booleans
 
-	Which HTTP adapter to use.
-	* Recognized values: `:net_http`, `:selenium`
-	* Default value: `:net_http`
+Whether to crash when encountering unhandled exceptions.
 
-* __`selenium_argv`__
+### `allow_circulation`
+* Default: `false`
+* Recognized values: Booleans
 
-	Argument vector passed to `Selenium::WebDriver::for`.
-	* Recognized values: [See documentation](http://ruby-doc.org/stdlib-2.1.0/libdoc/logger/rdoc/Logger.html)
-	* Default value: `[:firefox]`
+Whether URIs may be visited twice.
 
-* __`log_level`__
+__NOTE:__ Allowing circulation can cause your Jobs to not terminate.
 
-	Minimum level of log messages to print.
-	* Recognized values: [See documentation](http://ruby-doc.org/stdlib-2.1.0/libdoc/logger/rdoc/Logger.html)
-	* Default value: `Logger::WARN`
-	* Note: You can bring your own logger with `Schablone::logger=`
+### `normalize_uris`
+* Default: `true`
+* Recognized values: Booleans
 
-* __`sanitize_node_content`__
+Whether trailing slashes and fragment identifiers should be considered insignificant when comparing URIs, e.g. `https://example.com`, `https://example.com/` and `https://example.com#anchor` are considered equal.
 
-	Whether to trim leading/trailing whitespace and control characters from inner HTML/XML.
-	* Recognized values: Booleans
-	* Default value: `true`
-	* Note: Only applies when using `Schablone::Extraction`.
+### `connection_count`
+* Default: `4`
+* Recognized values: Integers
 
-* __`ignore_fragment_identifiers`__
+How many concurrent HTTP connections/Selenium drivers to use.
 
-	Whether to treat URIs with only differing fragment identifiers as equal.
-	* Recognized values: Booleans
-	* Default value: `true`
+### `http_adapter`
+* Default: `:net_http`
+* Recognized values: `:net_http`, `:selenium`
 
-* __`max_http_redirects`__
+Which HTTP adapter to use.
 
-	Number of HTTP redirects to follow per initial request.
-	* Recognized values: Integers
-	* Default value: `3`
-	* Note: Has no effect when using Selenium.
+### `connection_timeout`
+* Default: `5.0`
+* Recognized values: Floats
 
-* __`obey_robots_txt`__
+### `max_http_redirects`
+* Default: `3`
+* Recognized values: Integers
 
-	Whether to obey `robots.txt`.
-	* Recognized values: Booleans
-	* Default value: `false`
+How many 3xx redirects to follow.
 
-* __`nokogiri_parsing_options`__
+__NOTE:__ Has no effect when using Selenium.
 
-	A Proc that gets bound when calling `Nokogiri::HTML`/`Nokogiri::XML` and is passed an instance of `Nokogiri::XML::ParseOptions`.
-	* Recognized values: Procs, [see documentation](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/XML/ParseOptions)
-	* Default value: `-> (config) {}`
-	
-* __`oj_parsing_options`__
+### `selenium_argv`
+* Default: `[:firefox]`
+* Recognized values: [See documentation]()
 
-	A `Hash` that gets passed to `Oj::load`
-	* Recognized values: Hashes, [see documentation](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/XML/ParseOptions)
-	* Default value: `{}`
+Argument vector for instantiating Selenium drivers.
 
-* __`mustermann_pattern_type`__
+### `window_size`
+* Default: `[1024, 768]`
+* Recognized values: `[Integer, Integer]`
 
-	Which pattern type to use when matching URI paths.
-	* Recognized values: Symbols, [see documentation](https://github.com/rkh/mustermann#pattern-types)
-	* Default value: `:template`
-	* Note: Mustermann is a MRI-only dependency.
+Dimensions of browser windows.
 
-### Optional MRI-only dependencies
-#### Mustermann
-`require "mustermann"` if you want to match URI path segments.
+__NOTE:__ Only applies to Selenium drivers.
 
-#### oj
-`require "oj"` if you want faster JSON parsing.
+### `mustermann_type`
+* Default: `:sinatra`
+* Recognized values: [See documentation]()
 
-#### Pismo
-`require "pismo"` if you want out-of-the-box metadata extraction. See [Extracting metadata with Pismo]().
+Which Mustermann pattern type to use when matching URI paths.

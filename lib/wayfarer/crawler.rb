@@ -3,23 +3,23 @@ module Wayfarer
     include Celluloid::Logger
 
     def crawl(klass, *uris)
-      info("[#{self}] Wayfarer #{Wayfarer::VERSION}")
-      info("[#{self}] Spawning Processor")
+      debug("[#{self}] Hello from Wayfarer #{Wayfarer::VERSION}")
+      debug("[#{self}] Spawning Processor")
       Celluloid::Actor[:processor] = Processor.new
 
-      info("[#{self}] Staging initial URIs")
+      debug("[#{self}] Staging initial URIs")
       Celluloid::Actor[:navigator].stage(*uris)
 
-      info("[#{self}] Running Processor")
+      debug("[#{self}] Running Processor")
       return_val = Celluloid::Actor[:processor].run(klass)
 
-      info("[#{self}] Terminating Navigator")
+      debug("[#{self}] Terminating Navigator")
       Celluloid::Actor[:navigator].terminate
 
-      info("[#{self}] Terminating Processor")
+      debug("[#{self}] Terminating Processor")
       Celluloid::Actor[:processor].terminate
 
-      info("[#{self}] All done")
+      debug("[#{self}] All done")
 
       return_val
     end

@@ -1,5 +1,5 @@
 # Using Selenium
-Wayfarer supports Selenium WebDrivers out of the box. You can execute JavaScript, take screenshots, and so on.
+Wayfarer supports Selenium WebDrivers out of the box. You can execute JavaScript, take screenshots, interact with controls, and so on.
 
 See [examples/selenium.rb](../examples/selenium.rb).
 ## Setup

@@ -1,11 +1,11 @@
 # Wayfarer
-A versatile web crawling/scraping DSL for MRI and JRuby
+A versatile web crawling DSL for MRI and JRuby
 
 ## Features
-* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates JavaScript-enabled browsers with [Selenium](https://github.com/seleniumhq/selenium)
+* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates browsers with [Selenium](https://github.com/seleniumhq/selenium)
 * Ensures non-circular, breadth-first and multithreaded traversal of page graphs
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
-* Extracts metadata with [Pismo](https://github.com/peterc/pismo) if needed
+* Can extract metadata with [Pismo](https://github.com/peterc/pismo)
 * Is agnostic about data storage
 
 ## Installation
@@ -64,16 +64,18 @@ end
 
 DummyJob.crawl("https://github.com/rails/rails")
 ```
+Other examples:
+
+* [Finding Hitler on Wikipedia](howto/GETTING_STARTED.md)
+* [Executing JavaScript and taking screenshots with Selenium](howto/GETTING_STARTED.md)
 
 ## Howto
 * [Getting started](howto/GETTING_STARTED.md)
 * [Routing](howto/ROUTING.md)
 * [Halting](howto/HALTING.md)
-* [Internals](howto/INTERNALS.md)
-* [Thread safety](howto/THREAD_SAFETY.md)
 * [Configuration](howto/CONFIGURATION.md)
 * [Using Selenium](howto/SELENIUM.md)
-* [Extracting metadata with Pismo]()
+* [Thread safety](howto/THREAD_SAFETY.md)
 
 ## Running the tests
 See `% rake -T`.
