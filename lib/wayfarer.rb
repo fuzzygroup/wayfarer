@@ -1,9 +1,6 @@
 require "logger"
+require "uri"
 
-require "nokogiri"
-require "selenium-webdriver"
-require "net/http/persistent"
-require "mime-types"
 require "celluloid"
 require "celluloid/current"
 

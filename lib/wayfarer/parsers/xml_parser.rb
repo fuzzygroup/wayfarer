@@ -1,3 +1,5 @@
+require "nokogiri"
+
 module Wayfarer
   module Parsers
     module XMLParser

@@ -1,7 +1,6 @@
-require "uri"
 require "ostruct"
 require "mime/types"
-require "nokogiri"
+require "mime-types"
 
 module Wayfarer
   class Page

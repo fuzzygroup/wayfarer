@@ -35,7 +35,19 @@ end
 
 desc "Build the RubyGem"
 task :build do
-  sh "gem build wayfarer.gemtest --verbose"
+  sh "gem build wayfarer.gemspec --verbose"
+  sh "mkdir -p build"
+  sh "mv wayfarer-*.gem build"
+end
+
+desc "Install the RubyGem"
+task :install do
+  sh "gem install build/*.gem"
+end
+
+desc "Remove build/ directory"
+task :clean do
+  sh "rm -rf build"
 end
 
 desc "Start a Ruby shell"
