@@ -1,8 +1,7 @@
 # Routing
-Inside your Job classes, you declare a set of _routes_ that map URIs to _instance methods_. A route consists of at least one _rule_ that matches URIs you are interested in. URIs that match no route are ignored.
+Inside your Job classes, you declare a set of _routes_ that map URIs to _instance methods_. A route consists of _rules_ that match URIs you are interested in. Rules can be _forbidden_ as well. URIs that match no route or match forbidden rules are ignored. Rules themselves can have sub-rules. A rule with sub-rules matches if the rule itself matches and at least one of its sub-rules matches. This recursively applies to all rules and their sub-rules.
 
 ## Table of Contents
-
 * Declaring routes
 * Rule types
   * URI rules
@@ -10,7 +9,8 @@ Inside your Job classes, you declare a set of _routes_ that map URIs to _instanc
   * Path rules
   * Query rules
 * Compound rules
-* Nested rules  
+* Nested rules
+* Forbidden rules 
 
 ## Declaring routes
 The following four snippets all set up the same routes:
@@ -113,9 +113,9 @@ draw host: /example.com/
 * `https://w3c.org`
 
 ### Path rules
-The behaviour of path rules depends on whether [mustermann](https://github.com/rkh/mustermann) has been required. When required, you can match path segments and you have access to a `params` hash inside your instance methods. Otherwise, paths are matched as Strings.
+The behaviour of path rules depends on whether [mustermann](https://github.com/rkh/mustermann) has been required. When required, you can match path segments and you have access to a `params` hash inside your instance methods. Otherwise, paths are matched as Strings, character by character.
 
-__NOTE:__ mustermann does not run on JRuby.
+__NOTE:__ mustermann only runs on MRI.
 
 #### Without mustermann
 The following path rule:
@@ -160,7 +160,7 @@ draw path: ":foo/:bar"
 A query rule takes a `Hash` whose key-value-pairs serve as matching constraints.
 
 #### Strings
-The following URI rule:
+The following query rule:
 
 ```ruby
 draw query: { foo: "bar" }
@@ -175,7 +175,7 @@ draw query: { foo: "bar" }
 * `http://example.com?foo=BAR`
 
 #### Integers
-The following URI rule:
+The following query rule:
 
 ```ruby
 draw query: { foo: 42 }
@@ -191,7 +191,7 @@ draw query: { foo: 42 }
 * `http://w3c.org?foo=42.0`
 
 #### Regexps
-The following URI rule:
+The following query rule:
 
 ```ruby
 draw query: { foo: /bar/ }
@@ -206,7 +206,7 @@ draw query: { foo: /bar/ }
 * `http://example.com?foo=baz`
 
 #### Ranges
-The following URI rule:
+The following query rule:
 
 ```ruby
 draw query: { foo: 24..42 }
@@ -221,8 +221,8 @@ draw query: { foo: 24..42 }
 * `http://example.com?foo=44`
 * `http://w3c.org?foo=22`
 
-#### Mixed query constraints
-The following URI rule:
+#### Compound query constraints
+The following query rule:
 
 ```ruby
 draw query: { foo: "bar", bar: 42, qux: /baz/ }
@@ -269,3 +269,5 @@ end
 * `http://example.com/foo/bar?baz=qux`
 
 Rules can have multiple sub-rules.
+
+## Forbidden rules
