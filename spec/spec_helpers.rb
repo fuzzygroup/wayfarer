@@ -44,4 +44,6 @@ RSpec.configure do |config|
 
   config.before { Celluloid.boot }
   config.after  { Celluloid.shutdown }
+
+  config.before { Wayfarer.config.selenium_argv = [:phantomjs] }
 end

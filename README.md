@@ -78,6 +78,11 @@ Other examples:
 * [Thread safety](howto/THREAD_SAFETY.md)
 
 ## Testing
+Tests are run on:
+
+* MRI 2.1.2p95
+* JRuby 1.7.9
+
 ```
 rake test           # Run all tests
 rake test:isolated  # Run only environment-agnostic tests
@@ -85,3 +90,5 @@ rake test:jruby     # Run only JRuby tests
 rake test:mri       # Run only MRI tests
 rake test:selenium  # Run only Selenium tests
 ```
+
+Selenium tests are run locally with [PhantomJS]().
