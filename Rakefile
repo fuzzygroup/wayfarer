@@ -58,7 +58,7 @@ end
 
 desc %(List lines that contain "FIXME" or "TODO")
 task :todo do
-  sh %(grep -rn "\\(FIXME\\|TODO\\)" lib test | tr -s [:space:])
+  sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec | tr -s [:space:])
 end
 
 task :test_app do
