@@ -6,7 +6,7 @@ describe Wayfarer::Navigator do
   describe "#stage" do
     let(:uri) { URI("http://example.com/foo#bar") }
 
-    it "stages URIs" do
+    it "stages a URI" do
       expect do
         navigator.stage("http://example.com")
       end.to change { navigator.staged_uris.count }.by(1)
@@ -84,7 +84,7 @@ describe Wayfarer::Navigator do
       before { Wayfarer.config.allow_circulation = true }
       after  { Wayfarer.config.reset! }
 
-      it "allows re-staging cached URIs" do
+      it "sets cached URIs as current" do
         3.times do
           navigator.stage(uri)
           navigator.cycle

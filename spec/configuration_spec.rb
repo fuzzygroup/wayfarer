@@ -1,7 +1,7 @@
 require "spec_helpers"
 
 describe Wayfarer::Configuration do
-  let(:config) { subject.class.new }
+  let(:config) { Configuration.new }
 
   it "allows setting keys and values" do
     config.foo = :foo
@@ -9,7 +9,7 @@ describe Wayfarer::Configuration do
   end
 
   describe "#reset!" do
-    it "resets keys and values to defaults" do
+    it "resets to defaults" do
       config.max_http_redirects = 3
       config.reset!
       expect(config.max_http_redirects).to be 3

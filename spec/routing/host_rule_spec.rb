@@ -10,7 +10,7 @@ describe Wayfarer::Routing::HostRule do
       context "with matching URI" do
         let(:uri) { URI("http://example.com/foo/bar") }
 
-        it "returns `true`" do
+        it "returns true" do
           expect(rule === uri).to be true
         end
       end
@@ -18,19 +18,19 @@ describe Wayfarer::Routing::HostRule do
       context "with mismatching URI" do
         let(:uri) { URI("http://google.com/bar/qux") }
 
-        it "returns `false`" do
+        it "returns false" do
           expect(rule === uri).to be false
         end
       end
     end
 
-    describe "Regexp matchesing" do
+    describe "Regexp matching" do
       let(:str_or_regexp) { /example.com/ }
 
       context "with matching URI" do
         let(:uri) { URI("http://sub.example.com") }
 
-        it "returns `true`" do
+        it "returns true" do
           expect(rule === uri).to be true
         end
       end
@@ -38,7 +38,7 @@ describe Wayfarer::Routing::HostRule do
       context "with mismatching URI" do
         let(:uri) { URI("http://example.sub.com") }
 
-        it "returns `false`" do
+        it "returns false" do
           expect(rule === uri).to be false
         end
       end

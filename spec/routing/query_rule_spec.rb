@@ -9,7 +9,7 @@ describe Wayfarer::Routing::QueryRule do
     context "with matching query field value" do
       let(:uri) { URI("http://example.com?arg=foo") }
 
-      it "returns `true`" do
+      it "returns true" do
         expect(rule === uri).to be true
       end
     end
@@ -17,7 +17,7 @@ describe Wayfarer::Routing::QueryRule do
     context "with mismatching query field value" do
       let(:uri) { URI("http://example.com?arg=bar") }
 
-      it "returns `false`" do
+      it "returns false" do
         expect(rule === uri).to be false
       end
     end
@@ -29,7 +29,7 @@ describe Wayfarer::Routing::QueryRule do
     context "with matching query field value" do
       let(:uri) { URI("http://example.com?arg=0") }
 
-      it "returns `true`" do
+      it "returns true" do
         expect(rule === uri).to be true
       end
     end
@@ -37,7 +37,7 @@ describe Wayfarer::Routing::QueryRule do
     context "with mismatching query field value" do
       let(:uri) { URI("http://example.com?arg=1") }
 
-      it "returns `false`" do
+      it "returns false" do
         expect(rule === uri).to be false
       end
     end
@@ -45,19 +45,19 @@ describe Wayfarer::Routing::QueryRule do
     context "with non-numeric query field value" do
       let(:uri) { URI("http://example.com?arg=foo") }
 
-      it "returns `false`" do
+      it "returns false" do
         expect(rule === uri).to be false
       end
     end
   end
 
-  describe "RegExp constraints" do
+  describe "Regexp constraints" do
     let(:constraints) { Hash[arg: /foo/] }
 
     context "with matching query field value" do
       let(:uri) { URI("http://example.com?arg=foo") }
 
-      it "returns `true`" do
+      it "returns true" do
         expect(rule === uri).to be true
       end
     end
@@ -65,7 +65,7 @@ describe Wayfarer::Routing::QueryRule do
     context "with mismatching query field value" do
       let(:uri) { URI("http://example.com?arg=bar") }
 
-      it "returns `false`" do
+      it "returns false" do
         expect(rule === uri).to be false
       end
     end
@@ -77,7 +77,7 @@ describe Wayfarer::Routing::QueryRule do
     context "with matching query field value" do
       let(:uri) { URI("http://example.com?arg=5") }
 
-      it "returns `true`" do
+      it "returns true" do
         expect(rule === uri).to be true
       end
     end
@@ -85,7 +85,7 @@ describe Wayfarer::Routing::QueryRule do
     context "with mismatching query field value" do
       let(:uri) { URI("http://example.com?arg=11") }
 
-      it "returns `false`" do
+      it "returns false" do
         expect(rule === uri).to be false
       end
     end
@@ -93,13 +93,13 @@ describe Wayfarer::Routing::QueryRule do
     context "with non-numeric query field value" do
       let(:uri) { URI("http://example.com?arg=foo") }
 
-      it "returns `false`" do
+      it "returns false" do
         expect(rule === uri).to be false
       end
     end
   end
 
-  describe "Mixed constraints" do
+  describe "Compound constraints" do
     let(:constraints) do
       Hash[foo: 1..5, bar: /baz/, qux: "zot", toto: 2]
     end
@@ -107,7 +107,7 @@ describe Wayfarer::Routing::QueryRule do
     context "with matching query field values" do
       let(:uri) { URI("http://example.com?foo=4&bar=bazqux&qux=zot&toto=2") }
 
-      it "returns `true`" do
+      it "returns true" do
         expect(rule === uri).to be true
       end
     end
@@ -115,7 +115,7 @@ describe Wayfarer::Routing::QueryRule do
     context "with mismatching query field values" do
       let(:uri) { URI("http://example.com?foo=bar&bar=qux&qux=6toto=0") }
 
-      it "returns `false`" do
+      it "returns false" do
         expect(rule === uri).to be false
       end
     end

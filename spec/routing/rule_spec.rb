@@ -34,6 +34,7 @@ describe Wayfarer::Routing::Rule do
     context "with matching Rule" do
       let(:host_rule_a) { HostRule.new("example.com") }
       let(:host_rule_b) { HostRule.new("google.com") }
+      # TODO Fix this
       let(:path_rule_a) { ParameterizedPathRule.new("/{alpha}/{beta}") }
       let(:path_rule_b) { ParameterizedPathRule.new("/{gamma}/{delta}") }
 

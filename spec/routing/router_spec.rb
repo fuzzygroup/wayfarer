@@ -5,13 +5,10 @@ describe Wayfarer::Routing::Router do
 
   describe "#forbid" do
     it "forbids URIs" do
-      router.forbid host: "example.com"
+      router.forbid(host: "example.com")
       expect(router.forbids?(URI("http://example.com"))).to be true
 
-      router.forbid do
-        host "google.com"
-      end
-
+      router.forbid { host "google.com" }
       expect(router.forbids?(URI("http://google.com"))).to be true
     end
   end
@@ -44,7 +41,7 @@ describe Wayfarer::Routing::Router do
       end
     end
 
-    context "without matching route" do
+    context "with mismatching route" do
       it "returns false" do
         router.draw(:foo) { host "example.com", path: "/{barqux}" }
         uri = URI("http://google.com")

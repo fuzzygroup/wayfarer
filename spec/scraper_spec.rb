@@ -4,7 +4,7 @@ describe Wayfarer::Scraper do
   let(:adapter_pool) { AdapterPool.new }
 
   describe "#scrape" do
-    it "instantiate an Indexer and invokes it" do
+    it "instantiates an Indexer and invokes it" do
       klass = Class.new do
         class << self
           attr_accessor :adapter

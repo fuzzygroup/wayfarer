@@ -22,7 +22,7 @@ describe Wayfarer::Routing::ParameterizedPathRule, mri: true do
   end
 
   describe "#params" do
-    it "returns the expected parameters" do
+    it "returns the correct parameters" do
       uri = URI("http://example.com/foo/bar")
       expect(rule.params(uri)).to eq("alpha" => "foo", "beta" => "bar")
     end

@@ -4,7 +4,7 @@ describe Wayfarer::Parsers::JSONParser do
   subject(:parser) { Parsers::JSONParser }
 
   describe ".parse" do
-    it "returns a parsed JSON document" do
+    it "returns a Hash" do
       json_str = <<-json
         {
           "id": 1,
@@ -20,6 +20,7 @@ describe Wayfarer::Parsers::JSONParser do
           }
         }
       json
+
       doc = parser.parse(json_str)
 
       expect(doc).to be_a Hash

@@ -6,12 +6,8 @@ describe Wayfarer::Job do
 
   describe "::config" do
     it "works" do
-      job.class.instance_eval do
-        class_eval do
-          config do |c|
-            c.http_adapter = :selenium
-          end
-        end
+      job.class.config do |c|
+        c.http_adapter = :selenium
       end
 
       expect(job.config.http_adapter).to be :selenium
@@ -124,7 +120,7 @@ describe Wayfarer::Job do
     end
   end
 
-  describe "#halt!" do
+  describe "#halt" do
     it "enforces a Halt to be returned" do
       job.class.class_eval do
         draw path: "/hello_world"

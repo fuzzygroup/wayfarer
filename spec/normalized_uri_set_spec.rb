@@ -6,7 +6,7 @@ describe Wayfarer::NormalizedURISet do
   describe "#include?" do
     let(:uri) { URI("http://example.com") }
 
-    context "with uri_setd URI" do
+    context "with included URI" do
       before { uri_set << uri }
 
       it "returns true" do
@@ -14,7 +14,7 @@ describe Wayfarer::NormalizedURISet do
       end
     end
 
-    context "with non-uri_setd URI" do
+    context "without included URI" do
       it "returns false" do
         expect(uri_set).not_to include uri
       end

@@ -28,7 +28,7 @@ describe Wayfarer::Page do
   end
 
   describe "#links" do
-    context "without path" do
+    context "without CSS selector/XPath expression" do
       it "returns all links" do
         expect(page.links("a").map(&:to_s)).to eq %w(
           http://0.0.0.0:9876/foo

@@ -1,5 +1,6 @@
 require "spec_helpers"
 
+# TODO Use shared examples for HTTP adapters
 describe Wayfarer::HTTPAdapters::NetHTTPAdapter do
   subject(:adapter) { Wayfarer::HTTPAdapters::NetHTTPAdapter.instance }
 
