@@ -1,7 +1,5 @@
-require_relative "../lib/wayfarer"
+require "wayfarer"
 require "mustermann"
-
-Wayfarer.logger.level = 1
 
 class DummyJob < Wayfarer::Job
   routes do

@@ -8,7 +8,7 @@ See [lib/wayfarer/configuration.rb]().
 * Default: `true`
 * Recognized values: Booleans
 
-Whether to print full stacktraces.
+Whether to print stacktraces.
 
 ### `reraise_exceptions`
 * Default: `false`

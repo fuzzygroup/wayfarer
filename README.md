@@ -1,5 +1,5 @@
 # Wayfarer
-A versatile web crawling for MRI and JRuby
+Versatile web crawling with Ruby
 
 ## Features
 * Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates browsers with [Selenium](https://github.com/seleniumhq/selenium)
@@ -64,7 +64,8 @@ end
 
 DummyJob.crawl("https://github.com/rails/rails")
 ```
-Other examples:
+
+More contrived examples:
 
 * [Finding Hitler on Wikipedia](howto/GETTING_STARTED.md)
 * [Executing JavaScript and taking screenshots with Selenium](howto/GETTING_STARTED.md)
@@ -75,7 +76,9 @@ Other examples:
 * [Halting](howto/HALTING.md)
 * [Configuration](howto/CONFIGURATION.md)
 * [Using Selenium](howto/SELENIUM.md)
+* [Error handling](howto/ERROR_HANDLING.md)
 * [Thread safety](howto/THREAD_SAFETY.md)
+* [Optional MRI-only features](howto/MRI_FEATURES.md)
 
 ## Testing
 Tests are run on:
