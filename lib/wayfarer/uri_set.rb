@@ -1,5 +1,5 @@
 module Wayfarer
-  class NormalizedURISet
+  class URISet
     def initialize(enumerable = [])
       @set = Set.new(enumerable)
     end

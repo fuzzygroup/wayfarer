@@ -1,7 +1,7 @@
 require "spec_helpers"
 
-describe Wayfarer::NormalizedURISet do
-  subject(:uri_set) { NormalizedURISet.new }
+describe Wayfarer::URISet do
+  subject(:uri_set) { URISet.new }
 
   describe "#include?" do
     let(:uri) { URI("http://example.com") }
@@ -134,7 +134,7 @@ describe Wayfarer::NormalizedURISet do
 
   describe "#method_missing" do
     let(:set) { spy }
-    subject(:uri_set) { NormalizedURISet.new(spy) }
+    subject(:uri_set) { URISet.new(spy) }
     before { uri_set.instance_variable_set(:@set, set) }
 
     it "proxies missing methods to its @set" do

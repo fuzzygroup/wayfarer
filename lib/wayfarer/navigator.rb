@@ -9,7 +9,7 @@ module Wayfarer
     def initialize
       @current_uris = Set.new([])
       @staged_uris  = Set.new([])
-      @cached_uris  = NormalizedURISet.new
+      @cached_uris  = URISet.new
 
       debug("[#{self}] Navigator spawned")
     end
