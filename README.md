@@ -77,5 +77,11 @@ Other examples:
 * [Using Selenium](howto/SELENIUM.md)
 * [Thread safety](howto/THREAD_SAFETY.md)
 
-## Running the tests
-See `% rake -T`.
+## Testing
+```
+rake test           # Run all tests
+rake test:isolated  # Run only environment-agnostic tests
+rake test:jruby     # Run only JRuby tests
+rake test:mri       # Run only MRI tests
+rake test:selenium  # Run only Selenium tests
+```
