@@ -41,4 +41,3 @@ class DummyJob < Wayfarer::Job
 end
 
 DummyJob.crawl("https://github.com/rails/rails")
-

@@ -1,4 +1,4 @@
-# TODO OpenStructs break on JRuby?
+# TODO: OpenStructs break on JRuby?
 module Wayfarer
   class Configuration
     DEFAULTS = {
@@ -56,7 +56,7 @@ module Wayfarer
       end
     end
 
-    # TODO Does not include writers
+    # TODO: Does not include writers
     def respond_to_missing?(method, private = false)
       @config.key?(method) || super
     end

@@ -21,7 +21,7 @@ module Wayfarer
       return @doc if @doc
 
       # If no Content-Type field is present, assume HTML/XML
-      # TODO Tests
+      # TODO: Tests
       unless @headers["content-type"]
         return Parsers::XMLParser.parse_html(@body)
       end
@@ -29,7 +29,7 @@ module Wayfarer
       content_type = @headers["content-type"].first
       sub_type = MIME::Types[content_type].first.sub_type
 
-      # TODO Tests
+      # TODO: Tests
       @doc = case sub_type
              when "json"
                OpenStruct.new(Parsers::JSONParser.parse(@body))
@@ -52,7 +52,7 @@ module Wayfarer
       links.uniq.find_all { |link| link.is_a? URI }
     end
 
-    # TODO Tests
+    # TODO: Tests
     def links!(*argv)
       links(*argv).first
     end
