@@ -1,5 +1,5 @@
 # Wayfarer
-A versatile web crawling DSL for MRI and JRuby
+A versatile web crawling for MRI and JRuby
 
 ## Features
 * Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates browsers with [Selenium](https://github.com/seleniumhq/selenium)
@@ -20,7 +20,7 @@ Or install via RubyGems:
 % gem install wayfarer
 ```
 
-## What it looks like
+## Examples
 The following snippet traverses all open issues of an arbitrary GitHub repository and prints their IDs and titles:
 
 ```ruby

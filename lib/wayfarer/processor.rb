@@ -1,5 +1,4 @@
 module Wayfarer
-  # TODO: Handle exceptions with Celluloid's traps
   class Processor
     include Celluloid
     include Celluloid::Logger
