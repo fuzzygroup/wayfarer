@@ -3,14 +3,6 @@ require "scrapespeare"
 
 module SpecHelpers
 
-  def empty_values
-    [nil, "", [], {}]
-  end
-
-  def html(file_name)
-    File.read("examples/#{file_name}.html")
-  end
-
   def html_fragment(html_string)
     Nokogiri::HTML.fragment(html_string)
   end
@@ -21,4 +13,4 @@ module SpecHelpers
 
 end
 
-RSpec.configure { |config| config.include SpecHelpers }
+RSpec.configure { |config| config.include(SpecHelpers) }

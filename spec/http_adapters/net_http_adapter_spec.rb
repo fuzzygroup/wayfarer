@@ -1,20 +1,44 @@
 require "spec_helpers"
 
-describe Scrapespeare::HTTPAdapters::NetHTTPAdapter do
+module Scrapespeare
+  module HTTPAdapters
+    describe NetHTTPAdapter do
 
-  let(:adapter) { Scrapespeare::HTTPAdapters::NetHTTPAdapter }
+      let(:adapter) { NetHTTPAdapter }
 
-  describe "#fetch" do
-    before do
-      stub_request(:get, "http://example.com").to_return(
-        body: "Succeeded"
-      )
-    end
+      describe "#fetch" do
+        context "response code is 200" do
+          before do
+            stub_request(:get, "http://example.com").to_return(
+              body: "Succeeded"
+            )
+          end
 
-    it "returns the HTTP response body" do
-      page_source = adapter.fetch("http://example.com")
-      expect(page_source).to eq "Succeeded"
+          it "returns the HTTP response body" do
+            response_body = adapter.fetch("http://example.com")
+            expect(response_body).to eq "Succeeded"
+          end
+        end
+
+        context "response code is 301" do
+          before do
+            stub_request(:get, "http://example.com").to_return(
+              status: [301, "Moved Permanently"],
+              headers: { location: "http://new.example.com" }
+            )
+
+            stub_request(:get, "http://new.example.com").to_return(
+              body: "Followed a redirect"
+            )
+          end
+
+          it "follows the redirect" do
+            response_body = adapter.fetch("http://example.com")
+            expect(response_body).to eq "Followed a redirect"
+          end
+        end
+      end
+
     end
   end
-
 end

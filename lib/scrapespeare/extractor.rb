@@ -3,36 +3,51 @@ module Scrapespeare
 
     include Scrapespeare::Configurable
 
-    # @return [Symbol]
+    # @!attribute [r] identifier
+    #   @return [Symbol]
     attr_reader :identifier
 
-    # @return [String]
+    # @!attribute [r] selector
+    #   @return [String]
     attr_reader :selector
 
-    # @return [Array<Scrapespeare::Extractor>]
+    # @!attribute [r] nested_extractors
+    #   @return [Array<Scrapespeare::Extractor>]
     attr_reader :nested_extractors
+
+    # @!attribute [r] target_attributes
+    #   @return [Array<String>]
+    attr_reader :target_attributes
 
     # @param identifier [Symbol]
     # @param selector [String]
-    # @param options [Hash]
+    # @param target_attributes [Array<String>]
     # @param proc [Proc]
-    def initialize(identifier, selector, options = {}, &proc)
-      @identifier, @selector = identifier, selector
+    def initialize(identifier, selector, *target_attributes, &proc)
+      @identifier = identifier
+      @selector = selector
+      @nested_extractors = []
+      @evaluator = Scrapespeare::Evaluator
+      @target_attributes = target_attributes
 
       set(options)
-
-      @nested_extractors = []
 
       instance_eval(&proc) if block_given?
     end
 
     # Initializes and adds an Extractor to {#nested_extractors}
-    # @see #initialize
-    def add_nested_extractor(identifier, selector, options = {})
-      @nested_extractors << self.class.new(identifier, selector, options)
+    # @param (see #initialize)
+    def add_nested_extractor(identifier, selector, *target_attributes, &proc)
+      nested_extractor = self.class.new(
+        identifier, selector, *target_attributes, &proc
+      )
+
+      nested_extractor.set(@options)
+
+      @nested_extractors << nested_extractor
     end
 
-    # Recursively builds up a result Hash by evaluating its and all {#nested_extractors}s' matched Elements
+    # Recursively builds up a result Hash by evaluating its and all {#nested_extractors}' matched Elements
     #
     # @param (see #query)
     def extract(document_or_nodes)
@@ -51,9 +66,9 @@ module Scrapespeare
       { @identifier => result }
     end
 
-    private
+  private
 
-    # Returns the Elements matched by <pre>@selector</pre>
+    # Returns the Elements matched by `@selector`
     #
     # @param document_or_nodes [#css]
     # @return [Nokogiri::XML::NodeSet]
@@ -61,23 +76,19 @@ module Scrapespeare
       document_or_nodes.css(@selector)
     end
 
-    # Evaluates a NodeSet to an unpredictable value
+    # Delegates evaluation of a NodeSet by calling {Scrapespeare::Evaluator.evaluate} and passing `@target_attributes`
     #
     # @param nodes [Nokogiri::XML::NodeSet]
     # @see Scrapespeare::Evaluator.evaluate
     def evaluate(nodes)
-      Scrapespeare::Evaluator.evaluate(nodes)
+      @evaluator.evaluate(nodes, *@target_attributes)
     end
 
     # Initializes and adds a nested Extractor by calling {#add_nested_extractor}
     #
-    # @param identifier [Symbol]
-    # @param selector [Symbol]
-    # @param attributes [Array<String>]
-    # @param proc [Proc]
-    # @see #add_nested_extractor
-    def method_missing(identifier, selector, *attributes, &proc)
-      add_nested_extractor(identifier, selector, &proc)
+    # @param (see #add_nested_extractor)
+    def method_missing(identifier, selector, *target_attributes, &proc)
+      add_nested_extractor(identifier, selector, *target_attributes, &proc)
     end
 
   end

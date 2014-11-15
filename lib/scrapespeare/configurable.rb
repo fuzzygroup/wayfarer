@@ -6,17 +6,15 @@ module Scrapespeare
       @options ||= {}
     end
 
-    # Sets arbitrary keys and options
+    # Sets arbitrary keys and options on `@options`
     #
     # @param key [Symbol]
     # @param value [Object]
     def set(key, value = true)
-      @options ||= {}
-
       if key.is_a? Hash
-        @options.merge!(key)
+        options.merge!(key)
       else
-        @options[key] = value
+        options[key] = value
       end
     end
 

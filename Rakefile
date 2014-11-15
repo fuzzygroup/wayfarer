@@ -1,29 +1,23 @@
-task default: :spec
+require "rspec/core/rake_task"
+require "cucumber/rake/task"
+require "yard"
 
-namespace :spec do
-
-  desc "Run all examples that do not require a network connection"
-  task :offline do
-    sh "bundle exec rspec . --tag ~live"
+namespace(:spec) do
+  desc "Run examples that do not require a live environment"
+  RSpec::Core::RakeTask.new(:isolated) do |task|
+    task.rspec_opts = %w(--tag ~live)
   end
 
-  desc "Run all examples that require a network connection"
-  task :online do
-    sh "bundle exec rspec . --tag live"
-  end
-
-  desc "Run all examples"
-  task :all do
-    sh "bundle exec rspec"
+  desc "Run examples that require a live environment"
+  RSpec::Core::RakeTask.new(:live) do |task|
+    task.rspec_opts = %w(--tag live)
   end
 end
 
-desc "Build the gem"
-task :build do
-  sh "gem build scrapespeare.gemspec"
-end
+task(:spec) { Rake::Task["spec:isolated"].invoke }
 
-desc "Generate source code documentation"
-task :doc do
-  sh "yard doc"
+YARD::Rake::YardocTask.new(:doc)
+
+Cucumber::Rake::Task.new(:features) do |task|
+  task.cucumber_opts = %w(--format=progress)
 end

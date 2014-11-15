@@ -1,7 +1,7 @@
 module Scrapespeare
   module Evaluator
 
-    # Evaluates a NodeSet to a concrete value (not +nil+)
+    # Evaluates a NodeSet to a concrete value (not `nil`)
     #
     # @param nodes [Nokogiri::XML::NodeSet]
     # @param attributes [Array<String>]
@@ -32,12 +32,13 @@ module Scrapespeare
       end
     end
 
-    # Returns an element's content
+    # Returns an element's sanitized content
     #
     # @param element [Nokogiri::XML::Element]
     # @return [String]
+    # @see .sanitize
     def self.evaluate_content(element)
-      element.content
+      sanitize(element.content)
     end
 
     # Returns an element's attribute value
@@ -60,6 +61,16 @@ module Scrapespeare
           attribute.to_sym => evaluate_attribute(element, attribute)
         })
       end
+    end
+
+    # Removes line-breaks, leading and trailing white space from a String
+    #
+    # @param string [String]
+    # @return [String]
+    def self.sanitize(string)
+      string
+        .gsub("\n", "")
+        .strip()
     end
 
   end

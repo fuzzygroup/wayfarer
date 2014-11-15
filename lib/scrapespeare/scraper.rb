@@ -3,7 +3,8 @@ module Scrapespeare
 
     include Scrapespeare::Configurable
 
-    # @return [Array<Scrapespeare::Extractor>]
+    # @!attribute [r] extractors
+    #   @return [Array<Scrapespeare::Extractor>]
     attr_reader :extractors
 
     # @param proc [Proc]
@@ -12,15 +13,20 @@ module Scrapespeare
 
       @extractors = []
 
-      instance_eval &proc if block_given?
+      instance_eval(&proc) if block_given?
     end
 
     # Initializes and adds an Extractor to {#extractors}
+    #
     # @param (see Scrapespeare::Extractor#initialize)
-    def add_extractor(identifier, selector, options = {}, &proc)
-      @extractors << Scrapespeare::Extractor.new(
-        identifier, selector, options, &proc
+    def add_extractor(identifier, selector, *target_attributes, &proc)
+      extractor = Scrapespeare::Extractor.new(
+        identifier, selector, *target_attributes, &proc
       )
+
+      extractor.set(@options)
+
+      @extractors << extractor
     end
 
     # Reduces its {#extractors} returned extracts to a Hash
@@ -32,16 +38,19 @@ module Scrapespeare
       response_body = fetch(uri)
       parsed_document = parse_html(response_body)
 
-      @extractors.reduce(Hash.new) do |hash, extractor|
+      result = @extractors.reduce(Hash.new) do |hash, extractor|
         hash.merge(extractor.extract(parsed_document))
       end
+
+      result.taint
     end
 
-    private
+  private
 
-    # Returns a concrete HTTP adapter determined by <code>@options[:http_adapter]</code>
+    # Returns a concrete HTTP adapter determined by `@options[:http_adapter]`
+    #
     # @return [Scrapespeare::HTTPAdapters::NetHTTPAdapter, Scrapespeare::HTTPAdapters::SeleniumAdapter]
-    # @raise [RuntimeError] if <code>@options[:http_adapter]</code> is not +:net_http+ or +:selenium+
+    # @raise [RuntimeError] if `@options[:http_adapter]` is not `:net_http` or `:selenium`
     def http_adapter
       case @options[:http_adapter]
       when :net_http
@@ -54,13 +63,14 @@ module Scrapespeare
     end
 
     # Fires a HTTP request against the URI and returns the response body
+    #
     # @param [String] uri
     # @return [String]
     def fetch(uri)
       http_adapter.fetch(uri)
     end
 
-    # Parses a string of HTML
+    # Parses a String of HTML
     #
     # @param html [String]
     # @return [Nokogiri::HTML::Document]
@@ -70,13 +80,9 @@ module Scrapespeare
 
     # Initializes and adds a nested Extractor by calling {#add_extractor}
     #
-    # @param identifier [Symbol]
-    # @param selector [Symbol]
-    # @param attributes [Array<String>]
-    # @param proc [Proc]
-    # @see #add_extractor
-    def method_missing(identifier, selector, *attributes, &proc)
-      add_extractor(identifier, selector, *attributes, &proc)
+    # @param (see #add_extractor)
+    def method_missing(identifier, selector, *target_attributes, &proc)
+      add_extractor(identifier, selector, *target_attributes, &proc)
     end
 
   end
