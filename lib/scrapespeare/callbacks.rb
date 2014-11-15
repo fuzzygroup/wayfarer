@@ -6,7 +6,7 @@ module Scrapespeare
       @callbacks ||= {}
     end
 
-    # Registers a `Proc` as a callback
+    # Registers a callback for a context
     #
     # @param context [Symbol]
     # @param proc [Proc]
@@ -19,7 +19,9 @@ module Scrapespeare
     # @param context [Symbol]
     # @param argv [Array<Object>]
     def execute_callbacks(context, *argv)
-      callbacks[context].each { |callback| callback.call(*argv) }
+      if callbacks[context]
+        callbacks[context].each { |callback| callback.call(*argv) }
+      end
     end
 
   end

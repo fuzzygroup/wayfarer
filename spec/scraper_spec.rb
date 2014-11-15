@@ -48,21 +48,33 @@ module Scrapespeare
     end
 
     describe "#http_adapter" do
-      context "when @options[:http_adapter] is :net_http" do
-        it "returns Scrapespeare::HTTPAdapters::NetHTTPAdapter" do
-          scraper.options[:http_adapter] = :net_http
-          adapter = scraper.send(:http_adapter)
+      it "returns @http_adapter if it is not nil" do
+        scraper.send(:http_adapter)
+        adapter_a = scraper.instance_variable_get(:@http_adapter)
 
-          expect(adapter).to be Scrapespeare::HTTPAdapters::NetHTTPAdapter
+        scraper.send(:http_adapter)
+        adapter_b = scraper.instance_variable_get(:@http_adapter)
+
+        expect(adapter_a).to be adapter_b
+      end
+
+      context "when @options[:http_adapter] is :net_http" do
+        it "initializes @http_adapter as a SeleniumAdapter" do
+          scraper.options[:http_adapter] = :net_http
+          scraper.send(:http_adapter)
+          adapter = scraper.instance_variable_get(:@http_adapter)
+
+          expect(adapter).to be_a Scrapespeare::HTTPAdapters::NetHTTPAdapter
         end
       end
 
       context "when @options[:http_adapter] is :selenium" do
-        it "returns Scrapespeare::HTTPAdapters::SeleniumAdapter" do
+        it "initializes @http_adapter as a SeleniumAdapter" do
           scraper.options[:http_adapter] = :selenium
-          adapter = scraper.send(:http_adapter)
+          scraper.send(:http_adapter)
+          adapter = scraper.instance_variable_get(:@http_adapter)
 
-          expect(adapter).to be Scrapespeare::HTTPAdapters::SeleniumAdapter
+          expect(adapter).to be_a Scrapespeare::HTTPAdapters::SeleniumAdapter
         end
       end
 
@@ -119,6 +131,18 @@ module Scrapespeare
         expect {
           scraper.send(:heading, "h1")
         }.to change { scraper.extractors.count }.by(1)
+      end
+    end
+
+    describe "#before" do
+      let(:callback) { Proc.new { 42 } }
+
+      it "registers a callback on its HTTP adapter" do
+        http_adapter = scraper.send(:http_adapter)
+
+        scraper.send(:before, &callback)
+
+        expect(http_adapter.callbacks[:before]).to eq [callback]
       end
     end
 

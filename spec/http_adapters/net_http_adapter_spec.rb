@@ -4,7 +4,7 @@ module Scrapespeare
   module HTTPAdapters
     describe NetHTTPAdapter do
 
-      let(:adapter) { NetHTTPAdapter }
+      let(:adapter) { NetHTTPAdapter.new }
 
       describe "#fetch" do
         context "response code is 200" do

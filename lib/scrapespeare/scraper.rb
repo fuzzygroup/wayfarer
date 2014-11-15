@@ -47,16 +47,18 @@ module Scrapespeare
 
   private
 
-    # Returns a concrete HTTP adapter determined by `@options[:http_adapter]`
+    # Returns and/or sets `@http_adapter` TODO
     #
     # @return [Scrapespeare::HTTPAdapters::NetHTTPAdapter, Scrapespeare::HTTPAdapters::SeleniumAdapter]
     # @raise [RuntimeError] if `@options[:http_adapter]` is not `:net_http` or `:selenium`
     def http_adapter
+      return @http_adapter if @http_adapter
+
       case @options[:http_adapter]
       when :net_http
-        Scrapespeare::HTTPAdapters::NetHTTPAdapter
+        @http_adapter = Scrapespeare::HTTPAdapters::NetHTTPAdapter.new
       when :selenium
-        Scrapespeare::HTTPAdapters::SeleniumAdapter
+        @http_adapter = Scrapespeare::HTTPAdapters::SeleniumAdapter.new
       else
         fail "Unknown HTTP adapter `#{@options[:http_adapter]}`"
       end
@@ -83,6 +85,14 @@ module Scrapespeare
     # @param (see #add_extractor)
     def method_missing(identifier, selector, *target_attributes, &proc)
       add_extractor(identifier, selector, *target_attributes, &proc)
+    end
+
+    # Registers a callback for the `:before` context
+    #
+    # @param proc [Proc]
+    # @see Scrapespeare::Callbacks#register_callback
+    def before(&proc)
+      http_adapter.register_callback(:before, &proc)
     end
 
   end

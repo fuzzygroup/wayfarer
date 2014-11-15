@@ -79,6 +79,14 @@ module Scrapespeare
         expect(a).to be 1
         expect(b).to be 2
       end
+
+      context "without callbacks present" do
+        it "does not raise an Exception" do
+          expect {
+            subject.execute_callbacks(:foobar)
+          }.not_to raise_error
+        end
+      end
     end
 
   end
