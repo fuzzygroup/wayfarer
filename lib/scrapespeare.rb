@@ -5,6 +5,7 @@ require "thor"
 
 $: << File.dirname(__FILE__)
 require "scrapespeare/configurable"
+require "scrapespeare/extractable"
 require "scrapespeare/callbacks"
 require "scrapespeare/http_adapters/net_http_adapter"
 require "scrapespeare/http_adapters/selenium_adapter"
