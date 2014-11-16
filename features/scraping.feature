@@ -7,7 +7,7 @@ Feature: Web scraping
     Given a website
     And the following Scraper:
       """
-      site_title css: 'title'
+      css site_title: 'title'
       """
     When I scrape the website
     Then I get the following result:
@@ -19,8 +19,8 @@ Feature: Web scraping
     Given a website
     And the following Scraper:
       """
-      heading css: '#site-header h1'
-      tagline css: '#site-header p'
+      css heading:'#site-header h1'
+      css tagline: '#site-header p'
       """
     When I scrape the website
     Then I get the following result:
@@ -35,7 +35,7 @@ Feature: Web scraping
   Given a website
   And the following Scraper:
     """
-    site_header_role({ css: "#site-header" }, "role")
+    css site_header_role: "#site-header", "role"
     """
   When I scrape the website
   Then I get the following result:
