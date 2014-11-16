@@ -7,7 +7,7 @@ Feature: Command-line interface
   Scenario: YAML output
     Given a file named "scraper.rb" with:
       """
-      site_title css: "title"
+      css :site_title, "title"
       """
     When I run `scrapespeare yaml scraper.rb http://example.com`
     Then the exit status should be 0
@@ -21,7 +21,7 @@ Feature: Command-line interface
   Scenario: JSON output
     Given a file named "scraper.rb" with:
       """
-      site_title css: "title"
+      css :site_title, "title"
       """
     When I run `scrapespeare json scraper.rb http://example.com`
     Then the exit status should be 0

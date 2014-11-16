@@ -18,11 +18,13 @@ module Scrapespeare
     end
 
     def css(identifier, selector, *target_attributes, &proc)
-      add_extractor(identifier, { css: selector }, target_attributes, &proc)
+      add_extractor(identifier, { css: selector }, *target_attributes, &proc)
     end
 
     def xpath(identifier, expression, *target_attributes, &proc)
-      add_extractor(identifier, { xpath: expression }, target_attributes, &proc)
+      add_extractor(
+        identifier, { xpath: expression }, *target_attributes, &proc
+      )
     end
 
   end

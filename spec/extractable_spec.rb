@@ -58,16 +58,17 @@ module Scrapespeare
         }.to change { extractable.extractors.count }.by(1)
       end
 
-      describe "Matcher initialization" do
-        let(:matcher) do
-          extractable.send(:css, :foo, ".bar")
-          added_extractor = extractable.extractors.first
-          added_extractor.matcher
-        end
+      it "initializes the added Extractor correctly" do
+        extractable.send(:css, :foo, ".bar", "class", "id")
+        added_extractor = extractable.extractors.first
 
-        it "sets the added Extractor's Matcher @type to :xpath" do
-          expect(matcher.type).to be :css
-        end
+        expect(added_extractor.identifier).to be :foo
+        
+        matcher = added_extractor.matcher
+        expect(matcher.type).to be :css
+        expect(matcher.expression).to eq ".bar"
+
+        expect(added_extractor.target_attributes).to eq ["class", "id"]
       end
     end
 
@@ -78,16 +79,17 @@ module Scrapespeare
         }.to change { extractable.extractors.count }.by(1)
       end
 
-      describe "Matcher initialization" do
-        let(:matcher) do
-          extractable.send(:xpath, :foo, "bar")
-          added_extractor = extractable.extractors.first
-          added_extractor.matcher
-        end
+      it "initializes the added Extractor correctly" do
+        extractable.send(:xpath, :foo, "bar", "class", "id")
+        added_extractor = extractable.extractors.first
 
-        it "sets the added Extractor's Matcher @type to :xpath" do
-          expect(matcher.type).to be :xpath
-        end
+        expect(added_extractor.identifier).to be :foo
+        
+        matcher = added_extractor.matcher
+        expect(matcher.type).to be :xpath
+        expect(matcher.expression).to eq "bar"
+
+        expect(added_extractor.target_attributes).to eq ["class", "id"]
       end
     end
 
