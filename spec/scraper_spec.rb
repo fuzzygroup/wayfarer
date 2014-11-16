@@ -24,23 +24,27 @@ module Scrapespeare
     describe "#add_extractor" do
       it "adds an Extractor to @extractors" do
         expect {
-          scraper.add_extractor(:foo, ".bar")
+          scraper.add_extractor(:foo, { css: ".bar" })
         }.to change { scraper.extractors.count }.by(1)
       end
 
       it "initializes the added Extractor correctly" do
-        scraper.add_extractor(:foo, ".bar", "class")
+        scraper.add_extractor(:foo, { css: ".bar" }, "class")
         extractor = scraper.extractors.first
 
         expect(extractor.identifier).to be :foo
-        expect(extractor.selector).to eq ".bar"
+
+        matcher = extractor.matcher
+        expect(matcher.type).to be :css
+        expect(matcher.expression).to eq ".bar"
+
         expect(extractor.target_attributes).to eq(["class"])
       end
 
       it "passes @options to the added Extractor" do
         scraper.set(:foobar, 42)
 
-        scraper.add_extractor(:name, ".name")
+        scraper.add_extractor(:name, { css: ".name" })
         extractor = scraper.extractors.first
 
         expect(extractor.options[:foobar]).to be 42
@@ -129,7 +133,7 @@ module Scrapespeare
     describe "#method_missing" do
       it "adds an extractor" do
         expect {
-          scraper.send(:heading, "h1")
+          scraper.send(:heading, { css: "h1" })
         }.to change { scraper.extractors.count }.by(1)
       end
     end

@@ -23,14 +23,18 @@ module Scrapespeare
     let(:document) { Nokogiri::HTML(html) }
 
     describe "#initialize" do
-      let(:extractor) { Scrapespeare::Extractor.new(:heading, "h1", "class") }
+      let(:extractor) do
+        Scrapespeare::Extractor.new(:heading, { css: "h1" }, "class")
+      end
 
       it "sets @identifier" do
         expect(extractor.identifier).to be :heading
       end
 
-      it "sets @selector" do
-        expect(extractor.selector).to eq "h1"
+      it "sets @matcher" do
+        matcher = extractor.matcher
+        expect(matcher.type).to be :css
+        expect(matcher.expression).to eq "h1"
       end
 
       it "sets @target_attributes" do
@@ -53,7 +57,7 @@ module Scrapespeare
       it "evaluates the given block in its instance context" do
         context = nil
 
-        extractor = Scrapespeare::Extractor.new(:heading, "h1") do
+        extractor = Scrapespeare::Extractor.new(:heading, { css: "h1" }) do
           context = self
         end
 
@@ -62,27 +66,33 @@ module Scrapespeare
     end
 
     describe "#add_nested_extractor" do
-      let(:extractor) { Scrapespeare::Extractor.new(:employees, ".employee") }
+      let(:extractor) do
+        Scrapespeare::Extractor.new(:employees, { css: ".employee" })
+      end
 
       it "adds an Extractor to @nested_extractors" do
         expect {
-          extractor.add_nested_extractor(:name, ".name")
+          extractor.add_nested_extractor(:name, { css: ".name" })
         }.to change { extractor.nested_extractors.count }.by(1)
       end
 
       it "initializes the added nested Extractor correctly" do
-        extractor.add_nested_extractor(:name, ".name", "class", "id")
+        extractor.add_nested_extractor(:name, { css: ".name" }, "class", "id")
         nested_extractor = extractor.nested_extractors.first
 
         expect(nested_extractor.identifier).to be :name
-        expect(nested_extractor.selector).to eq ".name"
+        
+        matcher = nested_extractor.matcher
+        expect(matcher.type).to be :css
+        expect(matcher.expression).to eq ".name"
+
         expect(nested_extractor.target_attributes).to eq ["class", "id"]
       end
 
       it "passes @options to the added nested Extractor" do
         extractor.set(:foobar, 42)
 
-        extractor.add_nested_extractor(:name, ".name")
+        extractor.add_nested_extractor(:name, { css: ".name" })
         nested_extractor = extractor.nested_extractors.first
 
         expect(nested_extractor.options[:foobar]).to be 42
@@ -90,11 +100,13 @@ module Scrapespeare
     end
 
     describe "#extract" do
-      let(:extractor) { Scrapespeare::Extractor.new(:employees, ".employee") }
+      let(:extractor) do
+        Scrapespeare::Extractor.new(:employees, { css: ".employee" })
+      end
 
       context "with 1 extractor and 1 nested Extractor" do
         before do
-          extractor.add_nested_extractor(:name, ".name")
+          extractor.add_nested_extractor(:name, { css: ".name" })
         end
 
         it "returns the expected data structure" do
@@ -110,8 +122,8 @@ module Scrapespeare
 
       context "with 1 extractor and 2 nested Extractors" do
         before do
-          extractor.add_nested_extractor(:name, ".name")
-          extractor.add_nested_extractor(:age, ".age")
+          extractor.add_nested_extractor(:name, { css: ".name" })
+          extractor.add_nested_extractor(:age, { css: ".age" })
         end
 
         it "returns the expected data structure" do
@@ -127,15 +139,17 @@ module Scrapespeare
 
       context "with 1 extractor and deep-nested nested Extractors" do
         let(:extractor) do
-          extractor = Scrapespeare::Extractor.new(:employees, ".employees")
+          extractor = Scrapespeare::Extractor.new(
+            :employees, { css: ".employees" }
+          )
         end
 
         before do
-          extractor.add_nested_extractor(:albert, "#albert")
+          extractor.add_nested_extractor(:albert, { css: "#albert" })
 
           nested_extractor = extractor.nested_extractors.first
-          nested_extractor.add_nested_extractor(:name, ".name")
-          nested_extractor.add_nested_extractor(:age, ".age")
+          nested_extractor.add_nested_extractor(:name, { css: ".name" })
+          nested_extractor.add_nested_extractor(:age, { css: ".age" })
         end
 
         it "returns the expected data structure" do
@@ -152,32 +166,21 @@ module Scrapespeare
     end
 
     describe "#query" do
-      context "with matching @selector" do
-        let(:extractor) { Scrapespeare::Extractor.new(:heading, "h1") }
+      let(:extractor) { Scrapespeare::Extractor.new(:heading, { css: "h1" }) }
+      let(:matcher) { spy("matcher") }
 
-        it "returns a populated NodeSet" do
-          nodes = extractor.send(:query, document)
-          expect(nodes).not_to be_empty
-        end
-
-        it "returns a list of the correct #count" do
-          nodes = extractor.send(:query, document)
-          expect(nodes.count).to be 1
-        end
+      before do
+        extractor.instance_variable_set(:@matcher, matcher)
       end
 
-      context "with mismatching @selector" do
-        let(:extractor) { Scrapespeare::Extractor.new(:mismatching, "#mismatching") }
-
-        it "returns an empty list" do
-          nodes = extractor.send(:query, document)
-          expect(nodes).to be_empty
-        end
+      it "calls #match on @matcher and passes its argument" do
+        extractor.send(:query, document)
+        expect(matcher).to have_received(:match).with(document)
       end
     end
 
     describe "#evaluate" do
-      let(:extractor) { Scrapespeare::Extractor.new(:heading, "h1") }
+      let(:extractor) { Scrapespeare::Extractor.new(:heading, { css: "h1" }) }
       let(:nodes) { node_set "<em class='greeting'>Hello!</em>" }
 
       it "calls @evaluator#evaluate" do
@@ -190,7 +193,9 @@ module Scrapespeare
       end
 
       it "passes @target_attributes to @evaluator" do
-        extractor = Scrapespeare::Extractor.new(:heading, "h1", "class")
+        extractor = Scrapespeare::Extractor.new(
+          :heading, { css: "h1" }, "class"
+        )
 
         evaluator = spy("evaluator")
         extractor.instance_variable_set(:@evaluator, evaluator)
@@ -204,11 +209,13 @@ module Scrapespeare
     end
 
     describe "#method_missing" do
-      let(:extractor) { Scrapespeare::Extractor.new(:employees, ".employee") }
+      let(:extractor) do
+        Scrapespeare::Extractor.new(:employees, { css: ".employee" })
+      end
 
       it "adds an Extractor to @nested_extractors" do
         expect {
-          extractor.send(:name, ".name")
+          extractor.send(:name, { css: ".name" })
         }.to change { extractor.nested_extractors.count }.by(1)
       end
     end

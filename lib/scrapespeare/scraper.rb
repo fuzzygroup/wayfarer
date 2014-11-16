@@ -19,9 +19,9 @@ module Scrapespeare
     # Initializes and adds an Extractor to {#extractors}
     #
     # @param (see Scrapespeare::Extractor#initialize)
-    def add_extractor(identifier, selector, *target_attributes, &proc)
+    def add_extractor(identifier, matcher, *target_attributes, &proc)
       extractor = Scrapespeare::Extractor.new(
-        identifier, selector, *target_attributes, &proc
+        identifier, matcher, *target_attributes, &proc
       )
 
       extractor.set(@options)
@@ -83,8 +83,8 @@ module Scrapespeare
     # Initializes and adds a nested Extractor by calling {#add_extractor}
     #
     # @param (see #add_extractor)
-    def method_missing(identifier, selector, *target_attributes, &proc)
-      add_extractor(identifier, selector, *target_attributes, &proc)
+    def method_missing(identifier, matcher, *target_attributes, &proc)
+      add_extractor(identifier, matcher, *target_attributes, &proc)
     end
 
     # Registers a callback for the `:before` context
