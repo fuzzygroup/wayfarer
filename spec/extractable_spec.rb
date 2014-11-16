@@ -54,16 +54,40 @@ module Scrapespeare
     describe "#css" do
       it "adds an Extractor" do
         expect {
-          extractable.send(:css, :foo, { css: ".bar" })
+          extractable.send(:css, :foo, ".bar")
         }.to change { extractable.extractors.count }.by(1)
       end
 
-      it "sets the added Extractor's Matcher @type to :css" do
-        extractable.send(:css, :foo, { css: ".bar" })
-        added_extractor = extractable.extractors.first
+      describe "Matcher initialization" do
+        let(:matcher) do
+          extractable.send(:css, :foo, ".bar")
+          added_extractor = extractable.extractors.first
+          added_extractor.matcher
+        end
 
-        matcher = added_extractor.matcher
-        expect(matcher.type).to be :css
+        it "sets the added Extractor's Matcher @type to :xpath" do
+          expect(matcher.type).to be :css
+        end
+      end
+    end
+
+    describe "#xpath" do
+      it "adds an Extractor" do
+        expect {
+          extractable.send(:xpath, :foo, "bar")
+        }.to change { extractable.extractors.count }.by(1)
+      end
+
+      describe "Matcher initialization" do
+        let(:matcher) do
+          extractable.send(:xpath, :foo, "bar")
+          added_extractor = extractable.extractors.first
+          added_extractor.matcher
+        end
+
+        it "sets the added Extractor's Matcher @type to :xpath" do
+          expect(matcher.type).to be :xpath
+        end
       end
     end
 
