@@ -2,31 +2,13 @@ module Scrapespeare
   class Scraper
 
     include Scrapespeare::Configurable
-
-    # @!attribute [r] extractors
-    #   @return [Array<Scrapespeare::Extractor>]
-    attr_reader :extractors
+    include Scrapespeare::Extractable
 
     # @param proc [Proc]
     def initialize(&proc)
       set(:http_adapter, :net_http)
 
-      @extractors = []
-
       instance_eval(&proc) if block_given?
-    end
-
-    # Initializes and adds an Extractor to {#extractors}
-    #
-    # @param (see Scrapespeare::Extractor#initialize)
-    def add_extractor(identifier, matcher, *target_attributes, &proc)
-      extractor = Scrapespeare::Extractor.new(
-        identifier, matcher, *target_attributes, &proc
-      )
-
-      extractor.set(@options)
-
-      @extractors << extractor
     end
 
     # Reduces its {#extractors} returned extracts to a Hash
@@ -38,7 +20,7 @@ module Scrapespeare
       response_body = fetch(uri)
       parsed_document = parse_html(response_body)
 
-      result = @extractors.reduce(Hash.new) do |hash, extractor|
+      result = extractors.reduce(Hash.new) do |hash, extractor|
         hash.merge(extractor.extract(parsed_document))
       end
 

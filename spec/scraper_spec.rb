@@ -6,10 +6,6 @@ module Scrapespeare
     let(:scraper) { Scrapespeare::Scraper.new }
 
     describe "#initialize" do
-      it "sets @extractors to an empty list" do
-        expect(scraper.extractors).to be_empty
-      end
-
       it "evaluates the Proc in its instance context" do
         context = nil
 
@@ -18,36 +14,6 @@ module Scrapespeare
         end
 
         expect(context).to be scraper
-      end
-    end
-
-    describe "#add_extractor" do
-      it "adds an Extractor to @extractors" do
-        expect {
-          scraper.add_extractor(:foo, { css: ".bar" })
-        }.to change { scraper.extractors.count }.by(1)
-      end
-
-      it "initializes the added Extractor correctly" do
-        scraper.add_extractor(:foo, { css: ".bar" }, "class")
-        extractor = scraper.extractors.first
-
-        expect(extractor.identifier).to be :foo
-
-        matcher = extractor.matcher
-        expect(matcher.type).to be :css
-        expect(matcher.expression).to eq ".bar"
-
-        expect(extractor.target_attributes).to eq(["class"])
-      end
-
-      it "passes @options to the added Extractor" do
-        scraper.set(:foobar, 42)
-
-        scraper.add_extractor(:name, { css: ".name" })
-        extractor = scraper.extractors.first
-
-        expect(extractor.options[:foobar]).to be 42
       end
     end
 
