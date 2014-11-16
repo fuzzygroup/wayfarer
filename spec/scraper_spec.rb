@@ -96,14 +96,6 @@ module Scrapespeare
       end
     end
 
-    describe "#method_missing" do
-      it "adds an extractor" do
-        expect {
-          scraper.send(:heading, { css: "h1" })
-        }.to change { scraper.extractors.count }.by(1)
-      end
-    end
-
     describe "#before" do
       let(:callback) { Proc.new { 42 } }
 

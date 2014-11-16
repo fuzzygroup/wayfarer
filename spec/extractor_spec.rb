@@ -170,17 +170,5 @@ module Scrapespeare
       end
     end
 
-    describe "#method_missing" do
-      let(:extractor) do
-        Scrapespeare::Extractor.new(:employees, { css: ".employee" })
-      end
-
-      it "adds an Extractor to @nested_extractors" do
-        expect {
-          extractor.send(:name, { css: ".name" })
-        }.to change { extractor.extractors.count }.by(1)
-      end
-    end
-
   end
 end

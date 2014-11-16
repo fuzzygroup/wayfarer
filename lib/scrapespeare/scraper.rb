@@ -62,13 +62,6 @@ module Scrapespeare
       Nokogiri::HTML(html)
     end
 
-    # Initializes and adds a nested Extractor by calling {#add_extractor}
-    #
-    # @param (see #add_extractor)
-    def method_missing(identifier, matcher, *target_attributes, &proc)
-      add_extractor(identifier, matcher, *target_attributes, &proc)
-    end
-
     # Registers a callback for the `:before` context
     #
     # @param proc [Proc]

@@ -68,12 +68,5 @@ module Scrapespeare
       @evaluator.evaluate(nodes, *@target_attributes)
     end
 
-    # Initializes and adds a nested Extractor by calling {#add_nested_extractor}
-    #
-    # @param (see #add_nested_extractor)
-    def method_missing(identifier, matcher, *target_attributes, &proc)
-      add_extractor(identifier, matcher, *target_attributes, &proc)
-    end
-
   end
 end
