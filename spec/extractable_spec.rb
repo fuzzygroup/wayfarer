@@ -22,7 +22,7 @@ module Scrapespeare
     end
 
     describe "#add_extractor" do
-      it "adds an Extractor to @nested_extractors" do
+      it "adds an Extractor" do
         expect {
           extractable.send(:add_extractor, :foo, { css: ".bar" })
         }.to change { extractable.extractors.count }.by(1)
@@ -48,6 +48,22 @@ module Scrapespeare
         added_extractor = extractable.extractors.first
 
         expect(added_extractor.options[:foo]).to eq "bar"
+      end
+    end
+
+    describe "#css" do
+      it "adds an Extractor" do
+        expect {
+          extractable.send(:css, :foo, { css: ".bar" })
+        }.to change { extractable.extractors.count }.by(1)
+      end
+
+      it "sets the added Extractor's Matcher @type to :css" do
+        extractable.send(:css, :foo, { css: ".bar" })
+        added_extractor = extractable.extractors.first
+
+        matcher = added_extractor.matcher
+        expect(matcher.type).to be :css
       end
     end
 

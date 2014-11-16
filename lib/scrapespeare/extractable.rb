@@ -17,5 +17,9 @@ module Scrapespeare
       extractors << extractor
     end
 
+    def css(identifier, selector, *target_attributes, &proc)
+      add_extractor(identifier, { css: selector }, target_attributes, &proc)
+    end
+
   end
 end
