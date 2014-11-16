@@ -40,6 +40,15 @@ module Scrapespeare
 
         expect(added_extractor.target_attributes).to eq ["class", "id"]
       end
+
+      it "passes @options to the added Extractor" do
+        extractable.instance_variable_set(:@options, { foo: "bar" })
+
+        extractable.send(:add_extractor, :foo, { css: ".bar" })
+        added_extractor = extractable.extractors.first
+
+        expect(added_extractor.options[:foo]).to eq "bar"
+      end
     end
 
   end
