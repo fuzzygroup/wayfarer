@@ -27,6 +27,19 @@ module Scrapespeare
           extractable.send(:add_extractor, :foo, { css: ".bar" })
         }.to change { extractable.extractors.count }.by(1)
       end
+
+      it "initializes the added Extractor correctly" do
+        extractable.send(:add_extractor, :foo, { css: ".bar" }, "class", "id")
+        added_extractor = extractable.extractors.first
+
+        expect(added_extractor.identifier).to be :foo
+        
+        matcher = added_extractor.matcher
+        expect(matcher.type).to be :css
+        expect(matcher.expression).to eq ".bar"
+
+        expect(added_extractor.target_attributes).to eq ["class", "id"]
+      end
     end
 
   end
