@@ -2,6 +2,7 @@ module Scrapespeare
   class Extractor
 
     include Scrapespeare::Configurable
+    include Scrapespeare::Extractable
 
     # @!attribute [r] identifier
     #   @return [Symbol]
@@ -10,10 +11,6 @@ module Scrapespeare
     # @!attribute [r] matcher
     #   @return [Scrapespeare::Matcher]
     attr_reader :matcher
-
-    # @!attribute [r] nested_extractors
-    #   @return [Array<Scrapespeare::Extractor>]
-    attr_reader :nested_extractors
 
     # @!attribute [r] target_attributes
     #   @return [Array<String>]
@@ -27,26 +24,11 @@ module Scrapespeare
       @identifier = identifier
       @matcher = Scrapespeare::Matcher.new(matcher)
       @target_attributes = target_attributes
-
-      @nested_extractors = []
       @evaluator = Scrapespeare::Evaluator
 
       set(options)
 
       instance_eval(&proc) if block_given?
-    end
-
-    # Initializes and adds an Extractor to {#nested_extractors}
-    #
-    # @param (see #initialize)
-    def add_nested_extractor(identifier, matcher, *target_attributes, &proc)
-      nested_extractor = self.class.new(
-        identifier, matcher, *target_attributes, &proc
-      )
-
-      nested_extractor.set(@options)
-
-      @nested_extractors << nested_extractor
     end
 
     # Recursively builds up a result Hash by evaluating its and all {#nested_extractors}' matched Elements
@@ -55,11 +37,11 @@ module Scrapespeare
     def extract(document_or_nodes)
       matched_nodes = query(document_or_nodes)
 
-      unless @nested_extractors.any?
+      unless extractors.any?
         result = evaluate(matched_nodes)
       else
         result = matched_nodes.map do |node|
-          @nested_extractors.reduce(Hash.new) do |hash, extractor|
+          extractors.reduce(Hash.new) do |hash, extractor|
             hash.merge(extractor.extract(node))
           end
         end
@@ -90,7 +72,7 @@ module Scrapespeare
     #
     # @param (see #add_nested_extractor)
     def method_missing(identifier, matcher, *target_attributes, &proc)
-      add_nested_extractor(identifier, matcher, *target_attributes, &proc)
+      add_extractor(identifier, matcher, *target_attributes, &proc)
     end
 
   end

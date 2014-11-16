@@ -41,10 +41,6 @@ module Scrapespeare
         expect(extractor.target_attributes).to eq ["class"]
       end
 
-      it "sets @nested_extractors to an empty list" do
-        expect(extractor.nested_extractors).to be_empty
-      end
-
       it "sets @options to an empty Hash" do
         expect(extractor.options).to eq({})
       end
@@ -65,40 +61,6 @@ module Scrapespeare
       end
     end
 
-    describe "#add_nested_extractor" do
-      let(:extractor) do
-        Scrapespeare::Extractor.new(:employees, { css: ".employee" })
-      end
-
-      it "adds an Extractor to @nested_extractors" do
-        expect {
-          extractor.add_nested_extractor(:name, { css: ".name" })
-        }.to change { extractor.nested_extractors.count }.by(1)
-      end
-
-      it "initializes the added nested Extractor correctly" do
-        extractor.add_nested_extractor(:name, { css: ".name" }, "class", "id")
-        nested_extractor = extractor.nested_extractors.first
-
-        expect(nested_extractor.identifier).to be :name
-        
-        matcher = nested_extractor.matcher
-        expect(matcher.type).to be :css
-        expect(matcher.expression).to eq ".name"
-
-        expect(nested_extractor.target_attributes).to eq ["class", "id"]
-      end
-
-      it "passes @options to the added nested Extractor" do
-        extractor.set(:foobar, 42)
-
-        extractor.add_nested_extractor(:name, { css: ".name" })
-        nested_extractor = extractor.nested_extractors.first
-
-        expect(nested_extractor.options[:foobar]).to be 42
-      end
-    end
-
     describe "#extract" do
       let(:extractor) do
         Scrapespeare::Extractor.new(:employees, { css: ".employee" })
@@ -106,7 +68,7 @@ module Scrapespeare
 
       context "with 1 extractor and 1 nested Extractor" do
         before do
-          extractor.add_nested_extractor(:name, { css: ".name" })
+          extractor.send(:add_extractor, :name, { css: ".name" })
         end
 
         it "returns the expected data structure" do
@@ -122,8 +84,8 @@ module Scrapespeare
 
       context "with 1 extractor and 2 nested Extractors" do
         before do
-          extractor.add_nested_extractor(:name, { css: ".name" })
-          extractor.add_nested_extractor(:age, { css: ".age" })
+          extractor.send(:add_extractor, :name, { css: ".name" })
+          extractor.send(:add_extractor, :age, { css: ".age" })
         end
 
         it "returns the expected data structure" do
@@ -145,11 +107,11 @@ module Scrapespeare
         end
 
         before do
-          extractor.add_nested_extractor(:albert, { css: "#albert" })
+          extractor.send(:add_extractor, :albert, { css: "#albert" })
 
-          nested_extractor = extractor.nested_extractors.first
-          nested_extractor.add_nested_extractor(:name, { css: ".name" })
-          nested_extractor.add_nested_extractor(:age, { css: ".age" })
+          nested_extractor = extractor.extractors.first
+          nested_extractor.send(:add_extractor, :name, { css: ".name" })
+          nested_extractor.send(:add_extractor, :age, { css: ".age" })
         end
 
         it "returns the expected data structure" do
@@ -216,7 +178,7 @@ module Scrapespeare
       it "adds an Extractor to @nested_extractors" do
         expect {
           extractor.send(:name, { css: ".name" })
-        }.to change { extractor.nested_extractors.count }.by(1)
+        }.to change { extractor.extractors.count }.by(1)
       end
     end
 
