@@ -10,6 +10,8 @@ module Scrapespeare
       def fetch(uri)
         response = Net::HTTP.get_response(URI(uri))
 
+        execute_callbacks(:before, response)
+
         if response.code == "301" && response["location"]
           fetch(response["location"])
         else

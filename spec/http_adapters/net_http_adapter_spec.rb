@@ -37,6 +37,23 @@ module Scrapespeare
             expect(response_body).to eq "Followed a redirect"
           end
         end
+
+        describe "Callbacks" do
+          before do
+            stub_request(:get, "http://example.com").to_return(
+              body: "Succeeded"
+            )
+          end
+
+          it "executes its callbacks and yields a Net::HTTPResponse" do
+            callback = Proc.new { |response| @response = response }
+            adapter.register_callback(:before, &callback)
+  
+            adapter.fetch("http://example.com")
+
+            expect(@response).to be_a Net::HTTPResponse
+          end
+        end
       end
 
     end
