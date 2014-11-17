@@ -23,5 +23,20 @@ module Scrapespeare
       end
     end
 
+    describe "#extract" do
+      let(:extractor_group) do
+        Scrapespeare::ExtractorGroup.new(:foobar)
+      end
+
+      context "without nested Extractors" do
+        it "returns the expected Hash structure" do
+          result = extractor_group.extract
+          expect(result).to eq({
+            foobar: ""
+          })
+        end
+      end
+    end
+
   end
 end
