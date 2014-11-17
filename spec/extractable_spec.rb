@@ -51,6 +51,14 @@ module Scrapespeare
       end
     end
 
+    describe "#add_extractor_group" do
+      it "adds an ExtractorGroup" do
+        expect {
+          extractable.send(:add_extractor_group, :foo)
+        }.to change { extractable.extractors.count }.by(1)
+      end
+    end
+
     describe "#css" do
       it "adds an Extractor" do
         expect {
