@@ -28,9 +28,15 @@ module Scrapespeare
         Scrapespeare::ExtractorGroup.new(:foobar)
       end
 
-      let(:extractor) do
+      let(:extractor_a) do
         extractor = double()
         allow(extractor).to receive(:extract).and_return({ alpha: "one"})
+        extractor
+      end
+
+      let(:extractor_b) do
+        extractor = double()
+        allow(extractor).to receive(:extract).and_return({ beta: "two"})
         extractor
       end
 
@@ -43,9 +49,9 @@ module Scrapespeare
         end
       end
 
-      context "without 1 nested Extractor" do
+      context "with 1 nested Extractor" do
         before do
-          extractor_group.instance_variable_set(:@extractors, [extractor])
+          extractor_group.instance_variable_set(:@extractors, [extractor_a])
         end
 
         it "returns the expected Hash structure" do
@@ -53,6 +59,24 @@ module Scrapespeare
           expect(result).to eq({
             foobar: {
               alpha: "one"
+            }
+          })
+        end
+      end
+
+      context "with > 1 nested Extractors" do
+        before do
+          extractor_group.instance_variable_set(
+            :@extractors, [extractor_a, extractor_b]
+          )
+        end
+
+        it "returns the expected Hash structure" do
+          result = extractor_group.extract
+          expect(result).to eq({
+            foobar: {
+              alpha: "one",
+              beta: "two"
             }
           })
         end
