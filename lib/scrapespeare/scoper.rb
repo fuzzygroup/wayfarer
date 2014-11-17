@@ -5,6 +5,7 @@ module Scrapespeare
 
     def initialize(matcher, &proc)
       @matcher = Matcher.new(matcher)
+      instance_eval(&proc) if block_given?
     end
 
   end
