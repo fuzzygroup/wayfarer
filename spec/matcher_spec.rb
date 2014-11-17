@@ -1,7 +1,7 @@
 require "spec_helpers"
 
 module Scrapespeare
-  describe Matcher
+  describe Matcher do
 
   describe "#initialize" do
     let(:matcher) { Matcher.new(css: "h1") }
@@ -38,4 +38,5 @@ module Scrapespeare
     end
   end
 
+  end
 end
