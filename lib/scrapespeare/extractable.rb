@@ -19,6 +19,9 @@ module Scrapespeare
 
     def add_extractor_group(identifier, &proc)
       extractor_group = Scrapespeare::ExtractorGroup.new(identifier)
+
+      extractor_group.set(@options)
+
       extractors << extractor_group
     end
 

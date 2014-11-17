@@ -2,6 +2,7 @@ module Scrapespeare
   class ExtractorGroup
 
     include Extractable
+    include Configurable
 
     attr_reader :identifier
 

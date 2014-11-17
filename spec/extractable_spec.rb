@@ -64,6 +64,15 @@ module Scrapespeare
 
         expect(added_extractor_group.identifier).to be :foo
       end
+
+      it "passes @options to the added ExtractorGroup" do
+        extractable.instance_variable_set(:@options, { foo: "bar" })
+
+        extractable.send(:add_extractor_group, :foo)
+        added_extractor_group = extractable.extractors.first
+
+        expect(added_extractor_group.options[:foo]).to eq "bar"
+      end
     end
 
     describe "#css" do
