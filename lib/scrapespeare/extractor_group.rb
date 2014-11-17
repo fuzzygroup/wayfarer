@@ -13,6 +13,10 @@ module Scrapespeare
     def extract
       if extractors.empty?
         result = ""
+      else
+        result = extractors.reduce(Hash.new) do |hash, extractor|
+          hash.merge(extractor.extract)
+        end
       end
 
       { @identifier => result }
