@@ -35,5 +35,9 @@ module Scrapespeare
       )
     end
 
+    def group(identifier, &proc)
+      add_extractor_group(identifier, &proc)
+    end
+
   end
 end

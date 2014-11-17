@@ -117,5 +117,13 @@ module Scrapespeare
       end
     end
 
+    describe "#group" do
+      it "adds an ExtractorGroup" do
+        expect {
+          extractable.send(:group, :foo)
+        }.to change { extractable.extractors.count }.by(1)
+      end
+    end
+
   end
 end
