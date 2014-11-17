@@ -35,7 +35,7 @@ module Scrapespeare
     #
     # @param (see #query)
     def extract(document_or_nodes)
-      matched_nodes = query(document_or_nodes)
+      matched_nodes = @matcher.match(document_or_nodes)
 
       unless extractors.any?
         result = evaluate(matched_nodes)
@@ -51,14 +51,6 @@ module Scrapespeare
     end
 
   private
-
-    # Returns the Elements matched by `@selector`
-    #
-    # @param (see Scrapespeare::Matcher#match)
-    # @return [Nokogiri::XML::NodeSet]
-    def query(document_or_nodes)
-      @matcher.match(document_or_nodes)
-    end
 
     # Delegates evaluation of a NodeSet by calling {Scrapespeare::Evaluator.evaluate} and passing `@target_attributes`
     #

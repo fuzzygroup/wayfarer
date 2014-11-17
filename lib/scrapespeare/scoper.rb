@@ -8,5 +8,8 @@ module Scrapespeare
       instance_eval(&proc) if block_given?
     end
 
+    def extract(document_or_nodes)
+    end
+
   end
 end

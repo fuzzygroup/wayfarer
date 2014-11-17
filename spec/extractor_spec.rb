@@ -127,20 +127,6 @@ module Scrapespeare
       end
     end
 
-    describe "#query" do
-      let(:extractor) { Scrapespeare::Extractor.new(:heading, { css: "h1" }) }
-      let(:matcher) { spy("matcher") }
-
-      before do
-        extractor.instance_variable_set(:@matcher, matcher)
-      end
-
-      it "calls #match on @matcher and passes its argument" do
-        extractor.send(:query, document)
-        expect(matcher).to have_received(:match).with(document)
-      end
-    end
-
     describe "#evaluate" do
       let(:extractor) { Scrapespeare::Extractor.new(:heading, { css: "h1" }) }
       let(:nodes) { node_set "<em class='greeting'>Hello!</em>" }
