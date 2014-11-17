@@ -57,6 +57,13 @@ module Scrapespeare
           extractable.send(:add_extractor_group, :foo)
         }.to change { extractable.extractors.count }.by(1)
       end
+
+      it "initializes the added ExtractorGroup correctly" do
+        extractable.send(:add_extractor_group, :foo)
+        added_extractor_group = extractable.extractors.first
+
+        expect(added_extractor_group.identifier).to be :foo
+      end
     end
 
     describe "#css" do
