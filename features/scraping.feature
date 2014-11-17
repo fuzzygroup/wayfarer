@@ -15,6 +15,24 @@ Feature: Web scraping
       { site_title: "Employee listing" }
       """
 
+    Scenario: Arbitrary nesting
+      Given a website
+      And the following Scraper:
+        """
+        group :meta do
+          css :site_title, 'title'
+        end
+        """
+      When I scrape the website
+      Then I get the following result:
+        """
+        {
+          meta: {
+            site_title: "Employee listing"
+          }
+        }
+        """
+
   Scenario: Scrape heading and tagline
     Given a website
     And the following Scraper:

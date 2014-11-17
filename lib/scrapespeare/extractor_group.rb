@@ -11,12 +11,12 @@ module Scrapespeare
       instance_eval(&proc) if block_given?
     end
 
-    def extract
+    def extract(document_or_nodes)
       if extractors.empty?
         result = ""
       else
         result = extractors.reduce(Hash.new) do |hash, extractor|
-          hash.merge(extractor.extract)
+          hash.merge(extractor.extract(document_or_nodes))
         end
       end
 

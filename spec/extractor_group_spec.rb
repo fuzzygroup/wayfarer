@@ -40,9 +40,11 @@ module Scrapespeare
         extractor
       end
 
+      let(:document) { Nokogiri::HTML("<h1>Hello!</h1>") }
+
       context "without nested Extractors" do
         it "returns the expected Hash structure" do
-          result = extractor_group.extract
+          result = extractor_group.extract(document)
           expect(result).to eq({
             foobar: ""
           })
@@ -55,7 +57,7 @@ module Scrapespeare
         end
 
         it "returns the expected Hash structure" do
-          result = extractor_group.extract
+          result = extractor_group.extract(document)
           expect(result).to eq({
             foobar: {
               alpha: "one"
@@ -72,7 +74,7 @@ module Scrapespeare
         end
 
         it "returns the expected Hash structure" do
-          result = extractor_group.extract
+          result = extractor_group.extract(document)
           expect(result).to eq({
             foobar: {
               alpha: "one",
