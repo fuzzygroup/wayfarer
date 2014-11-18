@@ -118,3 +118,19 @@ Feature: Web scraping
       ]
     }
     """
+
+    Scenario: Scoping
+    Given a website
+    And the following Scraper:
+      """
+      scope css: "#nickolas-howe" do
+        css :name, ".name"
+      end
+      """
+    When I scrape the website
+    Then I get the following result:
+      """
+      {
+        name: "Nickolas Howe"
+      }
+      """

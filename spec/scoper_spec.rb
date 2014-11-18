@@ -25,5 +25,41 @@ module Scrapespeare
       end
     end
 
+    describe "#extract" do
+      let(:extractor_a) do
+        extractor = double()
+        allow(extractor).to receive(:extract).and_return({ alpha: "one"})
+        extractor
+      end
+
+      let(:extractor_b) do
+        extractor = double()
+        allow(extractor).to receive(:extract).and_return({ beta: "two"})
+        extractor
+      end
+
+      let(:document) do
+        Nokogiri::HTML <<-html
+          <p>Foo</p>
+          <p>Bar</p>
+          <div id="scope">
+            <p>Baz</p>
+          </div>
+        html
+      end
+
+      it "calls its Extractables with the correct NodeSet" do
+        expected_node_set = document.css("#scope")
+
+        scoper = Scoper.new(css: "#scope")
+        scoper.instance_variable_set(:@extractors, [extractor_a, extractor_b])
+
+        scoper.extract(document)
+
+        expect(extractor_a).to have_received(:extract).with(expected_node_set)
+        expect(extractor_b).to have_received(:extract).with(expected_node_set)
+      end
+    end
+
   end
 end
