@@ -3,39 +3,48 @@ require "spec_helpers"
 module Scrapespeare
   describe Configurable do
 
-    subject { Object.new.extend(Scrapespeare::Configurable) }
+    let(:configurable) { Object.new.extend(Scrapespeare::Configurable) }
 
     describe "#options" do
-      it "exposes @options" do
-        subject.set(:foo, "bar")
-        expect(subject.options[:foo]).to eq "bar"
+      context "with @options set" do
+        before { configurable.instance_variable_set(:@options, "set") }
+
+        it "exposes @options" do
+          expect(configurable.options).to eq "set"
+        end
+      end
+
+      context "without @options set" do
+        it "sets @extractables to an empty Hash" do
+          expect(configurable.options).to eq({})
+        end
       end
     end
 
     describe "#set" do
       it "sets key and value on @options" do
-        subject.set(:foo, "bar")
-        expect(subject.options[:foo]).to eq "bar"
+        configurable.set(:foo, "bar")
+        expect(configurable.options[:foo]).to eq "bar"
       end
 
       context "when called without a value" do
-        it "sets the value to `true` as a default" do
-          subject.set(:foo)
-          expect(subject.options[:foo]).to be true
+        it "sets the value to `true`" do
+          configurable.set(:foo)
+          expect(configurable.options[:foo]).to be true
         end
       end
 
-      context "when key is a Hash" do
-        it "merges the Hash with @options" do
+      context "when value is a Hash" do
+        it "merges the @options with the Hash" do
           defaults = { alpha: 1, beta: 2, gamma: 3 }
-          subject.set(defaults)
+          configurable.set(defaults)
 
           options = { alpha: 9, beta: 8 }
-          subject.set(options)
+          configurable.set(options)
 
-          expect(subject.options[:alpha]).to be 9
-          expect(subject.options[:beta]).to be 8
-          expect(subject.options[:gamma]).to be 3
+          expect(configurable.options[:alpha]).to be 9
+          expect(configurable.options[:beta]).to be 8
+          expect(configurable.options[:gamma]).to be 3
         end
       end
     end
