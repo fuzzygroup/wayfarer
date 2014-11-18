@@ -125,5 +125,13 @@ module Scrapespeare
       end
     end
 
+    describe "#scope" do
+      it "adds a Scoper" do
+        expect {
+          extractable.send(:scope, { css: ".foobar" })
+        }.to change { extractable.extractors.count }.by(1)
+      end
+    end
+
   end
 end

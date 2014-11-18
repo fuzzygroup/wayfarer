@@ -39,5 +39,9 @@ module Scrapespeare
       add_extractor_group(identifier, &proc)
     end
 
+    def scope(matcher, &proc)
+      extractors << Scoper.new(matcher, &proc)
+    end
+
   end
 end
