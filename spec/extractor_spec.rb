@@ -37,7 +37,7 @@ module Scrapespeare
 
     describe "#extract" do
       let(:extractor) do
-        Scrapespeare::Extractor.new(:employees, { css: ".employee" })
+        Scrapespeare::Extractor.new(:employees, { css: ".employees li" })
       end
 
       it "matches Elements" do
@@ -49,6 +49,57 @@ module Scrapespeare
         expect(matcher).to have_received(:match).with(document)
       end
 
+      context "without nested Extractables" do
+        let(:extractor) do
+          Scrapespeare::Extractor.new(
+            :name, { css: "#nickolas-howe .name" }
+          )
+        end
+
+        it "evaluates matched Elements" do
+          result = extractor.extract(document)
+          expect(result).to eq({
+            name: "Nickolas Howe"
+          })
+        end
+      end
+
+      context "with nested Extractables" do
+        let(:extractor) do
+          Scrapespeare::Extractor.new(
+            :employees, { css: "#employees li" }
+          )
+        end
+
+        before do
+          extractor.css(:name, ".name")
+          extractor.css(:department, ".department")
+        end
+
+        it "evaluates nested Extractables" do
+          result = extractor.extract(document)
+          expect(result).to eq({
+            employees: [
+              {
+                name: "Nickolas Howe",
+                department: "Music, Computers & Grocery"
+              },
+              {
+                name: "Ivah Swift",
+                department: "Kids, Sports & Shoes"
+              },
+              {
+                name: "Lucy Walker",
+                department: "Automotive, Tools & Sports"
+              },
+              {
+                name: "Sherwood Cremin",
+                department: "Outdoors"
+              }
+            ]
+          })
+        end
+      end
     end
 
   end

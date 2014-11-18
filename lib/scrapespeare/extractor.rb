@@ -37,7 +37,7 @@ module Scrapespeare
     def extract(document_or_nodes)
       matched_nodes = @matcher.match(document_or_nodes)
 
-      unless extractables.any?
+      if extractables.empty?
         result = @evaluator.evaluate(matched_nodes)
       else
         result = matched_nodes.map do |node|
