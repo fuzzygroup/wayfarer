@@ -10,13 +10,13 @@ module Scrapespeare
         before { extractable.instance_variable_set(:@extractables, "set") }
 
         it "exposes @extractables" do
-          expect(extractable.extractables).to eq "set"
+          expect(extractable.extractables).to eq("set")
         end
       end
 
       context "without @extractables set" do
         it "sets @extractables to an empty list" do
-          expect(extractable.extractables).to eq []
+          expect(extractable.extractables).to eq([])
         end
       end
     end

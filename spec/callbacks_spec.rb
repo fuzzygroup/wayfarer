@@ -3,39 +3,38 @@ require "spec_helpers"
 module Scrapespeare
   describe Callbacks do
 
-    subject { Object.new.extend(Scrapespeare::Callbacks) }
+    let(:object_with_callbacks) { Object.new.extend(Scrapespeare::Callbacks) }
 
     describe "#callbacks" do
+      context "with @callbacks set" do
+        before do
+          object_with_callbacks.instance_variable_set(:@callbacks, "set")
+        end
 
-      context "with @callbacks" do
         it "exposes @callbacks" do
-          subject.instance_variable_set(:@callbacks, "foobar")
-          expect(subject.callbacks).to eq "foobar"
+          expect(object_with_callbacks.callbacks).to eq "set"
         end
       end
 
-      context "without @callbacks" do
-        it "returns an empty Hash" do
-          expect(subject.callbacks).to eq({})
+      context "without @callbacks set" do
+        it "sets @callbacks to an empty Hash" do
+          expect(object_with_callbacks.callbacks).to eq({})
         end
       end
-
     end
 
     describe "#register_callback" do
-      let(:callback) do
-        Proc.new { 42 }
-      end
+      let(:callback) { Proc.new { 42 } }
 
       context "without existing callbacks" do
         it "adds a key to @callbacks" do
-          subject.register_callback(:before, &callback)
-          expect(subject.callbacks).to have_key :before
+          object_with_callbacks.register_callback(:context, &callback)
+          expect(object_with_callbacks.callbacks).to have_key :context
         end
 
         it "stores the callback in a list" do
-          subject.register_callback(:before, &callback)
-          expect(subject.callbacks[:before]).to eq [callback]
+          object_with_callbacks.register_callback(:context, &callback)
+          expect(object_with_callbacks.callbacks[:context]).to eq [callback]
         end
       end
 
@@ -43,12 +42,13 @@ module Scrapespeare
         let(:existing_callback) { Proc.new { 96 } }
 
         before do
-          subject.register_callback(:before, &existing_callback)
+          object_with_callbacks.register_callback(:before, &existing_callback)
         end
 
         it "appends the callback to the list" do
-          subject.register_callback(:before, &callback)
-          expect(subject.callbacks[:before]).to eq [existing_callback, callback]
+          object_with_callbacks.register_callback(:before, &callback)
+          expect(object_with_callbacks.callbacks[:before]).to eq \
+            [existing_callback, callback]
         end
       end
 
@@ -59,12 +59,12 @@ module Scrapespeare
       let(:callback_b) { Proc.new { @callback_b_called = true } }
 
       before do
-        subject.register_callback(:before, &callback_a)
-        subject.register_callback(:before, &callback_b)
+        object_with_callbacks.register_callback(:context, &callback_a)
+        object_with_callbacks.register_callback(:context, &callback_b)
       end
 
-      it "executes all callbacks for a context" do
-        subject.execute_callbacks(:before)
+      it "executes all callbacks in a context" do
+        object_with_callbacks.execute_callbacks(:context)
         expect(@callback_a_called).to be true
         expect(@callback_b_called).to be true
       end
@@ -73,17 +73,17 @@ module Scrapespeare
         a = b = nil
         callback = Proc.new { |x, y| a = x; b = y }
 
-        subject.register_callback(:before, &callback)
-        subject.execute_callbacks(:before, 1, 2)
+        object_with_callbacks.register_callback(:context, &callback)
+        object_with_callbacks.execute_callbacks(:context, 1, 2)
 
         expect(a).to be 1
         expect(b).to be 2
       end
 
-      context "without callbacks present" do
+      context "without callbacks for a context present" do
         it "does not raise an Exception" do
           expect {
-            subject.execute_callbacks(:foobar)
+            object_with_callbacks.execute_callbacks(:unknown_context)
           }.not_to raise_error
         end
       end
