@@ -1,6 +1,7 @@
 module Scrapespeare
   class Scoper
 
+    include Configurable
     include Extractable
 
     attr_reader :matcher

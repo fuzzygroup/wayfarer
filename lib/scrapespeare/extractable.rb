@@ -1,46 +1,37 @@
 module Scrapespeare
   module Extractable
 
-    def extractors
-      @extractors ||= []
+    def extractables
+      @extractables ||= []
     end
 
-  private
-
-    def add_extractor(identifier, matcher, *target_attributes, &proc)
-      extractor = Scrapespeare::Extractor.new(
-        identifier, matcher, *target_attributes, &proc
-      )
-
-      extractor.set(@options)
-
-      extractors << extractor
-    end
-
-    def add_extractor_group(identifier, &proc)
-      extractor_group = Scrapespeare::ExtractorGroup.new(identifier, &proc)
-
-      extractor_group.set(@options)
-
-      extractors << extractor_group
+    def add_extractable(extractable)
+      extractable.set(@options)
+      extractables << extractable
     end
 
     def css(identifier, selector, *target_attributes, &proc)
-      add_extractor(identifier, { css: selector }, *target_attributes, &proc)
+      extractor = Extractor.new(
+        identifier, { css: selector },*target_attributes, &proc
+      )
+      add_extractable(extractor)
     end
 
     def xpath(identifier, expression, *target_attributes, &proc)
-      add_extractor(
-        identifier, { xpath: expression }, *target_attributes, &proc
+      extractor = Extractor.new(
+        identifier, { xpath: expression },*target_attributes, &proc
       )
+      add_extractable(extractor)
     end
 
     def group(identifier, &proc)
-      add_extractor_group(identifier, &proc)
+      extractor_group = ExtractorGroup.new(identifier, &proc)
+      add_extractable(extractor_group)
     end
 
     def scope(matcher, &proc)
-      extractors << Scoper.new(matcher, &proc)
+      scoper = Scoper.new(matcher, &proc)
+      add_extractable(scoper)
     end
 
   end
