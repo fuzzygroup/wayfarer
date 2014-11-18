@@ -37,27 +37,17 @@ module Scrapespeare
     def extract(document_or_nodes)
       matched_nodes = @matcher.match(document_or_nodes)
 
-      unless extractors.any?
-        result = evaluate(matched_nodes)
+      unless extractables.any?
+        result = @evaluator.evaluate(matched_nodes)
       else
         result = matched_nodes.map do |node|
-          extractors.reduce(Hash.new) do |hash, extractor|
-            hash.merge(extractor.extract(node))
+          extractables.reduce(Hash.new) do |hash, extractable|
+            hash.merge(extractable.extract(node))
           end
         end
       end
 
       { @identifier => result }
-    end
-
-  private
-
-    # Delegates evaluation of a NodeSet by calling {Scrapespeare::Evaluator.evaluate} and passing `@target_attributes`
-    #
-    # @param nodes [Nokogiri::XML::NodeSet]
-    # @see Scrapespeare::Evaluator.evaluate
-    def evaluate(nodes)
-      @evaluator.evaluate(nodes, *@target_attributes)
     end
 
   end
