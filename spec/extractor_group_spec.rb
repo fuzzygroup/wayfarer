@@ -5,17 +5,17 @@ module Scrapespeare
 
     describe "#initialize" do
       let(:extractor_group) do
-        Scrapespeare::ExtractorGroup.new(:foobar)
+        Scrapespeare::ExtractorGroup.new(:foo)
       end
 
       it "sets @identifier" do
-        expect(extractor_group.identifier).to be :foobar
+        expect(extractor_group.identifier).to be :foo
       end
 
       it "evaluates the given block in its instance context" do
         context = nil
 
-        extractor_group = Scrapespeare::ExtractorGroup.new(:foobar) do
+        extractor_group = Scrapespeare::ExtractorGroup.new(:fooå) do
           context = self
         end
 
@@ -24,8 +24,10 @@ module Scrapespeare
     end
 
     describe "#extract" do
+      let(:document) { html_fragment("<h1>Hello!</h1>") }
+
       let(:extractor_group) do
-        Scrapespeare::ExtractorGroup.new(:foobar)
+        Scrapespeare::ExtractorGroup.new(:foo)
       end
 
       let(:extractor_a) do
@@ -40,43 +42,24 @@ module Scrapespeare
         extractor
       end
 
-      let(:document) { Nokogiri::HTML("<h1>Hello!</h1>") }
-
-      context "without nested Extractors" do
-        it "returns the expected Hash structure" do
+      context "without nested Extractables" do
+        it "evaluates to an empty String" do
           result = extractor_group.extract(document)
-          expect(result).to eq({
-            foobar: ""
-          })
+          expect(result).to eq({ foo: "" })
         end
       end
 
-      context "with 1 nested Extractor" do
-        before do
-          extractor_group.instance_variable_set(:@extractors, [extractor_a])
-        end
-
-        it "returns the expected Hash structure" do
-          result = extractor_group.extract(document)
-          expect(result).to eq({
-            foobar: {
-              alpha: "one"
-            }
-          })
-        end
-      end
-
-      context "with > 1 nested Extractors" do
+      context "with nested Extractables" do
         before do
           extractor_group.instance_variable_set(
-            :@extractors, [extractor_a, extractor_b]
+            :@extractables, [extractor_a, extractor_b]
           )
         end
 
-        it "returns the expected Hash structure" do
+        it "evaluates nested Extractables" do
           result = extractor_group.extract(document)
           expect(result).to eq({
-            foobar: {
+            foo: {
               alpha: "one",
               beta: "two"
             }

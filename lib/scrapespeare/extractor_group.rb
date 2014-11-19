@@ -12,11 +12,11 @@ module Scrapespeare
     end
 
     def extract(document_or_nodes)
-      if extractors.empty?
+      if extractables.empty?
         result = ""
       else
-        result = extractors.reduce(Hash.new) do |hash, extractor|
-          hash.merge(extractor.extract(document_or_nodes))
+        result = extractables.reduce(Hash.new) do |hash, extractable|
+          hash.merge(extractable.extract(document_or_nodes))
         end
       end
 
