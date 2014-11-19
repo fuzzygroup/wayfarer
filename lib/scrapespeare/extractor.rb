@@ -38,7 +38,7 @@ module Scrapespeare
       matched_nodes = @matcher.match(document_or_nodes)
 
       if extractables.empty?
-        result = @evaluator.evaluate(matched_nodes)
+        result = @evaluator.evaluate(matched_nodes, *@target_attributes)
       else
         result = matched_nodes.map do |node|
           extractables.reduce(Hash.new) do |hash, extractable|

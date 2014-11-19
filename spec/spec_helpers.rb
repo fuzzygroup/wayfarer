@@ -4,7 +4,9 @@ require "scrapespeare"
 module SpecHelpers
 
   def dummy_html(file_name)
-    IO.read("features/support/www/#{file_name}")
+    IO.read(
+      File.expand_path("../../features/support/www/#{file_name}", __FILE__)
+    )
   end
 
   def html_fragment(html_string)

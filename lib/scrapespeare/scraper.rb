@@ -20,8 +20,8 @@ module Scrapespeare
       response_body = fetch(uri)
       parsed_document = parse_html(response_body)
 
-      result = extractors.reduce(Hash.new) do |hash, extractor|
-        hash.merge(extractor.extract(parsed_document))
+      result = extractables.reduce(Hash.new) do |hash, extractable|
+        hash.merge(extractable.extract(parsed_document))
       end
 
       result.taint

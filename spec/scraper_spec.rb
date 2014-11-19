@@ -3,13 +3,13 @@ require "spec_helpers"
 module Scrapespeare
   describe Scraper do
 
-    let(:scraper) { Scrapespeare::Scraper.new }
+    let(:scraper) { Scraper.new }
 
     describe "#initialize" do
       it "evaluates the Proc in its instance context" do
         context = nil
 
-        scraper = Scrapespeare::Scraper.new do
+        scraper = Scraper.new do
           context = self
         end
 
@@ -72,7 +72,7 @@ module Scrapespeare
         allow(extractor_a).to receive(:extract).and_return({ name: "Albert" })
         allow(extractor_b).to receive(:extract).and_return({ age: "42" })
 
-        scraper.instance_variable_set("@extractors", [extractor_a, extractor_b])
+        scraper.instance_variable_set("@extractables", [extractor_a, extractor_b])
 
         result = scraper.scrape("http://example.com")
         expect(result).to eq({
