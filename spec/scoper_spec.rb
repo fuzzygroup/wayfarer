@@ -1,7 +1,7 @@
 require "spec_helpers"
 
 module Scrapespeare
-  class Scoper
+  describe Scoper do
 
     describe "#initialize" do
       let(:scoper) do
@@ -39,7 +39,7 @@ module Scrapespeare
       end
 
       let(:document) do
-        Nokogiri::HTML <<-html
+        html_fragment <<-html
           <p>Foo</p>
           <p>Bar</p>
           <div id="scope">
@@ -48,16 +48,27 @@ module Scrapespeare
         html
       end
 
-      it "calls its Extractables with the correct NodeSet" do
-        expected_node_set = document.css("#scope")
+      context "without nested Extractables" do
+        it "evaluates to an empty String" do
+          result = Scoper.new(css: ".foo").extract(document)
+          expect(result).to eq ""
+        end
+      end
 
-        scoper = Scoper.new(css: "#scope")
-        scoper.instance_variable_set(:@extractors, [extractor_a, extractor_b])
+      context "with nested Extractables" do
+        it "calls its Extractables with the correct NodeSet" do
+          expected_node_set = document.css("#scope")
 
-        scoper.extract(document)
+          scoper = Scoper.new(css: "#scope")
+          scoper.instance_variable_set(
+            :@extractables, [extractor_a, extractor_b]
+          )
 
-        expect(extractor_a).to have_received(:extract).with(expected_node_set)
-        expect(extractor_b).to have_received(:extract).with(expected_node_set)
+          scoper.extract(document)
+
+          expect(extractor_a).to have_received(:extract).with(expected_node_set)
+          expect(extractor_b).to have_received(:extract).with(expected_node_set)
+        end
       end
     end
 

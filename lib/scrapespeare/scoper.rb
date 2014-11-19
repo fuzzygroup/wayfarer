@@ -15,11 +15,11 @@ module Scrapespeare
     def extract(document_or_nodes)
       matched_nodes = @matcher.match(document_or_nodes)
 
-      if extractors.empty?
+      if extractables.empty?
         result = ""
       else
-        result = extractors.reduce(Hash.new) do |hash, extractor|
-          hash.merge(extractor.extract(matched_nodes))
+        result = extractables.reduce(Hash.new) do |hash, extractable|
+          hash.merge(extractable.extract(matched_nodes))
         end
       end
 
