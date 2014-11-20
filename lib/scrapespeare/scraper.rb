@@ -1,8 +1,8 @@
 module Scrapespeare
   class Scraper
 
-    include Scrapespeare::Configurable
-    include Scrapespeare::Extractable
+    include Configurable
+    include Extractable
 
     # @param proc [Proc]
     def initialize(&proc)

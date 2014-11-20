@@ -1,7 +1,7 @@
 module Scrapespeare
   class Matcher
 
-    # @return [String]
+    # @return [Symbol]
     attr_reader :type
 
     # @return [String]

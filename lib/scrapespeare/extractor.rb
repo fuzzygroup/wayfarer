@@ -1,19 +1,16 @@
 module Scrapespeare
   class Extractor
 
-    include Scrapespeare::Configurable
-    include Scrapespeare::Extractable
+    include Configurable
+    include Extractable
 
-    # @!attribute [r] identifier
-    #   @return [Symbol]
+    # @return [Symbol]
     attr_reader :identifier
 
-    # @!attribute [r] matcher
-    #   @return [Scrapespeare::Matcher]
+    # @return [Matcher]
     attr_reader :matcher
 
-    # @!attribute [r] target_attributes
-    #   @return [Array<String>]
+    # @return [Array<String>]
     attr_reader :target_attributes
 
     # @param identifier [Symbol]
@@ -31,9 +28,10 @@ module Scrapespeare
       instance_eval(&proc) if block_given?
     end
 
-    # Recursively builds up a result Hash by evaluating its and all {#nested_extractors}' matched Elements
+    # TODO Documentation
     #
-    # @param (see #query)
+    # @param document_or_nodes [#css, #xpath]
+    # @return [Hash]
     def extract(document_or_nodes)
       matched_nodes = @matcher.match(document_or_nodes)
 

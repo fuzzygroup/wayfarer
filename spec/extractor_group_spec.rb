@@ -43,7 +43,7 @@ module Scrapespeare
       end
 
       context "without nested Extractables" do
-        it "evaluates to an empty String" do
+        it "returns a Hash with an empty value" do
           result = extractor_group.extract(document)
           expect(result).to eq({ foo: "" })
         end
