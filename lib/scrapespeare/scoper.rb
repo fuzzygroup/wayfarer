@@ -20,7 +20,7 @@ module Scrapespeare
     #
     # If no `extractables` are present, an empty Hash is returned
     #
-    # @param document_or_nodes [#css]
+    # @param document_or_nodes [#css, #xpath]
     # @return [Hash]
     def extract(document_or_nodes)
       matched_nodes = @matcher.match(document_or_nodes)
