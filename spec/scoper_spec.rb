@@ -49,9 +49,9 @@ module Scrapespeare
       end
 
       context "without nested Extractables" do
-        it "evaluates to an empty String" do
+        it "returns an empty Hash" do
           result = Scoper.new(css: ".foo").extract(document)
-          expect(result).to eq ""
+          expect(result).to eq({})
         end
       end
 

@@ -25,3 +25,7 @@ end
 task(:build) do
   sh "gem build scrapespeare.gemspec"
 end
+
+task(:todos) do
+  sh %(grep -rn "# \\(FIXME\\|TODO\\)" .)
+end
