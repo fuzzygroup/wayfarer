@@ -38,7 +38,7 @@ module Scrapespeare
     # @see #add_extractable
     def xpath(identifier, expression, *target_attributes, &proc)
       extractor = Extractor.new(
-        identifier, { xpath: expression },*target_attributes, &proc
+        identifier, { xpath: expression }, *target_attributes, &proc
       )
       add_extractable(extractor)
     end
