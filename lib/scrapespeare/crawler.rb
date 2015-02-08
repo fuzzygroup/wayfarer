@@ -13,12 +13,9 @@ module Scrapespeare
     # @raise [RuntimeError] if `@options[:http_adapter]` is not `:net_http` or `:selenium`
     def http_adapter
       @http_adapter ||= case options[:http_adapter]
-      when :net_http
-        Scrapespeare::HTTPAdapters::NetHTTPAdapter.new
-      when :selenium
-        Scrapespeare::HTTPAdapters::SeleniumAdapter.new
-      else
-        fail "Unknown HTTP adapter `#{@options[:http_adapter]}`"
+      when :net_http then Scrapespeare::HTTPAdapters::NetHTTPAdapter.new
+      when :selenium then Scrapespeare::HTTPAdapters::SeleniumAdapter.new
+      else fail "Unknown HTTP adapter `#{@options[:http_adapter]}`"
       end
     end
 
