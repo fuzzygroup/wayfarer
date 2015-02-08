@@ -7,7 +7,7 @@ module Scrapespeare
       set(:http_adapter, :net_http)
     end
 
-    # Returns a HTTP adapter determined by `options[:http_adapter]`
+    # Returns the HTTP adapter determined by `options[:http_adapter]`
     #
     # @return [Scrapespeare::HTTPAdapters::NetHTTPAdapter, Scrapespeare::HTTPAdapters::SeleniumAdapter]
     # @raise [RuntimeError] if `@options[:http_adapter]` is not `:net_http` or `:selenium`
@@ -30,7 +30,7 @@ module Scrapespeare
       http_adapter.fetch(uri)
     end
 
-    # Parses a String of HTML
+    # Parses a string of HTML
     #
     # @param html [String]
     # @return [Nokogiri::HTML::Document]
