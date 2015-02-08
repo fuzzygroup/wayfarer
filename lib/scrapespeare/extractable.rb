@@ -24,7 +24,7 @@ module Scrapespeare
     # @see #add_extractable
     def css(identifier, selector, *target_attributes, &proc)
       extractor = Extractor.new(
-        identifier, { css: selector },*target_attributes, &proc
+        identifier, { css: selector }, *target_attributes, &proc
       )
       add_extractable(extractor)
     end
