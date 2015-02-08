@@ -5,18 +5,6 @@ module Scrapespeare
 
     let(:scraper) { Scraper.new }
 
-    describe "#initialize" do
-      it "evaluates the Proc in its instance context" do
-        context = nil
-
-        scraper = Scraper.new do
-          context = self
-        end
-
-        expect(context).to be scraper
-      end
-    end
-
     describe "#http_adapter" do
       it "returns @http_adapter if it is not nil" do
         scraper.send(:http_adapter)

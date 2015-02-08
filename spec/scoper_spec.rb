@@ -13,16 +13,6 @@ module Scrapespeare
         expect(matcher.type).to be :css
         expect(matcher.expression).to eq ".foo"
       end
-
-      it "evaluates the given block in its instance context" do
-        context = nil
-
-        scoper = Scoper.new(css: ".foo") do
-          context = self
-        end
-
-        expect(context).to be scoper
-      end
     end
 
     describe "#extract" do

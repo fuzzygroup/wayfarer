@@ -23,16 +23,6 @@ module Scrapespeare
       it "sets @target_attributes" do
         expect(extractor.target_attributes).to eq ["href"]
       end
-
-      it "evaluates the Proc in its instance context" do
-        context = nil
-
-        extractor = Scrapespeare::Extractor.new(:heading, { css: "h1" }) do
-          context = self
-        end
-
-        expect(context).to be extractor
-      end
     end
 
     describe "#extract" do

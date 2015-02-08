@@ -11,16 +11,6 @@ module Scrapespeare
       it "sets @identifier" do
         expect(extractor_group.identifier).to be :foo
       end
-
-      it "evaluates the given block in its instance context" do
-        context = nil
-
-        extractor_group = Scrapespeare::ExtractableGroup.new(:fooå) do
-          context = self
-        end
-
-        expect(context).to be extractor_group
-      end
     end
 
     describe "#extract" do
