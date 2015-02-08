@@ -25,7 +25,7 @@ module Scrapespeare
         end
       end
 
-      describe "#web_driver" do
+      describe "#web_driver", live: true do
         after { adapter.instance_variable_get(:@web_driver).close }
 
         it "returns a Selenium::WebDriver" do
