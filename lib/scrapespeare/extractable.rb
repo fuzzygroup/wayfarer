@@ -49,7 +49,7 @@ module Scrapespeare
     # @param proc [Proc]
     # @see #add_extractable
     def group(identifier, &proc)
-      extractor_group = ExtractorGroup.new(identifier, &proc)
+      extractor_group = ExtractableGroup.new(identifier, &proc)
       add_extractable(extractor_group)
     end
 

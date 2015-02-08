@@ -1,5 +1,5 @@
 module Scrapespeare
-  class ExtractorGroup
+  class ExtractableGroup
 
     include Extractable
     include Configurable

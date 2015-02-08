@@ -91,14 +91,14 @@ module Scrapespeare
     end
 
     describe "#group" do
-      it "adds an ExtractorGroup" do
+      it "adds an ExtractableGroup" do
         extractable.group(:foo)
         added_extractable = extractable.extractables.first
 
-        expect(added_extractable).to be_an ExtractorGroup
+        expect(added_extractable).to be_an ExtractableGroup
       end
 
-      it "initializes the added ExtractorGroup correctly" do
+      it "initializes the added ExtractableGroup correctly" do
         extractable.group(:foo)
         added_extractor_group = extractable.extractables.first
 

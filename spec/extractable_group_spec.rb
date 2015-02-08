@@ -1,11 +1,11 @@
 require "spec_helpers"
 
 module Scrapespeare
-  describe ExtractorGroup do
+  describe ExtractableGroup do
 
     describe "#initialize" do
       let(:extractor_group) do
-        Scrapespeare::ExtractorGroup.new(:foo)
+        Scrapespeare::ExtractableGroup.new(:foo)
       end
 
       it "sets @identifier" do
@@ -15,7 +15,7 @@ module Scrapespeare
       it "evaluates the given block in its instance context" do
         context = nil
 
-        extractor_group = Scrapespeare::ExtractorGroup.new(:fooå) do
+        extractor_group = Scrapespeare::ExtractableGroup.new(:fooå) do
           context = self
         end
 
@@ -27,7 +27,7 @@ module Scrapespeare
       let(:document) { html_fragment("<h1>Hello!</h1>") }
 
       let(:extractor_group) do
-        Scrapespeare::ExtractorGroup.new(:foo)
+        Scrapespeare::ExtractableGroup.new(:foo)
       end
 
       let(:extractor_a) do
