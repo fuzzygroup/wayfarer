@@ -1,6 +1,8 @@
 module Scrapespeare
   module Evaluator
 
+    RESERVED_ATTRIBUTES = [:content]
+
     # Evaluates a NodeSet to a concrete value (not `nil`)
     #
     # @param nodes [Nokogiri::XML::NodeSet]

@@ -12,9 +12,7 @@ module Scrapespeare
     # @return [Scrapespeare::HTTPAdapters::NetHTTPAdapter, Scrapespeare::HTTPAdapters::SeleniumAdapter]
     # @raise [RuntimeError] if `@options[:http_adapter]` is not `:net_http` or `:selenium`
     def http_adapter
-      return @http_adapter if @http_adapter
-
-      case options[:http_adapter]
+      @http_adapter ||= case options[:http_adapter]
       when :net_http
         @http_adapter = Scrapespeare::HTTPAdapters::NetHTTPAdapter.new
       when :selenium

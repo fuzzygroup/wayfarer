@@ -26,6 +26,10 @@ module Scrapespeare
         end
       end
 
+      describe "#web_driver" do
+        
+      end
+
     end
   end
 end
