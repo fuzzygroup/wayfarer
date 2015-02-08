@@ -68,5 +68,17 @@ module Scrapespeare
       end
     end
 
+    describe "#after" do
+      let(:callback) { Proc.new { 42 } }
+
+      it "registers a callback on its HTTP adapter" do
+        http_adapter = crawler.send(:http_adapter)
+
+        crawler.send(:after, &callback)
+
+        expect(http_adapter.callbacks[:after]).to eq [callback]
+      end
+    end
+
   end
 end

@@ -48,5 +48,13 @@ module Scrapespeare
       http_adapter.register_callback(:before, &proc)
     end
 
+    # Registers a callback for the `:after` context
+    #
+    # @param proc [Proc]
+    # @see Scrapespeare::Callbacks#register_callback
+    def after(&proc)
+      http_adapter.register_callback(:after, &proc)
+    end
+
   end
 end
