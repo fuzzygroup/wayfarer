@@ -41,14 +41,14 @@ module Scrapespeare
     end
 
     describe "#css" do
-      it "adds an Extractor" do
+      it "adds a CSS Extractor" do
         extractable.css(:foo, ".bar")
         added_extractable = extractable.extractables.first
 
         expect(added_extractable).to be_an Extractor
       end
 
-      it "initializes the added Extractor correctly" do
+      it "initializes the added CSS Extractor correctly" do
         extractable.css(:foo, ".bar", "href", "src")
         added_extractor = extractable.extractables.first
 
@@ -56,7 +56,7 @@ module Scrapespeare
         expect(added_extractor.target_attributes).to eq ["href", "src"]
       end
 
-      it "initializes the added Extractor's Matcher correctly" do
+      it "initializes the added CSS Extractor's Matcher correctly" do
         extractable.css(:foo, ".bar")
         matcher = extractable.extractables.first.matcher
 
@@ -66,14 +66,14 @@ module Scrapespeare
     end
 
     describe "#xpath" do
-      it "adds an Extractor" do
+      it "adds an XPath Extractor" do
         extractable.xpath(:foo, ".bar")
         added_extractable = extractable.extractables.first
 
         expect(added_extractable).to be_an Extractor
       end
 
-      it "initializes the added Extractor correctly" do
+      it "initializes the added XPath Extractor correctly" do
         extractable.xpath(:foo, ".bar", "href", "src")
         added_extractor = extractable.extractables.first
 
@@ -81,7 +81,7 @@ module Scrapespeare
         expect(added_extractor.target_attributes).to eq ["href", "src"]
       end
 
-      it "initializes the added Extractor's Matcher correctly" do
+      it "initializes the added XPath Extractor's Matcher correctly" do
         extractable.xpath(:foo, ".bar")
         matcher = extractable.extractables.first.matcher
 
