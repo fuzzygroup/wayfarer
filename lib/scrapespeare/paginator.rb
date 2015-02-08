@@ -1,5 +1,5 @@
 module Scrapespeare
-  class Navigator
+  class Paginator
 
     def initialize(base_uri)
     end
