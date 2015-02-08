@@ -15,7 +15,7 @@ module Scrapespeare
       end
 
       context "without @extractables set" do
-        it "sets @extractables to an empty list" do
+        it "returns an empty list" do
           expect(extractable.extractables).to eq([])
         end
       end
