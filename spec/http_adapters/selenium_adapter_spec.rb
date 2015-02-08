@@ -3,14 +3,13 @@ require "spec_helpers"
 module Scrapespeare
   module HTTPAdapters
     describe SeleniumAdapter do
+      before do
+        WebMock.disable_net_connect!(allow: "127.0.0.1")
+      end
 
       let(:adapter) { SeleniumAdapter.new }
 
       describe "#fetch", live: true do
-        before do
-          WebMock.disable_net_connect!(allow: "127.0.0.1")
-        end
-
         it "returns the HTTP response body" do
           response_body = adapter.fetch("http://example.com")
           expect(response_body).to match /Example Domain/
@@ -27,7 +26,11 @@ module Scrapespeare
       end
 
       describe "#web_driver" do
-        
+        after { adapter.instance_variable_get(:@web_driver).close }
+
+        it "returns a Selenium::WebDriver" do
+          expect(adapter.send(:web_driver)).to be_a Selenium::WebDriver::Driver
+        end
       end
 
     end
