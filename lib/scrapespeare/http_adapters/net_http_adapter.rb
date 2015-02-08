@@ -2,7 +2,7 @@ module Scrapespeare
   module HTTPAdapters
     class NetHTTPAdapter
 
-      include Scrapespeare::Callbacks
+      include Callbacks
 
       # Fires a HTTP GET request against the URI and returns the response body
       #

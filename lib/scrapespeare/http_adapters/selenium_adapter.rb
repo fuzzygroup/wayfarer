@@ -2,7 +2,7 @@ module Scrapespeare
   module HTTPAdapters
     class SeleniumAdapter
 
-      include Scrapespeare::Callbacks
+      include Callbacks
 
       # Navigates to `uri` and returns the page source
       #
