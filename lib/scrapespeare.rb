@@ -22,7 +22,11 @@ require "scrapespeare/cli"
 
 module Scrapespeare
   extend Configurable
+
   VERSION = "0.0.1-alpha.1"
+
+  # Default configuration
+  set :http_adapter, :net_http
 
   def self.config
     block_given? ? (yield config) : super
