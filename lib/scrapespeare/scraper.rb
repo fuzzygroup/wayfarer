@@ -1,7 +1,6 @@
 module Scrapespeare
   class Scraper
 
-    include Configurable
     include Extractable
 
     # @param proc [Proc]

@@ -1,7 +1,6 @@
 module Scrapespeare
   class Scoper
 
-    include Configurable
     include Extractable
 
     # @return [Matcher]

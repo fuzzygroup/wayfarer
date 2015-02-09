@@ -2,7 +2,6 @@ module Scrapespeare
   class ExtractableGroup
 
     include Extractable
-    include Configurable
 
     # @return [Symbol]
     attr_reader :identifier
