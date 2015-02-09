@@ -23,4 +23,8 @@ require "scrapespeare/cli"
 module Scrapespeare
   extend Configurable
   VERSION = "0.0.1-alpha.1"
+
+  def self.config
+    block_given? ? (yield config) : super
+  end
 end
