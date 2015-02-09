@@ -9,8 +9,9 @@ Given(/^a website$/) do
 end
 
 Given(/^the following Scraper:$/) do |code|
-  @scraper = Scrapespeare::Scraper.new
-  @scraper.instance_eval(code)
+  @crawler = Scrapespeare::Crawler.new do
+    eval(code)
+  end
 end
 
 When(/^I scrape the website$/) do

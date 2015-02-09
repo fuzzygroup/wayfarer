@@ -5,6 +5,8 @@ module Scrapespeare
 
     def initialize
       set Scrapespeare.config
+
+      @scrapers = []
     end
 
     # Returns the HTTP adapter determined by `config.http_adapter`
