@@ -1,8 +1,6 @@
 module Scrapespeare
   module Evaluator
 
-    RESERVED_ATTRIBUTES = [:content]
-
     # Evaluates a NodeSet to a concrete value (not `nil`)
     #
     # @param nodes [Nokogiri::XML::NodeSet]
@@ -15,12 +13,9 @@ module Scrapespeare
         element = nodes.first
 
         case attributes.count
-        when 0
-          evaluate_content(element)
-        when 1
-          evaluate_attribute(element, attributes.first)
-        else
-          evaluate_attributes(element, *attributes)
+        when 0 then evaluate_content(element)
+        when 1 then evaluate_attribute(element, attributes.first)
+        else evaluate_attributes(element, *attributes)
         end
       else
         case attributes.count
@@ -70,9 +65,7 @@ module Scrapespeare
     # @param string [String]
     # @return [String]
     def self.sanitize(string)
-      string
-        .gsub("\n", "")
-        .strip()
+      string.gsub("\n", "").strip
     end
 
   end

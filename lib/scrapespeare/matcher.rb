@@ -20,7 +20,7 @@ module Scrapespeare
     #
     # @param document_or_nodes [#css, #xpath]
     # @return [Nokogiri::XML::NodeSet]
-    # @raise [RuntimeError] if `@expression` is not `:css` or `:xpath`
+    # @raise [RuntimeError] if `@expression` is neither `:css` nor `:xpath`
     def match(document_or_nodes)
       case @type
       when :css

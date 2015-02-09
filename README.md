@@ -34,11 +34,10 @@ For a more in-depth introduction, please see `GETTING_STARTED.md`.
 Runtime configuration overrides all other configuration mechanisms.
 
 ```
-Schablone.configure do |config|
-  config.http_adapter = :net_http
+Schablone.config do |c|
+  c.http_adapter = :net_http
 end
 
-# Alternatively:
 Schablone.config.selenium_argv = [:firefox]
 ```
 
@@ -50,7 +49,7 @@ Key            | Default value | Permissible values | Description               
 `strict_mode` | `true` | Booleans | Whether to raise exceptions on selector mismatch |
 `verbose` | `false` | Booleans | Whether to print more information |
 `tmp_dir` | `Dir.tmpdir` | Strings | Directory for storing temporary states |
-`sanitize_node_content` | `true` | Booleans | Whether to strip line-breaks, leading and trailing whitespace from HTML Elements’ contents |
+`sanitize_node_content` | `true` | Booleans | Whether to strip line-breaks, leading and trailing whitespace from HTML elements’ content |
 `max_redirects` | 3 | Integers | The maximal number of HTTP redirects to follow per initial request (in order to prevent redirect loops) |
 
 ## Running the tests
@@ -63,13 +62,13 @@ Some examples require a *live* environment consisting of:
 
 If you have [Foreman](https://github.com/ddollar/foreman) installed, you can execute `foreman start` to boot the environment as specified in `Procfile`.
 
-In order to run all examples including live ones, execute:
+In order to run examples *including* live ones, execute:
 
 ```
 $ rake test:live
 ```
 
-In order to run all examples excluding live ones, execute:
+In order to run examples *excluding* live ones, execute:
 
 ```
 $ rake test
