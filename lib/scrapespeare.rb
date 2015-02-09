@@ -27,6 +27,7 @@ module Scrapespeare
 
   # Default configuration
   set :http_adapter, :net_http
+  set :verbose, false
 
   def self.config
     block_given? ? (yield config) : super
