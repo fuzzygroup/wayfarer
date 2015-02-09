@@ -11,11 +11,7 @@ module Scrapespeare
     # @param key [Symbol]
     # @param value [Object]
     def set(key, value = true)
-      if key.is_a? Hash
-        config.merge!(key)
-      else
-        config[key] = value
-      end
+      (key.is_a? Hash) ? config.merge!(key) : config[key] = value
     end
 
   end
