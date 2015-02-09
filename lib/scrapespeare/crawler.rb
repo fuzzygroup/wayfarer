@@ -4,7 +4,7 @@ module Scrapespeare
     include Configurable
 
     def initialize
-      set(:http_adapter, :net_http)
+      set Scrapespeare.config
     end
 
     # Returns the HTTP adapter determined by `config[:http_adapter]`
@@ -12,7 +12,7 @@ module Scrapespeare
     # @return [Scrapespeare::HTTPAdapters::NetHTTPAdapter, Scrapespeare::HTTPAdapters::SeleniumAdapter]
     # @raise [RuntimeError] if `@config[:http_adapter]` is not `:net_http` or `:selenium`
     def http_adapter
-      @http_adapter ||= case config[:http_adapter]
+      @http_adapter ||= case config.http_adapter
       when :net_http then Scrapespeare::HTTPAdapters::NetHTTPAdapter.new
       when :selenium then Scrapespeare::HTTPAdapters::SeleniumAdapter.new
       else fail "Unknown HTTP adapter `#{@config[:http_adapter]}`"
