@@ -7,10 +7,10 @@ module Scrapespeare
       set Scrapespeare.config
     end
 
-    # Returns the HTTP adapter determined by `config[:http_adapter]`
+    # Returns the HTTP adapter determined by `config.http_adapter`
     #
     # @return [Scrapespeare::HTTPAdapters::NetHTTPAdapter, Scrapespeare::HTTPAdapters::SeleniumAdapter]
-    # @raise [RuntimeError] if `@config[:http_adapter]` is not `:net_http` or `:selenium`
+    # @raise [RuntimeError] if `config.http_adapter` is not `:net_http` or `:selenium`
     def http_adapter
       @http_adapter ||= case config.http_adapter
       when :net_http then Scrapespeare::HTTPAdapters::NetHTTPAdapter.new
@@ -35,7 +35,7 @@ module Scrapespeare
       Nokogiri::HTML(html)
     end
 
-    # Registers a callback for the `:before` context
+    # Registers a callback on the HTTP adapter for the `:before` context
     #
     # @param proc [Proc]
     # @see Scrapespeare::Callbacks#register_callback
@@ -43,7 +43,7 @@ module Scrapespeare
       http_adapter.register_callback(:before, &proc)
     end
 
-    # Registers a callback for the `:after` context
+    # Registers a callback on the HTTP adapter for the `:after` context
     #
     # @param proc [Proc]
     # @see Scrapespeare::Callbacks#register_callback
