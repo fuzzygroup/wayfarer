@@ -3,7 +3,7 @@ require "spec_helpers"
 module Scrapespeare
   describe Callbacks do
 
-    let(:object_with_callbacks) { Object.new.extend(subject) }
+    let(:object_with_callbacks) { Object.new.extend(Callbacks) }
 
     describe "#callbacks" do
       context "with @callbacks set" do
