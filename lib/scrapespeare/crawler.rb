@@ -15,7 +15,7 @@ module Scrapespeare
       @http_adapter ||= case config.http_adapter
       when :net_http then Scrapespeare::HTTPAdapters::NetHTTPAdapter.new
       when :selenium then Scrapespeare::HTTPAdapters::SeleniumAdapter.new
-      else fail "Unknown HTTP adapter `#{@config[:http_adapter]}`"
+      else fail "Unknown HTTP adapter `#{config.http_adapter}`"
       end
     end
 
