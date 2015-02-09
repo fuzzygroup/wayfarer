@@ -64,8 +64,8 @@ module Scrapespeare
     #
     # @param string [String]
     # @return [String]
-    def self.sanitize(string)
-      string.gsub("\n", "").strip
+    def self.sanitize(str)
+      str.gsub("\n", "").strip
     end
 
   end
