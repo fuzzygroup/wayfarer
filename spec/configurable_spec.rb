@@ -21,7 +21,8 @@ module Scrapespeare
       end
 
       it "allows method access to values" do
-        configurable.options.foo = 123
+        configurable.options.foo = :bar
+        expect(configurable.options.foo).to be :bar
       end
     end
 
