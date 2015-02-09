@@ -40,7 +40,7 @@ module Scrapespeare
       end
 
       context "when value is a Hash" do
-        it "merges the @config with the Hash" do
+        it "merges @config with the Hash" do
           defaults = { alpha: 1, beta: 2, gamma: 3 }
           configurable.set(defaults)
 

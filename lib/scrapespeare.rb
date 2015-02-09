@@ -18,7 +18,6 @@ require "scrapespeare/extractable_group"
 require "scrapespeare/extractor"
 require "scrapespeare/scraper"
 require "scrapespeare/crawler"
-require "scrapespeare/configuration"
 require "scrapespeare/cli"
 
 module Scrapespeare
