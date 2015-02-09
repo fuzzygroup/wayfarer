@@ -4,7 +4,7 @@ module Scrapespeare
   module HTTPAdapters
     describe SeleniumAdapter do
       before do
-        WebMock.disable_net_connect!(allow: "127.0.0.1")
+        WebMock.allow_net_connect!
       end
 
       let(:adapter) { SeleniumAdapter.new }

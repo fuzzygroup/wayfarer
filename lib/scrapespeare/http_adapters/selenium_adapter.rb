@@ -17,9 +17,7 @@ module Scrapespeare
 
       private
       def web_driver
-        @web_driver ||= case 1
-        when 1 then Selenium::WebDriver.for(:firefox)
-        end
+        @web_driver ||= Selenium::WebDriver.for(:remote)
       end
 
     end
