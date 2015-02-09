@@ -19,6 +19,10 @@ module Scrapespeare
           expect(configurable.options).to eq({})
         end
       end
+
+      it "allows method access to values" do
+        configurable.options.foo = 123
+      end
     end
 
     describe "#set" do

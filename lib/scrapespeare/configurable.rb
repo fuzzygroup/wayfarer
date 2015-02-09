@@ -3,7 +3,7 @@ module Scrapespeare
 
     # @return [Hash]
     def options
-      @options ||= {}
+      @options ||= Hashie::Mash.new
     end
 
     # Sets arbitrary keys and options on `@options`

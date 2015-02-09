@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency "nokogiri", "~> 1.6", ">= 1.6.3"
   s.add_dependency "selenium-webdriver", "~> 2.43", ">= 2.43.0"
   s.add_dependency "thor", "~> 0.19", ">= 0.19.1"
+  s.add_dependency "hashie", "~> 3.4", ">= 3.4.0"
 
   s.add_development_dependency "rspec", "~> 3.1", ">= 3.1.0"
   s.add_development_dependency "faker", "~> 1.4", ">= 1.4.3"

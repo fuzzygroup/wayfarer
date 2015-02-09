@@ -3,6 +3,8 @@ source "https://rubygems.org"
 gem "nokogiri", "~> 1.6"
 gem "selenium-webdriver", "~> 2.43"
 
+gem "hashie", "~> 3.4"
+
 gem "thor", "~> 0.19"
 
 group :spec do

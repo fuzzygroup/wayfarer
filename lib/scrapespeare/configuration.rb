@@ -8,5 +8,9 @@ module Scrapespeare
     def initialize
     end
 
+    private
+    def defaults
+    end
+
   end
 end
