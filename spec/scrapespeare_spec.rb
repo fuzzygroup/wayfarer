@@ -14,4 +14,12 @@ describe Scrapespeare do
     end
   end
 
+  describe "#configure" do
+    it "yields its Configuration" do
+      Scrapespeare.configure do |config|
+        expect(config).to be Scrapespeare.config
+      end
+    end
+  end
+
 end

@@ -23,6 +23,10 @@ module Scrapespeare
   VERSION = "0.0.1-alpha.1"
 
   def self.config
-    Configuration.new
+    @config ||= Configuration.new
+  end
+
+  def self.configure
+    yield @config
   end
 end
