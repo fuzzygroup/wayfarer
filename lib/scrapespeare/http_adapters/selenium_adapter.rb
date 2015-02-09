@@ -11,7 +11,7 @@ module Scrapespeare
         web_driver.navigate.to(uri)
         execute_callbacks(:before, web_driver)
         page_source = web_driver.page_source
-        web_driver.close
+        web_driver.quit
         page_source
       end
 
