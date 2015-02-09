@@ -1,7 +1,6 @@
 module Scrapespeare
   class Extractor
 
-    include Configurable
     include Extractable
 
     # @return [Symbol]
@@ -22,8 +21,6 @@ module Scrapespeare
       @matcher = Scrapespeare::Matcher.new(matcher)
       @target_attributes = target_attributes
       @evaluator = Scrapespeare::Evaluator
-
-      set(options)
 
       instance_eval(&proc) if block_given?
     end

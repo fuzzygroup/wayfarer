@@ -16,9 +16,9 @@ module Scrapespeare
         expect(adapter_a).to be adapter_b
       end
 
-      context "when @options[:http_adapter] is :net_http" do
+      context "when @config[:http_adapter] is :net_http" do
         it "initializes @http_adapter as a SeleniumAdapter" do
-          crawler.options[:http_adapter] = :net_http
+          crawler.config[:http_adapter] = :net_http
           crawler.send(:http_adapter)
           adapter = crawler.instance_variable_get(:@http_adapter)
 
@@ -26,9 +26,9 @@ module Scrapespeare
         end
       end
 
-      context "when @options[:http_adapter] is :selenium" do
+      context "when @config[:http_adapter] is :selenium" do
         it "initializes @http_adapter as a SeleniumAdapter" do
-          crawler.options[:http_adapter] = :selenium
+          crawler.config[:http_adapter] = :selenium
           crawler.send(:http_adapter)
           adapter = crawler.instance_variable_get(:@http_adapter)
 
@@ -36,9 +36,9 @@ module Scrapespeare
         end
       end
 
-      context "when @options[:http_adapter] is unsupported" do
+      context "when @config[:http_adapter] is unsupported" do
         it "raises a RuntimeError" do
-          crawler.options[:http_adapter] = :unsupported
+          crawler.config[:http_adapter] = :unsupported
 
           expect {
             adapter = crawler.send(:http_adapter)

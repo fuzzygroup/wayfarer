@@ -26,14 +26,14 @@ module Scrapespeare
 
       it "adds an Extractable" do
         expect {
-          extractable.add_extractable(other_extractable)
+          extractable.send(:add_extractable, other_extractable)
         }.to change{ extractable.extractables.count }.by(1)
       end
 
-      it "sets its @options on the added Extractable" do
-        extractable.instance_variable_set(:@options, { foo: "bar" })
+      it "sets its @config on the added Extractable" do
+        extractable.instance_variable_set(:@config, { foo: "bar" })
 
-        extractable.add_extractable(other_extractable)
+        extractable.send(:add_extractable, other_extractable)
         added_extractable = extractable.extractables.first
 
         expect(added_extractable).to have_received(:set).with({ foo: "bar" })

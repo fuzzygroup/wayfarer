@@ -2,19 +2,19 @@ module Scrapespeare
   module Configurable
 
     # @return [Hash]
-    def options
-      @options ||= Hashie::Mash.new
+    def config
+      @config ||= Hashie::Mash.new
     end
 
-    # Sets arbitrary keys and options on `@options`
+    # Sets arbitrary key-value pairs on `@config`
     #
     # @param key [Symbol]
     # @param value [Object]
     def set(key, value = true)
       if key.is_a? Hash
-        options.merge!(key)
+        config.merge!(key)
       else
-        options[key] = value
+        config[key] = value
       end
     end
 

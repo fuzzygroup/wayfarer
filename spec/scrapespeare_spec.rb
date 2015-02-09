@@ -8,10 +8,7 @@ describe Scrapespeare do
     end
   end
 
-  describe "#options" do
-    it "returns a Configuration" do
-      expect(Scrapespeare.options).to be_a Hash
-    end
+  describe "#config" do
   end
 
 end

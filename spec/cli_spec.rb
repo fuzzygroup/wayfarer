@@ -14,7 +14,7 @@ module Scrapespeare
 
       it "evalutes the file content in the Scraper's instance context" do
         scraper = subject.send(:scraper_from_file, "foobar")
-        expect(scraper.options[:foobar]).to be 42
+        expect(scraper.config[:foobar]).to be 42
       end
     end
 

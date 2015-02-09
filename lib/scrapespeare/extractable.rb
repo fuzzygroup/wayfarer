@@ -1,18 +1,11 @@
 module Scrapespeare
   module Extractable
 
+    include Configurable
+
     # @return [Array<Extractable>]
     def extractables
       @extractables ||= []
-    end
-
-    # Adds an `Extractable` to `@extractables` and sets its `options`
-    #
-    # @param extractable [Extractable]
-    # @see Configurable#set
-    def add_extractable(extractable)
-      extractable.set(@options)
-      extractables << extractable
     end
 
     # Adds an `Extractor` to `@extractables` and sets its `options`
@@ -61,6 +54,16 @@ module Scrapespeare
     def scope(matcher, &proc)
       scoper = Scoper.new(matcher, &proc)
       add_extractable(scoper)
+    end
+
+    private
+    # Adds an `Extractable` to `@extractables` and sets its `options`
+    #
+    # @param extractable [Extractable]
+    # @see Configurable#set
+    def add_extractable(extractable)
+      extractable.set(config)
+      extractables << extractable
     end
 
   end
