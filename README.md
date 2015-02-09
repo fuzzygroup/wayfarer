@@ -1,5 +1,5 @@
-# scrapespeare
-A small web scraping library/DSL.
+# schablone
+A small web scraping toolkit suitable for recurring data extraraction tasks.
 
 Supported features include:
 
@@ -27,19 +27,43 @@ end
 ```
 
 ## Configuration
+### Keys and default values
 Key            | Default value | Recognized values | Description               |
 -------------- | ------------- | ----------------- | ------------------------- |
-`http_adapter` | `:net_http` | `:selenium` | Which HTTP adapter to use |
+`http_adapter` | `:net_http` | `:net_http`, `:selenium`, `phantom_js` | Which HTTP adapter to use |
 `selenium_argv` | `[:remote, {}]` | [See documentation](http://selenium.googlecode.com/git/docs/api/rb/Selenium/WebDriver.html#for-class_method) | Argument vector passed to `Selenium::WebDriver.for`
-`strict_mode` | `true` | Boolean | Whether to raise exceptions on selector mismatch |
+`strict_mode` | `true` | Booleans | Whether to raise exceptions on selector mismatch |
+`verbose` | `false` | Booleans | Whether to print additional state information |
+`tmp_dir` | `Dir.tmpdir` | Strings | Directory for storing temporary states |
+
+### Runtime configuration
+Runtime configuration overrides all other configuration mechanisms.
+
+```
+Schablone.config do |config|
+  config.http_adapter = :net_http
+end
+
+# Alternatively:
+Schablone.config.selenium_argv = [:firefox]
+```
+
+## Command-line interface
+
 
 ## Running the tests
 Code is covered by an RSpec suite and Cucumber feature definitions.
 Some examples require a *live* environment consisting of:
 
 * A network connection
-* [Selenium Server](https://code.google.com/p/selenium/wiki/Grid2) listening on port 4444
+* [Selenium Server](https://code.google.com/p/selenium/wiki/Grid2) listening on port 4444 with at least 1 registered nodes
 * [beanstalkd](http://kr.github.io/beanstalkd/) listening on port 11300
+
+Once you have the dependencies for a live environment installed, you can install [Foreman](https://github.com/ddollar/foreman) and execute:
+
+```
+foreman start
+```
 
 In order to run all examples including live ones, execute:
 

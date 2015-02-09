@@ -16,8 +16,13 @@ require "scrapespeare/extractable_group"
 require "scrapespeare/extractor"
 require "scrapespeare/scraper"
 require "scrapespeare/crawler"
+require "scrapespeare/configuration"
 require "scrapespeare/cli"
 
 module Scrapespeare
   VERSION = "0.0.1-alpha.1"
+
+  def self.config
+    Configuration.new
+  end
 end
