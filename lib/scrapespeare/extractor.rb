@@ -20,7 +20,6 @@ module Scrapespeare
       @identifier = identifier
       @matcher = Scrapespeare::Matcher.new(matcher)
       @target_attributes = target_attributes
-      @evaluator = Scrapespeare::Evaluator
 
       instance_eval(&proc) if block_given?
     end
@@ -33,7 +32,7 @@ module Scrapespeare
       matched_nodes = @matcher.match(document_or_nodes)
 
       if extractables.empty?
-        result = @evaluator.evaluate(matched_nodes, *@target_attributes)
+        result = Evaluator.evaluate(matched_nodes, *@target_attributes)
       else
         result = matched_nodes.map do |node|
           extractables.reduce(Hash.new) do |hash, extractable|
