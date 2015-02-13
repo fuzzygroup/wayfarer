@@ -18,7 +18,7 @@ require "scrapespeare/extractable_group"
 require "scrapespeare/extractor"
 require "scrapespeare/scraper"
 require "scrapespeare/crawler"
-require "scrapespeare/navigator"
+require "scrapespeare/paginator"
 
 module Scrapespeare
   extend Configurable
@@ -28,8 +28,11 @@ module Scrapespeare
   # Default configuration
   set :http_adapter, :net_http
   set :verbose, false
+  set :max_http_redirects, 3
 
-  def self.config
+  def config
     block_given? ? (yield config) : super
   end
+
+  module_function :config
 end

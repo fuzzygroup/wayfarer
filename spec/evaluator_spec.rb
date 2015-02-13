@@ -155,7 +155,7 @@ module Scrapespeare
         expect(output).to eq "Hello world!"
       end
 
-      it "removes both line-breaks and leading and trailing white space" do
+      it "removes both line-breaks, leading and trailing white space" do
         input = "\n      Hello world!     \n     "
         output = subject.sanitize(input)
 

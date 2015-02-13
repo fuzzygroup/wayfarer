@@ -1,21 +1,26 @@
 module Scrapespeare
   module Evaluator
 
+    module_function
+
     # Evaluates a NodeSet to a concrete value (not `nil`)
     #
     # @param nodes [Nokogiri::XML::NodeSet]
     # @param attributes [Array<String>]
     # @return [String, Array<String>, Hash]
-    def self.evaluate(nodes, *attributes)
+    def evaluate(nodes, *attributes)
       return "" if nodes.empty?
 
       if nodes.count == 1
         element = nodes.first
 
         case attributes.count
-        when 0 then evaluate_content(element)
-        when 1 then evaluate_attribute(element, attributes.first)
-        else evaluate_attributes(element, *attributes)
+        when 0
+          evaluate_content(element)
+        when 1
+          evaluate_attribute(element, attributes.first)
+        else
+          evaluate_attributes(element, *attributes)
         end
       else
         case attributes.count
@@ -34,7 +39,7 @@ module Scrapespeare
     # @param element [Nokogiri::XML::Element]
     # @return [String]
     # @see .sanitize
-    def self.evaluate_content(element)
+    def evaluate_content(element)
       sanitize(element.content)
     end
 
@@ -43,7 +48,7 @@ module Scrapespeare
     # @param element [Nokogiri::XML::Element]
     # @param attribute [String]
     # @return [String]
-    def self.evaluate_attribute(element, attribute)
+    def evaluate_attribute(element, attribute)
       element.attr(attribute).to_s
     end
 
@@ -52,7 +57,7 @@ module Scrapespeare
     # @param element [Nokogiri::XML::Element]
     # @param attributes [Array<String>]
     # @return [Hash]
-    def self.evaluate_attributes(element, *attributes)      
+    def evaluate_attributes(element, *attributes)      
       attributes.reduce(Hash.new) do |hash, attribute|
         hash.merge({
           attribute.to_sym => evaluate_attribute(element, attribute)
@@ -64,7 +69,7 @@ module Scrapespeare
     #
     # @param string [String]
     # @return [String]
-    def self.sanitize(str)
+    def sanitize(str)
       str.gsub("\n", "").strip
     end
 

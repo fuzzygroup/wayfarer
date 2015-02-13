@@ -5,8 +5,14 @@ module Scrapespeare
 
     def initialize
       set Scrapespeare.config
+      @paginator = Paginator.new
+    end
 
-      @scrapers = []
+    def crawl(uri)
+      response_body = fetch(uri)
+      parsed_document = parse_html(response_body)
+
+      result = @navigator.navigate(response_body)
     end
 
     # Returns the HTTP adapter determined by `config.http_adapter`

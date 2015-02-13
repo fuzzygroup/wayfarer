@@ -6,7 +6,7 @@ module Scrapespeare
       @config ||= Hashie::Mash.new
     end
 
-    # Sets arbitrary key-value pairs on `@config`
+    # Sets arbitrary key-value pairs on `config`
     #
     # @param key [Symbol]
     # @param value [Object]

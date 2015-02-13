@@ -1,6 +1,6 @@
 require "spec_helpers"
 
 module Scrapespeare
-  describe Navigator do
+  describe Paginator do
   end
 end
