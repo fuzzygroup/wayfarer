@@ -15,5 +15,17 @@ module Scrapespeare
       end
     end
 
+    describe "#config" do
+      after { Scrapespeare.config.reset! }
+
+      it "yields Scrapespeare.config" do
+        crawler.send(:config) do |config|
+          config.verbose = true
+        end
+
+        expect(Scrapespeare.config.verbose).to be true
+      end
+    end
+
   end
 end

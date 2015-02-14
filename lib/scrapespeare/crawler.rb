@@ -20,5 +20,9 @@ module Scrapespeare
       @scraper.instance_eval(&proc) if block_given?
     end
 
+    def config
+      yield Scrapespeare.config if block_given?
+    end
+
   end
 end
