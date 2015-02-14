@@ -5,6 +5,8 @@ module Scrapespeare
 
     include Enumerable
 
+    attr_reader :history
+
     def initialize(scraper, uri)
       @scraper = scraper
       @uri = uri

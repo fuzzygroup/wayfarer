@@ -13,5 +13,10 @@ module Scrapespeare
       end
     end
 
+    private
+    def scrape(&proc)
+      @scraper.instance_eval(&proc) if block_given?
+    end
+
   end
 end

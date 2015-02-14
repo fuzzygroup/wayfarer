@@ -1,6 +1,6 @@
 Feature: Web scraping
-    In order to extract information from a website
-    As a developer
+    As a developer in need of data
+    In order to extract data from a website
     I want to scrape the website
 
   Scenario: Scrape the site title
