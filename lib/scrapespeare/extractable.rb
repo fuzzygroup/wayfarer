@@ -1,8 +1,6 @@
 module Scrapespeare
   module Extractable
 
-    include Configurable
-
     # @return [Array<Extractable>]
     def extractables
       @extractables ||= []
@@ -62,7 +60,6 @@ module Scrapespeare
     # @param extractable [Extractable]
     # @see Configurable#set
     def add_extractable(extractable)
-      extractable.set(config)
       extractables << extractable
     end
 

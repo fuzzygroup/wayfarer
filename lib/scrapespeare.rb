@@ -1,3 +1,5 @@
+require "ostruct"
+
 require "nokogiri"
 require "selenium-webdriver"
 require "net/http"
@@ -6,7 +8,6 @@ require "thor"
 
 $: << File.dirname(__FILE__)
 
-require "scrapespeare/configurable"
 require "scrapespeare/extractable"
 require "scrapespeare/callbacks"
 require "scrapespeare/http_adapters/net_http_adapter"
@@ -21,18 +22,19 @@ require "scrapespeare/crawler"
 require "scrapespeare/paginator"
 
 module Scrapespeare
-  extend Configurable
+  extend self
 
   VERSION = "0.0.1-alpha.1"
 
-  # Default configuration
-  set :http_adapter, :net_http
-  set :verbose, false
-  set :max_http_redirects, 3
-
   def config
-    block_given? ? (yield config) : super
+    @config ||= OpenStruct.new(defaults)
   end
 
-  module_function :config
+  private
+  def defaults
+    {
+      http_adapter: :net_http,
+      verbose: false
+    }
+  end
 end

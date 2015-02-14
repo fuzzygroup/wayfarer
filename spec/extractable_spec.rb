@@ -29,15 +29,6 @@ module Scrapespeare
           extractable.send(:add_extractable, other_extractable)
         }.to change{ extractable.extractables.count }.by(1)
       end
-
-      it "sets its @config on the added Extractable" do
-        extractable.instance_variable_set(:@config, { foo: "bar" })
-
-        extractable.send(:add_extractable, other_extractable)
-        added_extractable = extractable.extractables.first
-
-        expect(added_extractable).to have_received(:set).with({ foo: "bar" })
-      end
     end
 
     describe "#css" do

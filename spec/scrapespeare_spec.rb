@@ -13,18 +13,6 @@ describe Scrapespeare do
       expect(Scrapespeare.config.http_adapter).to be :net_http
       expect(Scrapespeare.config.verbose).to be false
     end
-
-    context "with block given" do
-      it "yields config" do
-        Scrapespeare.config do |config|
-          config.foo = :foo
-          config.bar = :bar
-        end
-
-        expect(Scrapespeare.config.foo).to be :foo
-        expect(Scrapespeare.config.bar).to be :bar
-      end
-    end
   end
 
 end
