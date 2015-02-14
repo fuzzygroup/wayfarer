@@ -20,7 +20,7 @@ module Scrapespeare
       end
 
       if http_adapter.is_a?(HTTPAdapters::SeleniumAdapter)
-        http_adapter.release_driver 
+        http_adapter.release_driver
       end
     end
 
