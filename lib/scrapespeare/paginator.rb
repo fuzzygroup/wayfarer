@@ -5,8 +5,6 @@ module Scrapespeare
 
     include Enumerable
 
-    attr_reader :scraper, :uri, :history, :doc
-
     def initialize(scraper, uri)
       @scraper = scraper
       @uri = uri
@@ -19,6 +17,10 @@ module Scrapespeare
         @doc = fetch_and_parse(@uri)
         yield @scraper.scrape(@doc)
         break unless has_successor_uri?
+      end
+
+      if http_adapter.is_a?(HTTPAdapters::SeleniumAdapter)
+        http_adapter.release_driver 
       end
     end
 

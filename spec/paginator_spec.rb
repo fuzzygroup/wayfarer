@@ -83,6 +83,16 @@ module Scrapespeare
         expect(paginator.history.count).to be 1
         expect(paginator.history.last).to eq "http://example.com"
       end
+
+      context "when config.http_adapter is :selenium", live: true do
+        after { Scrapespeare.config.reset! }
+
+        it "releases the WebDriver" do
+          Scrapespeare.config.http_adapter = :selenium
+          paginator.each { |extract| }
+          expect(paginator.http_adapter.driver).to be nil
+        end
+      end
     end
 
   end
