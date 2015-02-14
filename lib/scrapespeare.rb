@@ -28,6 +28,7 @@ module Scrapespeare
 
   def self.config
     @config ||= Configuration.new
+    block_given? ? (yield @config) : @config
   end
 
 end
