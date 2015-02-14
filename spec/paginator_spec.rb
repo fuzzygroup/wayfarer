@@ -74,6 +74,12 @@ module Scrapespeare
           expect(extract).to eq({ foo: "Foo" })
         end
       end
+
+      it "updates the history" do
+        paginator.each { |extract| }
+        expect(paginator.history.count).to be 1
+        expect(paginator.history.last).to eq "http://example.com"
+      end
     end
 
   end
