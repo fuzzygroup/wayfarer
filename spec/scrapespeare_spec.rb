@@ -9,9 +9,12 @@ describe Scrapespeare do
   end
 
   describe "#config" do
-    it "is set to the default configuration as default" do
-      expect(Scrapespeare.config.http_adapter).to be :net_http
-      expect(Scrapespeare.config.verbose).to be false
+    it "yields the configuration" do
+      Scrapespeare.config do |config|
+        config.foo = :foo
+      end
+
+      expect(Scrapespeare.config.foo).to be :foo
     end
   end
 

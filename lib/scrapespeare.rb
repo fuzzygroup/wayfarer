@@ -8,6 +8,7 @@ require "thor"
 
 $: << File.dirname(__FILE__)
 
+require "scrapespeare/configuration"
 require "scrapespeare/extractable"
 require "scrapespeare/callbacks"
 require "scrapespeare/http_adapters/net_http_adapter"
@@ -22,19 +23,11 @@ require "scrapespeare/crawler"
 require "scrapespeare/paginator"
 
 module Scrapespeare
-  extend self
 
   VERSION = "0.0.1-alpha.1"
 
-  def config
-    @config ||= OpenStruct.new(defaults)
+  def self.config
+    @config ||= Configuration.new
   end
 
-  private
-  def defaults
-    {
-      http_adapter: :net_http,
-      verbose: false
-    }
-  end
 end
