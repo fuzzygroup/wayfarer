@@ -1,6 +1,8 @@
 module Scrapespeare
   class Crawler
 
+    attr_reader :scraper
+
     def initialize
       @scraper = Scraper.new
     end

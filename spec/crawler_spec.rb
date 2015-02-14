@@ -8,8 +8,10 @@ module Scrapespeare
     describe "#scrape" do
       it "yields the scraper" do
         crawler.send(:scrape) do
-          1+ 1
+          css :foo, "#foo"
         end
+
+        expect(crawler.scraper.extractables.count).to be 1
       end
     end
 
