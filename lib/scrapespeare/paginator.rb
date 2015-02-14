@@ -3,7 +3,7 @@ module Scrapespeare
 
     include Enumerable
 
-    attr_reader :history
+    attr_reader :scraper, :uri, :history, :doc
 
     def initialize(scraper, uri)
       @scraper = scraper
@@ -13,9 +13,9 @@ module Scrapespeare
 
     def each
       loop do
-        @history.push(@uri)
-        @doc = fetch_and_parse(@uri)
-        yield @scraper.scrape(@doc)
+        history.push(uri)
+        doc = fetch_and_parse(uri)
+        yield scraper.scrape(doc)
         break unless has_successor_uri?
       end
     end

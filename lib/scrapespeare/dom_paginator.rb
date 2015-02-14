@@ -8,7 +8,7 @@ module Scrapespeare
 
     private
     def successor_uri
-      matched_nodes = @matcher.match(@doc)
+      # matched_nodes = @matcher.match(@doc)
     end
 
   end
