@@ -68,6 +68,12 @@ module Scrapespeare
         paginator.each { yield_count += 1 }
         expect(yield_count).to be 1
       end
+
+      it "yields the expected extract" do
+        paginator.each do |extract|
+          expect(extract).to eq({ foo: "Foo" })
+        end
+      end
     end
 
   end
