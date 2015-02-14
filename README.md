@@ -6,7 +6,6 @@ Supported features include:
 * Page fetching via Net::HTTP or [Selenium’s Ruby Bindings](https://code.google.com/p/selenium/wiki/RubyBindings)
 * Support for pagination (DOM-/URI-based) and infinite scrolling
 * Extraction of arbitrary data structures by leveraging CSS selectors and/or XPath expressions
-* JavaScript injection: Run arbitrary code, client-side
 * CLI for quickly evaluating scraping behaviour
 
 ## Installation
