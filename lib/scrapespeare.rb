@@ -21,6 +21,7 @@ require "scrapespeare/extractor"
 require "scrapespeare/scraper"
 require "scrapespeare/crawler"
 require "scrapespeare/paginator"
+require "scrapespeare/dom_paginator"
 
 module Scrapespeare
 
