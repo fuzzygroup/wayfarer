@@ -60,6 +60,9 @@ module Scrapespeare
         expect(paginator.history.count).to be 2
         expect(paginator.history.last).to eq "http://example.com/page_2"
       end
+
+      context "with ambiguous pagination matcher" do
+      end
     end
 
   end

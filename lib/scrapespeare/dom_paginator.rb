@@ -1,8 +1,6 @@
 module Scrapespeare
   class DOMPaginator < Paginator
 
-    attr_reader :matcher, :uri_constructor
-
     def initialize(scraper, uri, matcher_hash)
       super(scraper, uri)
       @matcher = Matcher.new(matcher_hash)
@@ -10,8 +8,6 @@ module Scrapespeare
 
     private
     def successor_uri
-      matched_nodes = @matcher.match(@doc)
-
       case matched_nodes.count
       when 0 then nil
       when 1
@@ -21,6 +17,10 @@ module Scrapespeare
       else
         fail "More than 1 element"
       end
+    end
+
+    def matched_nodes
+      matched_nodes = @matcher.match(@doc)
     end
 
   end
