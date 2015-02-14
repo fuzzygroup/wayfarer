@@ -11,7 +11,7 @@ module Scrapespeare
     end
 
     it "has correct default values set" do
-      expect(config.http_adapter).to be :net_http
+      expect(config.http_adapter).to be :faraday
       expect(config.verbose).to be false
       expect(config.max_http_redirects).to be 3
     end
@@ -23,9 +23,9 @@ module Scrapespeare
 
     describe "#reset!" do
       it "resets keys and values to defaults" do
-        config.http_adapter = :foo
+        config.verbose = true
         config.reset!
-        expect(config.http_adapter).to be :net_http
+        expect(config.verbose).to be false
       end
 
       it "unsets non-default keys" do

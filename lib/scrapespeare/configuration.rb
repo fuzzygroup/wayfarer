@@ -15,7 +15,7 @@ module Scrapespeare
     private
     def defaults
       {
-        http_adapter: :net_http,
+        http_adapter: :faraday,
         verbose: false,
         max_http_redirects: 3
       }

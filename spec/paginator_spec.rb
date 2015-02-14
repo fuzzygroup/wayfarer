@@ -23,15 +23,15 @@ module Scrapespeare
     describe "#http_adapter" do
       after { Scrapespeare.config.reset! }
 
-      context "when config.http_adapter is :net_http" do
-        it "sets @http_adapter to a NetHTTPAdapter" do
-          Scrapespeare.config.http_adapter = :net_http
+      context "when config.http_adapter is :faraday" do
+        it "sets @http_adapter to a FaradayAdapter" do
+          Scrapespeare.config.http_adapter = :faraday
           expect(paginator.http_adapter).to \
-            be_a Scrapespeare::HTTPAdapters::NetHTTPAdapter
+            be_a Scrapespeare::HTTPAdapters::FaradayAdapter
         end
       end
 
-      context "when config.http_adapter is :selenium" do
+      context "when config.http_adapter is :faraday" do
         it "sets @http_adapter to a SeleniumAdapter" do
           Scrapespeare.config.http_adapter = :selenium
           expect(paginator.http_adapter).to \
