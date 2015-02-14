@@ -8,6 +8,7 @@ module Scrapespeare
     describe "#scrape" do
       it "yields the scraper" do
         crawler.send(:scrape) do
+          1+ 1
         end
       end
     end
