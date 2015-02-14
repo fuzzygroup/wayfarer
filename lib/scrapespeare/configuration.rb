@@ -21,6 +21,7 @@ module Scrapespeare
       }
     end
 
+    # override
     def convert_key(key)
       key.to_sym
     end
