@@ -23,4 +23,10 @@ describe Scrapespeare do
     end
   end
 
+  describe "#[]=" do
+    it "works" do
+      Scrapespeare["http://example.com"]
+    end
+  end
+
 end

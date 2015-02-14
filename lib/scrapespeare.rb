@@ -34,4 +34,10 @@ module Scrapespeare
     block_given? ? (yield @config) : @config
   end
 
+  def self.[](uri, &proc)
+    crawler = Crawler.new
+    crawler.instance_eval(proc) if block_given?
+    crawler.crawl(uri)
+  end
+
 end
