@@ -5,11 +5,11 @@ Feature: Web scraping
 
   Scenario: Scrape the site title
     Given a website
-    And the following Scraper:
+    And the following Crawler:
       """
       css :site_title, 'title'
       """
-    When I scrape the website
+    When I crawl the website
     Then I get the following result:
       """
       { site_title: "Employee listing" }
@@ -17,13 +17,13 @@ Feature: Web scraping
 
     Scenario: Arbitrary nesting
       Given a website
-      And the following Scraper:
+      And the following Crawler:
         """
         group :meta do
           css :site_title, 'title'
         end
         """
-      When I scrape the website
+      When I crawl the website
       Then I get the following result:
         """
         {
@@ -35,12 +35,12 @@ Feature: Web scraping
 
   Scenario: Scrape heading and tagline
     Given a website
-    And the following Scraper:
+    And the following Crawler:
       """
       css :heading, '#site-header h1'
       css :tagline, '#site-header p'
       """
-    When I scrape the website
+    When I crawl the website
     Then I get the following result:
       """
       {
@@ -51,11 +51,11 @@ Feature: Web scraping
 
   Scenario: Scrape attribute of an element
   Given a website
-  And the following Scraper:
+  And the following Crawler:
     """
     css :site_header_role, "#site-header", "role"
     """
-  When I scrape the website
+  When I crawl the website
   Then I get the following result:
     """
     { site_header_role: "banner" }
@@ -63,11 +63,11 @@ Feature: Web scraping
 
   Scenario: Scrape multiple elements
   Given a website
-  And the following Scraper:
+  And the following Crawler:
     """
     css :employee_names, "#employees li .name"
     """
-  When I scrape the website
+  When I crawl the website
   Then I get the following result:
     """
     {
@@ -82,7 +82,7 @@ Feature: Web scraping
 
   Scenario: Scrape nested elements
   Given a website
-  And the following Scraper:
+  And the following Crawler:
     """
     css :employees, "#employees li" do
       css :name, ".name"
@@ -90,7 +90,7 @@ Feature: Web scraping
       css :phone_number, ".phone-number"
     end
     """
-  When I scrape the website
+  When I crawl the website
   Then I get the following result:
     """
     {
@@ -121,13 +121,13 @@ Feature: Web scraping
 
     Scenario: Scoping
     Given a website
-    And the following Scraper:
+    And the following Crawler:
       """
       scope css: "#nickolas-howe" do
         css :name, ".name"
       end
       """
-    When I scrape the website
+    When I crawl the website
     Then I get the following result:
       """
       {

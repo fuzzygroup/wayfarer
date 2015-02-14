@@ -19,7 +19,7 @@ task(:spec) { Rake::Task["spec:isolated"].invoke }
 YARD::Rake::YardocTask.new(:doc)
 
 Cucumber::Rake::Task.new(:features) do |task|
-  task.cucumber_opts = %w(--format=progress)
+  # task.cucumber_opts = %w(--format=progress)
 end
 
 task(:build) do

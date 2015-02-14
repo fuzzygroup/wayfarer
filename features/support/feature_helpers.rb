@@ -1,13 +1,13 @@
 require "webmock/cucumber"
-require "aruba/cucumber"
-require "scrapespeare"
+require_relative "../../lib/scrapespeare"
 
 module FeatureHelpers
 
-  def html(file_name)
-    File.read(
-      File.join(File.dirname(__FILE__), "www/#{file_name}")
+  def example_html(file_name)
+    file_path = File.join(
+      File.dirname(__FILE__), "../../examples/www/#{file_name}"
     )
+    IO.read(file_path)
   end
 
 end

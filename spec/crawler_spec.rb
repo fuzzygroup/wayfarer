@@ -15,6 +15,9 @@ module Scrapespeare
       end
     end
 
+    describe "#paginate" do
+    end
+
     describe "#config" do
       after { Scrapespeare.config.reset! }
 
