@@ -33,4 +33,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "cucumber", "~> 1.3", ">= 1.3.17"
   s.add_development_dependency "aruba", "~> 0.6", ">= 0.6.1"
   s.add_development_dependency "faraday", "~> 0.9", ">= 0.9.1"
+  s.add_development_dependency "rack", "~> 1.6", ">= 1.6.0"
 end

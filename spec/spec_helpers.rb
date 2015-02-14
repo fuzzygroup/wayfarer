@@ -5,7 +5,7 @@ module SpecHelpers
 
   def dummy_html(file_name)
     IO.read(
-      File.expand_path("../../features/support/www/#{file_name}", __FILE__)
+      File.expand_path("../../support/www/#{file_name}", __FILE__)
     )
   end
 

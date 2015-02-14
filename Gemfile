@@ -8,6 +8,8 @@ gem "hashie", "~> 3.4"
 
 gem "thor", "~> 0.19"
 
+gem "rack", "~> 1.6"
+
 group :spec do
   gem "rspec", "~> 3.1"
   gem "faker", "~> 1.4"
