@@ -4,7 +4,7 @@ Feature: Web scraping
     I want to scrape the website
 
   Scenario: Scrape the site title
-    Given a website
+    Given the dummy website "index.html"
     And the following Crawler:
       """
       css :site_title, 'title'
@@ -16,7 +16,7 @@ Feature: Web scraping
       """
 
     Scenario: Arbitrary nesting
-      Given a website
+      Given the dummy website "index.html"
       And the following Crawler:
         """
         group :meta do
@@ -34,7 +34,7 @@ Feature: Web scraping
         """
 
   Scenario: Scrape heading and tagline
-    Given a website
+    Given the dummy website "index.html"
     And the following Crawler:
       """
       css :heading, '#site-header h1'
@@ -50,7 +50,7 @@ Feature: Web scraping
       """
 
   Scenario: Scrape attribute of an element
-  Given a website
+  Given the dummy website "index.html"
   And the following Crawler:
     """
     css :site_header_role, "#site-header", "role"
@@ -62,7 +62,7 @@ Feature: Web scraping
     """
 
   Scenario: Scrape multiple elements
-  Given a website
+  Given the dummy website "index.html"
   And the following Crawler:
     """
     css :employee_names, "#employees li .name"
@@ -81,7 +81,7 @@ Feature: Web scraping
     """
 
   Scenario: Scrape nested elements
-  Given a website
+  Given the dummy website "index.html"
   And the following Crawler:
     """
     css :employees, "#employees li" do
@@ -120,7 +120,7 @@ Feature: Web scraping
     """
 
     Scenario: Scoping
-    Given a website
+    Given the dummy website "index.html"
     And the following Crawler:
       """
       scope css: "#nickolas-howe" do

@@ -1,11 +1,9 @@
 Before do
-  stub_request(:get, "http://example.com").to_return(
-    body: example_html("index.html")
-  )
+  WebMock.disable_net_connect!(allow_localhost: true)
 end
 
-Given(/^a website$/) do
-  @uri = "http://example.com"
+Given(/^the dummy website "(.*?)"$/) do |file_name|
+  @uri = "http://0.0.0.0:8080/#{file_name}"
 end
 
 Given(/^the following Crawler:$/) do |code|

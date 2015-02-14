@@ -4,7 +4,6 @@ require "yard"
 require "rack"
 
 namespace(:spec) do
-
   desc "Run environment-agnostic examples"
   RSpec::Core::RakeTask.new(isolated: [:start_http_server]) do |task|
     task.rspec_opts = %w(--tag ~live)
@@ -19,9 +18,9 @@ end
 Cucumber::Rake::Task.new(features: [:start_http_server])
 
 # Make sure the HTTP server thread gets terminated
-Rake::Task["spec:isolated"].enhance { Rake::Task["stop_http_server"].invoke }
-Rake::Task["spec:live"].enhance { Rake::Task["stop_http_server"].invoke }
-Rake::Task["features"].enhance { Rake::Task["stop_http_server"].invoke }
+%w(spec:isolated spec:live features).each do |task|
+  Rake::Task[task].enhance { Rake::Task["stop_http_server"].invoke }
+end
 
 YARD::Rake::YardocTask.new(:doc)
 
@@ -35,7 +34,9 @@ end
 
 task(:start_http_server) do
   @http_server_thread = Thread.new do
-    Rack::Handler::WEBrick.run Rack::File.new("/Users/dom")
+    Rack::Handler::WEBrick.run Rack::File.new(
+      File.expand_path("../support/www", __FILE__)
+    )
   end
 end
 
