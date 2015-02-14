@@ -10,9 +10,7 @@ module Scrapespeare
     def crawl(uri)
       paginator = Paginator.new(@scraper, uri)
 
-      paginator.reduce(Hash.new) do |hash, extract|
-        hash.merge(extract)
-      end
+      @scraper.scrape(uri)
     end
 
     private

@@ -1,6 +1,4 @@
-Before do
-  WebMock.disable_net_connect!(allow_localhost: true)
-end
+Before { WebMock.disable_net_connect!(allow_localhost: true) }
 
 Given(/^the dummy website "(.*?)"$/) do |file_name|
   @uri = "http://0.0.0.0:8080/#{file_name}"
