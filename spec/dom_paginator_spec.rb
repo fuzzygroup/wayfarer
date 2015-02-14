@@ -3,9 +3,17 @@ require "spec_helpers"
 module Scrapespeare
   describe DOMPaginator do
 
-    let(:html) do
+    let(:page_one) do
       <<-html
-      <span id="foo">Foo</span>
+      <span id="foo">Alpha</span>
+      <span id="bar">Bar</span>
+      <a id="next-page" href="page_2">Next page</a>
+      html
+    end
+
+    let(:page_two) do
+      <<-html
+      <span id="foo">Beta</span>
       <span id="bar">Bar</span>
       html
     end
@@ -18,67 +26,37 @@ module Scrapespeare
       Paginator.new(scraper, "http://example.com")
     end
 
-    before { stub_request(:get, "http://example.com").to_return(body: html) }
-
-    describe "#http_adapter" do
-      after { Scrapespeare.config.reset! }
-
-      context "when config.http_adapter is :net_http" do
-        it "sets @http_adapter to a NetHTTPAdapter" do
-          Scrapespeare.config.http_adapter = :net_http
-          expect(paginator.http_adapter).to \
-            be_a Scrapespeare::HTTPAdapters::NetHTTPAdapter
-        end
-      end
-
-      context "when config.http_adapter is :selenium" do
-        it "sets @http_adapter to a SeleniumAdapter" do
-          Scrapespeare.config.http_adapter = :selenium
-          expect(paginator.http_adapter).to \
-            be_a Scrapespeare::HTTPAdapters::SeleniumAdapter
-        end
-      end
-
-      context "when config.http_adapter is unrecognized" do
-        it "raises a RuntimeError" do
-          Scrapespeare.config.http_adapter = :unrecognized
-          expect { paginator.http_adapter }.to raise_error(RuntimeError)
-        end
-      end
-    end
-
-    describe "#parse_html" do
-      it "returns a parsed HTML document" do
-        html = "<h1>Heading</h1>"
-        document = paginator.send(:parse_html, html)
-
-        expect(document).to be_a Nokogiri::HTML::Document
-      end
-    end
-
-    describe "#history" do
-      it "is empty" do
-        expect(paginator.history).to be_empty
-      end
+    before do
+      stub_request(:get, "http://example.com").to_return(body: page_one)
+      stub_request(:get, "http://example.com/page_2").to_return(body: page_one)
     end
 
     describe "#each" do
-      it "yields 1 extract" do
+      it "yields 2 extracts" do
         yield_count = 0
-        paginator.each { yield_count += 1 }
-        expect(yield_count).to be 1
+        paginator.each { yield_count += 2 }
+        expect(yield_count).to be 2
       end
 
-      it "yields the expected extract" do
+      it "yields the expected extracts" do
+        yielded = []
         paginator.each do |extract|
-          expect(extract).to eq({ foo: "Foo" })
+          yielded << extract
         end
+
+        expect(yielded[0]).to eq({
+          foo: "Alpha"
+        })
+
+        expect(yielded[1]).to eq({
+          foo: "Beta"
+        })
       end
 
       it "updates the history" do
         paginator.each { |extract| }
-        expect(paginator.history.count).to be 1
-        expect(paginator.history.last).to eq "http://example.com"
+        expect(paginator.history.count).to be 2
+        expect(paginator.history.last).to eq "http://example.com/page_2"
       end
     end
 
