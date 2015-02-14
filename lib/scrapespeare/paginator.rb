@@ -1,3 +1,5 @@
+require "uri"
+
 module Scrapespeare
   class Paginator
 
@@ -13,7 +15,7 @@ module Scrapespeare
 
     def each
       loop do
-        history.push(uri)
+        history << URI(uri)
         doc = fetch_and_parse(uri)
         yield scraper.scrape(doc)
         break unless has_successor_uri?
@@ -33,6 +35,14 @@ module Scrapespeare
     end
 
     private
+    def has_successor_uri?
+      !!(uri = successor_uri)
+    end
+
+    def successor_uri
+      nil
+    end
+
     def fetch_and_parse(uri)
       parse_html(fetch(uri))
     end
@@ -51,14 +61,6 @@ module Scrapespeare
     # @return [Nokogiri::HTML::Document]
     def parse_html(html)
       Nokogiri::HTML(html)
-    end
-
-    def has_successor_uri?
-      !!(@uri = successor_uri)
-    end
-
-    def successor_uri
-      nil
     end
 
   end
