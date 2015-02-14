@@ -1,7 +1,7 @@
 module Scrapespeare
   module Evaluator
 
-    module_function
+    extend self
 
     # Evaluates a NodeSet to a concrete value (not `nil`)
     #

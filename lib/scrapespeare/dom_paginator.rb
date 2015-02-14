@@ -6,13 +6,21 @@ module Scrapespeare
     def initialize(scraper, uri, matcher_hash)
       super(scraper, uri)
       @matcher = Matcher.new(matcher_hash)
-      @uri_constructor = URIConstructor
     end
 
     private
     def successor_uri
-      path = matcher.match(@doc).first.attr("href")
-      uri_constructor.construct(uri, path)
+      matched_nodes = @matcher.match(@doc)
+
+      case matched_nodes.count
+      when 0 then nil
+      when 1
+        element = matched_nodes.first
+        path = Evaluator.evaluate_attribute(element, "href")
+        URIConstructor.construct(@uri, path)
+      else
+        fail "More than 1 element"
+      end
     end
 
   end

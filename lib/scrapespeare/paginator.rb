@@ -15,9 +15,9 @@ module Scrapespeare
 
     def each
       loop do
-        history << uri
-        doc = fetch_and_parse(uri)
-        yield scraper.scrape(doc)
+        @history << @uri
+        @doc = fetch_and_parse(@uri)
+        yield @scraper.scrape(@doc)
         break unless has_successor_uri?
       end
     end
@@ -36,7 +36,7 @@ module Scrapespeare
 
     private
     def has_successor_uri?
-      !!(uri = successor_uri)
+      !!(@uri = successor_uri)
     end
 
     def successor_uri

@@ -30,13 +30,13 @@ module Scrapespeare
 
     before do
       stub_request(:get, "http://example.com").to_return(body: page_one)
-      stub_request(:get, "http://example.com/page_2").to_return(body: page_one)
+      stub_request(:get, "http://example.com/page_2").to_return(body: page_two)
     end
 
     describe "#each" do
       it "yields 2 extracts" do
         yield_count = 0
-        paginator.each { yield_count += 2 }
+        paginator.each { yield_count += 1 }
         expect(yield_count).to be 2
       end
 
