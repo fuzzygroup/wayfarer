@@ -4,9 +4,7 @@ module Scrapespeare
     extend self
 
     def construct(base_uri, path)
-      URI::HTTP.build(
-      host
-      )
+      URI.join(base_uri, path)
     end
 
   end

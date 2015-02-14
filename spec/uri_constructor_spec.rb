@@ -6,10 +6,11 @@ module Scrapespeare
     let(:constructor) { URIConstructor }
 
     describe ".construct" do
-      let(:base_uri) { "http://example.com" }
+      let(:base_uri) { URI("http://example.com") }
 
       it "returns an URI" do
-        constructor.construct(base_uri, )
+        returned = constructor.construct(base_uri, "page_2")
+        expect(returned.to_s).to eq "http://example.com/page_2"
       end
     end
 
