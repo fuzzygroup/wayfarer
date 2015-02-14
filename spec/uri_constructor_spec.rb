@@ -29,9 +29,13 @@ module Scrapespeare
         returned = constructor.construct(base_uri, "/gamma?foo=bar")
         expect(returned.to_s).to eq "http://example.com/gamma?foo=bar"
       end
+
+      it "returns an URI" do
+        base_uri = URI("http://example.com")
+        returned = constructor.construct(base_uri, "http://example.org")
+        expect(returned.to_s).to eq "http://example.org"
+      end
     end
 
   end
 end
-
-# /lieferservices-munchen/81479/?doors=openorclosed&sort_by=newest&page=all

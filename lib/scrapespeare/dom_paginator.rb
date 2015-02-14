@@ -1,14 +1,18 @@
 module Scrapespeare
   class DOMPaginator < Paginator
 
-    def initialize(scraper, uri, matcher)
+    attr_reader :matcher, :uri_constructor
+
+    def initialize(scraper, uri, matcher_hash)
       super(scraper, uri)
-      @matcher = matcher
+      @matcher = Matcher.new(matcher_hash)
+      @uri_constructor = URIConstructor
     end
 
     private
     def successor_uri
-      matched_nodes = @matcher.match(@doc)
+      path = matcher.match(@doc).first.attr("href")
+      uri_constructor.construct(uri, path)
     end
 
   end

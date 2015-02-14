@@ -22,8 +22,10 @@ module Scrapespeare
       Scraper.new { css :foo, "#foo" }
     end
 
+    let(:matcher) { { css: "#next-page" } }
+
     let(:paginator) do
-      Paginator.new(scraper, "http://example.com")
+      DOMPaginator.new(scraper, "http://example.com", matcher)
     end
 
     before do
