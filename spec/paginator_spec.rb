@@ -31,7 +31,10 @@ module Scrapespeare
         end
       end
 
-      context "when config.http_adapter is :faraday" do
+      context "when config.http_adapter is :selenium", live: true do
+        before { WebMock.allow_net_connect! }
+        after { paginator.http_adapter.release_driver }
+
         it "sets @http_adapter to a SeleniumAdapter" do
           Scrapespeare.config.http_adapter = :selenium
           expect(paginator.http_adapter).to \

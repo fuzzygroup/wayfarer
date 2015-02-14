@@ -2,22 +2,23 @@ module Scrapespeare
   module HTTPAdapters
     class SeleniumAdapter
 
-      include Callbacks
+      attr_reader :driver
+
+      def initialize
+        @driver = Selenium::WebDriver.for(*Scrapespeare.config.selenium_argv)
+      end
 
       # Navigates to `uri` and returns the page source
       #
       # @param uri [String]
       def fetch(uri)
-        web_driver.navigate.to(uri)
-        execute_callbacks(:before, web_driver)
-        page_source = web_driver.page_source
-        web_driver.quit
-        page_source
+        @driver.navigate.to(uri)
+        @driver.page_source
       end
 
-      private
-      def web_driver
-        @web_driver ||= Selenium::WebDriver.for(:remote)
+      def release_driver
+        @driver.quit
+        @driver = nil
       end
 
     end

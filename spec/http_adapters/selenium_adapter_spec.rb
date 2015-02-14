@@ -3,33 +3,30 @@ require "spec_helpers"
 module Scrapespeare
   module HTTPAdapters
     describe SeleniumAdapter do
-      before do
-        WebMock.allow_net_connect!
-      end
-
       let(:adapter) { SeleniumAdapter.new }
 
-      describe "#fetch", live: true do
-        it "returns the HTTP response body" do
-          response_body = adapter.fetch("http://example.com")
-          expect(response_body).to match /Example Domain/
-        end
+      before { WebMock.allow_net_connect! }
 
-        it "executes its callbacks and yields a WebDriver" do
-          callback = Proc.new { |web_driver| @web_driver = web_driver }
-          adapter.register_callback(:before, &callback)
-  
-          adapter.fetch("http://example.com")
+      describe "#initialize", live: true do
+        after { adapter.release_driver }
 
-          expect(@web_driver).to be_a Selenium::WebDriver::Driver
+        it "initializes a new WebDriver" do
+          expect(adapter.driver).to be_a Selenium::WebDriver::Driver
         end
       end
 
-      describe "#web_driver", live: true do
-        after { adapter.instance_variable_get(:@web_driver).close }
+      describe "#release_driver", live: true do
+        it "quits the driver" do
+          adapter.release_driver
+          expect(adapter.driver).to be nil
+        end
+      end
 
-        it "returns a Selenium::WebDriver" do
-          expect(adapter.send(:web_driver)).to be_a Selenium::WebDriver::Driver
+      describe "#fetch", live: true do
+        after { adapter.release_driver }
+
+        it "returns the page source" do
+          expect(adapter.fetch("http://example.com")).to match /Example Domain/
         end
       end
 

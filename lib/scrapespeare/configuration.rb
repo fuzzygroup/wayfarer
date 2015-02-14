@@ -17,7 +17,8 @@ module Scrapespeare
       {
         http_adapter: :faraday,
         verbose: false,
-        max_http_redirects: 3
+        max_http_redirects: 3,
+        selenium_argv: [:firefox]
       }
     end
 
