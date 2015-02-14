@@ -13,8 +13,8 @@ module Scrapespeare
 
     def each
       loop do
-        @history.push(uri)
-        @doc = fetch_and_parse(uri)
+        @history.push(@uri)
+        @doc = fetch_and_parse(@uri)
         yield @scraper.scrape(@doc)
         break unless has_successor_uri?
       end

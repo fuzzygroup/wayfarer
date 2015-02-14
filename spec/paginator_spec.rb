@@ -18,8 +18,10 @@ module Scrapespeare
       Paginator.new(scraper, "http://example.com")
     end
 
+    before { stub_request(:get, "http://example.com").to_return(body: html) }
+
     describe "#http_adapter" do
-      before { Scrapespeare.config.reset! }
+      after { Scrapespeare.config.reset! }
 
       context "when config.http_adapter is :net_http" do
         it "sets @http_adapter to a NetHTTPAdapter" do
@@ -53,5 +55,20 @@ module Scrapespeare
         expect(document).to be_a Nokogiri::HTML::Document
       end
     end
+
+    describe "#history" do
+      it "is empty" do
+        expect(paginator.history).to be_empty
+      end
+    end
+
+    describe "#each" do
+      it "yields 1 extract" do
+        yield_count = 0
+        paginator.each { yield_count += 1 }
+        expect(yield_count).to be 1
+      end
+    end
+
   end
 end
