@@ -9,7 +9,7 @@ module Scrapespeare
     end
 
     def reset!
-      merge!(defaults)
+      replace(defaults)
     end
 
     private

@@ -27,6 +27,12 @@ module Scrapespeare
         config.reset!
         expect(config.http_adapter).to be :net_http
       end
+
+      it "unsets non-default keys" do
+        config.foo = :foo
+        config.reset!
+        expect(config.foo?).to be false
+      end
     end
 
   end
