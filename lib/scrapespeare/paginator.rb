@@ -19,7 +19,7 @@ module Scrapespeare
         break unless has_successor_uri?
       end
 
-      if http_adapter.is_a?(HTTPAdapters::SeleniumAdapter)
+      if Scrapespeare.config.http_adapter == :selenium
         http_adapter.release_driver
       end
     end
