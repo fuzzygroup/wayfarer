@@ -5,6 +5,7 @@ require "selenium-webdriver"
 require "faraday"
 require "hashie"
 require "thor"
+require "rest-client"
 
 $: << File.dirname(__FILE__)
 
@@ -12,7 +13,7 @@ require "scrapespeare/configuration"
 require "scrapespeare/extractable"
 require "scrapespeare/callbacks"
 require "scrapespeare/http_adapters/selenium_adapter"
-require "scrapespeare/http_adapters/faraday_adapter"
+require "scrapespeare/http_adapters/rest_client_adapter"
 require "scrapespeare/evaluator"
 require "scrapespeare/matcher"
 require "scrapespeare/scoper"

@@ -15,7 +15,7 @@ module Scrapespeare
     private
     def defaults
       {
-        http_adapter: :faraday,
+        http_adapter: :rest_client,
         verbose: false,
         max_http_redirects: 3,
         selenium_argv: [:firefox]

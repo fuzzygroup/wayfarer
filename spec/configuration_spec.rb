@@ -11,7 +11,7 @@ module Scrapespeare
     end
 
     it "has correct default values set" do
-      expect(config.http_adapter).to be :faraday
+      expect(config.http_adapter).to be :rest_client
       expect(config.verbose).to be false
       expect(config.max_http_redirects).to be 3
       expect(config.selenium_argv).to eq [:firefox]

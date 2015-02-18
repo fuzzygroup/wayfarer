@@ -14,7 +14,7 @@ module Scrapespeare
 
     def http_adapter
       @http_adapter ||= case Scrapespeare.config.http_adapter
-      when :faraday then Scrapespeare::HTTPAdapters::FaradayAdapter.new
+      when :rest_client then Scrapespeare::HTTPAdapters::RestClientAdapter.new
       when :selenium then Scrapespeare::HTTPAdapters::SeleniumAdapter.new
       else fail "Unknown HTTP adapter `#{Scrapespeare.config.http_adapter}`"
       end

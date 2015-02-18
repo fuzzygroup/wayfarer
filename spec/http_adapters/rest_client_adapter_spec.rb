@@ -2,9 +2,9 @@ require "spec_helpers"
 
 module Scrapespeare
   module HTTPAdapters
-    describe FaradayAdapter do
+    describe RestClientAdapter do
 
-      let(:adapter) { FaradayAdapter.new }
+      let(:adapter) { RestClientAdapter.new }
 
       describe "#fetch" do
         before do

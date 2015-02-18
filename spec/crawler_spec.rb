@@ -18,11 +18,11 @@ module Scrapespeare
     describe "#http_adapter" do
       after { Scrapespeare.config.reset! }
 
-      context "when config.http_adapter is :faraday" do
-        it "sets @http_adapter to a FaradayAdapter" do
-          Scrapespeare.config.http_adapter = :faraday
+      context "when config.http_adapter is :rest_client" do
+        it "sets @http_adapter to a RestClientAdapter" do
+          Scrapespeare.config.http_adapter = :rest_client
           expect(crawler.http_adapter).to \
-            be_a Scrapespeare::HTTPAdapters::FaradayAdapter
+            be_a Scrapespeare::HTTPAdapters::RestClientAdapter
         end
       end
 

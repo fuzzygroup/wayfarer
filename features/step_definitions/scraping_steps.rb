@@ -5,11 +5,7 @@ Given(/^the dummy website "(.*?)"$/) do |file_name|
 end
 
 Given(/^the following Crawler:$/) do |code|
-  @crawler = Scrapespeare::Crawler.new do
-    scrape do
-      eval(code)
-    end
-  end
+  @crawler = Scrapespeare::Crawler.new { scrape { eval(code) } }
 end
 
 When(/^I crawl the website$/) do

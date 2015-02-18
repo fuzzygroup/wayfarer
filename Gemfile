@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem "nokogiri", "~> 1.6"
 gem "selenium-webdriver", "~> 2.43"
-gem "faraday", "~> 0.9"
+gem "rest-client", "~> 1.7"
 
 gem "hashie", "~> 3.4"
 
