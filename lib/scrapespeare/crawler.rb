@@ -3,8 +3,9 @@ module Scrapespeare
 
     attr_reader :scraper
 
-    def initialize
+    def initialize(&proc)
       @scraper = Scraper.new
+      instance_eval(&proc) if block_given?
     end
 
     def crawl(uri)

@@ -2,7 +2,6 @@ require "ostruct"
 
 require "nokogiri"
 require "selenium-webdriver"
-require "faraday"
 require "hashie"
 require "thor"
 require "rest-client"
