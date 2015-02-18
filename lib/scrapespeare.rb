@@ -20,10 +20,6 @@ require "scrapespeare/extractable_group"
 require "scrapespeare/extractor"
 require "scrapespeare/scraper"
 require "scrapespeare/crawler"
-require "scrapespeare/paginator"
-require "scrapespeare/dom_paginator"
-require "scrapespeare/uri_constructor"
-require "scrapespeare/interactive_paginator"
 
 module Scrapespeare
 

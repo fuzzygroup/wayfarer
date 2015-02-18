@@ -15,7 +15,43 @@ module Scrapespeare
       end
     end
 
-    describe "#paginate" do
+    describe "#http_adapter" do
+      after { Scrapespeare.config.reset! }
+
+      context "when config.http_adapter is :faraday" do
+        it "sets @http_adapter to a FaradayAdapter" do
+          Scrapespeare.config.http_adapter = :faraday
+          expect(crawler.http_adapter).to \
+            be_a Scrapespeare::HTTPAdapters::FaradayAdapter
+        end
+      end
+
+      context "when config.http_adapter is :selenium", live: true do
+        before { WebMock.allow_net_connect! }
+        after { crawler.http_adapter.release_driver }
+
+        it "sets @http_adapter to a SeleniumAdapter" do
+          Scrapespeare.config.http_adapter = :selenium
+          expect(crawler.http_adapter).to \
+            be_a Scrapespeare::HTTPAdapters::SeleniumAdapter
+        end
+      end
+
+      context "when config.http_adapter is unrecognized" do
+        it "raises a RuntimeError" do
+          Scrapespeare.config.http_adapter = :unrecognized
+          expect { crawler.http_adapter }.to raise_error(RuntimeError)
+        end
+      end
+    end
+
+    describe "#parse_html" do
+      it "returns a parsed HTML document" do
+        html = "<h1>Heading</h1>"
+        document = crawler.send(:parse_html, html)
+
+        expect(document).to be_a Nokogiri::HTML::Document
+      end
     end
 
     describe "#config" do
