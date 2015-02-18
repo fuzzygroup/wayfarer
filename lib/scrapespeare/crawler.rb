@@ -8,9 +8,8 @@ module Scrapespeare
     end
 
     def crawl(uri)
-      paginator = Paginator.new(@scraper, uri)
-
-      @scraper.scrape(uri)
+      doc = parse(fetch(uri))
+      @scraper.scrape(doc)
     end
 
     # Returns the HTTP adapter determined by `config.http_adapter`
@@ -46,7 +45,7 @@ module Scrapespeare
     #
     # @param html [String]
     # @return [Nokogiri::HTML::Document]
-    def parse_html(html)
+    def parse(html)
       Nokogiri::HTML(html)
     end
 
