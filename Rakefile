@@ -5,21 +5,21 @@ require "rack"
 
 namespace(:spec) do
   desc "Run environment-agnostic examples"
-  RSpec::Core::RakeTask.new(isolated: [:start_http_server]) do |task|
+  RSpec::Core::RakeTask.new(isolated: [:start_httpd]) do |task|
     task.rspec_opts = %w(--tag ~live)
   end
 
   desc "Run examples that require a live environment"
-  RSpec::Core::RakeTask.new(live: [:start_http_server]) do |task|
+  RSpec::Core::RakeTask.new(live: [:start_httpd]) do |task|
     task.rspec_opts = %w(--tag live)
   end
 end
 
-Cucumber::Rake::Task.new(features: [:start_http_server])
+Cucumber::Rake::Task.new(features: [:start_httpd])
 
 # Make sure the HTTP server thread gets terminated
 %w(spec:isolated spec:live features).each do |task|
-  Rake::Task[task].enhance { Rake::Task["stop_http_server"].invoke }
+  Rake::Task[task].enhance { Rake::Task["stop_httpd"].invoke }
 end
 
 YARD::Rake::YardocTask.new(:doc)
@@ -32,14 +32,14 @@ task(:todos) do
   sh %(grep -rn "# \\(FIXME\\|TODO\\)" .)
 end
 
-task(:start_http_server) do
-  @http_server_thread = Thread.new do
+task(:start_httpd) do
+  @httpd = Thread.new do
     Rack::Handler::WEBrick.run Rack::File.new(
       File.expand_path("../support/www", __FILE__)
     )
   end
 end
 
-task(:stop_http_server) do
-  @http_server_thread.kill
+task(:stop_httpd) do
+  @httpd.kill
 end

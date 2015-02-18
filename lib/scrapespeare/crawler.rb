@@ -12,10 +12,6 @@ module Scrapespeare
       @scraper.scrape(doc)
     end
 
-    # Returns the HTTP adapter determined by `config.http_adapter`
-    #
-    # @return [Scrapespeare::HTTPAdapters::NetHTTPAdapter, Scrapespeare::HTTPAdapters::SeleniumAdapter]
-    # @raise [RuntimeError] if `config.http_adapter` is not `:net_http` or `:selenium`
     def http_adapter
       @http_adapter ||= case Scrapespeare.config.http_adapter
       when :faraday then Scrapespeare::HTTPAdapters::FaradayAdapter.new
@@ -33,18 +29,10 @@ module Scrapespeare
       yield Scrapespeare.config if block_given?
     end
 
-    # Fires a HTTP request against the URI and returns the response body
-    #
-    # @param [String] uri
-    # @return [String]
     def fetch(uri)
       http_adapter.fetch(uri)
     end
 
-    # Parses a string of HTML
-    #
-    # @param html [String]
-    # @return [Nokogiri::HTML::Document]
     def parse(html)
       Nokogiri::HTML(html)
     end

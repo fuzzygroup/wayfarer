@@ -1,11 +1,15 @@
 Before { WebMock.disable_net_connect!(allow_localhost: true) }
 
 Given(/^the dummy website "(.*?)"$/) do |file_name|
-  @uri = "http://0.0.0.0:8080/#{file_name}"
+  @uri = "http://localhost:8080/#{file_name}"
 end
 
 Given(/^the following Crawler:$/) do |code|
-  @crawler = Scrapespeare::Crawler.new { scrape { eval(code) } }
+  @crawler = Scrapespeare::Crawler.new do
+    scrape do
+      eval(code)
+    end
+  end
 end
 
 When(/^I crawl the website$/) do
