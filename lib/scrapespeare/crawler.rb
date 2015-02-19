@@ -42,9 +42,5 @@ module Scrapespeare
       http_adapter.fetch(uri)
     end
 
-    def parse(html)
-      Nokogiri::HTML(html)
-    end
-
   end
 end

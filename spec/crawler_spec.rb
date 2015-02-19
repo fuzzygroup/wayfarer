@@ -45,15 +45,6 @@ module Scrapespeare
       end
     end
 
-    describe "#parse" do
-      it "returns a parsed HTML document" do
-        html = "<h1>Heading</h1>"
-        document = crawler.send(:parse, html)
-
-        expect(document).to be_a Nokogiri::HTML::Document
-      end
-    end
-
     describe "#configure" do
       after { Scrapespeare.config.reset! }
 

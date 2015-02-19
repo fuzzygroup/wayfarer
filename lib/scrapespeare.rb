@@ -20,6 +20,7 @@ require "scrapespeare/extractor"
 require "scrapespeare/scraper"
 require "scrapespeare/crawler"
 require "scrapespeare/paginator"
+require "scrapespeare/parser"
 
 module Scrapespeare
 
