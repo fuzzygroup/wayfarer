@@ -204,5 +204,11 @@ module Scrapespeare
       end
     end
 
+    describe "::RESERVED_ATTRIBUTES" do
+      it "contains all reserved attributes" do
+        expect(evaluator::RESERVED_ATTRIBUTES).to eq([:content!, :html!])
+      end
+    end
+
   end
 end
