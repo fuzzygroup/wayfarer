@@ -21,14 +21,11 @@ module Scrapespeare
     # @param document_or_nodes [#css, #xpath]
     # @return [Nokogiri::XML::NodeSet]
     # @raise [RuntimeError] if `@expression` is neither `:css` nor `:xpath`
-    def match(document_or_nodes)
+    def match(doc_or_nodes)
       case @type
-      when :css
-        document_or_nodes.css(@expression)
-      when :xpath
-        document_or_nodes.xpath(@expression)
-      else
-        fail "Unknown selector type `#{@type}`"
+      when :css then doc_or_nodes.css(@expression)
+      when :xpath then doc_or_nodes.xpath(@expression)
+      else fail "Unknown selector type `#{@type}`"
       end
     end
 
