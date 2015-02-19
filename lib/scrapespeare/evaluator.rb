@@ -1,12 +1,14 @@
 module Scrapespeare
   module Evaluator
 
+    SPECIAL_ATTRIBUTES = [:content!, :html!]
+
     module_function
 
     # Evaluates a NodeSet to a concrete value (not `nil`)
     #
     # @param nodes [Nokogiri::XML::NodeSet]
-    # @param attrs [Array<String>]
+    # @param attrs [Array<Symbol>]
     # @return [String, Array<String>, Hash]
     def evaluate(nodes, *attrs)
       return "" if nodes.empty?
@@ -34,7 +36,7 @@ module Scrapespeare
       end
     end
 
-    # Returns an element's sanitized content
+    # Returns an element's (sanitized) content
     #
     # @param element [Nokogiri::XML::Element]
     # @return [String]
@@ -50,7 +52,7 @@ module Scrapespeare
     # Returns an element's attribute value
     #
     # @param element [Nokogiri::XML::Element]
-    # @param attribute [String]
+    # @param attrs [Symbol]
     # @return [String]
     def evaluate_attribute(element, attr)
       element.attr(attr).to_s
@@ -59,11 +61,11 @@ module Scrapespeare
     # Returns an element's attribute values
     #
     # @param element [Nokogiri::XML::Element]
-    # @param attributes [Array<String>]
+    # @param attrs [Array<Symbol>]
     # @return [Hash]
     def evaluate_attributes(element, *attrs)      
       attrs.reduce({}) do |hash, attr|
-        hash.merge({ attr.to_sym => evaluate_attribute(element, attr) })
+        hash.merge({ attr => evaluate_attribute(element, attr) })
       end
     end
 

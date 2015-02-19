@@ -57,7 +57,7 @@ Feature: Web scraping
   And a Crawler
   And the following Scraper:
     """
-    css :site_header_role, "#site-header", "role"
+    css :site_header_role, "#site-header", :role
     """
   When I crawl the website
   Then I get the following result:

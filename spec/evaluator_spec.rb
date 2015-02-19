@@ -28,14 +28,14 @@ module Scrapespeare
         describe "Attribute evaluation" do
           context "with 1 attribute" do
             it "returns the element's attribute value" do
-              evaluated = evaluator.evaluate(nodes, "class")
+              evaluated = evaluator.evaluate(nodes, :class)
               expect(evaluated).to eq "foo"
             end
           end
 
           context "with > 1 attributes" do
             it "returns a Hash of mapped attribute values" do
-              evaluated = evaluator.evaluate(nodes, "class", "id")
+              evaluated = evaluator.evaluate(nodes, :class, :id)
               expect(evaluated).to eq({ class: "foo", id: "bar" })
             end
           end
@@ -61,14 +61,14 @@ module Scrapespeare
         describe "Custom attribute evaluation" do
           context "with 1 attribute" do
             it "returns the element's attribute value" do
-              evaluated = evaluator.evaluate(nodes, "id")
+              evaluated = evaluator.evaluate(nodes, :id)
               expect(evaluated).to eq ["alpha", "beta"]
             end
           end
 
           context "with > 1 attributes" do
             it "returns a Hash of mapped attribute values" do
-              evaluated = evaluator.evaluate(nodes, "class", "id")
+              evaluated = evaluator.evaluate(nodes, :class, :id)
               expect(evaluated).to eq([
                 {
                   class: "foo",
@@ -127,7 +127,7 @@ module Scrapespeare
       end
 
       it "returns the attribute's value" do
-        evaluated = evaluator.evaluate_attribute(element, "class")
+        evaluated = evaluator.evaluate_attribute(element, :class)
         expect(evaluated).to eq "foo"
       end
     end
@@ -138,13 +138,13 @@ module Scrapespeare
       end
 
       it "returns a Hash of mapped evaluated attributes" do
-        evaluated = evaluator.evaluate_attributes(element, "class", "id")
+        evaluated = evaluator.evaluate_attributes(element, :class, :id)
         expect(evaluated).to eq({ class: "foo", id: "bar" })
       end
 
       context "with mismatching attribute" do
         it "maps the attribute to an empty String" do
-          evaluated = evaluator.send(:evaluate_attributes, element, "baz")
+          evaluated = evaluator.send(:evaluate_attributes, element, :baz)
           expect(evaluated).to eq({ :baz => "" })
         end
       end
