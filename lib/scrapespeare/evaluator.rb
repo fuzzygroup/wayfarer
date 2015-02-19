@@ -1,7 +1,10 @@
 module Scrapespeare
   module Evaluator
 
-    SPECIAL_ATTRIBUTES = [:content!, :html!]
+    RESERVED_ATTRIBUTES = [
+      :content!,
+      :html!
+    ]
 
     module_function
 
@@ -55,7 +58,18 @@ module Scrapespeare
     # @param attrs [Symbol]
     # @return [String]
     def evaluate_attribute(element, attr)
-      element.attr(attr).to_s
+      if RESERVED_ATTRIBUTES.include?(attr)
+        evaluate_reserved_attribute(element, attr)
+      else
+        element.attr(attr).to_s
+      end
+    end
+
+    def evaluate_reserved_attribute(element, attr)
+      case attr
+      when :content! then evaluate_content(element)
+      when :html! then element.to_s
+      end
     end
 
     # Returns an element's attribute values

@@ -132,6 +132,37 @@ module Scrapespeare
       end
     end
 
+    describe ".evaluate_attribute" do
+      let(:element) do
+        node_set(%(<span class="foo" id="bar">Foobar</span>)).first
+      end
+
+      it "returns the attribute's value" do
+        evaluated = evaluator.evaluate_attribute(element, :class)
+        expect(evaluated).to eq "foo"
+      end
+    end
+
+    describe ".evaluate_reserved_attribute" do
+      let(:element) do
+        node_set(%(<span class="foo" id="bar">Foobar</span>)).first
+      end
+
+      context "when attribute is `:content!`" do
+        it "returns the element's content" do
+          evaluated = evaluator.evaluate_attribute(element, :content!)
+          expect(evaluated).to eq "Foobar"
+        end
+      end
+
+      context "when attribute is `:html!`" do
+        it "returns the element's HTML representation" do
+          evaluated = evaluator.evaluate_attribute(element, :html!)
+          expect(evaluated).to eq %(<span class="foo" id="bar">Foobar</span>)
+        end
+      end
+    end
+
     describe ".evaluate_attributes" do
       let(:element) do
         node_set(%(<span class="foo" id="bar">Foobar</span>)).first
