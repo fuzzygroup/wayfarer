@@ -1,35 +1,35 @@
 module Scrapespeare
   module Evaluator
 
-    extend self
+    module_function
 
     # Evaluates a NodeSet to a concrete value (not `nil`)
     #
     # @param nodes [Nokogiri::XML::NodeSet]
-    # @param attributes [Array<String>]
+    # @param attrs [Array<String>]
     # @return [String, Array<String>, Hash]
-    def evaluate(nodes, *attributes)
+    def evaluate(nodes, *attrs)
       return "" if nodes.empty?
 
       if nodes.count == 1
         element = nodes.first
 
-        case attributes.count
+        case attrs.count
         when 0
           evaluate_content(element)
         when 1
-          evaluate_attribute(element, attributes.first)
+          evaluate_attribute(element, attrs.first)
         else
-          evaluate_attributes(element, *attributes)
+          evaluate_attributes(element, *attrs)
         end
       else
-        case attributes.count
+        case attrs.count
         when 0
           nodes.map { |element| evaluate_content(element) }
         when 1
-          nodes.map { |element| evaluate_attribute(element, attributes.first) }
+          nodes.map { |element| evaluate_attribute(element, attrs.first) }
         else
-          nodes.map { |element| evaluate_attributes(element, *attributes) }
+          nodes.map { |element| evaluate_attributes(element, *attrs) }
         end
       end
     end
