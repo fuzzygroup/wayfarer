@@ -5,25 +5,38 @@ module Scrapespeare
 
     let(:scraper) { Scraper.new }
 
-    describe "#extract" do
-      let(:html) {
-        <<-html
-        <span class="foo">Foo</span>
+    let(:doc) do
+      Nokogiri::HTML <<-html
+        <span id="foo">Foo</span>
         <span id="bar">Bar</span>
-        html
-      }
 
-      let(:parsed_document) { Nokogiri::HTML(html) }
+        <div class="alpha">
+          <span class="beta">Lorem</span>
+          <span class="beta">Ipsum</span>
+        </div>
 
-      it "reduces its Extractors' returned #extracts to a Hash" do
-        scraper.css :foo, ".foo"
-        scraper.css :bar, "#bar"
+        <div class="alpha">
+          <span class="beta">Dolor</span>
+          <span class="beta">Sit</span>
+        </div>
 
-        result = scraper.extract(parsed_document)
+        <div class="alpha">
+          <span class="beta">Amet</span>
+          <span class="beta">Consetetur</span>
+        </div>
+      html
+    end
+
+    describe "#extract" do
+      it "returns the expected Hash structure" do
+        scraper.css(:foo, "#foo")
+        scraper.css(:betas, ".beta")
+
+        result = scraper.extract(doc)
 
         expect(result).to eq({
           foo: "Foo",
-          bar: "Bar"
+          betas: %w(Lorem Ipsum Dolor Sit Amet Consetetur)
         })
       end
 
