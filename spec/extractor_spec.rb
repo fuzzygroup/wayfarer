@@ -3,7 +3,27 @@ require "spec_helpers"
 module Scrapespeare
   describe Extractor do
 
-    let(:document) { Nokogiri::HTML(dummy_html("index.html")) }
+    let(:document) do
+      Nokogiri::HTML <<-html
+        <span id="foo">Foo</span>
+        <span id="bar">Bar</span>
+
+        <div class="alpha">
+          <span class="beta">Lorem</span>
+          <span class="beta">Ipsum</span>
+        </div>
+
+        <div class="alpha">
+          <span class="beta">Dolor</span>
+          <span class="beta">Sit</span>
+        </div>
+
+        <div class="alpha">
+          <span class="beta">Amet</span>
+          <span class="beta">Consetetur</span>
+        </div>
+      html
+    end
 
     describe "#initialize" do
       let(:extractor) do
@@ -26,65 +46,36 @@ module Scrapespeare
     end
 
     describe "#extract" do
-      let(:extractor) do
-        Scrapespeare::Extractor.new(:employees, { css: ".employees li" })
-      end
-
-      it "matches Elements" do
-        matcher = spy()
-        extractor.instance_variable_set(:@matcher, matcher)
-
-        extractor.extract(document)
-
-        expect(matcher).to have_received(:match).with(document)
-      end
-
       context "without nested Extractables" do
         let(:extractor) do
-          Scrapespeare::Extractor.new(
-            :name, { css: "#nickolas-howe .name" }
-          )
+          Scrapespeare::Extractor.new(:foo, { css: "#foo" })
         end
 
-        it "evaluates matched Elements" do
+        it "evaluates matched Elements' contents" do
           result = extractor.extract(document)
-          expect(result).to eq({
-            name: "Nickolas Howe"
-          })
+          expect(result).to eq({ foo: "Foo" })
         end
       end
 
       context "with nested Extractables" do
         let(:extractor) do
-          Scrapespeare::Extractor.new(
-            :employees, { css: "#employees li" }
-          )
+          Scrapespeare::Extractor.new(:alphas, { css: ".alpha" })
         end
 
-        before do
-          extractor.css(:name, ".name")
-          extractor.css(:department, ".department")
-        end
+        before { extractor.css(:betas, ".beta") }
 
         it "evaluates nested Extractables" do
           result = extractor.extract(document)
           expect(result).to eq({
-            employees: [
+            alphas: [
               {
-                name: "Nickolas Howe",
-                department: "Music, Computers & Grocery"
+                betas: ["Lorem", "Ipsum"]
               },
               {
-                name: "Ivah Swift",
-                department: "Kids, Sports & Shoes"
+                betas: ["Dolor", "Sit"]
               },
               {
-                name: "Lucy Walker",
-                department: "Automotive, Tools & Sports"
-              },
-              {
-                name: "Sherwood Cremin",
-                department: "Outdoors"
+                betas: ["Amet", "Consetetur"]
               }
             ]
           })
