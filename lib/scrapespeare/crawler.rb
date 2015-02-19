@@ -10,7 +10,7 @@ module Scrapespeare
 
     def crawl(uri)
       doc = parse(fetch(uri))
-      @scraper.scrape(doc)
+      @scraper.extract(doc)
     end
 
     def http_adapter

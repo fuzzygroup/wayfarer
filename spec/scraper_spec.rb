@@ -5,7 +5,7 @@ module Scrapespeare
 
     let(:scraper) { Scraper.new }
 
-    describe "#scrape" do
+    describe "#extract" do
       let(:html) {
         <<-html
         <span class="foo">Foo</span>
@@ -19,7 +19,7 @@ module Scrapespeare
         scraper.css :foo, ".foo"
         scraper.css :bar, "#bar"
 
-        result = scraper.scrape(parsed_document)
+        result = scraper.extract(parsed_document)
 
         expect(result).to eq({
           foo: "Foo",
@@ -28,7 +28,7 @@ module Scrapespeare
       end
 
       it "returns a tainted Object" do
-        result = scraper.scrape("http://example.com")
+        result = scraper.extract("http://example.com")
         expect(result).to be_tainted
       end
     end
