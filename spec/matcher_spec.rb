@@ -25,7 +25,7 @@ module Scrapespeare
 
     let(:matcher) { Matcher.new(css: "#foo") }
 
-    it "returns the expected NodeSet" do
+    it "matches the correct nodes" do
       expect(matcher.match(doc).count).to be 1
     end
 

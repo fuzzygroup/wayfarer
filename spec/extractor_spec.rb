@@ -3,7 +3,7 @@ require "spec_helpers"
 module Scrapespeare
   describe Extractor do
 
-    let(:document) do
+    let(:doc) do
       Nokogiri::HTML <<-html
         <span id="foo">Foo</span>
         <span id="bar">Bar</span>
@@ -52,7 +52,7 @@ module Scrapespeare
         end
 
         it "evaluates matched Elements' contents" do
-          result = extractor.extract(document)
+          result = extractor.extract(doc)
           expect(result).to eq({ foo: "Foo" })
         end
       end
@@ -65,7 +65,7 @@ module Scrapespeare
         before { extractor.css(:betas, ".beta") }
 
         it "evaluates nested Extractables" do
-          result = extractor.extract(document)
+          result = extractor.extract(doc)
           expect(result).to eq({
             alphas: [
               {
