@@ -43,6 +43,10 @@ module Scrapespeare
       it "sets @target_attrs" do
         expect(extractor.target_attrs).to eq ["href"]
       end
+
+      it "sets @evaluator to Scrapespeare::Evaluator" do
+        expect(extractor.evaluator).to be Evaluator
+      end
     end
 
     describe "#extract" do
