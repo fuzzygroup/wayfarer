@@ -29,6 +29,14 @@ module Scrapespeare
       yield Scrapespeare.config if block_given?
     end
 
+    def evaluate(identifier, evaluator = nil, &proc)
+      if evaluator
+        @scraper.pass_evaluator(identifier, evaluator)
+      elsif proc
+        @scraper.pass_evaluator(identifier, proc)
+      end
+    end
+
     private
     def fetch(uri)
       http_adapter.fetch(uri)

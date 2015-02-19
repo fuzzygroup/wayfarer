@@ -72,5 +72,29 @@ module Scrapespeare
       end
     end
 
+    describe "#evaluate" do
+      let(:extractor) { Extractor.new(:foo, css: "#foo") }
+
+      before do
+        crawler.scraper.instance_variable_set(:@extractables, [extractor])
+      end
+
+      context "with evaluator object given" do
+        let(:evaluator) { Object.new }
+
+        it "passes the evaluator to the corresponding Extractable(s)" do
+          crawler.evaluate :foo, evaluator
+          expect(extractor.evaluator).to be evaluator
+        end
+      end
+
+      context "with block given" do
+        it "passes the evaluator to the corresponding Extractable(s)" do
+          crawler.evaluate(:foo) { |matched_nodes, *target_attrs| }
+          expect(extractor.evaluator).to be_a Proc
+        end
+      end
+    end
+
   end
 end
