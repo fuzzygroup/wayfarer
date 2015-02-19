@@ -39,7 +39,7 @@ module Scrapespeare
         result = evaluate(matched_nodes, *@target_attrs)
       else
         result = matched_nodes.map do |node|
-          extractables.reduce(Hash.new) do |hash, extractable|
+          extractables.reduce({}) do |hash, extractable|
             hash.merge(extractable.extract(node))
           end
         end
