@@ -96,11 +96,28 @@ module Scrapespeare
         expect(evaluated).to eq "Foobar"
       end
 
-      it "sanitizes the element's content" do
-        element = node_set("<span>\n   Foobar   \n </span>").first
+      context "when config.sanitize_node_content is `true`" do
+        before { Scrapespeare.config.sanitize_node_content = true }
+        after { Scrapespeare.config.reset! }
 
-        evaluated = evaluator.evaluate_content(element)
-        expect(evaluated).to eq "Foobar"
+        it "sanitizes the element's content" do
+          element = node_set("<span>\n   Foobar   \n</span>").first
+
+          evaluated = evaluator.evaluate_content(element)
+          expect(evaluated).to eq "Foobar"
+        end
+      end
+
+      context "when config.sanitize_node_content is `false`" do
+        before { Scrapespeare.config.sanitize_node_content = false }
+        after { Scrapespeare.config.reset! }
+
+        it "does not sanitize the element's content" do
+          element = node_set("<span>\n   Foobar   \n</span>").first
+
+          evaluated = evaluator.evaluate_content(element)
+          expect(evaluated).to eq "\n   Foobar   \n"
+        end
       end
     end
 

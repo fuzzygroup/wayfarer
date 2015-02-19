@@ -15,6 +15,7 @@ module Scrapespeare
       expect(config.verbose).to be false
       expect(config.max_http_redirects).to be 3
       expect(config.selenium_argv).to eq [:firefox]
+      expect(config.sanitize_node_content).to be true
     end
 
     it "allows overriding default values" do

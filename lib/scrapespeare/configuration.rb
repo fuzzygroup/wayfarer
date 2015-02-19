@@ -18,7 +18,8 @@ module Scrapespeare
         http_adapter: :rest_client,
         verbose: false,
         max_http_redirects: 3,
-        selenium_argv: [:firefox]
+        selenium_argv: [:firefox],
+        sanitize_node_content: true
       }
     end
 

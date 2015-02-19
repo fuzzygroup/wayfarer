@@ -40,7 +40,11 @@ module Scrapespeare
     # @return [String]
     # @see .sanitize
     def evaluate_content(element)
-      sanitize(element.content)
+      if Scrapespeare.config.sanitize_node_content
+        sanitize(element.content)
+      else
+        element.content
+      end
     end
 
     # Returns an element's attribute value
