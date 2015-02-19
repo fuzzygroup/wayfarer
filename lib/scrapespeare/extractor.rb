@@ -13,12 +13,12 @@ module Scrapespeare
     attr_reader :target_attributes
 
     # @param identifier [Symbol]
-    # @param matcher [Hash]
+    # @param matcher_hash [Hash]
     # @param target_attributes [Array<String>]
     # @param proc [Proc]
-    def initialize(identifier, matcher, *target_attributes, &proc)
+    def initialize(identifier, matcher_hash, *target_attributes, &proc)
       @identifier = identifier
-      @matcher = Scrapespeare::Matcher.new(matcher)
+      @matcher = Scrapespeare::Matcher.new(matcher_hash)
       @target_attributes = target_attributes
 
       instance_eval(&proc) if block_given?
@@ -26,10 +26,10 @@ module Scrapespeare
 
     # TODO Documentation
     #
-    # @param document_or_nodes [#css, #xpath]
+    # @param doc_or_nodes [#css, #xpath]
     # @return [Hash]
-    def extract(document_or_nodes)
-      matched_nodes = @matcher.match(document_or_nodes)
+    def extract(doc_or_nodes)
+      matched_nodes = @matcher.match(doc_or_nodes)
 
       if extractables.empty?
         result = Evaluator.evaluate(matched_nodes, *@target_attributes)

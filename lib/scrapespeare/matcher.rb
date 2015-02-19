@@ -8,9 +8,9 @@ module Scrapespeare
     attr_reader :expression
 
     # @param hash [Hash]
-    def initialize(hash)
-      @type = hash.keys.first
-      @expression = hash.values.first
+    def initialize(matcher_hash)
+      @type = matcher_hash.keys.first
+      @expression = matcher_hash.values.first
     end
 
     # Returns a set of elements matched by `@expression`
