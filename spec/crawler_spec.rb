@@ -7,7 +7,7 @@ module Scrapespeare
 
     describe "#scrape" do
       it "yields the scraper" do
-        crawler.send(:scrape) do
+        crawler.scrape do
           css :foo, "#foo"
         end
 
@@ -54,11 +54,11 @@ module Scrapespeare
       end
     end
 
-    describe "#config" do
+    describe "#configure" do
       after { Scrapespeare.config.reset! }
 
       it "yields Scrapespeare.config" do
-        crawler.send(:config) do |config|
+        crawler.configure do |config|
           config.verbose = true
         end
 

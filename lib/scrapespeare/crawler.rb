@@ -21,15 +21,15 @@ module Scrapespeare
       end
     end
 
-    private
     def scrape(&proc)
       @scraper.instance_eval(&proc) if block_given?
     end
 
-    def config
+    def configure
       yield Scrapespeare.config if block_given?
     end
 
+    private
     def fetch(uri)
       http_adapter.fetch(uri)
     end
