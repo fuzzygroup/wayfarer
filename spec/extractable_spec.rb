@@ -34,7 +34,7 @@ module Scrapespeare
         added_extractor = extractable.extractables.first
 
         expect(added_extractor.identifier).to be :foo
-        expect(added_extractor.target_attributes).to eq ["href", "src"]
+        expect(added_extractor.target_attrs).to eq ["href", "src"]
       end
 
       it "initializes the added CSS Extractor's Matcher correctly" do
@@ -59,7 +59,7 @@ module Scrapespeare
         added_extractor = extractable.extractables.first
 
         expect(added_extractor.identifier).to be :foo
-        expect(added_extractor.target_attributes).to eq ["href", "src"]
+        expect(added_extractor.target_attrs).to eq ["href", "src"]
       end
 
       it "initializes the added XPath Extractor's Matcher correctly" do

@@ -40,8 +40,8 @@ module Scrapespeare
         expect(matcher.expression).to eq ".bar"
       end
 
-      it "sets @target_attributes" do
-        expect(extractor.target_attributes).to eq ["href"]
+      it "sets @target_attrs" do
+        expect(extractor.target_attrs).to eq ["href"]
       end
     end
 
