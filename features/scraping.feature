@@ -3,7 +3,7 @@ Feature: Web scraping
     In order to extract data from a website
     I want to scrape the website
 
-  Scenario: Scrape the site title
+  Scenario: Scraping a single element
     Given a Crawler
     And the following Scraper:
       """
@@ -30,6 +30,22 @@ Feature: Web scraping
         meta: {
           site_title: "Employee listing"
         }
+      }
+      """
+
+  Scenario: Scoping
+    Given a Crawler
+    And the following Scraper:
+      """
+      scope css: "#nickolas-howe" do
+        css :name, ".name"
+      end
+      """
+    When I crawl "index.html"
+    Then I get the following result:
+      """
+      {
+        name: "Nickolas Howe"
       }
       """
 
@@ -72,10 +88,10 @@ Feature: Web scraping
       """
       {
         employee_names: [
-          "Nickolas Howe",
-          "Ivah Swift",
-          "Lucy Walker",
-          "Sherwood Cremin"
+          'Nickolas Howe',
+          'Ivah Swift',
+          'Lucy Walker',
+          'Sherwood Cremin'
         ]
       }
       """
@@ -116,21 +132,5 @@ Feature: Web scraping
             phone_number: "1-856-928-9445"
           }
         ]
-      }
-      """
-
-  Scenario: Scoping
-    Given a Crawler
-    And the following Scraper:
-      """
-      scope css: "#nickolas-howe" do
-        css :name, ".name"
-      end
-      """
-    When I crawl "index.html"
-    Then I get the following result:
-      """
-      {
-        name: "Nickolas Howe"
       }
       """
