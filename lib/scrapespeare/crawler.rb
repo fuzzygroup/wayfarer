@@ -5,11 +5,12 @@ module Scrapespeare
 
     def initialize(&proc)
       @scraper = Scraper.new
+      @parser = Parser
       instance_eval(&proc) if block_given?
     end
 
     def crawl(uri)
-      doc = parse(fetch(uri))
+      doc = @parser.parse(fetch(uri))
       @scraper.extract(doc)
     end
 
