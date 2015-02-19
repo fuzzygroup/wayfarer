@@ -12,7 +12,8 @@ module Scrapespeare
     # @return [Array<String>]
     attr_reader :target_attrs
 
-    attr_reader :evaluator
+    # @return [Scrapespeare::Evaluator, Proc]
+    attr_accessor :evaluator
 
     # @param identifier [Symbol]
     # @param matcher_hash [Hash]
@@ -35,7 +36,7 @@ module Scrapespeare
       matched_nodes = @matcher.match(doc_or_nodes)
 
       if extractables.empty?
-        result = @evaluator.evaluate(matched_nodes, *@target_attrs)
+        result = evaluate(matched_nodes, *@target_attrs)
       else
         result = matched_nodes.map do |node|
           extractables.reduce(Hash.new) do |hash, extractable|
@@ -45,6 +46,15 @@ module Scrapespeare
       end
 
       { @identifier => result }
+    end
+
+    private
+    def evaluate(matched_nodes, *target_attrs)
+      if @evaluator.is_a?(Proc)
+        @evaluator.call(matched_nodes, *target_attrs)
+      else
+        @evaluator.evaluate(matched_nodes, *target_attrs)
+      end
     end
 
   end

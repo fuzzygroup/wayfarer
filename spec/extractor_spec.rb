@@ -27,7 +27,7 @@ module Scrapespeare
 
     describe "#initialize" do
       let(:extractor) do
-        Scrapespeare::Extractor.new(:foo, { css: ".bar" }, "href")
+        Scrapespeare::Extractor.new(:foo, { css: "#foo" }, "href")
       end
 
       it "sets @identifier" do
@@ -37,7 +37,7 @@ module Scrapespeare
       it "sets @matcher" do
         matcher = extractor.matcher
         expect(matcher.type).to be :css
-        expect(matcher.expression).to eq ".bar"
+        expect(matcher.expression).to eq "#foo"
       end
 
       it "sets @target_attrs" do
@@ -83,6 +83,36 @@ module Scrapespeare
               }
             ]
           })
+        end
+      end
+    end
+
+    describe "#evaluate" do
+      let(:extractor) do
+        Scrapespeare::Extractor.new(:beta_count, { css: ".beta" })
+      end
+
+      context "when @evaluator is a Proc" do
+        let(:evaluator) do
+          -> (matched_nodes, *target_attrs) { matched_nodes.count }
+        end
+
+        before { extractor.evaluator = evaluator }
+
+        it "evaluates the matched NodeSet by calling the Proc" do
+          result = extractor.extract(doc)
+          expect(result).to eq({ beta_count: 6 })
+        end
+      end
+
+      context "when @evaluator is not a Proc" do
+        let(:evaluator) { spy() }
+
+        before { extractor.evaluator = evaluator }
+
+        it "calls #evaluate on @evaluator" do
+          result = extractor.extract(doc)
+          expect(evaluator).to have_received :evaluate
         end
       end
     end
