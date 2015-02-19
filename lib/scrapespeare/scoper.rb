@@ -9,8 +9,8 @@ module Scrapespeare
     # @param matcher [Hash]
     # @param proc [Proc]
     # @see Matcher#initialize
-    def initialize(matcher, &proc)
-      @matcher = Matcher.new(matcher)
+    def initialize(matcher_hash, &proc)
+      @matcher = Matcher.new(matcher_hash)
 
       instance_eval(&proc) if block_given?
     end
@@ -21,13 +21,13 @@ module Scrapespeare
     #
     # @param document_or_nodes [#css, #xpath]
     # @return [Hash]
-    def extract(document_or_nodes)
-      matched_nodes = @matcher.match(document_or_nodes)
+    def extract(doc_or_nodes)
+      matched_nodes = @matcher.match(doc_or_nodes)
 
       if extractables.empty?
-        return {}
+        {}
       else
-        return extractables.reduce(Hash.new) do |hash, extractable|
+        extractables.reduce({}) do |hash, extractable|
           hash.merge(extractable.extract(matched_nodes))
         end
       end

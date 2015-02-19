@@ -50,5 +50,9 @@ module Scrapespeare
       extractables << Scoper.new(matcher_hash, &proc)
     end
 
+    def populate_evaluator(identifier, evaluator)
+      
+    end
+
   end
 end
