@@ -7,27 +7,17 @@ module Scrapespeare
 
     describe "#extractables" do
       context "with @extractables set" do
-        before { extractable.instance_variable_set(:@extractables, "set") }
+        before { extractable.instance_variable_set(:@extractables, :set) }
 
         it "exposes @extractables" do
-          expect(extractable.extractables).to eq("set")
+          expect(extractable.extractables).to be :set
         end
       end
 
       context "without @extractables set" do
         it "returns an empty list" do
-          expect(extractable.extractables).to eq([])
+          expect(extractable.extractables).to eq []
         end
-      end
-    end
-
-    describe "#add_extractable" do
-      let(:other_extractable) { spy("other_extractable") }
-
-      it "adds an Extractable" do
-        expect {
-          extractable.send(:add_extractable, other_extractable)
-        }.to change{ extractable.extractables.count }.by(1)
       end
     end
 

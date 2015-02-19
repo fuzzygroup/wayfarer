@@ -16,24 +16,24 @@ Feature: Web scraping
       { site_title: "Employee listing" }
       """
 
-    Scenario: Grouping
-      Given the dummy website "index.html"
-      And a Crawler
-      And the following Scraper:
-        """
-        group :meta do
-          css :site_title, 'title'
-        end
-        """
-      When I crawl the website
-      Then I get the following result:
-        """
-        {
-          meta: {
-            site_title: "Employee listing"
-          }
+  Scenario: Grouping
+    Given the dummy website "index.html"
+    And a Crawler
+    And the following Scraper:
+      """
+      group :meta do
+        css :site_title, 'title'
+      end
+      """
+    When I crawl the website
+    Then I get the following result:
+      """
+      {
+        meta: {
+          site_title: "Employee listing"
         }
-        """
+      }
+      """
 
   Scenario: Scrape heading and tagline
     Given the dummy website "index.html"
@@ -125,19 +125,19 @@ Feature: Web scraping
     }
     """
 
-    Scenario: Scoping
-    Given the dummy website "index.html"
-    And a Crawler
-    And the following Scraper:
-      """
-      scope css: "#nickolas-howe" do
-        css :name, ".name"
-      end
-      """
-    When I crawl the website
-    Then I get the following result:
-      """
-      {
-        name: "Nickolas Howe"
-      }
-      """
+  Scenario: Scoping
+  Given the dummy website "index.html"
+  And a Crawler
+  And the following Scraper:
+    """
+    scope css: "#nickolas-howe" do
+      css :name, ".name"
+    end
+    """
+  When I crawl the website
+  Then I get the following result:
+    """
+    {
+      name: "Nickolas Howe"
+    }
+    """

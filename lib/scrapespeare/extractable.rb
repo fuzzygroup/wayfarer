@@ -14,10 +14,9 @@ module Scrapespeare
     # @param proc [Proc]
     # @see #add_extractable
     def css(identifier, selector, *target_attributes, &proc)
-      extractor = Extractor.new(
+      extractables << Extractor.new(
         identifier, { css: selector }, *target_attributes, &proc
       )
-      add_extractable(extractor)
     end
 
     # Adds an `Extractor` to `@extractables` and sets its `options`
@@ -28,10 +27,9 @@ module Scrapespeare
     # @param proc [Proc]
     # @see #add_extractable
     def xpath(identifier, expression, *target_attributes, &proc)
-      extractor = Extractor.new(
+      extractables << Extractor.new(
         identifier, { xpath: expression }, *target_attributes, &proc
       )
-      add_extractable(extractor)
     end
 
     # Adds an `ExtractorGroup` to `@extractables` and sets its `options`
@@ -40,8 +38,7 @@ module Scrapespeare
     # @param proc [Proc]
     # @see #add_extractable
     def group(identifier, &proc)
-      extractor_group = ExtractableGroup.new(identifier, &proc)
-      add_extractable(extractor_group)
+      extractables << ExtractableGroup.new(identifier, &proc)
     end
 
     # Adds a `Scoper` to `@extractables` and sets its `options`
@@ -50,17 +47,7 @@ module Scrapespeare
     # @param proc [Proc]
     # @see #add_extractable
     def scope(matcher, &proc)
-      scoper = Scoper.new(matcher, &proc)
-      add_extractable(scoper)
-    end
-
-    private
-    # Adds an `Extractable` to `@extractables` and sets its `options`
-    #
-    # @param extractable [Extractable]
-    # @see Configurable#set
-    def add_extractable(extractable)
-      extractables << extractable
+      extractables << Scoper.new(matcher, &proc)
     end
 
   end
