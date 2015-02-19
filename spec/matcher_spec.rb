@@ -6,25 +6,27 @@ module Scrapespeare
   describe "#initialize" do
     let(:matcher) { Matcher.new(css: "h1") }
 
-    it "sets @type" do
+    it "sets @type correctly" do
       expect(matcher.type).to be :css
     end
 
-    it "sets @expression" do
+    it "sets @expression correctly" do
       expect(matcher.expression).to eq "h1"
     end
   end
 
   describe "#match" do
-    let(:document_or_nodes) { spy("document_or_nodes") }
+    let(:doc) do
+      Nokogiri::HTML <<-html
+        <span id="foo">Foo</span>
+        <span id="bar">Bar</span>
+      html
+    end
 
-    context "when @type is :css" do
-      let(:matcher) { Matcher.new(css: "h1") }
+    let(:matcher) { Matcher.new(css: "#foo") }
 
-      it "calls #css on document_or_nodes" do
-        matcher.match(document_or_nodes)
-        expect(document_or_nodes).to have_received(:css)
-      end
+    it "returns the expected NodeSet" do
+      expect(matcher.match(doc).count).to be 1
     end
 
     context "when @type is unsupported" do
@@ -32,7 +34,7 @@ module Scrapespeare
 
       it "raises a RuntimeError" do
         expect {
-          matcher.match(document_or_nodes)
+          matcher.match(doc)
         }.to raise_error(RuntimeError)
       end
     end
