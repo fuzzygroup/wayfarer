@@ -1,6 +1,12 @@
 module Scrapespeare
   module Extractable
 
+    # @return [Symbol]
+    attr_reader :identifier
+
+    # @return [Scrapespeare::Evaluator, Proc]
+    attr_accessor :evaluator
+
     # @return [Array<Extractable>]
     def extractables
       @extractables ||= []
@@ -50,8 +56,12 @@ module Scrapespeare
       extractables << Scoper.new(matcher_hash, &proc)
     end
 
-    def populate_evaluator(identifier, evaluator)
-      
+    def pass_evaluator(extractor_identifier, evaluator)
+      @evaluator = evaluator if @identifier == extractor_identifier
+
+      extractables.each do |extractable|
+        extractable.pass_evaluator(extractor_identifier, evaluator)
+      end
     end
 
   end

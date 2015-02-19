@@ -105,6 +105,23 @@ module Scrapespeare
     end
 
     describe "#populate_evaluator" do
+      let(:extractor_a) { Extractor.new(:foo, css: "#foo") }
+      let(:extractor_b) { Extractor.new(:bar, css: "#bar") }
+
+      before do
+        extractable.instance_variable_set(:@extractables, [
+          extractor_a, extractor_b
+        ])
+      end
+
+      let(:evaluator) { Object.new }
+
+      it "passes the evaluator to the corresponding Extractable(s)" do
+        extractable.pass_evaluator(:foo, evaluator)
+
+        expect(extractor_a.evaluator).to be evaluator
+        expect(extractor_b.evaluator).not_to be evaluator
+      end
     end
 
   end

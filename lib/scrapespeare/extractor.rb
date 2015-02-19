@@ -3,17 +3,11 @@ module Scrapespeare
 
     include Extractable
 
-    # @return [Symbol]
-    attr_reader :identifier
-
     # @return [Matcher]
     attr_reader :matcher
 
     # @return [Array<String>]
     attr_reader :target_attrs
-
-    # @return [Scrapespeare::Evaluator, Proc]
-    attr_accessor :evaluator
 
     # @param identifier [Symbol]
     # @param matcher_hash [Hash]

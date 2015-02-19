@@ -3,9 +3,6 @@ module Scrapespeare
 
     include Extractable
 
-    # @return [Symbol]
-    attr_reader :identifier
-
     # @param identifier [Symbol]
     # @param proc [Proc]
     def initialize(identifier, &proc)
