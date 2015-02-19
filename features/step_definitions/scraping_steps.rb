@@ -4,8 +4,12 @@ Given(/^the dummy website "(.*?)"$/) do |file_name|
   @uri = "http://localhost:8080/#{file_name}"
 end
 
-Given(/^the following Crawler:$/) do |code|
-  @crawler = Scrapespeare::Crawler.new { scrape { eval(code) } }
+Given(/^a Crawler$/) do
+  @crawler = Scrapespeare::Crawler.new
+end
+
+Given(/^the following Scraper:$/) do |code|
+  @crawler.scrape { eval(code) }
 end
 
 When(/^I crawl the website$/) do

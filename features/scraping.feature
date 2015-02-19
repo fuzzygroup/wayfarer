@@ -5,7 +5,8 @@ Feature: Web scraping
 
   Scenario: Scrape the site title
     Given the dummy website "index.html"
-    And the following Crawler:
+    And a Crawler
+    And the following Scraper:
       """
       css :site_title, 'title'
       """
@@ -17,7 +18,8 @@ Feature: Web scraping
 
     Scenario: Grouping
       Given the dummy website "index.html"
-      And the following Crawler:
+      And a Crawler
+      And the following Scraper:
         """
         group :meta do
           css :site_title, 'title'
@@ -35,7 +37,8 @@ Feature: Web scraping
 
   Scenario: Scrape heading and tagline
     Given the dummy website "index.html"
-    And the following Crawler:
+    And a Crawler
+    And the following Scraper:
       """
       css :heading, '#site-header h1'
       css :tagline, '#site-header p'
@@ -51,7 +54,8 @@ Feature: Web scraping
 
   Scenario: Attribute evaluation
   Given the dummy website "index.html"
-  And the following Crawler:
+  And a Crawler
+  And the following Scraper:
     """
     css :site_header_role, "#site-header", "role"
     """
@@ -63,7 +67,8 @@ Feature: Web scraping
 
   Scenario: Scrape multiple elements
   Given the dummy website "index.html"
-  And the following Crawler:
+  And a Crawler
+  And the following Scraper:
     """
     css :employee_names, "#employees li .name"
     """
@@ -82,7 +87,8 @@ Feature: Web scraping
 
   Scenario: Nesting
   Given the dummy website "index.html"
-  And the following Crawler:
+  And a Crawler
+  And the following Scraper:
     """
     css :employees, "#employees li" do
       css :name, ".name"
@@ -121,7 +127,8 @@ Feature: Web scraping
 
     Scenario: Scoping
     Given the dummy website "index.html"
-    And the following Crawler:
+    And a Crawler
+    And the following Scraper:
       """
       scope css: "#nickolas-howe" do
         css :name, ".name"
