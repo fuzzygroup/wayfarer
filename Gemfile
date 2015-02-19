@@ -16,6 +16,7 @@ group :spec do
   gem "webmock", "~> 1.20"
   gem "cucumber", "~> 1.3"
   gem "aruba", "~> 0.6"
+  gem "sinatra", "~> 1.4"
 end
 
 group :doc do

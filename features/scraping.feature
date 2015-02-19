@@ -15,7 +15,7 @@ Feature: Web scraping
       { site_title: "Employee listing" }
       """
 
-    Scenario: Arbitrary nesting
+    Scenario: Grouping
       Given the dummy website "index.html"
       And the following Crawler:
         """
@@ -49,7 +49,7 @@ Feature: Web scraping
       }
       """
 
-  Scenario: Scrape attribute of an element
+  Scenario: Attribute evaluation
   Given the dummy website "index.html"
   And the following Crawler:
     """
@@ -80,7 +80,7 @@ Feature: Web scraping
     }
     """
 
-  Scenario: Scrape nested elements
+  Scenario: Nesting
   Given the dummy website "index.html"
   And the following Crawler:
     """
