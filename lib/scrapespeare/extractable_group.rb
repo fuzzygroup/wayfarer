@@ -15,14 +15,14 @@ module Scrapespeare
 
     # TODO Documentation
     #
-    # @param document_or_nodes [#css, #xpath]
+    # @param doc_or_nodes [#css, #xpath]
     # @return [Hash]
-    def extract(document_or_nodes)
+    def extract(doc_or_nodes)
       if extractables.empty?
         result = ""
       else
         result = extractables.reduce(Hash.new) do |hash, extractable|
-          hash.merge(extractable.extract(document_or_nodes))
+          hash.merge(extractable.extract(doc_or_nodes))
         end
       end
 
