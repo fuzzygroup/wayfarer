@@ -19,7 +19,7 @@ module Scrapespeare
       after { Scrapespeare.config.reset! }
 
       context "when config.http_adapter is :rest_client" do
-        it "sets @http_adapter to a RestClientAdapter" do
+        it "returns a RestClientAdapter" do
           Scrapespeare.config.http_adapter = :rest_client
           expect(crawler.http_adapter).to \
             be_a Scrapespeare::HTTPAdapters::RestClientAdapter
@@ -30,7 +30,7 @@ module Scrapespeare
         before { WebMock.allow_net_connect! }
         after { crawler.http_adapter.release_driver }
 
-        it "sets @http_adapter to a SeleniumAdapter" do
+        it "returns a SeleniumAdapter" do
           Scrapespeare.config.http_adapter = :selenium
           expect(crawler.http_adapter).to \
             be_a Scrapespeare::HTTPAdapters::SeleniumAdapter
