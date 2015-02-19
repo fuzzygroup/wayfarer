@@ -43,14 +43,14 @@ task :build do
 end
 
 desc "List hi"
-task(:todo) do
+task :todo do
   sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec features | tr -s [:space:])
 end
 
-task(:start_test_app) do
-  @httpd = Thread.new { Rack::Handler::WEBrick.run TestApp }
+task :start_test_app do
+  @server_thread = Thread.new { Rack::Handler::WEBrick.run TestApp }
 end
 
-task(:stop_test_app) do
-  @httpd.kill
+task :stop_test_app do
+  @server_thread.kill
 end
