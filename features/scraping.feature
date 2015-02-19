@@ -15,6 +15,25 @@ Feature: Web scraping
       { site_title: "Employee listing" }
       """
 
+  Scenario: Scraping multiple elements
+    Given a Crawler
+    And the following Scraper:
+      """
+      css :employee_names, "#employees li .name"
+      """
+    When I crawl "index.html"
+    Then I get the following result:
+      """
+      {
+        employee_names: [
+          'Nickolas Howe',
+          'Ivah Swift',
+          'Lucy Walker',
+          'Sherwood Cremin'
+        ]
+      }
+      """
+
   Scenario: Grouping
     Given a Crawler
     And the following Scraper:
@@ -75,25 +94,6 @@ Feature: Web scraping
     Then I get the following result:
       """
       { site_header_role: "banner" }
-      """
-
-    Scenario: Scrape multiple elements
-    Given a Crawler
-    And the following Scraper:
-      """
-      css :employee_names, "#employees li .name"
-      """
-    When I crawl "index.html"
-    Then I get the following result:
-      """
-      {
-        employee_names: [
-          'Nickolas Howe',
-          'Ivah Swift',
-          'Lucy Walker',
-          'Sherwood Cremin'
-        ]
-      }
       """
 
   Scenario: Nesting

@@ -10,12 +10,12 @@ module Scrapespeare
     #
     # @param identifier [Symbol]
     # @param selector [String]
-    # @param target_attributes [Array<String>]
+    # @param target_attrs [Array<Symbol>]
     # @param proc [Proc]
     # @see #add_extractable
-    def css(identifier, selector, *target_attributes, &proc)
+    def css(identifier, selector, *target_attrs, &proc)
       extractables << Extractor.new(
-        identifier, { css: selector }, *target_attributes, &proc
+        identifier, { css: selector }, *target_attrs, &proc
       )
     end
 
@@ -23,12 +23,12 @@ module Scrapespeare
     #
     # @param identifier [Symbol]
     # @param expression [String]
-    # @param target_attributes [Array<String>]
+    # @param target_attrs [Array<Symbol>]
     # @param proc [Proc]
     # @see #add_extractable
-    def xpath(identifier, expression, *target_attributes, &proc)
+    def xpath(identifier, expression, *target_attrs, &proc)
       extractables << Extractor.new(
-        identifier, { xpath: expression }, *target_attributes, &proc
+        identifier, { xpath: expression }, *target_attrs, &proc
       )
     end
 
@@ -43,11 +43,11 @@ module Scrapespeare
 
     # Adds a `Scoper` to `@extractables` and sets its `options`
     #
-    # @param matcher [Hash]
+    # @param matcher_hash [Hash]
     # @param proc [Proc]
     # @see #add_extractable
-    def scope(matcher, &proc)
-      extractables << Scoper.new(matcher, &proc)
+    def scope(matcher_hash, &proc)
+      extractables << Scoper.new(matcher_hash, &proc)
     end
 
   end
