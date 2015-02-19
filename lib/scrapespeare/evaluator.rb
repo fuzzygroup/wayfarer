@@ -48,8 +48,8 @@ module Scrapespeare
     # @param element [Nokogiri::XML::Element]
     # @param attribute [String]
     # @return [String]
-    def evaluate_attribute(element, attribute)
-      element.attr(attribute).to_s
+    def evaluate_attribute(element, attr)
+      element.attr(attr).to_s
     end
 
     # Returns an element's attribute values
@@ -57,11 +57,9 @@ module Scrapespeare
     # @param element [Nokogiri::XML::Element]
     # @param attributes [Array<String>]
     # @return [Hash]
-    def evaluate_attributes(element, *attributes)      
-      attributes.reduce(Hash.new) do |hash, attribute|
-        hash.merge({
-          attribute.to_sym => evaluate_attribute(element, attribute)
-        })
+    def evaluate_attributes(element, *attrs)      
+      attrs.reduce({}) do |hash, attr|
+        hash.merge({ attr.to_sym => evaluate_attribute(element, attr) })
       end
     end
 

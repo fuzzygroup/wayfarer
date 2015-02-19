@@ -87,73 +87,72 @@ module Scrapespeare
     end
 
     describe ".evaluate_content" do
-      let(:element) { node_set("<span>Hello world!</span>").first }
+      let(:element) do
+        node_set(%(<span class="foo" id="bar">Foobar</span>)).first
+      end
 
       it "returns the element's content" do
         evaluated = evaluator.evaluate_content(element)
-        expect(evaluated).to eq "Hello world!"
+        expect(evaluated).to eq "Foobar"
       end
 
       it "sanitizes the element's content" do
-        element = node_set("<span>\n   Hello world!   \n </span>").first
+        element = node_set("<span>\n   Foobar   \n </span>").first
 
         evaluated = evaluator.evaluate_content(element)
-        expect(evaluated).to eq "Hello world!"
+        expect(evaluated).to eq "Foobar"
       end
     end
 
     describe ".evaluate_attribute" do
       let(:element) do
-        node_set("<em class='greeting'>Hello!</em>").first
+        node_set(%(<span class="foo" id="bar">Foobar</span>)).first
       end
 
       it "returns the attribute's value" do
-        evaluated = evaluator.send(:evaluate_attribute, element, :class)
-        expect(evaluated).to eq "greeting"
+        evaluated = evaluator.evaluate_attribute(element, "class")
+        expect(evaluated).to eq "foo"
       end
     end
 
     describe ".evaluate_attributes" do
       let(:element) do
-        node_set("<em class='greeting' id='hello'>Hello!</em>").first
+        node_set(%(<span class="foo" id="bar">Foobar</span>)).first
       end
 
       it "returns a Hash of mapped evaluated attributes" do
         evaluated = evaluator.evaluate_attributes(element, "class", "id")
-        expect(evaluated).to eq({
-          :class => "greeting",
-          :id => "hello"
-        })
+        expect(evaluated).to eq({ class: "foo", id: "bar" })
       end
 
       context "with mismatching attribute" do
-        it "returns a an empty value for the mismatching attribute" do
-          evaluated = evaluator.send(:evaluate_attributes, element, "foo")
-          expect(evaluated).to eq({ :foo => "" })
+        it "maps the attribute to an empty String" do
+          evaluated = evaluator.send(:evaluate_attributes, element, "baz")
+          expect(evaluated).to eq({ :baz => "" })
         end
       end
     end
 
     describe ".sanitize" do
       it "removes line-breaks" do
-        input = "\nHello world!\n"
+        input = "\nFoobar\n"
         output = evaluator.sanitize(input)
 
-        expect(output).to eq "Hello world!"
+        expect(output).to eq "Foobar"
       end
 
       it "removes leading and trailing white space" do
-        input = "      Hello world!          "
+        input = "      Foobar          "
         output = evaluator.sanitize(input)
 
-        expect(output).to eq "Hello world!"
+        expect(output).to eq "Foobar"
       end
 
       it "removes both line-breaks, leading and trailing white space" do
-        input = "\n      Hello world!     \n     "
+        input = "    \n      Foobar     \n     "
         output = evaluator.sanitize(input)
 
-        expect(output).to eq "Hello world!"
+        expect(output).to eq "Foobar"
       end
     end
 
