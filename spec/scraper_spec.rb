@@ -41,7 +41,7 @@ module Scrapespeare
       end
 
       it "returns a tainted Object" do
-        result = scraper.extract("http://example.com")
+        result = scraper.extract(doc)
         expect(result).to be_tainted
       end
     end
