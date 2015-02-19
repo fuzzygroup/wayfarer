@@ -15,7 +15,9 @@ namespace(:spec) do
   end
 end
 
-Cucumber::Rake::Task.new(features: [:start_httpd])
+Cucumber::Rake::Task.new(features: [:start_httpd]) do |task|
+  task.cucumber_opts = "features --format progress"
+end
 
 # Make sure the HTTP server thread gets terminated
 %w(spec:isolated spec:live features).each do |task|
@@ -28,8 +30,8 @@ task(:build) do
   sh "gem build scrapespeare.gemspec"
 end
 
-task(:todos) do
-  sh %(grep -rn "# \\(FIXME\\|TODO\\)" .)
+task(:todo) do
+  sh %(grep -rn "# \\(FIXME\\|TODO\\)" lib | tr -s [:space:])
 end
 
 task(:start_httpd) do
