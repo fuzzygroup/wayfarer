@@ -47,6 +47,10 @@ task :todo do
   sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec features | tr -s [:space:])
 end
 
+task :run_test_app do
+  Rack::Handler::WEBrick.run TestApp
+end
+
 task :start_test_app do
   @server_thread = Thread.new { Rack::Handler::WEBrick.run TestApp }
 end
