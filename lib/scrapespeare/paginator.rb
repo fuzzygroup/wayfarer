@@ -3,7 +3,6 @@ module Scrapespeare
 
     attr_reader :http_adapter
     attr_reader :parser
-    attr_reader :state
 
     def initialize(http_adapter, parser)
       @http_adapter = http_adapter

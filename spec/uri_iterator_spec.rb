@@ -9,6 +9,10 @@ module Scrapespeare
       it "sets @base_uri" do
         expect(iterator.base_uri).to eq "http://example.com"
       end
+
+      it "sets @rule_set" do
+        expect(iterator.rule_set).to eq({})
+      end
     end
 
   end
