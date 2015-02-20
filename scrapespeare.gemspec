@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency "hashie", "~> 3.4", ">= 3.4.0"
   s.add_dependency "rest-client", "~> 1.7", ">= 1.7.2"
   s.add_dependency "rack", "~> 1.6", ">= 1.6.0"
+  s.add_dependency "activesupport", "~> 4.1", ">= 4.1.9"
 
   s.add_development_dependency "rspec", "~> 3.1", ">= 3.1.0"
   s.add_development_dependency "faker", "~> 1.4", ">= 1.4.3"
