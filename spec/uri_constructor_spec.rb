@@ -14,6 +14,13 @@ module Scrapespeare
           expect(uri).to eq "http://mozilla.org"
         end
       end
+
+      context "with relative path given" do
+        it "returns the absolute path" do
+          uri = constructor.absolute_uri(base_uri, "http://mozilla.org")
+          expect(uri).to eq "http://mozilla.org"
+        end
+      end
     end
 
   end

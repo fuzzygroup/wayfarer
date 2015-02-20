@@ -8,6 +8,8 @@ require "rest-client"
 
 $: << File.dirname(__FILE__)
 
+require "scrapespeare/core_ext/uri"
+
 require "scrapespeare/configuration"
 require "scrapespeare/extractable"
 require "scrapespeare/http_adapters/selenium_adapter"
