@@ -13,5 +13,11 @@ module Scrapespeare
       end
     end
 
+    describe "#respond_to?" do
+      it "proxies method calls to the wrapped URI" do
+        expect(uri).to respond_to :host
+      end
+    end
+
   end
 end
