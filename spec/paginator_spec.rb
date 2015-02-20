@@ -21,22 +21,32 @@ module Scrapespeare
       end
     end
 
-    describe "#has_successor_uri?" do
-      context "#successor_uri returns a falsey value" do
-        before { paginator.define_singleton_method(:successor_uri) { nil } }
+    describe "#has_successor_doc?" do
+      context "#successor_doc returns a falsey value" do
+        before { paginator.define_singleton_method(:successor_doc) { nil } }
 
         it "returns false" do
-          expect(paginator.send(:has_successor_uri?)).to be false
+          expect(paginator.send(:has_successor_doc?)).to be false
         end
       end
 
-      context "#successor_uri returns a truthy value" do
-        before { paginator.define_singleton_method(:successor_uri) { true } }
+      context "#successor_doc returns a truthy value" do
+        before { paginator.define_singleton_method(:successor_doc) { true } }
 
         it "returns false" do
-          expect(paginator.send(:has_successor_uri?)).to be true
+          expect(paginator.send(:has_successor_doc?)).to be true
         end
       end
+    end
+
+    describe "#successor_doc" do
+      it "returns nil" do
+        expect(paginator.send(:successor_doc)).to be nil
+      end
+    end
+
+    describe "#paginate" do
+      
     end
 
   end

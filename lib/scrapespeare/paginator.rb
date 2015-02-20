@@ -13,22 +13,15 @@ module Scrapespeare
     end
 
     def paginate(uri)
-      loop do
-        response_body = @http_adapter.fetch(uri)
-        doc = @parser.parse(response_body)
-
-        yield doc
-
-        break unless has_successor_uri?
-      end
+      yield successor_doc while has_successor_doc?
     end
 
     private
-    def has_successor_uri?
-      !!successor_uri
+    def has_successor_doc?
+      !!successor_doc
     end
 
-    def successor_uri
+    def successor_doc
       nil
     end
 
