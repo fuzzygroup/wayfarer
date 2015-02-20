@@ -11,6 +11,8 @@ module Scrapespeare
     end
 
     def paginate(uri)
+      @uri = uri
+
       while succ_doc = successor_doc
         yield succ_doc
       end

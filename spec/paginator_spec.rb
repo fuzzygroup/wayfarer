@@ -36,6 +36,12 @@ module Scrapespeare
         paginator.paginate("http://example.com") { |_| yield_count += 1 }
         expect(yield_count).to be 5
       end
+
+      it "sets @uri" do
+        paginator.paginate("http://example.com") { |_| }
+        expect(paginator.instance_variable_get(:@uri)).to eq \
+          "http://example.com"
+      end
     end
 
   end
