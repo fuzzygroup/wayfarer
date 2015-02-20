@@ -7,8 +7,8 @@ describe URI do
   describe "#parsed_query" do
     it "returns the parsed query string" do
       expect(uri.parsed_query).to eq({
-        "a" => ["b"],
-        "c" => ["d"]
+        "a" => "b",
+        "c" => "d"
       })
     end
   end
@@ -16,7 +16,7 @@ describe URI do
   describe "#parsed_query" do
     it "returns the parsed fragment string" do
       expect(uri.parsed_fragment).to eq({
-        "e" => ["f"]
+        "e" => "f"
       })
     end
   end

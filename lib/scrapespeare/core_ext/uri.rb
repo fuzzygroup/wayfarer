@@ -1,14 +1,14 @@
 require "uri"
-require "cgi"
+require "rack/utils"
 
 module URI
 
   def parsed_query
-    CGI.parse(self.query)
+    Rack::Utils.parse_nested_query(self.query)
   end
 
   def parsed_fragment
-    CGI.parse(self.fragment)
+    Rack::Utils.parse_nested_query(self.fragment)
   end
 
 end
