@@ -16,11 +16,22 @@ module Scrapespeare
     end
 
     describe "#set_query_param" do
-      let(:iterator) { URIIterator.new("http://example.com") }
+      context "without query parameter present" do
+        let(:iterator) { URIIterator.new("http://example.com") }
 
-      it "updates the query string" do
-        iterator.send(:set_query_param, "foo", "bar")
-        expect(iterator.uri.to_s).to eq "http://example.com?foo=bar"
+        it "sets the query parameter" do
+          iterator.send(:set_query_param, "foo", "bar")
+          expect(iterator.uri.to_s).to eq "http://example.com?foo=bar"
+        end
+      end
+
+      context "with query parameter present" do
+        let(:iterator) { URIIterator.new("http://example.com?foo=baz") }
+
+        it "updates the query parameter" do
+          iterator.send(:set_query_param, "foo", "bar")
+          expect(iterator.uri.to_s).to eq "http://example.com?foo=bar"
+        end
       end
     end
 
