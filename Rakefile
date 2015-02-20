@@ -42,7 +42,7 @@ task :build do
   sh "gem build scrapespeare.gemspec --verbose"
 end
 
-desc "List hi"
+desc %(List lines that contain "FIXME" or "TODO")
 task :todo do
   sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec features | tr -s [:space:])
 end
