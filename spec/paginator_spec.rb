@@ -15,28 +15,6 @@ module Scrapespeare
       it "sets @parser" do
         expect(paginator.parser).not_to be nil
       end
-
-      it "sets @state" do
-        expect(paginator.state).to eq({})
-      end
-    end
-
-    describe "#has_successor_doc?" do
-      context "#successor_doc returns a falsey value" do
-        before { paginator.define_singleton_method(:successor_doc) { nil } }
-
-        it "returns false" do
-          expect(paginator.send(:has_successor_doc?)).to be false
-        end
-      end
-
-      context "#successor_doc returns a truthy value" do
-        before { paginator.define_singleton_method(:successor_doc) { true } }
-
-        it "returns false" do
-          expect(paginator.send(:has_successor_doc?)).to be true
-        end
-      end
     end
 
     describe "#successor_doc" do
@@ -46,7 +24,18 @@ module Scrapespeare
     end
 
     describe "#paginate" do
-      
+      before do
+        paginator.define_singleton_method(:successor_doc) do
+          # TODO This hurts my brain
+          ((@counter ||= 0) < 5) ? (@counter += 1 and true) : nil
+        end
+      end
+
+      it "yields objects while #successor_doc returns a truthy value" do
+        yield_count = 0
+        paginator.paginate("http://example.com") { |_| yield_count += 1 }
+        expect(yield_count).to be 5
+      end
     end
 
   end
