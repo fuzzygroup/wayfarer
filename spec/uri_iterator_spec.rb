@@ -35,5 +35,14 @@ module Scrapespeare
       end
     end
 
+    describe "#get_integer_query_param" do
+      let(:iterator) { URIIterator.new("http://example.com?foo=123") }
+
+      it "converts the query parameter to an Integer" do
+        param = iterator.send(:get_integer_query_param, "foo")
+        expect(param).to be 123
+      end
+    end
+
   end
 end

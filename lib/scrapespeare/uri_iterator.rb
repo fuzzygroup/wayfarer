@@ -21,5 +21,9 @@ module Scrapespeare
       @uri.query = @uri.parsed_query.merge({ param => val }).to_query
     end
 
+    def get_integer_query_param(param)
+      @uri.parsed_query[param].to_i
+    end
+
   end
 end
