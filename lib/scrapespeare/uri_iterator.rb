@@ -10,7 +10,7 @@ module Scrapespeare
       @uri = URI(base_uri)
       @opts = opts
 
-      fail "No parameter given" unless @opts[:param]
+      fail "A parameter to iterate over is missing" unless @opts[:param]
     end
 
     def each
