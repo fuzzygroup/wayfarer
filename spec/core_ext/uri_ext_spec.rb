@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe URI do
+describe URIExt do
 
   let(:uri) { URI("http://example.com/?a=b&c=d") }
 
