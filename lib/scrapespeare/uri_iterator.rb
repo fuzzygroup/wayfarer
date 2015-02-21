@@ -29,9 +29,5 @@ module Scrapespeare
       end
     end
 
-    private
-    def increment_uri
-    end
-
   end
 end
