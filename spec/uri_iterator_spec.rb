@@ -44,6 +44,21 @@ module Scrapespeare
             ))
           end
         end
+
+        context "with parameter and upper bound given" do
+          let(:opts) { { param: "page", to: 5 } }
+
+          it "yields the expected URIs" do
+            uris = iterator.to_enum.map(&:to_s)
+            expect(uris).to eq(%w(
+              http://example.com
+              http://example.com?page=2
+              http://example.com?page=3
+              http://example.com?page=4
+              http://example.com?page=5
+            ))
+          end
+        end
       end
     end
 
