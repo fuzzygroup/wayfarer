@@ -20,7 +20,7 @@ module Scrapespeare
       lower_bound = @opts[:from] || 2
       upper_bound = @opts[:to]   || infinity
 
-      range = (2..infinity)
+      range = (lower_bound..infinity)
 
       # FIXME Don't bomb memory
       range.each do |i, uri = @uri.clone|
