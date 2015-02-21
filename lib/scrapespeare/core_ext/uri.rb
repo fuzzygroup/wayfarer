@@ -17,6 +17,11 @@ module URIExt
     self.parsed_query[key]
   end
 
+  def increment_query_param(key, incr = 1)
+    val = Integer(get_query_param(key))
+    set_query_param(key, val + incr)
+  end
+
 end
 
 URI::HTTP.include(URIExt)
