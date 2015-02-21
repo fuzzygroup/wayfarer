@@ -15,17 +15,18 @@ module Scrapespeare
       it "sets @opts" do
         expect(iterator.opts).to eq({ param: "foo" })
       end
+
+      context "without parameter to iterative over given" do
+        it "raises a RuntimeError" do
+          expect {
+            URIIterator.new("http://example.com")
+          }.to raise_error(RuntimeError)
+        end
+      end
     end
 
     describe "#each" do
       let(:iterator) { URIIterator.new("http://example.com", opts) }
-
-      context "without parameter given" do
-        let(:opts) {{}}
-        it "raises a RuntimeError" do
-          expect { iterator }.to raise_error(RuntimeError)
-        end
-      end
 
       context "with parameterized URI given" do
         let(:iterator) do
