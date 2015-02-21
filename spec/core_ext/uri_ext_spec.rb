@@ -16,7 +16,7 @@ describe URI do
   describe "#set_query_param" do
     context "with query parameter present" do
       it "overrides the query parameter's value" do
-        uri.set_query_param "a", "foo"
+        uri.set_query_param("a", "foo")
         expect(uri.to_s).to eq "http://example.com/?a=foo&c=d"
       end
     end

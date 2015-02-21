@@ -14,6 +14,12 @@ module Scrapespeare
     end
 
     def each
+      param = @rule_set[:param]
+
+      loop do
+        @uri.increment_query_param(param)
+        yield @uri
+      end
     end
 
   end
