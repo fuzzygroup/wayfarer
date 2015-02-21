@@ -14,19 +14,36 @@ module Scrapespeare
     def each
       yield @uri
 
-      infinity = 1.0 / 0 # => Infinity
-
-      param       = @opts[:param]
-      lower_bound = @opts[:from] || 2
-      upper_bound = @opts[:to]   || infinity
-      step        = @opts[:step] || 1
-
       # FIXME Don't bomb memory
       # Calling #set_query_param on @uri somehow won't work...
       (lower_bound..upper_bound).step(step).each do |i, uri = @uri.clone|
         uri.set_query_param(param, i.to_i)
         yield uri
       end
+    end
+
+    private
+    def param
+      @opts[:param]
+    end
+
+    def lower_bound
+      if from_opts = @opts[:from]
+        from_opts
+      elsif from_uri = @uri.get_query_param(param)
+        from_uri.to_i + 1
+      else
+        2
+      end
+    end
+
+    def upper_bound
+      infinity = 1.0 / 0
+      @opts[:to] || infinity
+    end
+
+    def step
+      @opts[:step] || 1
     end
 
   end

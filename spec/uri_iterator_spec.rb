@@ -18,6 +18,21 @@ module Scrapespeare
     describe "#each" do
       let(:iterator) { URIIterator.new("http://example.com", opts) }
 
+      context "with parameterized URI given" do
+        let(:iterator) do
+          URIIterator.new("http://example.com?page=42", { param: "page" })
+        end
+
+        it "yields the expected URIs" do
+          uris = iterator.to_enum.take(3).map(&:to_s)
+          expect(uris).to eq(%w(
+            http://example.com?page=42
+            http://example.com?page=43
+            http://example.com?page=44
+          ))
+        end
+      end
+
       context "with parameter given" do
         let(:opts) { { param: "page" } }
 
