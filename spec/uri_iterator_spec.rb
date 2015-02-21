@@ -4,18 +4,6 @@ module Scrapespeare
   describe URIIterator do
 
     describe "#initialize" do
-      let(:iterator) do
-        URIIterator.new("http://example.com", param: "foo")
-      end
-
-      it "sets @uri" do
-        expect(iterator.uri.to_s).to eq "http://example.com"
-      end
-
-      it "sets @opts" do
-        expect(iterator.opts).to eq({ param: "foo" })
-      end
-
       context "without parameter to iterative over given" do
         it "raises a RuntimeError" do
           expect {
