@@ -98,9 +98,7 @@ module Scrapespeare
       end
 
       context "with parameter, lower bound, upper bound and step" do
-        let(:opts) do
-          { param: "page", from: 25, to: 125, step: 25 }
-        end
+        let(:opts) { { param: "page", from: 25, to: 125, step: 25 } }
 
         it "yields the expected URIs" do
           uris = iterator.to_enum.map(&:to_s)
