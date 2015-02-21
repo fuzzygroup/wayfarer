@@ -22,6 +22,7 @@ module Scrapespeare
       step        = @opts[:step] || 1
 
       # FIXME Don't bomb memory
+      # Calling #set_query_param on @uri somehow won't work...
       (lower_bound..upper_bound).step(step).each do |i, uri = @uri.clone|
         uri.set_query_param(param, i.to_i)
         yield uri
