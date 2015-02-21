@@ -21,6 +21,15 @@ module Scrapespeare
       describe "Query parameter iteration" do
         context "with parameter given" do
           let(:opts) { { param: "page" } }
+
+          it "yields the expected URIs" do
+            uris = iterator.to_enum.take(3).map(&:to_s)
+            expect(uris).to eq(%w(
+              http://example.com
+              http://example.com?page=2
+              http://example.com?page=3
+            ))
+          end
         end
       end
     end

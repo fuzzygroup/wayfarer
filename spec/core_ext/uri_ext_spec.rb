@@ -14,6 +14,11 @@ describe URIExt do
   end
 
   describe "#set_query_param" do
+    it "returns the query parameter's value" do
+      returned = uri.set_query_param("a", "foo")
+      expect(returned).to eq "foo"
+    end
+
     context "with query parameter present" do
       it "overrides the query parameter's value" do
         uri.set_query_param("a", "foo")

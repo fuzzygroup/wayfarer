@@ -11,6 +11,7 @@ module URIExt
     self.query = Rack::Utils.build_query(
       self.parsed_query.merge({ key => val })
     )
+    val
   end
 
   def get_query_param(key)
