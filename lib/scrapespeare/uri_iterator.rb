@@ -1,5 +1,3 @@
-require "active_support/core_ext/hash"
-
 module Scrapespeare
   class URIIterator
 
@@ -15,10 +13,18 @@ module Scrapespeare
 
     def each
       param = @rule_set[:param]
+      upper_bound = @rule_set[:to]
 
-      loop do
-        @uri.increment_query_param(param)
-        yield @uri
+      if upper_bound
+        (upper_bound + 1).times do
+          yield @uri
+          @uri.increment_query_param(param)
+        end
+      else
+        loop do
+          yield @uri
+          @uri.increment_query_param(param)
+        end
       end
     end
 
