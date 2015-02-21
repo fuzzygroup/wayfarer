@@ -1,7 +1,7 @@
 require "uri"
 require "rack/utils"
 
-module URI
+module URIExt
 
   def parsed_query
     Rack::Utils.parse_nested_query(self.query)
@@ -18,3 +18,6 @@ module URI
   end
 
 end
+
+URI::HTTP.include(URIExt)
+URI::HTTPS.include(URIExt)
