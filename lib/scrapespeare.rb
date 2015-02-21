@@ -25,6 +25,7 @@ require "scrapespeare/paginator"
 require "scrapespeare/parser"
 require "scrapespeare/uri_paginator"
 require "scrapespeare/uri_iterator"
+require "scrapespeare/dom_paginator"
 
 module Scrapespeare
 
