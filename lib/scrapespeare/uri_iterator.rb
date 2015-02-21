@@ -9,6 +9,8 @@ module Scrapespeare
     def initialize(base_uri, opts = {})
       @uri = URI(base_uri)
       @opts = opts
+
+      fail "No parameter given" unless @opts[:param]
     end
 
     def each
