@@ -59,6 +59,19 @@ module Scrapespeare
             ))
           end
         end
+
+        context "with parameter and step" do
+          let(:opts) { { param: "page", step: 2 } }
+
+          it "yields the expected URIs" do
+            uris = iterator.to_enum.take(3).map(&:to_s)
+            expect(uris).to eq(%w(
+              http://example.com
+              http://example.com?page=2
+              http://example.com?page=4
+            ))
+          end
+        end
       end
     end
 
