@@ -16,10 +16,10 @@ module Scrapespeare
     end
 
     describe "#each" do
-      let(:iterator) { URIIterator.new("http://example.com", rule_set) }
+      let(:iterator) { URIIterator.new("http://example.com", opts) }
 
       describe "Query parameter iteration" do
-        let(:rule_set) { { param: "page" } }
+        let(:opts) { { param: "page" } }
 
         it "yields the expected URIs" do
           enum = iterator.to_enum
@@ -28,7 +28,7 @@ module Scrapespeare
         end
 
         context "with upper bound given" do
-          let(:rule_set) { { param: "page", to: 3 } }
+          let(:opts) { { param: "page", to: 3 } }
 
           it "yields the expected number of URIs" do
             yielded = []
@@ -47,7 +47,7 @@ module Scrapespeare
         end
 
         context "with increment step given" do
-          let(:rule_set) { { param: "page", step: 2 } }
+          let(:opts) { { param: "page", step: 2 } }
 
           it "yields the expected URIs" do
             enum = iterator.to_enum
