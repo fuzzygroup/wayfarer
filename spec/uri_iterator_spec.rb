@@ -72,6 +72,24 @@ module Scrapespeare
             ))
           end
         end
+
+        context "with parameter, lower bound, upper bound and step" do
+          let(:opts) do
+            { param: "page", from: 25, to: 125, step: 25 }
+          end
+
+          it "yields the expected URIs" do
+            uris = iterator.to_enum.map(&:to_s)
+            expect(uris).to eq(%w(
+              http://example.com
+              http://example.com?page=25
+              http://example.com?page=50
+              http://example.com?page=75
+              http://example.com?page=100
+              http://example.com?page=125
+            ))
+          end
+        end
       end
     end
 
