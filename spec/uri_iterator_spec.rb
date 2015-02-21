@@ -15,5 +15,16 @@ module Scrapespeare
       end
     end
 
+    describe "#each" do
+      let(:uri) { "http://example.com" }
+
+      let(:iterator) { URIIterator.new(uri, { param: "page" }) }
+
+      it "works" do
+        enum = iterator.to_enum
+        # expect(enum.next.to_s).to eq "http://example.com?page=2"
+      end
+    end
+
   end
 end

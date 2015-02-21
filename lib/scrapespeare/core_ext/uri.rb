@@ -18,8 +18,11 @@ module URIExt
   end
 
   def increment_query_param(key, incr = 1)
-    val = Integer(get_query_param(key))
-    set_query_param(key, val + incr)
+    if val = self.get_query_param(key)
+      self.set_query_param(key, Integer(val) + incr)
+    else
+      self.set_query_param(key, 2)
+    end
   end
 
 end

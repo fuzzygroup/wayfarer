@@ -44,6 +44,15 @@ describe URI do
   end
 
   describe "#increment_query_param" do
+    context "without query parameter present" do
+      let(:uri) { URI("http://example.com") }
+
+      it "appends the query parameter with value `2`" do
+        uri.increment_query_param("page")
+        expect(uri.to_s).to eq "http://example.com?page=2"
+      end
+    end
+
     context "when parameter value can be converted to an Integer" do
       let(:uri) { URI("http://example.com/?page=42") }
 
