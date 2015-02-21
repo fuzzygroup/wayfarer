@@ -12,6 +12,15 @@ module Scrapespeare
     end
 
     def each
+      infinity = 1.0 / 0 # => Infinity
+      enum = (1..infinity).to_enum
+
+      yield @uri
+
+      enum.each do
+        @uri.increment_query_param(@opts[:param])
+        yield @uri
+      end
     end
 
   end

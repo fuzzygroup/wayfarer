@@ -19,7 +19,16 @@ module Scrapespeare
       let(:iterator) { URIIterator.new("http://example.com", opts) }
 
       describe "Query parameter iteration" do
-        let(:opts) { { param: "page" } }
+        context "with only parameter given" do
+          let(:opts) { { param: "page" } }
+
+          it "constructs the expected URIs" do
+            enum = iterator.to_enum
+            expect(enum.next.to_s).to eq "http://example.com"
+            expect(enum.next.to_s).to eq "http://example.com?page=2"
+            expect(enum.next.to_s).to eq "http://example.com?page=3"
+          end
+        end
       end
     end
 
