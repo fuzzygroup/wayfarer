@@ -21,7 +21,7 @@ module URIExt
     if val = self.get_query_param(key)
       self.set_query_param(key, Integer(val) + incr)
     else
-      self.set_query_param(key, 2)
+      self.set_query_param(key, 1 + incr)
     end
   end
 
