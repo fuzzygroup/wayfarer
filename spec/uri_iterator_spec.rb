@@ -10,8 +10,8 @@ module Scrapespeare
         expect(iterator.uri.to_s).to eq "http://example.com"
       end
 
-      it "sets @rule_set" do
-        expect(iterator.rule_set).to eq({})
+      it "sets @opts" do
+        expect(iterator.opts).to eq({})
       end
     end
 
@@ -43,6 +43,17 @@ module Scrapespeare
               http://example.com?page=3
               http://example.com?page=4
             ))
+          end
+        end
+
+        context "with increment step given" do
+          let(:rule_set) { { param: "page", step: 2 } }
+
+          it "yields the expected URIs" do
+            enum = iterator.to_enum
+            expect(enum.next.to_s).to eq "http://example.com"
+            expect(enum.next.to_s).to eq "http://example.com?page=2"
+            expect(enum.next.to_s).to eq "http://example.com?page=4"
           end
         end
       end
