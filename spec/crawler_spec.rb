@@ -15,12 +15,21 @@ module Scrapespeare
 
       context "with URI template and parameters given" do
         before do
-          crawler.uri_template = "http://example.com/foo/%{id}/bar"
+          crawler.uri_template = "http://example.com/foo/%{alpha}/bar/%{beta}"
         end
 
         it "constructs and sets the correct URI" do
-          crawler.crawl({ id: 42 })
-          expect(crawler.uri.to_s).to eq "http://example.com/foo/42/bar"
+          crawler.crawl({ alpha: 4, beta: 2 })
+          expect(crawler.uri.to_s).to eq "http://example.com/foo/4/bar/2"
+        end
+
+        it "escapes URI template parameters" do
+          crawler.crawl({
+            alpha: "I ain't even alphanumerical",
+            beta: 42
+          })
+          expect(crawler.uri.to_s).to eq \
+            "http://example.com/foo/I%20ain't%20even%20alphanumerical/bar/42"
         end
       end
     end

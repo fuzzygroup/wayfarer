@@ -16,8 +16,13 @@ module Scrapespeare
 
     def crawl(uri_or_template_params)
       @uri = case uri_or_template_params
-             when String then URI(uri_or_template_params)
-             when Hash   then URI(@uri_template % uri_or_template_params)
+             when String
+               URI(uri_or_template_params)
+             when Hash
+               uri_or_template_params.each do |key, val|
+                 uri_or_template_params[key] = URI.escape(val.to_s)
+               end
+               URI(@uri_template % uri_or_template_params)
              end
     end
 
