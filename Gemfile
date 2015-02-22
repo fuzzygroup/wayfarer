@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 gem "nokogiri", "~> 1.6"
 gem "selenium-webdriver", "~> 2.43"
+gem "phantomjs", "~> 1.9", require: "phantomjs/poltergeist"
 gem "capybara", "~> 2.4"
 gem "poltergeist", "~> 1.6"
 gem "rest-client", "~> 1.7"
