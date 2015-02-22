@@ -2,6 +2,7 @@ module Scrapespeare
   class Crawler
 
     attr_reader :scraper
+    attr_reader :uri
 
     def initialize(&proc)
       @scraper = Scraper.new
@@ -12,8 +13,7 @@ module Scrapespeare
     end
 
     def crawl(uri)
-      doc = @parser.parse(fetch(uri))
-      @scraper.extract(doc)
+      @uri = uri
     end
 
     def http_adapter

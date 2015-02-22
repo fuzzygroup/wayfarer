@@ -5,6 +5,13 @@ module Scrapespeare
 
     let(:crawler) { Crawler.new }
 
+    describe "#crawl" do
+      it "sets @uri" do
+        crawler.crawl("http://example.com")
+        expect(crawler.uri).to eq "http://example.com"
+      end
+    end
+
     describe "#scrape" do
       it "yields the scraper" do
         crawler.scrape do
