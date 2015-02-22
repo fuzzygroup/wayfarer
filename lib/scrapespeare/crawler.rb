@@ -4,6 +4,8 @@ module Scrapespeare
     attr_reader :scraper
     attr_reader :uri
 
+    attr_accessor :uri_template
+
     def initialize(&proc)
       @scraper = Scraper.new
       @http_adapter = http_adapter
@@ -12,14 +14,17 @@ module Scrapespeare
       instance_eval(&proc) if block_given?
     end
 
-    def crawl(uri)
-      @uri = uri
+    def crawl(uri_or_template_params)
+      @uri = case uri_or_template_params
+             when String then URI(uri_or_template_params)
+             when Hash   then URI(@uri_template % uri_or_template_params)
+             end
     end
 
     def http_adapter
       case Scrapespeare.config.http_adapter
       when :rest_client then Scrapespeare::HTTPAdapters::RestClientAdapter.new
-      when :selenium then Scrapespeare::HTTPAdapters::SeleniumAdapter.new
+      when :selenium    then Scrapespeare::HTTPAdapters::SeleniumAdapter.new
       else fail "Unknown HTTP adapter `#{Scrapespeare.config.http_adapter}`"
       end
     end

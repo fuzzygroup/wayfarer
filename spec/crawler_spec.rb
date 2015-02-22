@@ -6,9 +6,22 @@ module Scrapespeare
     let(:crawler) { Crawler.new }
 
     describe "#crawl" do
-      it "sets @uri" do
-        crawler.crawl("http://example.com")
-        expect(crawler.uri).to eq "http://example.com"
+      context "with URI given" do
+        it "sets @uri" do
+          crawler.crawl("http://example.com")
+          expect(crawler.uri.to_s).to eq "http://example.com"
+        end
+      end
+
+      context "with URI template and parameters given" do
+        before do
+          crawler.uri_template = "http://example.com/foo/%{id}/bar"
+        end
+
+        it "constructs and sets the correct URI" do
+          crawler.crawl({ id: 42 })
+          expect(crawler.uri.to_s).to eq "http://example.com/foo/42/bar"
+        end
       end
     end
 
