@@ -16,13 +16,8 @@ module Scrapespeare
 
     def crawl(uri_or_template_params)
       @uri = case uri_or_template_params
-             when String
-               URI(uri_or_template_params)
-             when Hash
-               uri_or_template_params.each do |key, val|
-                 uri_or_template_params[key] = URI.escape(val.to_s)
-               end
-               URI(@uri_template % uri_or_template_params)
+             when String then URI(uri_or_template_params)
+             when Hash   then build_base_uri(uri_or_template_params)
              end
     end
 
@@ -53,6 +48,11 @@ module Scrapespeare
     private
     def fetch(uri)
       http_adapter.fetch(uri)
+    end
+
+    def build_base_uri(params)
+      params.each { |key, val| params[key] = URI.escape(val.to_s) }
+      URI(@uri_template % params)
     end
 
   end
