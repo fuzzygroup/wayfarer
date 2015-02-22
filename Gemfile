@@ -2,6 +2,8 @@ source "https://rubygems.org"
 
 gem "nokogiri", "~> 1.6"
 gem "selenium-webdriver", "~> 2.43"
+gem "capybara", "~> 2.4"
+gem "poltergeist", "~> 1.6"
 gem "rest-client", "~> 1.7"
 gem "hashie", "~> 3.4"
 gem "rack", "~> 1.6"
