@@ -5,7 +5,8 @@ module Scrapespeare
 
     describe "#initialize" do
       it "works" do
-        
+        browser = Browser.new
+        browser.session.visit "http://google.com"
       end
     end
 

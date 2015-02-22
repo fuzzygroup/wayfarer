@@ -1,5 +1,5 @@
-require "phantomjs"
 require "capybara"
+require "phantomjs"
 require "capybara/poltergeist"
 
 module Scrapespeare
@@ -8,13 +8,18 @@ module Scrapespeare
     attr_reader :session
 
     def initialize
-      Selenium::WebDriver::PhantomJS.path = Phantomjs.path
-
-      Capybara.run_server = false
-      Capybara.app_host = "about:blank"
-      Capybara.default_driver = :poltergeist
+      configure_capybara
 
       @session = Capybara::Session.new(:poltergeist)
+    end
+
+    private
+    def configure_capybara
+      Capybara.run_server = false
+      Capybara.app_host = "about:blank"
+      Capybara.register_driver :poltergeist do |app|
+        Capybara::Poltergeist::Driver.new(app, phantomjs: Phantomjs.path)
+      end
     end
 
   end
