@@ -4,6 +4,11 @@ class TestApp < Sinatra::Base
 
   set :public_folder, File.dirname(__FILE__) + "/static"
 
+  get "/hello_world" do
+    headers "Hello" => "World"
+    send_file read_static_file("hello_world.html")
+  end
+
   get "/redirects/redirect_loop" do
     redirect to "/redirects/redirect_loop"
   end

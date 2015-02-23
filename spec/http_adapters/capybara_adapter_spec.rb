@@ -48,19 +48,19 @@ module Scrapespeare
       after { client.free }
 
       it "returns the status code" do
-        res = client.fetch("http://0.0.0.0:8080/hello_world.html")
+        res = client.fetch("http://0.0.0.0:8080/hello_world")
         status_code, _, _ = res
         expect(status_code).to be 200
       end
 
       it "returns the response headers" do
-        res = client.fetch("http://0.0.0.0:8080/hello_world.html")
+        res = client.fetch("http://0.0.0.0:8080/hello_world")
         _, response_headers, _ = res
-        expect(response_headers).to be_a Hash
+        expect(response_headers["Hello"]).to eq "World"
       end
 
       it "returns the response body" do
-        res = client.fetch("http://0.0.0.0:8080/hello_world.html")
+        res = client.fetch("http://0.0.0.0:8080/hello_world")
         _, _, response_body = res
         expect(response_body).to match /Hello world!/
       end

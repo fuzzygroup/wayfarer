@@ -1,6 +1,6 @@
 require "capybara"
-require "phantomjs"
 require "capybara/poltergeist"
+require "phantomjs"
 
 module Scrapespeare
   class HTTPClient
