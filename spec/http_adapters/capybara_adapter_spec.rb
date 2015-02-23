@@ -24,9 +24,23 @@ module Scrapespeare
     end
 
     describe "#free" do
-      it "quits its Session" do
-        client.free
-        expect(client.session).to be nil
+      context "with active session" do
+        it "quits its Session" do
+          client.free
+          expect(client.session).to be nil
+        end
+
+        it "returns true" do
+          expect(client.free).to be true
+        end
+      end
+
+      context "with freed Session" do
+        before { client.free }
+
+        it "returns false" do
+          expect(client.free).to be false
+        end
       end
     end
 

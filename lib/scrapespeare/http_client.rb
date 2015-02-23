@@ -16,6 +16,9 @@ module Scrapespeare
       if @session
         @session.driver.quit
         @session = nil
+        true
+      else
+        false
       end
     end
 
