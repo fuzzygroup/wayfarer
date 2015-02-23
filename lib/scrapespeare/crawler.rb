@@ -8,7 +8,7 @@ module Scrapespeare
 
     def initialize(&proc)
       @scraper = Scraper.new
-      @http_adapter = HTTPClient.new
+      @http_client = HTTPClient.new
       @parser = Parser
 
       instance_eval(&proc) if block_given?

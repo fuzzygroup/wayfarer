@@ -9,6 +9,10 @@ class TestApp < Sinatra::Base
     send_file read_static_file("hello_world.html")
   end
 
+  get "/user_agent" do
+    "Hello there, #{request.user_agent}!"
+  end
+
   get "/redirect_loop" do
     redirect to "/redirect_loop"
   end

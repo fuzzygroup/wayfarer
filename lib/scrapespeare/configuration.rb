@@ -17,6 +17,7 @@ module Scrapespeare
       {
         capybara_driver: :poltergeist,
         capybara_opts: { phantomjs: Phantomjs.path },
+        headers: { "User-Agent" => "Scrapespeare" },
 
         verbose: false,
         max_http_redirects: 3,

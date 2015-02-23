@@ -46,6 +46,7 @@ module Scrapespeare
 
     def new_session
       @session = Capybara::Session.new(Scrapespeare.config.capybara_driver)
+      @session.driver.headers = Scrapespeare.config.headers
     end
 
     def recover

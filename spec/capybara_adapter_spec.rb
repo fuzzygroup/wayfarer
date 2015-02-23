@@ -58,41 +58,44 @@ module Scrapespeare
       let(:uri) { "http://0.0.0.0:8080/hello_world" }
 
       it "returns the status code" do
-        res = client.fetch(uri)
-        status_code, _, _ = res
+        status_code, _, _ = client.fetch(uri)
         expect(status_code).to be 200
       end
 
       it "returns the response headers" do
-        res = client.fetch(uri)
-        _, response_headers, _ = res
+        _, response_headers, _ = client.fetch(uri)
         expect(response_headers["Hello"]).to eq "World"
       end
 
       it "returns the response body" do
-        res = client.fetch(uri)
-        _, _, response_body = res
+        _, _, response_body = client.fetch(uri)
         expect(response_body).to match /Hello world!/
+      end
+
+      it "sends HTTP headers retrieved from config.headers" do
+        Scrapespeare.config.headers = { "User-Agent" => "Foobar" }
+
+        _, _, response_body = client.fetch("http://0.0.0.0:8080/user_agent")
+        expect(response_body).to match /Hello there, Foobar!/
+
+        Scrapespeare.config.reset!
       end
 
       context "when encountering a redirect loop" do
         let(:uri) { "http://0.0.0.0:8080/redirect_loop" }
 
         it "returns a 500 status code" do
-          res = client.fetch(uri)
-          status_code, _, _ = res
+          status_code, _, _ = client.fetch(uri)
           expect(status_code).to be 500
         end
 
         it "returns an empty Hash as response headers" do
-          res = client.fetch(uri)
-          _, response_headers, _ = res
+          _, response_headers, _ = client.fetch(uri)
           expect(response_headers).to eq({})
         end
 
         it "returns an empty String as the response body" do
-          res = client.fetch(uri)
-          _, _, response_body = res
+          _, _, response_body = client.fetch(uri)
           expect(response_body).to eq ""
         end
       end
