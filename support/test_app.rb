@@ -9,8 +9,8 @@ class TestApp < Sinatra::Base
     send_file read_static_file("hello_world.html")
   end
 
-  get "/redirects/redirect_loop" do
-    redirect to "/redirects/redirect_loop"
+  get "/redirect_loop" do
+    redirect to "/redirect_loop"
   end
 
   get "/pagination/by_param" do

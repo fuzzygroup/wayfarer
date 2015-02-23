@@ -30,6 +30,10 @@ module Scrapespeare
         @session.response_headers,
         @session.html
       ]
+
+    # Redirect loop!
+    rescue Capybara::Poltergeist::BrowserError
+      [508, {}, ""]
     end
 
     private

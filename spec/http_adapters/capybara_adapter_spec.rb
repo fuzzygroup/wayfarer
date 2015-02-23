@@ -47,22 +47,46 @@ module Scrapespeare
     describe "#fetch" do
       after { client.free }
 
+      let(:uri) { "http://0.0.0.0:8080/hello_world" }
+
       it "returns the status code" do
-        res = client.fetch("http://0.0.0.0:8080/hello_world")
+        res = client.fetch(uri)
         status_code, _, _ = res
         expect(status_code).to be 200
       end
 
       it "returns the response headers" do
-        res = client.fetch("http://0.0.0.0:8080/hello_world")
+        res = client.fetch(uri)
         _, response_headers, _ = res
         expect(response_headers["Hello"]).to eq "World"
       end
 
       it "returns the response body" do
-        res = client.fetch("http://0.0.0.0:8080/hello_world")
+        res = client.fetch(uri)
         _, _, response_body = res
         expect(response_body).to match /Hello world!/
+      end
+
+      context "when encountering a redirect loop" do
+        let(:uri) { "http://0.0.0.0:8080/redirect_loop" }
+
+        it "returns a 508 status code" do
+          res = client.fetch(uri)
+          status_code, _, _ = res
+          expect(status_code).to be 508
+        end
+
+        it "returns an empty Hash as response headers" do
+          res = client.fetch(uri)
+          _, response_headers, _ = res
+          expect(response_headers).to eq({})
+        end
+
+        it "returns an empty String as the response body" do
+          res = client.fetch(uri)
+          _, _, response_body = res
+          expect(response_body).to eq ""
+        end
       end
     end
 
