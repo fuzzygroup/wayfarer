@@ -9,16 +9,17 @@ module Scrapespeare
     end
 
     def reset!
-      replace(defaults)
+      self.replace(defaults)
     end
 
     private
     def defaults
       {
-        http_adapter: :rest_client,
+        capybara_driver: :poltergeist,
+        capybara_opts: { phantomjs: Phantomjs.path },
+
         verbose: false,
         max_http_redirects: 3,
-        selenium_argv: [:firefox],
         sanitize_node_content: true
       }
     end

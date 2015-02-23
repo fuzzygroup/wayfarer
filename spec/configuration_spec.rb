@@ -11,10 +11,11 @@ module Scrapespeare
     end
 
     it "has correct default values set" do
-      expect(config.http_adapter).to be :rest_client
+      expect(config.capybara_driver).to be :poltergeist
+      expect(config.capybara_opts).to eq({ phantomjs: Phantomjs.path })
+
       expect(config.verbose).to be false
       expect(config.max_http_redirects).to be 3
-      expect(config.selenium_argv).to eq [:firefox]
       expect(config.sanitize_node_content).to be true
     end
 
