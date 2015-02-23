@@ -13,6 +13,7 @@ module Scrapespeare
     it "has correct default values set" do
       expect(config.capybara_driver).to be :poltergeist
       expect(config.capybara_opts).to eq({ phantomjs: Phantomjs.path })
+
       expect(config.headers).to eq({ "User-Agent" => "Scrapespeare" })
 
       expect(config.verbose).to be false

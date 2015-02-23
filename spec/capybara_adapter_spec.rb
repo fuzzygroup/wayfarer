@@ -12,7 +12,7 @@ module Scrapespeare
         expect(client.session).to be_a Capybara::Session
       end
 
-      it "initializes its Session according to config.capybara_driver" do
+      it "initializes a Session with the expected Driver" do
         Scrapespeare.config.capybara_driver = :selenium
 
         client = HTTPClient.new
@@ -45,7 +45,7 @@ module Scrapespeare
     end
 
     describe "#recover" do
-      it "frees the current Session" do
+      it "frees the current Session and initializes a new one" do
         cached_session = client.session
         client.send(:recover)
         expect(client.session).not_to be cached_session
