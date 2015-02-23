@@ -1,10 +1,10 @@
 require "ostruct"
 
 require "nokogiri"
-require "selenium-webdriver"
 require "hashie"
-require "thor"
-require "rest-client"
+require "capybara"
+require "capybara/poltergeist"
+require "phantomjs"
 
 $: << File.dirname(__FILE__)
 

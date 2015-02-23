@@ -1,7 +1,3 @@
-require "capybara"
-require "capybara/poltergeist"
-require "phantomjs"
-
 module Scrapespeare
   class HTTPClient
 
