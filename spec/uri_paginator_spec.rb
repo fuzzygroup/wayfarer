@@ -5,7 +5,7 @@ module Scrapespeare
 
     let(:paginator) do
       URIPaginator.new(
-        HTTPAdapters::RestClientAdapter.new,
+        HTTPClient.new,
         Parser,
         {}
       )

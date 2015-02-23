@@ -8,7 +8,7 @@ module Scrapespeare
 
     def initialize(&proc)
       @scraper = Scraper.new
-      @http_adapter = http_adapter
+      @http_adapter = HTTPClient.new
       @parser = Parser
 
       instance_eval(&proc) if block_given?
@@ -19,14 +19,6 @@ module Scrapespeare
              when String then URI(uri_or_template_params)
              when Hash   then build_base_uri(uri_or_template_params)
              end
-    end
-
-    def http_adapter
-      case Scrapespeare.config.http_adapter
-      when :rest_client then Scrapespeare::HTTPAdapters::RestClientAdapter.new
-      when :selenium    then Scrapespeare::HTTPAdapters::SeleniumAdapter.new
-      else fail "Unknown HTTP adapter `#{Scrapespeare.config.http_adapter}`"
-      end
     end
 
     def scrape(&proc)

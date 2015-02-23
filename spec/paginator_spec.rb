@@ -4,7 +4,7 @@ module Scrapespeare
   describe Paginator do
 
     let(:paginator) do
-      Paginator.new(HTTPAdapters::RestClientAdapter.new, Parser)
+      Paginator.new(HTTPClient.new, Parser)
     end
 
     describe "#initialize" do

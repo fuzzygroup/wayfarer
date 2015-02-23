@@ -5,7 +5,7 @@ module Scrapespeare
     attr_reader :parser
 
     def initialize(http_adapter, parser)
-      @http_adapter = http_adapter
+      @http_adapter = HTTPClient.new
       @parser = parser
     end
 

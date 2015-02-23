@@ -5,7 +5,7 @@ module Scrapespeare
 
     let(:paginator) do
       DOMPaginator.new(
-        HTTPAdapters::RestClientAdapter.new,
+        HTTPClient.new,
         Parser,
         { css: "#foo" }
       )
