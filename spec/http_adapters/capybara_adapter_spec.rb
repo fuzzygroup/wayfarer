@@ -44,6 +44,14 @@ module Scrapespeare
       end
     end
 
+    describe "#recover" do
+      it "frees the current Session" do
+        cached_session = client.session
+        client.send(:recover)
+        expect(client.session).not_to be cached_session
+      end
+    end
+
     describe "#fetch" do
       after { client.free }
 
@@ -70,10 +78,10 @@ module Scrapespeare
       context "when encountering a redirect loop" do
         let(:uri) { "http://0.0.0.0:8080/redirect_loop" }
 
-        it "returns a 508 status code" do
+        it "returns a 500 status code" do
           res = client.fetch(uri)
           status_code, _, _ = res
-          expect(status_code).to be 508
+          expect(status_code).to be 500
         end
 
         it "returns an empty Hash as response headers" do

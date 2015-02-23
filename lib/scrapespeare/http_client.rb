@@ -9,7 +9,7 @@ module Scrapespeare
 
     def initialize
       configure_capybara
-      @session = Capybara::Session.new(Scrapespeare.config.capybara_driver)
+      new_session
     end
 
     def free
@@ -31,9 +31,9 @@ module Scrapespeare
         @session.html
       ]
 
-    # Redirect loop!
     rescue Capybara::Poltergeist::BrowserError
-      [508, {}, ""]
+      recover
+      [500, {}, ""]
     end
 
     private
@@ -46,6 +46,15 @@ module Scrapespeare
           app, Scrapespeare.config.capybara_opts
         )
       end
+    end
+
+    def new_session
+      @session = Capybara::Session.new(Scrapespeare.config.capybara_driver)
+    end
+
+    def recover
+      free
+      new_session
     end
 
   end
