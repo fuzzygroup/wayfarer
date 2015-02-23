@@ -9,7 +9,7 @@ module Scrapespeare
 
     def initialize
       configure_capybara
-      @session = Capybara::Session.new(:poltergeist)
+      @session = Capybara::Session.new(Scrapespeare.config.capybara_driver)
     end
 
     def free
@@ -33,8 +33,11 @@ module Scrapespeare
     def configure_capybara
       Capybara.run_server = false
       Capybara.app_host = "about:blank"
-      Capybara.register_driver :poltergeist do |app|
-        Capybara::Poltergeist::Driver.new(app, phantomjs: Phantomjs.path)
+
+      Capybara.register_driver(Scrapespeare.config.capybara_driver) do |app|
+        Capybara::Poltergeist::Driver.new(
+          app, Scrapespeare.config.capybara_opts
+        )
       end
     end
 
