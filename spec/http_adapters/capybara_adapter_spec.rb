@@ -12,7 +12,7 @@ module Scrapespeare
         expect(client.session).to be_a Capybara::Session
       end
 
-      it "initializes its Driver according to config.capybara_driver" do
+      it "initializes its Session according to config.capybara_driver" do
         Scrapespeare.config.capybara_driver = :selenium
 
         client = HTTPClient.new
@@ -24,7 +24,7 @@ module Scrapespeare
     end
 
     describe "#free" do
-      context "with active session" do
+      context "with active Session" do
         it "quits its Session" do
           client.free
           expect(client.session).to be nil
