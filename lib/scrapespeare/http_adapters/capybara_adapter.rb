@@ -20,6 +20,16 @@ module Scrapespeare
         end
       end
 
+      def fetch(uri)
+        @session.visit(uri)
+
+        [
+          @session.status_code,
+          @session.response_headers,
+          @session.html
+        ]
+      end
+
       private
       def configure_capybara
         Capybara.run_server = false
