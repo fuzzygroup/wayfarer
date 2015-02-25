@@ -7,7 +7,7 @@ module Scrapespeare
 
     def initialize(&proc)
       @scraper = Scraper.new
-      @parser = Parser
+      @parser  = Parser
 
       instance_eval(&proc) if block_given?
     end
