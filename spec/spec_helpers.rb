@@ -1,4 +1,3 @@
-require "webmock/rspec"
 require "scrapespeare"
 
 module SpecHelpers
@@ -21,5 +20,4 @@ end
 
 RSpec.configure do |config|
   config.include(SpecHelpers)
-  config.before { WebMock.disable_net_connect!(allow_localhost: true) }
 end
