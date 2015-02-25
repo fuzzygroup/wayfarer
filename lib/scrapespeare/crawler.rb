@@ -8,7 +8,6 @@ module Scrapespeare
 
     def initialize(&proc)
       @scraper = Scraper.new
-      @http_client = HTTPClient.new
       @parser = Parser
 
       instance_eval(&proc) if block_given?
@@ -38,10 +37,6 @@ module Scrapespeare
     end
 
     private
-    def fetch(uri)
-      http_adapter.fetch(uri)
-    end
-
     def build_base_uri(params)
       params.each { |key, val| params[key] = URI.escape(val.to_s) }
       URI(@uri_template % params)

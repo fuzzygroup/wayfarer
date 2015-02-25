@@ -13,7 +13,6 @@ require "scrapespeare/core_ext/uri"
 
 require "scrapespeare/configuration"
 require "scrapespeare/extractable"
-require "scrapespeare/http_client"
 require "scrapespeare/evaluator"
 require "scrapespeare/matcher"
 require "scrapespeare/scoper"
@@ -21,11 +20,8 @@ require "scrapespeare/extractable_group"
 require "scrapespeare/extractor"
 require "scrapespeare/scraper"
 require "scrapespeare/crawler"
-require "scrapespeare/paginator"
 require "scrapespeare/parser"
-require "scrapespeare/uri_paginator"
 require "scrapespeare/uri_iterator"
-require "scrapespeare/dom_paginator"
 
 module Scrapespeare
 
