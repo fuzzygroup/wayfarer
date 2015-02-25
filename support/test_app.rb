@@ -22,8 +22,8 @@ class TestApp < Sinatra::Base
   end
 
   get "/redirect" do
-    n = params[:rounds].to_i
-    n.zero? ? "You arrived!" : (redirect to "/redirect?rounds=#{n - 1}")
+    n = params[:times].to_i
+    n.zero? ? "You arrived!" : (redirect to "/redirect?times=#{n - 1}")
   end
 
   private
