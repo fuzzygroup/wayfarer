@@ -16,7 +16,7 @@ module Scrapespeare
         it "returns the response body" do
           uri = URI("http://0.0.0.0:8080/hello_world")
           _, response_body, _ = adapter.fetch(uri)
-          expect(response_body).to match /Hello world!/
+          expect(response_body).to eq "Hello world!"
         end
 
         it "returns the headers" do
