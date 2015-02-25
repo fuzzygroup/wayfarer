@@ -1,5 +1,15 @@
 require "spec_helpers"
 
-#describe Scrapespeare::HTTPAdapters::NetHTTPAdapter do
-#  it "works"
-#end
+module Scrapespeare
+  module HTTPAdapters
+    describe NetHTTPAdapter do
+
+      let(:adapter) { NetHTTPAdapter.new }
+
+      it "works" do
+        
+      end
+
+    end
+  end
+end
