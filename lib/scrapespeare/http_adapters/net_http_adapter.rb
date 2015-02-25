@@ -9,7 +9,7 @@ module Scrapespeare
 
         [
           res.code.to_i,
-          nil,
+          res.body,
           nil
         ]
       end
