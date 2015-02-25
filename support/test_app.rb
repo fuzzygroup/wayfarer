@@ -13,10 +13,6 @@ class TestApp < Sinatra::Base
     "Hello world!"
   end
 
-  get "/user_agent" do
-    "Hello there, #{request.user_agent}!"
-  end
-
   get "/redirect_loop" do
     redirect to "/redirect_loop"
   end
