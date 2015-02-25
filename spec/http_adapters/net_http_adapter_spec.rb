@@ -6,8 +6,10 @@ module Scrapespeare
 
       let(:adapter) { NetHTTPAdapter.new }
 
-      it "works" do
-        
+      it "returns the status code" do
+        uri = URI("http://0.0.0.0:8080/status_code/404")
+        status_code, _, _ = adapter.fetch(uri)
+        expect(status_code).to be 404
       end
 
     end

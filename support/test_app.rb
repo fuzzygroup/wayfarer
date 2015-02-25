@@ -4,6 +4,10 @@ class TestApp < Sinatra::Base
 
   set :public_folder, File.dirname(__FILE__) + "/static"
 
+  get "/status_code/:code" do
+    status params[:code]
+  end
+
   get "/hello_world" do
     headers "Hello" => "World"
     send_file read_static_file("hello_world.html")
