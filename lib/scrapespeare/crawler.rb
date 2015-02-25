@@ -19,7 +19,7 @@ module Scrapespeare
                   end
     end
 
-    def scrape(&proc)
+    def define_scraper(&proc)
       @scraper.instance_eval(&proc) if block_given?
     end
 
@@ -27,7 +27,7 @@ module Scrapespeare
       yield Scrapespeare.config if block_given?
     end
 
-    def evaluate(identifier, evaluator = nil, &proc)
+    def set_evaluator_for(identifier, evaluator = nil, &proc)
       if evaluator
         @scraper.pass_evaluator(identifier, evaluator)
       elsif proc

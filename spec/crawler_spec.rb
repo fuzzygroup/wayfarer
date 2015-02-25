@@ -34,9 +34,9 @@ module Scrapespeare
       end
     end
 
-    describe "#scrape" do
-      it "yields the scraper" do
-        crawler.scrape do
+    describe "#define_scraper" do
+      it "yields its Scraper" do
+        crawler.define_scraper do
           css :foo, "#foo"
         end
 
@@ -50,7 +50,7 @@ module Scrapespeare
       end
     end
 
-    describe "#evaluate" do
+    describe "#set_evaluator_for" do
       let(:extractor) { Extractor.new(:foo, css: "#foo") }
 
       before do
@@ -61,14 +61,14 @@ module Scrapespeare
         let(:evaluator) { Object.new }
 
         it "passes the evaluator to the corresponding Extractable(s)" do
-          crawler.evaluate :foo, evaluator
+          crawler.set_evaluator_for(:foo, evaluator)
           expect(extractor.evaluator).to be evaluator
         end
       end
 
       context "with block given" do
         it "passes the evaluator to the corresponding Extractable(s)" do
-          crawler.evaluate(:foo) { |matched_nodes, *target_attrs| }
+          crawler.set_evaluator_for(:foo) { |matched_nodes, *target_attrs| }
           expect(extractor.evaluator).to be_a Proc
         end
       end
