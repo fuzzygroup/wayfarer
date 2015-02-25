@@ -18,6 +18,12 @@ module Scrapespeare
           _, response_body, _ = adapter.fetch(uri)
           expect(response_body).to match /Hello world!/
         end
+
+        it "returns the headers" do
+          uri = URI("http://0.0.0.0:8080/hello_world")
+          _, _, headers = adapter.fetch(uri)
+          expect(headers["hello"]).to eq ["world"]
+        end
       end
 
     end

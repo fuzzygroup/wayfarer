@@ -9,7 +9,7 @@ class TestApp < Sinatra::Base
   end
 
   get "/hello_world" do
-    headers "Hello" => "World"
+    headers "hello" => "world"
     send_file read_static_file("hello_world.html")
   end
 
