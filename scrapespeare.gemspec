@@ -23,13 +23,9 @@ Gem::Specification.new do |s|
   s.executables   << "scrapespeare"
 
   s.add_dependency "nokogiri",                   "~> 1.6",  ">= 1.6.3"
-  s.add_dependency "phantomjs",                  "~> 1.9",  ">= 1.9.8"
   s.add_dependency "selenium-webdriver",         "~> 2.43", ">= 2.43.0"
   s.add_dependency "selenium-emulated_features", "~> 0.0",  ">= 0.0.2"
-  s.add_dependency "capybara",                   "~> 2.4",  ">= 2.4.4"
-  s.add_dependency "poltergeist",                "~> 1.6",  ">= 1.6.0"
   s.add_dependency "hashie",                     "~> 3.4",  ">= 3.4.0"
-  s.add_dependency "rest-client",                "~> 1.7",  ">= 1.7.2"
   s.add_dependency "rack",                       "~> 1.6",  ">= 1.6.0"
 
   s.add_development_dependency "rspec",          "~> 3.1",  ">= 3.1.0"
