@@ -15,11 +15,7 @@ module Scrapespeare
     private
     def defaults
       {
-        capybara_driver: :poltergeist,
-        capybara_opts: { phantomjs: Phantomjs.path },
-
-        headers: { "User-Agent" => "Scrapespeare" },
-
+        http_adapter: :net_http,
         verbose: false,
         max_http_redirects: 3,
         sanitize_node_content: true

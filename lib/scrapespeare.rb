@@ -1,11 +1,7 @@
-require "ostruct"
-
 require "nokogiri"
 require "hashie"
+require "selenium-webdriver"
 require "selenium/emulated_features"
-require "capybara"
-require "capybara/poltergeist"
-require "phantomjs"
 
 $: << File.dirname(__FILE__)
 
