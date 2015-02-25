@@ -7,9 +7,9 @@ module Scrapespeare
 
     describe "#crawl" do
       context "with URI given" do
-        it "sets @uri" do
+        it "sets @base_uri" do
           crawler.crawl("http://example.com")
-          expect(crawler.uri.to_s).to eq "http://example.com"
+          expect(crawler.base_uri.to_s).to eq "http://example.com"
         end
       end
 
@@ -20,7 +20,7 @@ module Scrapespeare
 
         it "constructs and sets the correct URI" do
           crawler.crawl({ alpha: 4, beta: 2 })
-          expect(crawler.uri.to_s).to eq "http://example.com/foo/4/bar/2"
+          expect(crawler.base_uri.to_s).to eq "http://example.com/foo/4/bar/2"
         end
 
         it "escapes URI template parameters" do
@@ -28,7 +28,7 @@ module Scrapespeare
             alpha: "I ain't even alphanumerical",
             beta: 42
           })
-          expect(crawler.uri.to_s).to eq \
+          expect(crawler.base_uri.to_s).to eq \
             "http://example.com/foo/I%20ain't%20even%20alphanumerical/bar/42"
         end
       end

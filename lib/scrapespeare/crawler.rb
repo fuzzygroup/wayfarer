@@ -1,9 +1,8 @@
 module Scrapespeare
   class Crawler
 
-    attr_reader :scraper
-    attr_reader :uri
-
+    attr_reader   :scraper
+    attr_reader   :base_uri
     attr_accessor :uri_template
 
     def initialize(&proc)
@@ -14,10 +13,10 @@ module Scrapespeare
     end
 
     def crawl(uri_or_template_params)
-      @uri = case uri_or_template_params
-             when String then URI(uri_or_template_params)
-             when Hash   then build_base_uri(uri_or_template_params)
-             end
+      @base_uri = case uri_or_template_params
+                  when String then URI(uri_or_template_params)
+                  when Hash   then build_base_uri(uri_or_template_params)
+                  end
     end
 
     def scrape(&proc)
