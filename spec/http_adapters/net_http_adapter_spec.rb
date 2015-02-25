@@ -31,6 +31,17 @@ module Scrapespeare
             _, response_body, _ = adapter.fetch(uri)
             expect(response_body).to match /You arrived!/
           end
+
+          it "adheres to config.max_http_redirects" do
+            Scrapespeare.config.max_http_redirects = 5
+
+            expect {
+              uri = URI("http://0.0.0.0:8080/redirect?times=6")
+              res = adapter.fetch(uri)
+            }.to raise_error(RuntimeError)
+
+            Scrapespeare.config.reset!
+          end
         end
       end
 
