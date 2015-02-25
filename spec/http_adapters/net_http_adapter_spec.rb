@@ -24,6 +24,14 @@ module Scrapespeare
           _, _, headers = adapter.fetch(uri)
           expect(headers["hello"]).to eq ["world"]
         end
+
+        describe "Redirects" do
+          it "follows redirects" do
+            uri = URI("http://0.0.0.0:8080/redirect?times=1")
+            _, response_body, _ = adapter.fetch(uri)
+            expect(response_body).to match /You arrived!/
+          end
+        end
       end
 
     end

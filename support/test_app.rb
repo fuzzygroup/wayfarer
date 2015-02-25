@@ -21,16 +21,9 @@ class TestApp < Sinatra::Base
     redirect to "/redirect_loop"
   end
 
-  get "/pagination/by_param" do
-    file = case params[:page].to_i
-           when 1
-             read_static_file("pagination/page_1.html")
-           when 2
-             read_static_file("pagination/page_2.html")
-           when 3
-             read_static_file("pagination/page_3.html")
-           end
-    send_file(file)
+  get "/redirect" do
+    n = params[:rounds].to_i
+    n.zero? ? "You arrived!" : (redirect to "/redirect?rounds=#{n - 1}")
   end
 
   private
