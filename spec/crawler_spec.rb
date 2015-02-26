@@ -32,6 +32,14 @@ module Scrapespeare
             "http://example.com/foo/I%20ain't%20even%20alphanumerical/bar/42"
         end
       end
+
+      context "without URI template and parameters given" do
+        it "throws a RuntimeError" do
+          expect {
+            crawler.crawl({ alpha: 4, beta: 2 })
+          }.to raise_error(RuntimeError)
+        end
+      end
     end
 
     describe "#define_scraper" do

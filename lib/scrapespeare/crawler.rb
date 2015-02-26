@@ -37,6 +37,8 @@ module Scrapespeare
 
     private
     def build_base_uri(params)
+      fail "uri_template is missing" unless @uri_template
+
       params.each { |key, val| params[key] = URI.escape(val.to_s) }
       URI(@uri_template % params)
     end
