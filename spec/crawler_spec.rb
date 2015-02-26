@@ -33,11 +33,23 @@ module Scrapespeare
         end
       end
 
+      context "with URI template and insufficient parameters given" do
+        before do
+          crawler.uri_template = "http://example.com/%{foo}"
+        end
+
+        it "throws an ArgumentError" do
+          expect {
+            crawler.crawl({ bar: 5 })
+          }.to raise_error(ArgumentError)
+        end
+      end
+
       context "without URI template and parameters given" do
         it "throws a RuntimeError" do
           expect {
             crawler.crawl({ alpha: 4, beta: 2 })
-          }.to raise_error(RuntimeError)
+          }.to raise_error(RuntimeError )
         end
       end
     end

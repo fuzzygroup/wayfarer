@@ -41,6 +41,9 @@ module Scrapespeare
 
       params.each { |key, val| params[key] = URI.escape(val.to_s) }
       URI(@uri_template % params)
+
+    rescue KeyError
+      fail ArgumentError, "Insufficient URI parameters given"
     end
 
   end
