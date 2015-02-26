@@ -19,8 +19,10 @@ require "scrapespeare/extractor"
 require "scrapespeare/scraper"
 require "scrapespeare/crawler"
 require "scrapespeare/parser"
-require "scrapespeare/uri_iterator"
+
+require "scrapespeare/paginator"
 require "scrapespeare/dom_paginator"
+require "scrapespeare/uri_iterator"
 
 module Scrapespeare
 
