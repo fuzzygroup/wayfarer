@@ -14,15 +14,15 @@ module Scrapespeare
     def paginate(uri)
       @state[:uri] = uri
 
-      catch(:pagination_ended) { return }
+      catch(:pagination_ended) do
+        loop do
+          _, response_body, _ = fetch(@state[:uri])
+          doc = parse(response_body)
 
-      loop do
-        _, response_body, _ = fetch(@state[:uri])
-        doc = parse(response_body)
+          yield @scraper.extract(doc)
 
-        yield @scraper.extract(doc)
-
-        @state[:uri] = successor_uri(doc)
+          @state[:uri] = successor_uri(doc)
+        end
       end
     end
 
@@ -48,9 +48,6 @@ module Scrapespeare
     def successor_uri(doc)
       href_attr = Evaluator.evaluate_attribute(pagination_element(doc), :href)
       URI.join(@state[:uri], href_attr)
-    end
-
-    def process
     end
 
   end
