@@ -16,23 +16,17 @@ module Scrapespeare
 
       catch(:pagination_ended) do
         loop do
-          _, response_body, _ = fetch(@state[:uri])
-          doc = parse(response_body)
-
+          doc = fetch_response_body
           yield @scraper.extract(doc)
-
           @state[:uri] = successor_uri(doc)
         end
       end
     end
 
     private
-    def fetch(uri)
-      @http_adapter.fetch(uri)
-    end
-
-    def parse(html_str)
-      Parser.parse(html_str)
+    def fetch_response_body
+      _, response_body, _ = @http_adapter.fetch(@state[:uri])
+      Parser.parse(response_body)
     end
 
     def pagination_element(doc)
