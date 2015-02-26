@@ -22,8 +22,13 @@ class TestApp < Sinatra::Base
     n.zero? ? "You arrived!" : (redirect to "/redirect?times=#{n - 1}")
   end
 
+  get "/pagination" do
+    n = params[:page].to_i
+    send_file static_file("pagination/page_#{n}.html")
+  end
+
   private
-  def read_static_file(file_path)
+  def static_file(file_path)
     File.expand_path(file_path, settings.public_folder)
   end
 
