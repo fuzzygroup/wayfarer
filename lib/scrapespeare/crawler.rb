@@ -32,6 +32,8 @@ module Scrapespeare
         @scraper.pass_evaluator(identifier, evaluator)
       elsif proc
         @scraper.pass_evaluator(identifier, proc)
+      else
+        fail ArgumentError, "No evaluator given"
       end
     end
 

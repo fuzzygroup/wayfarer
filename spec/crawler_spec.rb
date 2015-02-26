@@ -86,10 +86,18 @@ module Scrapespeare
         end
       end
 
-      context "with block given" do
+      context "with Proc given" do
         it "passes the evaluator to the corresponding Extractable(s)" do
           crawler.set_evaluator_for(:foo) { |matched_nodes, *target_attrs| }
           expect(extractor.evaluator).to be_a Proc
+        end
+      end
+
+      context "with neither evaluator object nor Proc given" do
+        it "raises an ArgumentError" do
+          expect {
+            crawler.set_evaluator_for(:foo)
+          }.to raise_error(ArgumentError)
         end
       end
     end
