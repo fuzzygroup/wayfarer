@@ -1,5 +1,3 @@
-require "pry"
-
 module Scrapespeare
   class DOMPaginator
 
@@ -7,25 +5,23 @@ module Scrapespeare
       @scraper      = scraper
       @matcher      = Matcher.new(matcher_hash)
       @http_adapter = HTTPAdapters::NetHTTPAdapter.new
-
-      @state = {}
     end
 
     def paginate(uri)
-      @state[:uri] = uri
+      @current_uri = uri
 
       catch(:pagination_ended) do
         loop do
           doc = fetch_response_body
           yield @scraper.extract(doc)
-          @state[:uri] = successor_uri(doc)
+          @current_uri = successor_uri(doc)
         end
       end
     end
 
     private
     def fetch_response_body
-      _, response_body, _ = @http_adapter.fetch(@state[:uri])
+      _, response_body, _ = @http_adapter.fetch(@current_uri)
       Parser.parse(response_body)
     end
 
@@ -41,7 +37,7 @@ module Scrapespeare
 
     def successor_uri(doc)
       href_attr = Evaluator.evaluate_attribute(pagination_element(doc), :href)
-      URI.join(@state[:uri], href_attr)
+      URI.join(@current_uri, href_attr)
     end
 
   end
