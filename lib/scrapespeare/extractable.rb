@@ -23,6 +23,7 @@ module Scrapespeare
       extractables << Extractor.new(
         identifier, { css: selector }, *target_attrs, &proc
       )
+      self
     end
 
     # Adds an `Extractor` to `@extractables` and sets its `options`
@@ -36,6 +37,7 @@ module Scrapespeare
       extractables << Extractor.new(
         identifier, { xpath: expression }, *target_attrs, &proc
       )
+      self
     end
 
     # Adds an `ExtractorGroup` to `@extractables` and sets its `options`
@@ -45,6 +47,7 @@ module Scrapespeare
     # @see #add_extractable
     def group(identifier, &proc)
       extractables << ExtractableGroup.new(identifier, &proc)
+      self
     end
 
     # Adds a `Scoper` to `@extractables` and sets its `options`
@@ -54,6 +57,7 @@ module Scrapespeare
     # @see #add_extractable
     def scope(matcher_hash, &proc)
       extractables << Scoper.new(matcher_hash, &proc)
+      self
     end
 
     def pass_evaluator(extractor_identifier, evaluator)

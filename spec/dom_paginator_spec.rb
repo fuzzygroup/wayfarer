@@ -8,7 +8,7 @@ module Scrapespeare
     describe "#paginate" do
       let(:scraper) { Scraper.new.css(:title, "title") }
       let(:matcher_hash) { { css: "li.next a" } }
-      let(:uri) { URI("http://0.0.0.0:8080/paginate?page=1") }
+      let(:uri) { URI("http://0.0.0.0:8080/pagination?page=1") }
 
       it "works" do
         yielded = []
@@ -17,7 +17,7 @@ module Scrapespeare
          yielded << result
        end
 
-      
+       expect(yielded.count).to be 3
       end
     end
 
