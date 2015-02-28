@@ -1,9 +1,14 @@
+require "set"
+
 module Scrapespeare
   class Paginator
+
+    attr_accessor :history
 
     def initialize(scraper)
       @scraper      = scraper
       @http_adapter = HTTPAdapters::NetHTTPAdapter.new
+      @history = Set.new([])
     end
 
     def paginate(uri)
