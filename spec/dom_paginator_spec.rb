@@ -66,6 +66,34 @@ module Scrapespeare
           expect(paginator.halt_cause).to be :uri_already_visited
         end
       end
+
+      context "with ambiguous pagination element matcher" do
+        let(:matcher_hash) { { css: "a" } }
+        let(:uri) { URI("http://0.0.0.0:8080/pagination/page_1.html") }
+
+        it "yields the expected extracts" do
+          extracts = []
+          paginator.paginate(uri) { |extract| extracts << extract }
+
+          expect(extracts).to eq [
+            { title: "Employee listing | Page 1" },
+            { title: "Employee listing | Page 2" }
+          ]
+        end
+
+        it "visits the expected URIs" do
+          paginator.paginate(uri) { |extract| }
+          expect(paginator.history.map(&:to_s)).to eq %w(
+            http://0.0.0.0:8080/pagination/page_1.html
+            http://0.0.0.0:8080/pagination/page_2.html
+          )
+        end
+
+        it "sets the correct halt cause" do
+          paginator.paginate(uri) { |extract| }
+          expect(paginator.halt_cause).to be :ambiguous_pagination_element
+        end
+      end
     end
 
   end
