@@ -4,6 +4,7 @@ module Scrapespeare
   class Paginator
 
     attr_accessor :history
+    attr_reader   :halt_cause
 
     def initialize(scraper)
       @scraper      = scraper
@@ -12,7 +13,7 @@ module Scrapespeare
     end
 
     def paginate(uri)
-      catch :halt do
+      @halt_cause = catch :halt do
         current_uri = uri
 
         loop do
@@ -33,7 +34,7 @@ module Scrapespeare
 
     def update_history(uri)
       if @history.include?(uri)
-        throw :halt
+        throw :halt, :uri_already_visited
       else
         @history.push(uri)
       end

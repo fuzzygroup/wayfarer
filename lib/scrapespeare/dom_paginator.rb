@@ -17,7 +17,7 @@ module Scrapespeare
       matched_nodes = @matcher.match(doc)
 
       if matched_nodes.empty?
-        throw :halt
+        throw :halt, :no_pagination_element
       elsif matched_nodes.count > 1
         throw :halt
       else

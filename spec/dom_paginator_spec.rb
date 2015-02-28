@@ -8,26 +8,34 @@ module Scrapespeare
     describe "#paginate" do
       let(:scraper) { Scraper.new.css(:title, "title") }
       let(:matcher_hash) { { css: "li.next a" } }
-      let(:uri) { URI("http://0.0.0.0:8080/pagination/page_1.html") }
 
-      it "yields the expected extracts" do
-        extracts = []
-        paginator.paginate(uri) { |extract| extracts << extract }
+      context "with non-circular pagination" do
+        let(:uri) { URI("http://0.0.0.0:8080/pagination/page_1.html") }
 
-        expect(extracts).to eq [
-          { title: "Employee listing | Page 1" },
-          { title: "Employee listing | Page 2" },
-          { title: "Employee listing | Page 3" }
-        ]
-      end
+        it "yields the expected extracts" do
+          extracts = []
+          paginator.paginate(uri) { |extract| extracts << extract }
 
-      it "keeps track of visited URIs" do
-        paginator.paginate(uri) { |extract| }
-        expect(paginator.history.map(&:to_s)).to eq %w(
-          http://0.0.0.0:8080/pagination/page_1.html
-          http://0.0.0.0:8080/pagination/page_2.html
-          http://0.0.0.0:8080/pagination/page_3.html
-        )
+          expect(extracts).to eq [
+            { title: "Employee listing | Page 1" },
+            { title: "Employee listing | Page 2" },
+            { title: "Employee listing | Page 3" }
+          ]
+        end
+
+        it "keeps track of visited URIs" do
+          paginator.paginate(uri) { |extract| }
+          expect(paginator.history.map(&:to_s)).to eq %w(
+            http://0.0.0.0:8080/pagination/page_1.html
+            http://0.0.0.0:8080/pagination/page_2.html
+            http://0.0.0.0:8080/pagination/page_3.html
+          )
+        end
+
+        it "sets the correct halt cause" do
+          paginator.paginate(uri) { |extract| }
+          expect(paginator.halt_cause).to be :no_pagination_element
+        end
       end
 
       context "with circular pagination" do
