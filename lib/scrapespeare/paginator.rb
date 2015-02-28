@@ -11,7 +11,7 @@ module Scrapespeare
 
       catch :pagination_ended do
         loop do
-          doc = fetch_response_body
+          doc = Parser.parse(fetch_response_body)
           yield @scraper.extract(doc)
           @current_uri = successor_uri(doc)
         end
@@ -21,7 +21,7 @@ module Scrapespeare
     private
     def fetch_response_body
       _, response_body, _ = @http_adapter.fetch(@current_uri)
-      Parser.parse(response_body)
+      response_body
     end
 
   end
