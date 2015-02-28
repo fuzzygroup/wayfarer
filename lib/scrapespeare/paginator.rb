@@ -26,8 +26,13 @@ module Scrapespeare
 
     private
     def fetch(uri)
-      _, response_body, _ = @http_adapter.fetch(uri)
-      response_body
+      status_code, response_body, _ = @http_adapter.fetch(uri)
+
+      if status_code == 404
+        throw :halt, :followed_dead_link
+      else
+        response_body
+      end
     end
 
     def update_history(uri)
