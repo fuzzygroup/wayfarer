@@ -28,7 +28,7 @@ module Scrapespeare
     def fetch(uri)
       status_code, response_body, _ = @http_adapter.fetch(uri)
 
-      if status_code == 404
+      if status_code != 200
         throw :halt, :followed_dead_link
       else
         response_body
