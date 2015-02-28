@@ -16,6 +16,7 @@ module Scrapespeare
         current_uri = uri
 
         loop do
+          @history.push(current_uri)
           response_body = fetch(current_uri)
           doc = Parser.parse(response_body)
           yield @scraper.extract(doc)
