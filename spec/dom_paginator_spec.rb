@@ -29,6 +29,21 @@ module Scrapespeare
           http://0.0.0.0:8080/pagination/page_3.html
         )
       end
+
+      context "with circular pagination" do
+        let(:uri) { URI("http://0.0.0.0:8080/pagination_circular/page_1.html") }
+
+        it "yields the expected extracts" do
+          extracts = []
+          paginator.paginate(uri) { |extract| extracts << extract }
+
+          expect(extracts).to eq [
+            { title: "Employee listing | Page 1" },
+            { title: "Employee listing | Page 2" },
+            { title: "Employee listing | Page 3" }
+          ]
+        end
+      end
     end
 
   end
