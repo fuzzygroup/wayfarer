@@ -28,7 +28,7 @@ module Scrapespeare
     def fetch(uri)
       status_code, response_body, _ = @http_adapter.fetch(uri)
 
-      if status_code != 200
+      if status_code > 299 # TODO Don't be THAT naive
         halt :followed_dead_link
       else
         response_body
@@ -36,11 +36,7 @@ module Scrapespeare
     end
 
     def update_history(uri)
-      if @history.include?(uri)
-        halt :uri_already_visited
-      else
-        @history.push(uri)
-      end
+      @history.include?(uri) ? (halt :uri_already_visited) : @history.push(uri)
     end
 
     def halt(cause)
