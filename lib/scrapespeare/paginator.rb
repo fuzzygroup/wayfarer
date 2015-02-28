@@ -9,7 +9,7 @@ module Scrapespeare
     def paginate(uri)
       @current_uri = uri
 
-      catch(:pagination_ended) do
+      catch :pagination_ended do
         loop do
           doc = fetch_response_body
           yield @scraper.extract(doc)
