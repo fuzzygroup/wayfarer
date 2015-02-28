@@ -25,6 +25,10 @@ module Scrapespeare
     end
 
     private
+    def halt(cause)
+      throw :halt, cause
+    end
+
     def fetch(uri)
       status_code, response_body, _ = @http_adapter.fetch(uri)
 
@@ -37,10 +41,6 @@ module Scrapespeare
 
     def update_history(uri)
       @history.include?(uri) ? (halt :uri_already_visited) : @history.push(uri)
-    end
-
-    def halt(cause)
-      throw :halt, cause
     end
 
   end
