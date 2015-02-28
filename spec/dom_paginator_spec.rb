@@ -11,13 +11,10 @@ module Scrapespeare
       let(:uri) { URI("http://0.0.0.0:8080/pagination?page=1") }
 
       it "works" do
-        yielded = []
+        extracts = []
+       paginator.paginate(uri) { |result| extracts << result }
 
-       paginator.paginate(uri) do |result|
-         yielded << result
-       end
-
-       expect(yielded).to eq [
+       expect(extracts).to eq [
          { title: "Employee listing | Page 1" },
          { title: "Employee listing | Page 2" },
          { title: "Employee listing | Page 3" }
