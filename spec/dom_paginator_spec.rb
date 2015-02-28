@@ -17,7 +17,11 @@ module Scrapespeare
          yielded << result
        end
 
-       expect(yielded.count).to be 3
+       expect(yielded).to eq [
+         { title: "Employee listing | Page 1" },
+         { title: "Employee listing | Page 2" },
+         { title: "Employee listing | Page 3" }
+       ]
       end
     end
 
