@@ -12,13 +12,13 @@ module Scrapespeare
 
       it "works" do
         extracts = []
-       paginator.paginate(uri) { |result| extracts << result }
+        paginator.paginate(uri) { |extract| extracts << extract }
 
-       expect(extracts).to eq [
-         { title: "Employee listing | Page 1" },
-         { title: "Employee listing | Page 2" },
-         { title: "Employee listing | Page 3" }
-       ]
+        expect(extracts).to eq [
+          { title: "Employee listing | Page 1" },
+          { title: "Employee listing | Page 2" },
+          { title: "Employee listing | Page 3" }
+        ]
       end
     end
 
