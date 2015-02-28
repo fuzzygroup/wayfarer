@@ -2,7 +2,8 @@ require "sinatra"
 
 class TestApp < Sinatra::Base
 
-  set :public_folder, File.dirname(__FILE__) + "/static"
+  set :root, File.dirname(__FILE__)
+  set :public_folder, -> { File.join(root, "static") }
 
   get "/status_code/:code" do
     status params[:code]
