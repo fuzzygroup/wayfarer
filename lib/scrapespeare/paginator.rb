@@ -8,24 +8,25 @@ module Scrapespeare
     def initialize(scraper)
       @scraper      = scraper
       @http_adapter = HTTPAdapters::NetHTTPAdapter.new
-      @history = Set.new([])
+      @history      = []
     end
 
     def paginate(uri)
-      @current_uri = uri
-
       catch :pagination_ended do
+        current_uri = uri
+
         loop do
-          doc = Parser.parse(fetch_response_body)
+          response_body = fetch(current_uri)
+          doc = Parser.parse(response_body)
           yield @scraper.extract(doc)
-          @current_uri = successor_uri(doc)
+          current_uri = next_uri(current_uri, doc)
         end
       end
     end
 
     private
-    def fetch_response_body
-      _, response_body, _ = @http_adapter.fetch(@current_uri)
+    def fetch(uri)
+      _, response_body, _ = @http_adapter.fetch(uri)
       response_body
     end
 

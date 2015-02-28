@@ -18,9 +18,9 @@ module Scrapespeare
       end
     end
 
-    def successor_uri(doc)
+    def next_uri(uri, doc)
       href_attr = Evaluator.evaluate_attribute(pagination_element(doc), :href)
-      URI.join(@current_uri, href_attr)
+      URI.join(uri, href_attr)
     end
 
   end
