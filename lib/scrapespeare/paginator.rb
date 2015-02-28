@@ -16,7 +16,7 @@ module Scrapespeare
         current_uri = uri
 
         loop do
-          @history.push(current_uri)
+          update_history(current_uri)
 
           response_body = fetch(current_uri)
           doc = Parser.parse(response_body)
@@ -32,6 +32,14 @@ module Scrapespeare
     def fetch(uri)
       _, response_body, _ = @http_adapter.fetch(uri)
       response_body
+    end
+
+    def update_history(uri)
+      if @history.include?(uri)
+        throw :pagination_ended
+      else
+        @history.push(uri)
+      end
     end
 
   end
