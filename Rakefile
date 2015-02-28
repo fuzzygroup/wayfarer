@@ -53,6 +53,7 @@ end
 
 task :start_test_app do
   @server_thread = Thread.new { Rack::Handler::WEBrick.run TestApp }
+  sleep(0.5)
 end
 
 task :stop_test_app do
