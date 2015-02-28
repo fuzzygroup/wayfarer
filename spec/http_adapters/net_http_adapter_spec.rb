@@ -32,6 +32,12 @@ module Scrapespeare
             expect(response_body).to match /You arrived!/
           end
 
+          it "returns the status code" do
+            uri = URI("http://0.0.0.0:8080/redirect?times=1")
+            status_code, _, _ = adapter.fetch(uri)
+            expect(status_code).to be 200
+          end
+
           it "adheres to config.max_http_redirects" do
             Scrapespeare.config.max_http_redirects = 5
 
