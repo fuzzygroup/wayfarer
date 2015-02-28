@@ -8,7 +8,7 @@ module Scrapespeare
     describe "#paginate" do
       let(:scraper) { Scraper.new.css(:title, "title") }
       let(:matcher_hash) { { css: "li.next a" } }
-      let(:uri) { URI("http://0.0.0.0:8080/pagination?page=1") }
+      let(:uri) { URI("http://0.0.0.0:8080/pagination/page_1.html") }
 
       it "yields the expected extracts" do
         extracts = []
@@ -24,9 +24,9 @@ module Scrapespeare
       it "keeps track of visited URIs" do
         paginator.paginate(uri) { |extract| }
         expect(paginator.history.map(&:to_s)).to eq %w(
-          http://0.0.0.0:8080/pagination?page=1
-          http://0.0.0.0:8080/pagination?page=2
-          http://0.0.0.0:8080/pagination?page=3
+          http://0.0.0.0:8080/pagination/page_1.html
+          http://0.0.0.0:8080/pagination/page_2.html
+          http://0.0.0.0:8080/pagination/page_3.html
         )
       end
     end
