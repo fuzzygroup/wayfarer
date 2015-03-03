@@ -3,11 +3,38 @@ require "spec_helpers"
 describe Scrapespeare::Result do
 
   it "works" do
-    result_a = Result[a: 1, b: 2]
-    result_b = Result[a: 3, b: 4]
+    result_a = Result[
+      foo: {
+        bar: 1,
+        baz: 2,
+        qux: 3
+      }
+    ]
 
-    merged = result_a << result_b
-    expect(merged).to eq({ a: [1, 3], b: [2, 4] })
+    result_b = Result[
+      foo: {
+        bar: 4,
+        baz: 5,
+        qux: 6
+      }
+    ]
+
+    final = result_a << result_b
+
+    expect(final).to eq({
+      foo: [
+        {
+          bar: 1,
+          baz: 2,
+          qux: 3
+        },
+        {
+          bar: 4,
+          baz: 5,
+          qux: 6
+        }
+      ]
+    })
   end
 
 end
