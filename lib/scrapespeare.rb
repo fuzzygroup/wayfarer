@@ -11,6 +11,7 @@ require "scrapespeare/http_adapters/net_http_adapter"
 
 require "scrapespeare/configuration"
 require "scrapespeare/extractable"
+require "scrapespeare/result"
 require "scrapespeare/evaluator"
 require "scrapespeare/matcher"
 require "scrapespeare/scoper"

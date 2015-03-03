@@ -1,5 +1,7 @@
 require "scrapespeare"
 
+include Scrapespeare
+
 module SpecHelpers
 
   def dummy_html(file_name)
