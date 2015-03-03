@@ -110,7 +110,8 @@ describe Scrapespeare::Result do
         bar: 7,
         baz: 8,
         qux: 9
-      }
+      },
+      qzer: 200
     ]
 
     final = result_a << result_b
@@ -127,7 +128,8 @@ describe Scrapespeare::Result do
           baz: 8,
           qux: 9
         }
-      ]
+      ],
+      qzer: 200
     })
   end
 
