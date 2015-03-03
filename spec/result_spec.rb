@@ -6,10 +6,8 @@ describe Scrapespeare::Result do
     result_a = Result[a: 1, b: 2]
     result_b = Result[a: 3, b: 4]
 
-    merged = result_a.deep_merge(result_b)
-    expect(merged).to eq({
-      a: 3, b: 4
-    })
+    merged = result_a << result_b
+    expect(merged).to eq({ a: [1, 3], b: [2, 4] })
   end
 
 end
