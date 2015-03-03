@@ -96,4 +96,39 @@ describe Scrapespeare::Result do
     })
   end
 
+  it "works" do
+    result_a = Result[
+      foo: {
+        bar: [1, 2, 3],
+        baz: { a: 4, b: 5 },
+        qux: 6
+      }
+    ]
+
+    result_b = Result[
+      foo: {
+        bar: 7,
+        baz: 8,
+        qux: 9
+      }
+    ]
+
+    final = result_a << result_b
+
+    expect(final).to eq({
+      foo: [
+        {
+          bar: [1, 2, 3],
+          baz: { a: 4, b: 5 },
+          qux: 6
+        },
+        {
+          bar: 7,
+          baz: 8,
+          qux: 9
+        }
+      ]
+    })
+  end
+
 end
