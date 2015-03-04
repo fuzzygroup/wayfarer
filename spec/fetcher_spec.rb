@@ -28,6 +28,17 @@ describe Scrapespeare::Fetcher do
       page = fetcher.fetch(uri)
       expect(page.headers["hello"]).to eq ["world"]
     end
+
+    context "when response is a redirect" do
+      it "follows the redirect" do
+        uri = URI("http://0.0.0.0:8080/redirect?times=3")
+        page = fetcher.fetch(uri)
+
+        expect(page.status_code).to be 200
+        expect(page.body).to eq "You arrived!"
+      end
+    end
+
   end
 
 end
