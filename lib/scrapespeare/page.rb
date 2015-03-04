@@ -17,7 +17,11 @@ module Scrapespeare
     end
 
     def links
-      parsed_document.css("a").map { |node| expand_uri(node.attr("href")) }
+      uris = parsed_document.css("a").map do |node|
+        expand_uri(node.attr("href"))
+      end
+
+      Set.new(uris)
     end
 
     def internal_links
