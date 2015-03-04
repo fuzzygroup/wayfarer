@@ -18,9 +18,15 @@ describe Scrapespeare::Fetcher do
     end
 
     it "retrieves the correct response body" do
-      uri = URI("http://0.0.0.0:8080/status_code/404")
+      uri = URI("http://0.0.0.0:8080/hello_world")
       page = fetcher.fetch(uri)
       expect(page.body).to eq "Hello world!"
+    end
+
+    it "retrieves the correct response headers" do
+      uri = URI("http://0.0.0.0:8080/hello_world")
+      page = fetcher.fetch(uri)
+      expect(page.headers["hello"]).to eq ["world"]
     end
   end
 
