@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency "hashie",                     "~> 3.4",  ">= 3.4.0"
   s.add_dependency "rack",                       "~> 1.6",  ">= 1.6.0"
 
+  s.add_development_dependency "rake",           "~> 10.4", ">= 10.4.2"
   s.add_development_dependency "rspec",          "~> 3.1",  ">= 3.1.0"
   s.add_development_dependency "yard",           "~> 0.8",  ">= 0.8.7.6"
   s.add_development_dependency "cucumber",       "~> 1.3",  ">= 1.3.17"

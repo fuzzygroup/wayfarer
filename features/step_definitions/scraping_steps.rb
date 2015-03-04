@@ -1,11 +1,9 @@
-Before { WebMock.disable_net_connect!(allow_localhost: true) }
-
 Given(/^a Crawler$/) do
   @crawler = Scrapespeare::Crawler.new
 end
 
 Given(/^the following Scraper:$/) do |code|
-  @crawler.scrape { eval(code) }
+  @crawler.define_scraper { eval(code) }
 end
 
 When(/^I crawl "(.*?)"$/) do |path|
@@ -13,7 +11,6 @@ When(/^I crawl "(.*?)"$/) do |path|
   @result = @crawler.crawl(uri)
 end
 
-Then(/^I get the following result:$/) do |code|
-  expected_result = eval(code)
-  expect(@result).to eq expected_result
+Then(/^I get the following Result:$/) do |code|
+  expect(@result.to_h).to eq eval(code)
 end

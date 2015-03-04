@@ -23,7 +23,7 @@ task spec: %w(spec:isolated spec:live)
 namespace :features do
   desc "Run environment-agnostic scenarios"
   Cucumber::Rake::Task.new isolated: [:start_test_app] do |task|
-    task.cucumber_opts = "features --format progress"
+    # task.cucumber_opts = "features" # --format progress
   end
 end
 
