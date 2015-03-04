@@ -1,3 +1,5 @@
+require "uri"
+
 module Scrapespeare
   class Page
 
@@ -12,6 +14,23 @@ module Scrapespeare
 
     def parsed_document
       @parsed_document ||= Nokogiri::HTML(@body)
+    end
+
+    def links
+      parsed_document.css("a").map { |node| expand_uri(node.attr("href")) }
+    end
+
+    def internal_links
+      links.find_all { |uri| is_internal_link?(uri) }
+    end
+
+    private
+    def expand_uri(path)
+      URI.join(@uri, path)
+    end
+
+    def is_internal_link?(uri)
+      uri.host == @uri.host
     end
 
   end
