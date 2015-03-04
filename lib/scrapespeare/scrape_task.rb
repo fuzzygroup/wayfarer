@@ -7,7 +7,6 @@ module Scrapespeare
       @uri     = uri
       @scraper = scraper
       @result  = result
-      @mutex   = Mutex.new
 
       super(self, &:process)
     end
@@ -16,7 +15,7 @@ module Scrapespeare
       page = Fetcher.new.fetch(@uri)
       result = @scraper.extract(page.parsed_document)
 
-      @mutex.synchronize { @result << result.to_h }
+      Mutex.new.synchronize { @result << result.to_h }
     end
 
   end
