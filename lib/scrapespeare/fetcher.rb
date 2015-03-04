@@ -6,9 +6,9 @@ module Scrapespeare
     def fetch(uri)
       res = Net::HTTP.get_response(uri)
 
-      headers     = res.to_hash
       status_code = res.code.to_i
       body        = res.body
+      headers     = res.to_hash
 
       Page.new(status_code, body, headers)
     end

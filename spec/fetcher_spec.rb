@@ -16,6 +16,12 @@ describe Scrapespeare::Fetcher do
       page = fetcher.fetch(uri)
       expect(page.status_code).to be 404
     end
+
+    it "retrieves the correct response body" do
+      uri = URI("http://0.0.0.0:8080/status_code/404")
+      page = fetcher.fetch(uri)
+      expect(page.body).to eq "Hello world!"
+    end
   end
 
 end

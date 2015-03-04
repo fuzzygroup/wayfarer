@@ -1,7 +1,4 @@
 module Scrapespeare
-  Page = Struct.new(
-    :status_code,
-    :response_body,
-    :headers
-  )
+  class Page < Struct.new(:status_code, :body, :headers)
+  end
 end
