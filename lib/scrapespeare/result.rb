@@ -1,4 +1,6 @@
 require "hashie"
+require "json"
+require "yaml"
 
 module Scrapespeare
   class Result
@@ -33,12 +35,10 @@ module Scrapespeare
     end
 
     def to_json
-      require "json"
       @result.to_json
     end
 
     def to_yaml
-      require "yaml"
       Hashie.stringify_keys(@result).to_yaml
     end
 
