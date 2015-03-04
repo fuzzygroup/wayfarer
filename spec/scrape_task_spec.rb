@@ -3,14 +3,15 @@ require "spec_helpers"
 describe Scrapespeare::ScrapeTask do
 
   describe "#run" do
-    let(:result) { Result.new }
-    let(:uri)    { URI("http://0.0.0.0:8080/links/links.html") }
+    let(:uri)      { URI("http://0.0.0.0:8080/links/links.html") }
+    let(:scraper)  { Scraper.new.css(:title, "title") }
+    let(:result)   { Result.new }
+    subject(:task) { ScrapeTask.new(uri, scraper, result) }
+
+    before { task.join }
 
     it "works" do
-      scrape_task = ScrapeTask.new(uri, result)
-      scrape_task.join
-
-      expect(result).to eq({ foo: "lel" }) 
+      expect(result.to_h).to eq({ foo: "lel" }) 
     end
   end
 
