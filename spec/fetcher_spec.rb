@@ -38,7 +38,7 @@ describe Scrapespeare::Fetcher do
         expect(page.body).to eq "You arrived!"
       end
 
-      context "when maximum number of redirects followed" do
+      context "when maximum number of redirects reached" do
         before { Scrapespeare.config.max_http_redirects = 5 }
         after  { Scrapespeare.config.reset! }
 
