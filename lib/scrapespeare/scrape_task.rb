@@ -1,3 +1,5 @@
+require "thread"
+
 module Scrapespeare
   class ScrapeTask < Thread
 
@@ -5,6 +7,7 @@ module Scrapespeare
       @uri     = uri
       @scraper = scraper
       @result  = result
+      @mutex   = Mutex.new
 
       super(self, &:process)
     end
@@ -12,7 +15,8 @@ module Scrapespeare
     def process
       page = Fetcher.new.fetch(@uri)
       result = @scraper.extract(page.parsed_document)
-      @result << result.to_h
+
+      @mutex.synchronize { @result << result.to_h }
     end
 
   end
