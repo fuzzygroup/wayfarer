@@ -1,3 +1,5 @@
+require "hashie"
+
 module Scrapespeare
   class Result
 
@@ -6,7 +8,7 @@ module Scrapespeare
     end
 
     def <<(other)
-      @result.merge!(other) do |key, val_self, val_other|
+      @result.merge!(other) do |_, val_self, val_other|
         if val_self.is_a? Array
           if val_other.is_a? Array
             val_self.concat(val_other)
@@ -27,6 +29,16 @@ module Scrapespeare
 
     def to_h
       @result
+    end
+
+    def to_json
+      require "json"
+      @result.to_json
+    end
+
+    def to_yaml
+      require "yaml"
+      Hashie.stringify_keys(@result).to_yaml
     end
 
   end

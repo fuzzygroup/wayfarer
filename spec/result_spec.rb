@@ -162,4 +162,33 @@ describe Scrapespeare::Result do
     })
   end
 
+  it "works" do
+    a = {
+      foo: {
+        bar: [1, 2, 3],
+        baz: { a: 4, b: 5 },
+        qux: 6
+      }
+    }
+
+    b = {
+      foo: {
+        bar: 7,
+        baz: 8,
+        qux: 9
+      },
+      qzer: 200
+    }
+
+    result << a
+    result << b
+
+    puts "-------------------------------------"
+    puts result.to_json
+
+    puts "-------------------------------------"
+    puts result.to_yaml
+
+  end
+
 end
