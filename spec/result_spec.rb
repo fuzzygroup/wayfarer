@@ -2,26 +2,29 @@ require "spec_helpers"
 
 describe Scrapespeare::Result do
 
+  let(:result) { subject.class.new }
+
   it "works" do
-    result_a = Result[
+    a = {
       foo: {
         bar: 1,
         baz: 2,
         qux: 3
       }
-    ]
+    }
 
-    result_b = Result[
+    b = {
       foo: {
         bar: 4,
         baz: 5,
         qux: 6
       }
-    ]
+    }
 
-    final = result_a << result_b
+    result << a
+    result << b
 
-    expect(final).to eq({
+    expect(result.to_h).to eq({
       foo: [
         {
           bar: 1,
@@ -38,7 +41,7 @@ describe Scrapespeare::Result do
   end
 
   it "works" do
-    result_a = Result[
+    a = {
       foo: [
         {
           bar: 1,
@@ -51,9 +54,9 @@ describe Scrapespeare::Result do
           qux: 6
         },
       ]
-    ]
+    }
 
-    result_b = Result[
+    b = {
       foo: [
         {
           bar: 7,
@@ -66,11 +69,12 @@ describe Scrapespeare::Result do
           qux: 12
         },
       ]
-    ]
+    }
 
-    final = result_a << result_b
+    result << a
+    result << b
 
-    expect(final).to eq({
+    expect(result.to_h).to eq({
       foo: [
         {
           bar: 1,
@@ -97,26 +101,27 @@ describe Scrapespeare::Result do
   end
 
   it "works" do
-    result_a = Result[
+    a = {
       foo: {
         bar: [1, 2, 3],
         baz: { a: 4, b: 5 },
         qux: 6
       }
-    ]
+    }
 
-    result_b = Result[
+    b = {
       foo: {
         bar: 7,
         baz: 8,
         qux: 9
       },
       qzer: 200
-    ]
+    }
 
-    final = result_a << result_b
+    result << a
+    result << b
 
-    expect(final).to eq({
+    expect(result.to_h).to eq({
       foo: [
         {
           bar: [1, 2, 3],
