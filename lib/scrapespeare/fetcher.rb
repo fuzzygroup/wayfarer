@@ -4,6 +4,8 @@ module Scrapespeare
   class Fetcher
 
     def fetch(uri, redirects_followed = 0)
+      fail if redirects_followed > Scrapespeare.config.max_http_redirects
+
       res = Net::HTTP.get_response(uri)
 
       if res.is_a? Net::HTTPRedirection

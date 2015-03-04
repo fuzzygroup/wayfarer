@@ -37,6 +37,18 @@ describe Scrapespeare::Fetcher do
         expect(page.status_code).to be 200
         expect(page.body).to eq "You arrived!"
       end
+
+      context "when maximum number of redirects followed" do
+        before { Scrapespeare.config.max_http_redirects = 5 }
+        after  { Scrapespeare.config.reset! }
+
+        it "raises a RuntimeError" do
+          expect {
+            uri = URI("http://0.0.0.0:8080/redirect?times=6")
+            page = fetcher.fetch(uri)
+          }.to raise_error(RuntimeError)
+        end
+      end
     end
 
   end
