@@ -2,7 +2,7 @@ require "spec_helpers"
 
 describe Scrapespeare::Extractable do
 
-  let(:extractable) { Object.new.extend(Scrapespeare::Extractable) }
+  let(:extractable) { Object.new.extend(subject) }
 
   describe "#extractables" do
     context "with @extractables set" do
