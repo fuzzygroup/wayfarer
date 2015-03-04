@@ -21,9 +21,6 @@ require "scrapespeare/scraper"
 require "scrapespeare/crawler"
 require "scrapespeare/parser"
 
-require "scrapespeare/dom_paginator"
-require "scrapespeare/uri_iterator"
-
 module Scrapespeare
 
   VERSION = "0.0.1-alpha.1"
