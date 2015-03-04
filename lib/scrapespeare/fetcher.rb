@@ -17,7 +17,7 @@ module Scrapespeare
       body        = res.body
       headers     = res.to_hash
 
-      Page.new(status_code, body, headers)
+      Page.new(uri, status_code, body, headers)
     end
 
   end

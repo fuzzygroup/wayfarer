@@ -11,6 +11,12 @@ describe Scrapespeare::Fetcher do
       expect(page).to be_a Page
     end
 
+    it "sets the correct URI" do
+      uri = URI("http://0.0.0.0:8080/status_code/404")
+      page = fetcher.fetch(uri)
+      expect(page.uri.to_s).to eq "http://0.0.0.0:8080/status_code/404"
+    end
+
     it "retrieves the correct HTTP status code" do
       uri = URI("http://0.0.0.0:8080/status_code/404")
       page = fetcher.fetch(uri)
@@ -34,8 +40,7 @@ describe Scrapespeare::Fetcher do
         uri = URI("http://0.0.0.0:8080/redirect?times=3")
         page = fetcher.fetch(uri)
 
-        expect(page.status_code).to be 200
-        expect(page.body).to eq "You arrived!"
+        expect(page.uri.to_s).to eq "http://0.0.0.0:8080/redirect?times=0"
       end
 
       context "when maximum number of redirects reached" do
