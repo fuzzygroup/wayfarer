@@ -1,8 +1,7 @@
 module Scrapespeare
   Page = Struct.new(
-    :response_body,
-    :parsed_document,
     :status_code,
+    :response_body,
     :headers
   )
 end
