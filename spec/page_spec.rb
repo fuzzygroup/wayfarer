@@ -44,6 +44,11 @@ describe Scrapespeare::Page do
 
   describe "#external_links" do
     it "returns an Array of all external links" do
+      expect(page.external_links.map(&:to_s)).to eq %w(
+        http://google.com
+        http://yahoo.com
+        http://aol.com
+      )
     end
   end
 

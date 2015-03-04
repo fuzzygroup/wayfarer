@@ -1,4 +1,5 @@
 require "uri"
+require "set"
 
 module Scrapespeare
   class Page
@@ -26,6 +27,10 @@ module Scrapespeare
 
     def internal_links
       links.find_all { |uri| is_internal_link?(uri) }
+    end
+
+    def external_links
+      links.reject { |uri| is_internal_link?(uri) }
     end
 
     private
