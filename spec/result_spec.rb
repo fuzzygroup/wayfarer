@@ -4,7 +4,7 @@ describe Scrapespeare::Result do
 
   let(:result) { subject.class.new }
 
-  it "works" do
+  it "builds the expected Hash structure" do
     a = {
       foo: {
         bar: 1,
@@ -40,7 +40,7 @@ describe Scrapespeare::Result do
     })
   end
 
-  it "works" do
+  it "builds the expected Hash structure" do
     a = {
       foo: [
         {
@@ -100,7 +100,7 @@ describe Scrapespeare::Result do
     })
   end
 
-  it "works" do
+  it "builds the expected Hash structure" do
     a = {
       foo: {
         bar: [1, 2, 3],
@@ -138,7 +138,7 @@ describe Scrapespeare::Result do
     })
   end
 
-  it "works" do
+  it "builds the expected Hash structure" do
     a = {
       foo: [
         { x: 1, y: { z: [2, 3, 4] } },
@@ -160,35 +160,6 @@ describe Scrapespeare::Result do
         { x: [7, 8], y: { z: 9 } }
       ]
     })
-  end
-
-  it "works" do
-    a = {
-      foo: {
-        bar: [1, 2, 3],
-        baz: { a: 4, b: 5 },
-        qux: 6
-      }
-    }
-
-    b = {
-      foo: {
-        bar: 7,
-        baz: 8,
-        qux: 9
-      },
-      qzer: 200
-    }
-
-    result << a
-    result << b
-
-    puts "-------------------------------------"
-    puts result.to_json
-
-    puts "-------------------------------------"
-    puts result.to_yaml
-
   end
 
 end
