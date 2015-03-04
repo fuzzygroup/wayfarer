@@ -7,6 +7,7 @@ module Scrapespeare
       @result = {}
     end
 
+    # TODO Refactor this mess
     def <<(other)
       @result.merge!(other) do |_, val_self, val_other|
         if val_self.is_a? Array
