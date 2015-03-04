@@ -138,4 +138,28 @@ describe Scrapespeare::Result do
     })
   end
 
+  it "works" do
+    a = {
+      foo: [
+        { x: 1, y: { z: [2, 3, 4] } },
+        { x: 5, y: { z: 6 } },
+      ]
+    }
+
+    b = {
+      foo: { x: [7, 8], y: { z: 9 } }
+    }
+
+    result << a
+    result << b
+
+    expect(result.to_h).to eq({
+      foo: [
+        { x: 1, y: { z: [2, 3, 4] } },
+        { x: 5, y: { z: 6 } },
+        { x: [7, 8], y: { z: 9 } }
+      ]
+    })
+  end
+
 end
