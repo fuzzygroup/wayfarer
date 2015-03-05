@@ -16,12 +16,12 @@ module Scrapespeare
       page   = Fetcher.new.fetch(uri)
       result = @scraper.extract(page.parsed_document)
 
-      staged.concat(page.internal_links)
+      stage_uris(page.internal_links)
     end
 
     private
-    def stage_uri(uri)
-      @staged << uri
+    def stage_uris(uris)
+      @staged.concat(uris)
     end
 
   end
