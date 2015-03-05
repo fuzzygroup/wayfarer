@@ -27,4 +27,7 @@ describe Scrapespeare::Processor do
     end
   end
 
+  describe "#stage_uris" do
+  end
+
 end

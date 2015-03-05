@@ -11,8 +11,10 @@ module Scrapespeare
       @staged  = [entry_uri]
       @cached  = []
       @result  = Result.new
+      @mutex   = Mutex.new
+    end
 
-      @mutex = Mutex.new
+    def run
     end
 
     def process
@@ -30,7 +32,7 @@ module Scrapespeare
     end
 
     def cache_uri(uri)
-      @mutex.synchronize { @cached << uri }
+      @mutex.synchronize { @cached.push(uri) }
     end
 
   end

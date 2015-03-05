@@ -35,7 +35,7 @@ module Scrapespeare
 
     private
     def expand_uri(path)
-      URI.join(@uri, path)
+      URI.join(@uri, path) rescue ArgumentError
     end
 
     def is_internal_link?(uri)
