@@ -48,6 +48,7 @@ module Scrapespeare
     end
 
     def update_result(extract)
+      @mutex.synchronize { @result << extract }
     end
 
   end

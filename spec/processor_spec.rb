@@ -44,7 +44,11 @@ describe Scrapespeare::Processor do
   end
 
   describe "#cache_uri" do
-    
+    it "stores a URI" do
+      uri = URI("http://example.com")
+      processor.send(:cache_uri, uri)
+      expect(processor.cached_uris).to eq [uri]
+    end
   end
 
 end
