@@ -28,6 +28,18 @@ describe Scrapespeare::Processor do
   end
 
   describe "#stage_uris" do
+    it "works" do
+      processor.instance_variable_set(:@cached, [URI("http://example.com")])
+      processor.send(:stage_uris, [
+        URI("http://example.com"),
+        URI("http://google.com"),
+      ])
+
+      expect(processor.staged).to eq [
+        URI("http://0.0.0.0:8080/links/links.html"),
+        URI("http://google.com")
+      ]
+    end
   end
 
 end
