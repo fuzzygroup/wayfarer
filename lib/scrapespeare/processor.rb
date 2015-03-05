@@ -1,20 +1,22 @@
+require "thread/pool"
+
 module Scrapespeare
   class Processor
 
     attr_reader :staged
 
-    def initialize(entry_uri)
-      @entry_uri = entry_uri
-
+    def initialize(entry_uri, scraper)
+      @scraper = scraper
+      @staged  = [entry_uri]
       @result  = Result.new
-
-      @cached  = []
-      @current = []
-      @staged  = []
     end
 
     def process
-      
+      uri    = @staged.shift
+      page   = Fetcher.new.fetch(uri)
+      result = @scraper.extract(page.parsed_document)
+
+      staged.concat(page.internal_links)
     end
 
     private

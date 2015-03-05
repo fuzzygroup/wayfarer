@@ -2,23 +2,21 @@ require "spec_helpers"
 
 describe Scrapespeare::Processor do
 
-  subject(:processor) { Processor.new }
+  let(:uri)           { URI("http://0.0.0.0:8080/links/links.html") }
+  let(:scraper)       { Scraper.new.css(:title, "title") }
+  subject(:processor) { Processor.new(uri, scraper) }
 
-  describe "#stage_uri" do
-    context "when given URI has not been processed yet" do
-      it "stages the URI for processing" do
-        uri = URI("http://google.com")
-        processor.send(:stage_uri, uri)
-        expect(processor.staged).to eq [uri]
-      end
-    end
-
-    context "when given URI has been processed" do
-      it "does not stage the URI for processing" do
-        uri = URI("http://google.com")
-        processor.send(:stage_uri, uri)
-        expect(processor.staged).to eq [uri]
-      end
+  describe "#process" do
+    it "works" do
+      processor.process
+      expect(processor.staged.map(&:to_s)).to eq %w(
+        http://0.0.0.0:8080/foo
+        http://0.0.0.0:8080/bar
+        http://0.0.0.0:8080/baz
+        http://0.0.0.0:8080/links/foo
+        http://0.0.0.0:8080/links/bar
+        http://0.0.0.0:8080/links/baz
+      )
     end
   end
 
