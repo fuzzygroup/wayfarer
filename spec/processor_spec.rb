@@ -7,7 +7,7 @@ describe Scrapespeare::Processor do
   subject(:processor) { Processor.new(uri, scraper) }
 
   describe "#process" do
-    it "works" do
+    it "stages the expected URIs" do
       processor.process
       expect(processor.staged.map(&:to_s)).to eq %w(
         http://0.0.0.0:8080/foo
@@ -17,6 +17,13 @@ describe Scrapespeare::Processor do
         http://0.0.0.0:8080/links/bar
         http://0.0.0.0:8080/links/baz
       )
+    end
+
+    it "caches the processed URI" do
+      processor.process
+      expect(processor.cached.map(&:to_s)).to eq [
+        "http://0.0.0.0:8080/links/links.html"
+      ]
     end
   end
 
