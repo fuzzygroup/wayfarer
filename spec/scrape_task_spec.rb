@@ -11,7 +11,7 @@ describe Scrapespeare::ScrapeTask do
     before { task.join }
 
     it "works" do
-      expect(result.to_h).to eq({ foo: "lel" }) 
+      expect(result.to_h).to eq({ title: "Things" }) 
     end
   end
 
