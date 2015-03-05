@@ -7,6 +7,7 @@ PATH
       rack (~> 1.6, >= 1.6.0)
       selenium-emulated_features (~> 0.0, >= 0.0.2)
       selenium-webdriver (~> 2.43, >= 2.43.0)
+      thread (~> 0.1, >= 0.1.5)
 
 GEM
   remote: https://rubygems.org/
@@ -48,7 +49,7 @@ GEM
     rspec-support (3.1.2)
     rubyzip (1.1.7)
     selenium-emulated_features (0.0.2)
-    selenium-webdriver (2.44.0)
+    selenium-webdriver (2.45.0)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
@@ -57,6 +58,7 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
+    thread (0.1.5)
     tilt (1.4.1)
     websocket (1.2.1)
     yard (0.8.7.6)
