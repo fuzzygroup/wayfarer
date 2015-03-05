@@ -11,6 +11,8 @@ module Scrapespeare
       @staged  = [entry_uri]
       @cached  = []
       @result  = Result.new
+
+      @mutex = Mutex.new
     end
 
     def process
@@ -24,11 +26,11 @@ module Scrapespeare
 
     private
     def stage_uris(uris)
-      @staged.concat(uris)
+      @mutex.synchronize { @staged.concat(uris) }
     end
 
     def cache_uri(uri)
-      @cached << uri
+      @mutex.synchronize { @cached << uri }
     end
 
   end
