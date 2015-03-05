@@ -1,19 +1,19 @@
+require "set"
 require "thread/pool"
 
 module Scrapespeare
   class Processor
 
-    attr_reader :staged
-    attr_reader :cached
+    attr_reader :staged_uris
+    attr_reader :cached_uris
 
     def initialize(entry_uri, scraper)
-      @scraper = scraper
-      @staged  = [entry_uri]
-      @cached  = []
-      @result  = Result.new
-
-      @pool    = Thread.pool(4)
-      @mutex   = Mutex.new
+      @scraper      = scraper
+      @staged_uris  = [entry_uri]
+      @cached_uris  = []
+      @result       = Result.new
+      @pool         = Thread.pool(4)
+      @mutex        = Mutex.new
     end
 
     def run
@@ -22,12 +22,12 @@ module Scrapespeare
     end
 
     def process
-      if @staged.empty?
+      if @staged_uris.empty?
         @pool.shutdown
         return
       end
 
-      uri    = @staged.shift
+      uri    = @staged_uris.shift
       page   = Fetcher.new.fetch(uri)
       result = @scraper.extract(page.parsed_document)
 
@@ -38,13 +38,13 @@ module Scrapespeare
     private
     def stage_uris(uris)
       @mutex.synchronize do
-        new_uris = uris.reject { |uri| @cached.include? uri }
-        @staged.concat(new_uris)
+        new_uris = uris.reject { |uri| @cached_uris.include? uri }
+        @staged_uris.concat(new_uris)
       end
     end
 
     def cache_uri(uri)
-      @mutex.synchronize { @cached.push(uri) }
+      @mutex.synchronize { @cached_uris.push(uri) }
     end
 
     def update_result(extract)
