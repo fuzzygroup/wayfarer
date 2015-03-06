@@ -15,10 +15,20 @@ describe Scrapespeare::Routing::RuleSet do
   end
 
   describe "#allowed?" do
-    let(:uri) { URI("http://example.com/foo/bar") }
+    before { rule_set << Rule.new("/foo") }
 
-    it "works" do
-      expect(rule_set.allowed?(uri)).to be false
+    context "with matching URI path given" do
+      it "returns `true`" do
+        uri = URI("http://google.com/foo")
+        expect(rule_set.allowed?(uri)).to be true
+      end
+    end
+
+    context "with mismatching URI path given" do
+      it "returns `true`" do
+        uri = URI("http://google.com/bar")
+        expect(rule_set.allowed?(uri)).to be false
+      end
     end
   end
 
