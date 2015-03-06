@@ -23,9 +23,32 @@ describe Scrapespeare::Routing::Router do
     end
 
     context "with mismatching URI path given" do
-      it "returns `true`" do
+      it "returns `false`" do
         uri = URI("http://google.com/bar")
         expect(router.recognized?(uri)).to be false
+      end
+    end
+  end
+
+  describe "#route" do
+    context "with mismatching URI path given" do
+      before { router.register("/foo", :foo) }
+
+      it "returns `nil`" do
+        uri = URI("http://google.com/bar")
+        expect(router.route(uri)).to be nil
+      end
+    end
+
+    context "with matching URI path given" do
+      before do
+        router.register("/*catchall", :catchall)
+        router.register("/foo", :foo)
+      end
+
+      it "returns the first matching Rule's associated Scraper" do
+        uri = URI("http://google.com/bar")
+        expect(router.route(uri)).to be :catchall
       end
     end
   end

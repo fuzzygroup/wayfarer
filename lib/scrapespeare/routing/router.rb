@@ -18,6 +18,8 @@ module Scrapespeare
       end
 
       def route(uri)
+        matching_rule = @routing_table.keys.detect { |rule| rule === uri }
+        @routing_table[matching_rule]
       end
 
     end
