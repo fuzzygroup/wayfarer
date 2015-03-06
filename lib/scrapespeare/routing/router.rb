@@ -8,7 +8,7 @@ module Scrapespeare
         @routing_table = {}
       end
 
-      def register(pattern_str, scraper_sym)
+      def register(pattern_str, scraper_sym = :default)
         @routing_table[Rule.new(pattern_str)] = scraper_sym
       end
 

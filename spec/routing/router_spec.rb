@@ -10,6 +10,13 @@ describe Scrapespeare::Routing::Router do
         router.register("/foo", :foo)
       }.to change{ router.routing_table.keys.count }.by(1)
     end
+
+    context "without identifier Symbol given" do
+      it "sets the identifier Symbol to `:default`" do
+        router.register("/foo")
+        expect(router.routing_table.values.first).to be :default
+      end
+    end
   end
 
   describe "#route" do

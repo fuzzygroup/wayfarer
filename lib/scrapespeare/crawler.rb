@@ -23,7 +23,7 @@ module Scrapespeare
       @scrapers[sym] = Scraper.new(&proc)
     end
 
-    alias_method :setup_scraper, :scrape
+    alias_method :define_scraper, :scrape
 
     def route(&proc)
       @router.instance_eval(&proc)
