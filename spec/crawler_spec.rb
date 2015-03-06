@@ -56,19 +56,19 @@ describe Scrapespeare::Crawler do
   describe "#scrape" do
     it "stores a Scraper" do
       crawler.scrape(:foo)
-      expect(crawler.scrapers).to have_key :foo
+      expect(crawler.scraper_table).to have_key :foo
     end
 
     context "without identifier Symbol given" do
       it "sets the identifier Symbol to `:default`" do
         crawler.scrape { css(:bar, "#bar") }
-        expect(crawler.scrapers).to have_key :default
+        expect(crawler.scraper_table).to have_key :default
       end
     end
 
     it "yields the added Scraper" do
       crawler.scrape(:foo) { css(:bar, "#bar") }
-      added_scraper = crawler.scrapers[:foo]
+      added_scraper = crawler.scraper_table[:foo]
       expect(added_scraper.extractables.count).to be 1
     end
   end
