@@ -21,6 +21,13 @@ describe Scrapespeare::Routing::Router do
         expect(router.recognized?(uri)).to be true
       end
     end
+
+    context "with mismatching URI path given" do
+      it "returns `true`" do
+        uri = URI("http://google.com/bar")
+        expect(router.recognized?(uri)).to be false
+      end
+    end
   end
 
 end
