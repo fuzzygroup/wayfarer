@@ -9,7 +9,6 @@ require "scrapespeare/core_ext/uri"
 
 require "scrapespeare/routing/router"
 require "scrapespeare/routing/rule"
-require "scrapespeare/routing/rule_set"
 require "scrapespeare/processor"
 require "scrapespeare/fetcher"
 require "scrapespeare/page"
