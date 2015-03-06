@@ -12,6 +12,10 @@ module Scrapespeare
         @routing_table[Rule.new(pattern_str)] = scraper_sym
       end
 
+      def recognized?(uri)
+        @routing_table.keys.any? { |rule| rule === uri }
+      end
+
       def route(uri)
         @routing_table.each do |rule, scraper_sym|
           return scraper_sym if rule === uri
