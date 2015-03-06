@@ -7,6 +7,7 @@ module Scrapespeare
 
     def initialize(&proc)
       @scrapers = {}
+      @router   = Router.new
 
       instance_eval(&proc) if block_given?
     end
@@ -18,8 +19,12 @@ module Scrapespeare
                   end
     end
 
-    def scrape(sym, &proc)
+    def scrape(sym = :default, &proc)
       @scrapers[sym] = Scraper.new(&proc)
+    end
+
+    def route(&proc)
+      @router.instance_eval(&proc)
     end
 
     def config

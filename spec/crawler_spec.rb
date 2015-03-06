@@ -59,6 +59,13 @@ describe Scrapespeare::Crawler do
       expect(crawler.scrapers).to have_key :foo
     end
 
+    context "without identifier Symbol given" do
+      it "sets the identifier Symbol to `:default`" do
+        crawler.scrape { css(:bar, "#bar") }
+        expect(crawler.scrapers).to have_key :default
+      end
+    end
+
     it "yields the added Scraper" do
       crawler.scrape(:foo) { css(:bar, "#bar") }
       added_scraper = crawler.scrapers[:foo]
