@@ -7,7 +7,7 @@ module Scrapespeare
 
     def initialize(&proc)
       @scraper_table = {}
-      @router = Router.new(@scraper_table)
+      @router        = Router.new
 
       instance_eval(&proc) if block_given?
     end

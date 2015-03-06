@@ -4,8 +4,7 @@ module Scrapespeare
 
       attr_reader :routing_table
 
-      def initialize(scraper_table)
-        @scraper_table = scraper_table
+      def initialize
         @routing_table = {}
       end
 
