@@ -8,8 +8,8 @@ module Scrapespeare
         @rules = []
       end
 
-      def <<(rule)
-        @rules << rule
+      def <<(pattern_str)
+        @rules << Rule.new(pattern_str)
       end
 
       def allowed?(uri)

@@ -5,17 +5,15 @@ describe Scrapespeare::Routing::RuleSet do
   subject(:rule_set) { RuleSet.new }
 
   describe "#<<" do
-    let(:rule) { Rule.new("/foo") }
-
     it "stores a Rule" do
       expect {
-        rule_set << rule
+        rule_set << "/foo"
       }.to change{ rule_set.rules.count }.by(1)
     end
   end
 
   describe "#allowed?" do
-    before { rule_set << Rule.new("/foo") }
+    before { rule_set << "/foo" }
 
     context "with matching URI path given" do
       it "returns `true`" do
