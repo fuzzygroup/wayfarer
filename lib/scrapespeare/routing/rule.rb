@@ -7,6 +7,8 @@ module Scrapespeare
         @pattern = pattern
       end
 
+      
+
     end
   end
 end

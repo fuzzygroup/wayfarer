@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.executables   << "scrapespeare"
 
   s.add_dependency "mustermann",                 "~> 0.4",  ">= 0.4.0"
+  s.add_dependency "mustermann-uri-template",    "~> 0.4",  ">= 0.4.0"
   s.add_dependency "thread",                     "~> 0.1",  ">= 0.1.5"
   s.add_dependency "nokogiri",                   "~> 1.6",  ">= 1.6.3"
   s.add_dependency "selenium-webdriver",         "~> 2.43", ">= 2.43.0"
