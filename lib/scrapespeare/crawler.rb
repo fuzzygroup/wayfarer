@@ -6,7 +6,6 @@ module Scrapespeare
     attr_accessor :uri_template
 
     def initialize(&proc)
-      @parser        = Parser
       @result        = Result.new
       @scrapers      = {}
 
