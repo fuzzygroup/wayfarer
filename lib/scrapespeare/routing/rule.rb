@@ -14,7 +14,7 @@ module Scrapespeare
       end
 
       def ===(uri)
-        @pattern === uri.to_s
+        @pattern === uri.path
       end
 
     end
