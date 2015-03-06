@@ -2,7 +2,9 @@ require "spec_helpers"
 
 describe Scrapespeare::Routing::Router do
 
-  subject(:router) { Router.new }
+  let(:scraper)       { Object.new }
+  let(:scraper_table) { Hash[default: scraper] }
+  subject(:router)    { Router.new(scraper_table) }
 
   describe "#register" do
     it "stores a Rule" do
