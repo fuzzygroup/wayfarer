@@ -14,4 +14,12 @@ describe Scrapespeare::Routing::RuleSet do
     end
   end
 
+  describe "#allowed?" do
+    let(:uri) { URI("http://example.com/foo/bar") }
+
+    it "works" do
+      expect(rule_set.allowed?(uri)).to be false
+    end
+  end
+
 end

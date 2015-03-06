@@ -12,6 +12,10 @@ module Scrapespeare
         @rules << rule
       end
 
+      def allowed?(uri)
+        @rules.any? { |rule| rule === uri }
+      end
+
     end
   end
 end
