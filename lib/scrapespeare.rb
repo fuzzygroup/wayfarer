@@ -7,6 +7,7 @@ $: << File.dirname(__FILE__)
 
 require "scrapespeare/core_ext/uri"
 
+require "scrapespeare/routing/uri_rule"
 require "scrapespeare/processor"
 require "scrapespeare/fetcher"
 require "scrapespeare/page"
