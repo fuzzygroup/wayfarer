@@ -12,24 +12,6 @@ describe Scrapespeare::Routing::Router do
     end
   end
 
-  describe "#recognized?" do
-    before { router.register("/foo", :foo) }
-
-    context "with matching URI path given" do
-      it "returns `true`" do
-        uri = URI("http://google.com/foo")
-        expect(router.recognized?(uri)).to be true
-      end
-    end
-
-    context "with mismatching URI path given" do
-      it "returns `false`" do
-        uri = URI("http://google.com/bar")
-        expect(router.recognized?(uri)).to be false
-      end
-    end
-  end
-
   describe "#route" do
     context "with mismatching URI path given" do
       before { router.register("/foo", :foo) }
