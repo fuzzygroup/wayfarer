@@ -1,14 +1,14 @@
 module Scrapespeare
   class Crawler
 
-    attr_reader   :scraper
     attr_reader   :base_uri
+    attr_reader   :scrapers
     attr_accessor :uri_template
 
     def initialize(&proc)
-      @scraper = Scraper.new
-      @parser  = Parser
-      @result  = Result.new
+      @parser        = Parser
+      @result        = Result.new
+      @scrapers      = {}
 
       instance_eval(&proc) if block_given?
     end
@@ -20,23 +20,15 @@ module Scrapespeare
                   end
     end
 
-    def define_scraper(&proc)
-      @scraper.instance_eval(&proc) if block_given?
+    def scrape(sym, &proc)
+      @scrapers[sym] = Scraper.new(&proc)
     end
 
-    def configure
+    def config
       yield Scrapespeare.config if block_given?
     end
 
-    def set_evaluator_for(identifier, evaluator = nil, &proc)
-      if evaluator
-        @scraper.pass_evaluator(identifier, evaluator)
-      elsif proc
-        @scraper.pass_evaluator(identifier, proc)
-      else
-        fail ArgumentError, "No evaluator given"
-      end
-    end
+    alias_method :configure, :config
 
     private
     def build_base_uri(params)

@@ -53,51 +53,10 @@ describe Scrapespeare::Crawler do
     end
   end
 
-  describe "#define_scraper" do
-    it "yields its Scraper" do
-      crawler.define_scraper do
-        css :foo, "#foo"
-      end
-
-      expect(crawler.scraper.extractables.count).to be 1
-    end
-  end
-
-  describe "#scraper" do
-    it "returns a Scraper" do
-      expect(crawler.scraper).to be_a Scraper
-    end
-  end
-
-  describe "#set_evaluator_for" do
-    let(:extractor) { Extractor.new(:foo, css: "#foo") }
-
-    before do
-      crawler.scraper.instance_variable_set(:@extractables, [extractor])
-    end
-
-    context "with evaluator object given" do
-      let(:evaluator) { Object.new }
-
-      it "passes the evaluator to the corresponding Extractable(s)" do
-        crawler.set_evaluator_for(:foo, evaluator)
-        expect(extractor.evaluator).to be evaluator
-      end
-    end
-
-    context "with Proc given" do
-      it "passes the evaluator to the corresponding Extractable(s)" do
-        crawler.set_evaluator_for(:foo) { |matched_nodes, *target_attrs| }
-        expect(extractor.evaluator).to be_a Proc
-      end
-    end
-
-    context "with neither evaluator object nor Proc given" do
-      it "raises an ArgumentError" do
-        expect {
-          crawler.set_evaluator_for(:foo)
-        }.to raise_error(ArgumentError)
-      end
+  describe "#scrape" do
+    it "stores a Scraper" do
+      crawler.scrape(:foo)
+      expect(crawler.scrapers).to have_key :foo
     end
   end
 

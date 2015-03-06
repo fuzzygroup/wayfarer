@@ -60,13 +60,5 @@ module Scrapespeare
       self
     end
 
-    def pass_evaluator(extractor_identifier, evaluator)
-      @evaluator = evaluator if @identifier == extractor_identifier
-
-      extractables.each do |extractable|
-        extractable.pass_evaluator(extractor_identifier, evaluator)
-      end
-    end
-
   end
 end
