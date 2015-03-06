@@ -58,6 +58,12 @@ describe Scrapespeare::Crawler do
       crawler.scrape(:foo)
       expect(crawler.scrapers).to have_key :foo
     end
+
+    it "yields the added Scraper" do
+      crawler.scrape(:foo) { css(:bar, "#bar") }
+      added_scraper = crawler.scrapers[:foo]
+      expect(added_scraper.extractables.count).to be 1
+    end
   end
 
 end
