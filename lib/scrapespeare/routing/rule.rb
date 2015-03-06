@@ -13,8 +13,8 @@ module Scrapespeare
         !!@allowed
       end
 
-      def ===(str)
-        @pattern === str
+      def ===(uri)
+        @pattern === uri.to_s
       end
 
     end
