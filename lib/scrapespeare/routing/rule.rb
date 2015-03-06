@@ -5,7 +5,7 @@ module Scrapespeare
     class Rule
 
       def initialize(pattern_str)
-        @pattern = Mustermann.new(pattern_str, type: :template)
+        @pattern = Mustermann.new(pattern_str, type: :rails)
       end
 
       def ===(uri)
