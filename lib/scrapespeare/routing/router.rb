@@ -13,6 +13,10 @@ module Scrapespeare
         @routing_table[rule] = scraper
       end
 
+      def recognized?(uri)
+        @routing_table.keys.any? { |rule| rule === uri }
+      end
+
       def route(uri)
       end
 
