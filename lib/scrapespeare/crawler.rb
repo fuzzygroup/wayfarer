@@ -6,8 +6,7 @@ module Scrapespeare
     attr_accessor :uri_template
 
     def initialize(&proc)
-      @result        = Result.new
-      @scrapers      = {}
+      @scrapers = {}
 
       instance_eval(&proc) if block_given?
     end
