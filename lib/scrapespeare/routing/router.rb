@@ -12,6 +12,8 @@ module Scrapespeare
         @routing_table[Rule.new(pattern_str)] = scraper_sym
       end
 
+      alias_method :follow, :register
+
       def recognized?(uri)
         @routing_table.keys.any? { |rule| rule === uri }
       end
