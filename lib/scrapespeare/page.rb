@@ -39,7 +39,7 @@ module Scrapespeare
     end
 
     def is_internal_link?(uri)
-      uri.host == @uri.host
+      uri.host == @uri.host rescue ArgumentError
     end
 
   end

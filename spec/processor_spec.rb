@@ -51,4 +51,7 @@ describe Scrapespeare::Processor do
     end
   end
 
+  describe "#update_result" do
+  end
+
 end
