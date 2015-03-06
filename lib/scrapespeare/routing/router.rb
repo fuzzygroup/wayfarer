@@ -9,8 +9,7 @@ module Scrapespeare
       end
 
       def register(pattern_str, scraper)
-        rule = Rule.new(pattern_str)
-        @routing_table[rule] = scraper
+        @routing_table[Rule.new(pattern_str)] = scraper
       end
 
       def route(uri)
