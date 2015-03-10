@@ -23,7 +23,6 @@ require "scrapespeare/extractor"
 require "scrapespeare/scraper"
 require "scrapespeare/crawler"
 require "scrapespeare/parser"
-require "scrapespeare/scrape_task"
 
 module Scrapespeare
 
