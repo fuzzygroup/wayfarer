@@ -13,7 +13,7 @@ module Scrapespeare
         @pattern === uri.path
       end
 
-      def invoke(uri)
+      def invoke
         @scraper_sym
       end
 

@@ -4,9 +4,9 @@ describe Scrapespeare::Routing::Route do
 
   subject(:route) { Route.new("/foo", :bar) }
 
-  describe "#match" do
-    it "works" do
-      
+  describe "#invoke" do
+    it "returns the Scraper Symbol" do
+      expect(route.invoke).to be :bar
     end
   end
 
