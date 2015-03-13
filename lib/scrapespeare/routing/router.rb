@@ -8,15 +8,14 @@ module Scrapespeare
         @routes = []
       end
 
-      def register(pattern_str, scraper_sym)
+      def register(pattern_str, scraper_sym = :default)
         @routes << (route = Route.new(pattern_str, scraper_sym))
         route
       end
 
       def invoke(uri)
         return nil unless recognized?(uri)
-        matching_route = @routes.detect { |route| route.matches?(uri) }
-        matching_route.scraper_sym
+        @routes.detect { |route| route.matches?(uri) }.invoke
       end
 
       private
