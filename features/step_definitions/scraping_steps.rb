@@ -7,7 +7,7 @@ Given(/^the following Scraper:$/) do |code|
 end
 
 When(/^I crawl "(.*?)"$/) do |path|
-  uri = "http://localhost:8080/#{path}"
+  uri = "http://localhost:9876/#{path}"
   @result = @crawler.crawl(uri)
 end
 

@@ -55,7 +55,7 @@ end
 task :run_test_app do
   Rack::Handler::WEBrick.run(
     TestApp,
-    Port: 8080,
+    Port: 9876,
     BindAddress: "localhost",
     Logger: WEBrick::Log.new("/dev/null"),
     AccessLog: []
