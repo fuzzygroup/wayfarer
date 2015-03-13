@@ -53,11 +53,17 @@ task :todo do
 end
 
 task :run_test_app do
-  Rack::Handler::WEBrick.run TestApp
+  Rack::Handler::WEBrick.run(
+    TestApp,
+    Port: 8080,
+    BindAddress: "localhost",
+    Logger: WEBrick::Log.new("/dev/null"),
+    AccessLog: []
+  )
 end
 
 task :start_test_app do
-  @server_thread = Thread.new { Rack::Handler::WEBrick.run TestApp }
+  @server_thread = Thread.new { Rake::Task["run_test_app"].execute }
   sleep(0.5)
 end
 
