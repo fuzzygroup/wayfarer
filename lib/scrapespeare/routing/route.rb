@@ -4,6 +4,8 @@ module Scrapespeare
   module Routing
     class Route
 
+      attr_reader :scraper_sym
+
       def initialize(pattern_str, scraper_sym)
         @pattern = Mustermann.new(pattern_str, type: :rails)
         @scraper_sym = scraper_sym

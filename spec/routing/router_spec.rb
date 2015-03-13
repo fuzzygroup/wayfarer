@@ -24,4 +24,17 @@ describe Scrapespeare::Routing::Router do
     end
   end
 
+  describe "#invoke" do
+    before do
+      router.register("/foo", :foo)
+      router.register("/*catch_all", :catch_all)
+    end
+
+    it "returns the first matching Route's Scraper Symbol" do
+      uri = URI("http://example.com/foo")
+      returned = router.invoke(uri)
+      expect(returned).to be :foo
+    end
+  end
+
 end

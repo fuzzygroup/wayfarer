@@ -13,6 +13,11 @@ module Scrapespeare
         route
       end
 
+      def invoke(uri)
+        matching_route = @routes.detect { |route| route.matches?(uri) }
+        matching_route.scraper_sym
+      end
+
     end
   end
 end
