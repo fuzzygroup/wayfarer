@@ -25,15 +25,29 @@ describe Scrapespeare::Routing::Router do
   end
 
   describe "#invoke" do
-    before do
-      router.register("/foo", :foo)
-      router.register("/*catch_all", :catch_all)
+    context "with matching URI" do
+      before do
+        router.register("/foo", :foo)
+        router.register("/*catch_all", :catch_all)
+      end
+
+      it "returns the first matching Route's Scraper Symbol" do
+        uri = URI("http://example.com/foo")
+        returned = router.invoke(uri)
+        expect(returned).to be :foo
+      end
     end
 
-    it "returns the first matching Route's Scraper Symbol" do
-      uri = URI("http://example.com/foo")
-      returned = router.invoke(uri)
-      expect(returned).to be :foo
+    context "with mismatching URI" do
+      before do
+        router.register("/foo", :foo)
+      end
+
+      it "returns `nil`" do
+        uri = URI("http://example.com/baz")
+        returned = router.invoke(uri)
+        expect(returned).to be nil
+      end
     end
   end
 

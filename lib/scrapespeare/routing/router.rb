@@ -14,8 +14,14 @@ module Scrapespeare
       end
 
       def invoke(uri)
+        return nil unless recognized?(uri)
         matching_route = @routes.detect { |route| route.matches?(uri) }
         matching_route.scraper_sym
+      end
+
+      private
+      def recognized?(uri)
+        @routes.any? { |route| route.matches?(uri) }
       end
 
     end
