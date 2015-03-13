@@ -9,7 +9,8 @@ module Scrapespeare
       end
 
       def register(pattern_str, scraper_sym)
-        @routes << Route.new(pattern_str, scraper_sym)
+        @routes << (route = Route.new(pattern_str, scraper_sym))
+        route
       end
 
     end
