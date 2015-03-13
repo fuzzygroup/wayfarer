@@ -1,5 +1,6 @@
 require "rspec/core/rake_task"
 require "cucumber/rake/task"
+require "rubocop/rake_task"
 require "yard"
 require "rack"
 
@@ -33,6 +34,10 @@ task features: %w(features:isolated)
 # Make sure the HTTP server thread gets terminated
 %w(spec:isolated spec:live features).each do |task|
   Rake::Task[task].enhance { Rake::Task["stop_test_app"].invoke }
+end
+
+RuboCop::RakeTask.new do |task|
+  task.formatters = ["clang"]
 end
 
 YARD::Rake::YardocTask.new :doc

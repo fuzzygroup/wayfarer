@@ -23,8 +23,7 @@ Gem::Specification.new do |s|
   s.executables   << "scrapespeare"
 
   s.add_dependency "mustermann",                 "~> 0.4",  ">= 0.4.0"
-  s.add_dependency "mustermann-rails",    "~> 0.4",  ">= 0.4.0"
-  s.add_dependency "mustermann-uri-template",    "~> 0.4",  ">= 0.4.0"
+  s.add_dependency "mustermann-rails",           "~> 0.4",  ">= 0.4.0"
   s.add_dependency "thread",                     "~> 0.1",  ">= 0.1.5"
   s.add_dependency "nokogiri",                   "~> 1.6",  ">= 1.6.3"
   s.add_dependency "selenium-webdriver",         "~> 2.43", ">= 2.43.0"
@@ -37,4 +36,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "yard",           "~> 0.8",  ">= 0.8.7.6"
   s.add_development_dependency "cucumber",       "~> 1.3",  ">= 1.3.17"
   s.add_development_dependency "sinatra",        "~> 1.4",  ">= 1.4.5"
+  s.add_development_dependency "rubocop",        "~> 0.29", ">= 0.29.1"
 end
