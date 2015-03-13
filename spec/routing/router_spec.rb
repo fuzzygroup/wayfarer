@@ -12,8 +12,10 @@ describe Scrapespeare::Routing::Router do
     end
 
     it "stores Routes in FIFO order" do
-      router.register("/foo", :foo)
-      router.register("/bar", :bar)
+      route_a = router.register("/foo", :foo)
+      route_b = router.register("/bar", :bar)
+
+      expect(router.routes).to eq [route_a, route_b]
     end
 
     it "returns the stored Route" do
