@@ -18,7 +18,7 @@ describe Scrapespeare::Routing::Router do
       expect(router.routes).to eq [route_a, route_b]
     end
 
-    it "sets the Symbol to `:default` if not given" do
+    it "sets the stored Route's Scraper Symbol to `:default` if not given" do
       router.register("/foo")
       expect(router.routes.first.scraper_sym).to be :default
     end
