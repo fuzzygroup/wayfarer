@@ -4,6 +4,9 @@ require "thread"
 module Scrapespeare
   class Processor
 
+    attr_reader :staged_uris
+    attr_reader :current_uris
+
     def initialize(entry_uri, scraper_table, router)
       @scraper_table = scraper_table
       @router        = router
@@ -28,6 +31,10 @@ module Scrapespeare
 
     def stage_uris(uris)
       @mutex.synchronize { @staged_uris.concat(uris) }
+    end
+
+    def cycle
+      @mutex.synchronize { @current_uris, @staged_uris = @staged_uris, [] }
     end
 
     def fetch(uri)

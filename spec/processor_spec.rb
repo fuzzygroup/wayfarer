@@ -32,6 +32,22 @@ describe Scrapespeare::Processor do
     end
   end
 
+  describe "#cycle" do
+    before do
+      processor.instance_variable_set(:@staged_uris, [1, 2, 3])
+    end
+
+    it "sets the staged URIs as current" do
+      processor.send(:cycle)
+      expect(processor.current_uris).to eq [1, 2, 3]
+    end
+
+    it "empties the staged URIs" do
+      processor.send(:cycle)
+      expect(processor.staged_uris).to be_empty
+    end
+  end
+
   describe "#recognized_links" do
     it "filters all URIs not recognized by the Router" do
       uris = %w(
