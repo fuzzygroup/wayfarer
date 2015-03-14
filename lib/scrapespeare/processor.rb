@@ -6,6 +6,7 @@ module Scrapespeare
 
     attr_reader :staged_uris
     attr_reader :current_uris
+    attr_reader :depth
 
     def initialize(entry_uri, scraper_table, router)
       @scraper_table = scraper_table
@@ -17,6 +18,7 @@ module Scrapespeare
       @current_uris   = [entry_uri]
       @staged_uris    = []
       @processed_uris = []
+      @depth          = 0
     end
 
     def process
@@ -34,7 +36,10 @@ module Scrapespeare
     end
 
     def cycle
-      @mutex.synchronize { @current_uris, @staged_uris = @staged_uris, [] }
+      @mutex.synchronize do
+        @current_uris, @staged_uris = @staged_uris, []
+        @depth += 1
+      end
     end
 
     def fetch(uri)

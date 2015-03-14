@@ -33,9 +33,7 @@ describe Scrapespeare::Processor do
   end
 
   describe "#cycle" do
-    before do
-      processor.instance_variable_set(:@staged_uris, [1, 2, 3])
-    end
+    before { processor.instance_variable_set(:@staged_uris, [1, 2, 3]) }
 
     it "sets the staged URIs as current" do
       processor.send(:cycle)
@@ -45,6 +43,11 @@ describe Scrapespeare::Processor do
     it "empties the staged URIs" do
       processor.send(:cycle)
       expect(processor.staged_uris).to be_empty
+    end
+
+    it "increments `@depth`" do
+      processor.send(:cycle)
+      expect(processor.depth).to be 1
     end
   end
 
