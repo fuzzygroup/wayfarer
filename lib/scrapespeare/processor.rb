@@ -2,7 +2,7 @@ module Scrapespeare
   class Processor
 
     def initialize(scrapers, router)
-      @current_uris = []
+      @router = router
     end
 
     private
