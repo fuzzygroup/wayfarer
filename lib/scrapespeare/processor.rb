@@ -22,8 +22,11 @@ module Scrapespeare
     end
 
     def process
-      page = fetch(next_uri)
-      links = recognized_links(page.internal_links)
+      uri     = next_uri
+      page    = fetch(uri)
+      links   = recognized_links(page.internal_links)
+      scraper = @router.invoke(uri)
+      extract = scraper.scrape(page.parsed_document)
     end
 
     private
@@ -33,6 +36,9 @@ module Scrapespeare
 
     def stage_uris(uris)
       @mutex.synchronize { @staged_uris.concat(uris) }
+    end
+
+    def cache_uri(uri)
     end
 
     def cycle
