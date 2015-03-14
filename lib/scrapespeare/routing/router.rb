@@ -14,11 +14,11 @@ module Scrapespeare
       end
 
       def invoke(uri)
-        return nil unless recognized?(uri)
+        return nil unless recognizes?(uri)
         @routes.detect { |route| route.matches?(uri) }.invoke
       end
 
-      def recognized?(uri)
+      def recognizes?(uri)
         @routes.any? { |route| route.matches?(uri) }
       end
 

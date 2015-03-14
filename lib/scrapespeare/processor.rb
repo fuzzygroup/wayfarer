@@ -31,7 +31,7 @@ module Scrapespeare
     end
 
     def recognized_links(uris)
-      uris.find_all { |uri| @router.recognized?(uri) }
+      uris.find_all { |uri| @router.recognizes?(uri) }
     end
 
   end
