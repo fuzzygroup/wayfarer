@@ -29,6 +29,24 @@ describe Scrapespeare::Routing::Router do
     end
   end
 
+  describe "#recognized?" do
+    before { router.register("/foo", :foo) }
+
+    context "with recognized URI" do
+      it "returns `true`" do
+        uri = URI("http://example.com/foo")
+        expect(router.recognized?(uri)).to be true
+      end
+    end
+
+    context "with unrecognized URI" do
+      it "returns `false`" do
+        uri = URI("http://example.com/bar")
+        expect(router.recognized?(uri)).to be false
+      end
+    end
+  end
+
   describe "#invoke" do
     context "with matching URI" do
       before do

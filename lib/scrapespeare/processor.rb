@@ -17,12 +17,19 @@ module Scrapespeare
     end
 
     def process
-      uri = next_uri
+      page = fetch(next_uri)
     end
 
     private
     def next_uri
       @mutex.synchronize { @current_uris.shift }
+    end
+
+    def fetch(uri)
+      @fetcher.fetch(uri)
+    end
+
+    def recognized_links(uri_array)
     end
 
   end

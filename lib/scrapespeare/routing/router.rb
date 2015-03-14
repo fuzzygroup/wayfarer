@@ -18,7 +18,6 @@ module Scrapespeare
         @routes.detect { |route| route.matches?(uri) }.invoke
       end
 
-      private
       def recognized?(uri)
         @routes.any? { |route| route.matches?(uri) }
       end
