@@ -16,10 +16,10 @@ module Scrapespeare
       @fetcher       = Fetcher.new
       @mutex         = Mutex.new
 
-      @current_uris   = [entry_uri]
-      @staged_uris    = []
-      @cached_uris = []
-      @depth          = 0
+      @current_uris = [entry_uri]
+      @staged_uris  = []
+      @cached_uris  = []
+      @depth        = 0
     end
 
     def process
