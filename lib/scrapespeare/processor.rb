@@ -26,6 +26,10 @@ module Scrapespeare
       @mutex.synchronize { @current_uris.shift }
     end
 
+    def stage_uris(uris)
+      @mutex.synchronize { @staged_uris.concat(uris) }
+    end
+
     def fetch(uri)
       @fetcher.fetch(uri)
     end

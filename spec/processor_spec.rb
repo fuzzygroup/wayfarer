@@ -20,6 +20,18 @@ describe Scrapespeare::Processor do
     end
   end
 
+  describe "#stage_uris" do
+    it "stages the URIs for processing" do
+      uris = %w(
+        http://example.com/foo
+        http://example.com/bar
+      ).map { |str| URI(str) }
+
+      processor.send(:stage_uris, uris)
+      expect(processor.instance_variable_get(:@staged_uris)).to eq uris
+    end
+  end
+
   describe "#recognized_links" do
     it "filters all URIs not recognized by the Router" do
       uris = %w(
