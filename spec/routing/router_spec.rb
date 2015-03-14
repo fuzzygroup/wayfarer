@@ -62,9 +62,7 @@ describe Scrapespeare::Routing::Router do
     end
 
     context "with mismatching URI" do
-      before do
-        router.register("/foo", :foo)
-      end
+      before { router.register("/foo", :foo) }
 
       it "returns `nil`" do
         uri = URI("http://example.com/baz")

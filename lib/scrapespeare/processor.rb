@@ -18,6 +18,7 @@ module Scrapespeare
 
     def process
       page = fetch(next_uri)
+      links = recognized_links(page.internal_links)
     end
 
     private
@@ -29,7 +30,8 @@ module Scrapespeare
       @fetcher.fetch(uri)
     end
 
-    def recognized_links(uri_array)
+    def recognized_links(uris)
+      uris.find_all { |uri| @router.recognized?(uri) }
     end
 
   end
