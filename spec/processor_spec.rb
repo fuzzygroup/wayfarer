@@ -32,6 +32,14 @@ describe Scrapespeare::Processor do
     end
   end
 
+  describe "#cache_uri" do
+    it "caches a URI" do
+      uri = URI("http://example.com")
+      processor.send(:cache_uri, uri)
+      expect(processor.cached_uris).to eq [uri]
+    end
+  end
+
   describe "#cycle" do
     before { processor.instance_variable_set(:@staged_uris, [1, 2, 3]) }
 
