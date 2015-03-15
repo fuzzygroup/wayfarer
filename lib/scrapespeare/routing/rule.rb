@@ -17,13 +17,19 @@ module Scrapespeare
         @sub_rules << HostRule.new(str_or_regexp)
       end
 
+      alias_method :add_host_sub_rule, :host
+
       def path(pattern_str)
         @sub_rules << PathRule.new(pattern_str)
       end
 
+      alias_method :add_path_sub_rule, :path
+
       def query(constraints)
         @sub_rules << QueryRule.new(constraints)
       end
+
+      alias_method :add_query_sub_rule, :query
 
     end
   end

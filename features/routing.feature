@@ -1,14 +1,18 @@
-Feature: Web scraping
-    As a developer in need of data
-    In order to extract data from a website
-    I want to scrape the website
+Feature: URI Rules
+    As a developer
+    In order to filter URIs
+    I want to describe desired URIs with Rules
 
-  Scenario: Scraping a single element
-    Given a Crawler
-    And the following Scraper:
-      """
-      css :site_title, 'title'
-      """
+  Scenario: Single HostRule with String matching
+    Given the HostRule "example.com"
+      And the following list of URIs:
+        """
+        http://example.com/
+        https://example.com/
+        http://sub.example.com/
+        http://google.com/
+        http://yahoo.com/
+        """
     When I crawl "index.html"
     Then I get the following Result:
       """
