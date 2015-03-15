@@ -44,4 +44,24 @@ describe Scrapespeare::Routing::QueryRule do
     end
   end
 
+  describe "Range constraints" do
+    let(:constraints) { Hash[arg: 1..10]  }
+
+    context "with matching query field value" do
+      let(:uri) { URI("http://example.com?arg=5") }
+
+      it "returns `true`" do
+        expect(rule.matches?(uri)).to be true
+      end
+    end
+
+    context "with mismatching query field value" do
+      let(:uri) { URI("http://example.com?arg=11") }
+
+      it "returns `false`" do
+        expect(rule.matches?(uri)).to be false
+      end
+    end
+  end
+
 end

@@ -24,6 +24,7 @@ module Scrapespeare
         case constraint
         when Regexp then violates_regexp?(constraint, vals)
         when String then violates_string?(constraint, vals)
+        when Range  then violates_range?(constraint, vals)
         end
       end
 
@@ -33,6 +34,10 @@ module Scrapespeare
 
       def violates_string?(str, vals)
         vals.none? { |val| str == val }
+      end
+
+      def violates_range?(range, vals)
+        vals.none? { |val| range.include?(val.to_i) }
       end
 
     end
