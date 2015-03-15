@@ -12,14 +12,10 @@ describe Scrapespeare::Routing::Rule do
     end
   end
 
-  describe "#concerns?" do
+  describe "#matches?" do
     it "returns `false`" do
-      expect(rule).not_to be_concerned(nil)
+      expect(rule).not_to match(nil)
     end
-  end
-
-  describe "#check" do
-    context ""
   end
 
   describe "#host" do

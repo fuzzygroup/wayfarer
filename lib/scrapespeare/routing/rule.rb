@@ -9,15 +9,15 @@ module Scrapespeare
         instance_eval(&proc) if block_given?
       end
 
-      def check(uri)
-        if concerns?(uri)
-          @sub_rules.
+      def match(uri)
+        if matches?(uri)
+          @sub_rules.any? { |rule| rule.match(uri) }
         else
           false
         end
       end
 
-      def concerned?(uri)
+      def matches?(uri)
         false
       end
 
