@@ -13,6 +13,14 @@ module Scrapespeare
         false
       end
 
+      def host(str_or_regexp)
+        @sub_rules << HostRule.new(str_or_regexp)
+      end
+
+      def query(constraints)
+        @sub_rules << QueryRule.new(constraints)
+      end
+
     end
   end
 end
