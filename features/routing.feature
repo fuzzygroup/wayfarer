@@ -22,3 +22,24 @@ Feature: URI Rules
       http://example.com/
       https://example.com/
       """
+
+  Scenario: Single HostRule with RegExp matching
+    Given the following Rule:
+      """
+      host /example.com/
+      """
+      And the following list of URIs:
+        """
+        http://example.com/
+        https://example.com/
+        http://sub.example.com/
+        http://google.com/
+        http://yahoo.com/
+        """
+    When I match the URIs against the HostRule
+    Then I get the following list of URIs:
+      """
+      http://example.com/
+      https://example.com/
+      http://sub.example.com/
+      """
