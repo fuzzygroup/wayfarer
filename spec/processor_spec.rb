@@ -72,11 +72,4 @@ describe Scrapespeare::Processor do
     end
   end
 
-  describe "#process" do
-    it "works" do
-      processor.process
-      expect(processor.staged_uris).to eq [1, 2, 3]
-    end
-  end
-
 end

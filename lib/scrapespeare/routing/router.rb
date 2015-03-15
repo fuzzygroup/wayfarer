@@ -5,7 +5,7 @@ module Scrapespeare
       attr_reader :routes
 
       def initialize
-        @routes = []
+        @routes = @whitelist = @blacklist = []
       end
 
       def register(pattern_str, scraper_sym = :default)
