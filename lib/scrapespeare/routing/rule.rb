@@ -10,9 +10,14 @@ module Scrapespeare
       end
 
       def check(uri)
+        if concerns?(uri)
+          @sub_rules.
+        else
+          false
+        end
       end
 
-      def applies_to?(uri)
+      def concerned?(uri)
         false
       end
 
