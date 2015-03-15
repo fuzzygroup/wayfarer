@@ -13,9 +13,7 @@ module Scrapespeare
         return false unless match(uri)
         return true if @sub_rules.empty?
 
-        @sub_rules.reduce(false) do |bool, rule|
-          bool || rule.matches?(uri)
-        end
+        @sub_rules.reduce(false) { |bool, rule| bool || rule.matches?(uri) }
       end
 
       def match(uri)
