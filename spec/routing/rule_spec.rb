@@ -40,6 +40,13 @@ describe Scrapespeare::Routing::Rule do
         expect(rule.sub_rules.first).to be_a PathRule
       end
     end
+
+    context "with `:query` option present" do
+      it "adds a QueryRule as a sub-rule" do
+        rule = Rule.new(query: { foo: "bar", baz: 42 })
+        expect(rule.sub_rules.first).to be_a QueryRule
+      end
+    end
   end
 
 end
