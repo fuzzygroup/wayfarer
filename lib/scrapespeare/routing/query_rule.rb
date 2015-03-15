@@ -39,6 +39,7 @@ module Scrapespeare
       def violates_integer?(int, vals)
         vals.none? { |val| int == Integer(val) }
       rescue ArgumentError
+        # `String#to_i` returns `0` if the string can not be coerced into a valid number, therefore `Kernel#Integer` is used, which throws an `ArgumentError` instead
         true
       end
 
