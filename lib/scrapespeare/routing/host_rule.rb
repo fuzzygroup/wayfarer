@@ -2,12 +2,12 @@ module Scrapespeare
   module Routing
     class HostRule
 
-      def initialize(host_str)
-        @host_str = host_str
+      def initialize(str_or_regexp)
+        @str_or_regexp = str_or_regexp
       end
 
       def matches?(uri)
-        @host_str == uri.host
+        @str_or_regexp === uri.host
       end
 
     end
