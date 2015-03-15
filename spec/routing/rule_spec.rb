@@ -10,6 +10,29 @@ describe Scrapespeare::Routing::Rule do
       rule = Rule.new { this = self }
       expect(this).to be rule
     end
+
+    describe "Options" do
+      context "with `:path` option present" do
+        it "adds a PathRule as a sub-rule" do
+          rule = Rule.new(path: "/foo")
+          expect(rule.sub_rules.first).to be_a PathRule
+        end
+      end
+
+      context "with `:query` option present" do
+        it "adds a QueryRule as a sub-rule" do
+          rule = Rule.new(query: { foo: "bar", baz: 42 })
+          expect(rule.sub_rules.first).to be_a QueryRule
+        end
+      end
+
+      context "with `:host` option present" do
+        it "adds a HostRule as a sub-rule" do
+          rule = Rule.new(host: "example.com")
+          expect(rule.sub_rules.first).to be_a HostRule
+        end
+      end
+    end
   end
 
   describe "#host" do
@@ -30,29 +53,6 @@ describe Scrapespeare::Routing::Rule do
     it "adds a QueryRule as a sub-rule" do
       rule.query foo: "bar"
       expect(rule.sub_rules.first).to be_a QueryRule
-    end
-  end
-
-  describe "#add_sub_rules_from_options" do
-    context "with `:path` option present" do
-      it "adds a PathRule as a sub-rule" do
-        rule = Rule.new(path: "/foo")
-        expect(rule.sub_rules.first).to be_a PathRule
-      end
-    end
-
-    context "with `:query` option present" do
-      it "adds a QueryRule as a sub-rule" do
-        rule = Rule.new(query: { foo: "bar", baz: 42 })
-        expect(rule.sub_rules.first).to be_a QueryRule
-      end
-    end
-
-    context "with `:host` option present" do
-      it "adds a HostRule as a sub-rule" do
-        rule = Rule.new(host: "example.com")
-        expect(rule.sub_rules.first).to be_a HostRule
-      end
     end
   end
 

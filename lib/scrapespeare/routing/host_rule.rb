@@ -4,7 +4,7 @@ module Scrapespeare
 
       def initialize(str_or_regexp, opts = {}, &proc)
         @str_or_regexp = str_or_regexp
-        super(&proc)
+        super(opts, &proc)
       end
 
       def match(uri)

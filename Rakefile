@@ -1,3 +1,4 @@
+require "irb"
 require "rspec/core/rake_task"
 require "cucumber/rake/task"
 require "rubocop/rake_task"
@@ -50,6 +51,17 @@ end
 desc %(List lines that contain "FIXME" or "TODO")
 task :todo do
   sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec features | tr -s [:space:])
+end
+
+desc "Start an IRB shell"
+task :shell do
+  require_relative "lib/scrapespeare"
+
+  include Scrapespeare
+  include Scrapespeare::Routing
+
+  ARGV.clear
+  IRB.start
 end
 
 task :run_test_app do

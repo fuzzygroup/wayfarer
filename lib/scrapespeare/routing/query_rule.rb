@@ -4,9 +4,9 @@ module Scrapespeare
   module Routing
     class QueryRule < Rule
 
-      def initialize(field_constraints, &proc)
+      def initialize(field_constraints, opts = {}, &proc)
         @field_constraints = field_constraints
-        super(&proc)
+        super(opts, &proc)
       end
 
       def match(uri)

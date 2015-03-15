@@ -19,15 +19,15 @@ module Scrapespeare
         false
       end
 
-      def host(str_or_regexp, &proc)
+      def host(str_or_regexp, opts = {}, &proc)
         @sub_rules << HostRule.new(str_or_regexp, &proc)
       end
 
-      def path(pattern_str, &proc)
+      def path(pattern_str, opts = {}, &proc)
         @sub_rules << PathRule.new(pattern_str, &proc)
       end
 
-      def query(constraints, &proc)
+      def query(constraints, opts = {}, &proc)
         @sub_rules << QueryRule.new(constraints, &proc)
       end
 
