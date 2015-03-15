@@ -3,6 +3,7 @@ module Scrapespeare
     class Router
 
       def initialize
+        @whitelist = []
       end
 
     end

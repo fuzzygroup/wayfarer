@@ -5,7 +5,7 @@ module Scrapespeare
     class PathRule
 
       def initialize(pattern_str)
-        @pattern = Mustermann.new(pattern_str, type: :rails)
+        @pattern = Mustermann.new(pattern_str, type: :template)
       end
 
       def matches?(uri)

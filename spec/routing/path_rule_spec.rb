@@ -16,7 +16,7 @@ describe Scrapespeare::Routing::PathRule do
     context "with mismatching URI" do
       let(:uri) { URI("http://example.com/bar/qux") }
 
-      it "returns `true`" do
+      it "returns `false`" do
         expect(rule.matches?(uri)).to be false
       end
     end
