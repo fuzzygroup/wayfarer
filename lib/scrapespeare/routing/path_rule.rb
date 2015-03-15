@@ -4,7 +4,7 @@ module Scrapespeare
   module Routing
     class PathRule < Rule
 
-      def initialize(pattern_str, &proc)
+      def initialize(pattern_str, constraints = {}, &proc)
         @pattern = Mustermann.new(pattern_str, type: :template)
         super(&proc)
       end

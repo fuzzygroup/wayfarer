@@ -3,7 +3,7 @@ Feature: URI Rules
     In order to filter URIs
     I want to describe desired URIs with Rules
 
-  Scenario: HostRule with String constraint
+  Scenario: HostRule with String matcher
     Given the following Rule:
       """
       host "example.com"
@@ -23,7 +23,7 @@ Feature: URI Rules
       https://example.com
       """
 
-  Scenario: HostRule with RegExp constraint
+  Scenario: HostRule with RegExp matcher
     Given the following Rule:
       """
       host /example.com/
@@ -44,28 +44,32 @@ Feature: URI Rules
       http://sub.example.com
       """
 
-  Scenario: HostRule with RegExp matching
-    Given the following Rule:
-      """
-      host /example.com/
-      """
-      And the following list of URIs:
-        """
-        http://example.com
-        https://example.com
-        http://sub.example.com
-        http://google.com
-        http://yahoo.com
-        """
-    When I match the URIs against the Rule
-    Then I get the following list of URIs:
-      """
-      http://example.com
-      https://example.com
-      http://sub.example.com
-      """
+      Scenario: Single PathRule
+        Given the following Rule:
+          """
+          path "/foo"
+          """
+          And the following list of URIs:
+            """
+            http://example.com
+            https://example.com
+            http://example.com/foo
+            https://example.com/foo
+            http://example.com/foo?bar=1
+            https://example.com/foo?bar=1
+            http://example.com/foo/bar
+            https://example.com/foo/bar
+            """
+        When I match the URIs against the Rule
+        Then I get the following list of URIs:
+          """
+          http://example.com/foo
+          https://example.com/foo
+          http://example.com/foo?bar=1
+          https://example.com/foo?bar=1
+          """
 
-  Scenario: QueryRule with String constraint
+  Scenario: QueryRule with String matcher
     Given the following Rule:
       """
       query foo: "bar"
@@ -85,7 +89,7 @@ Feature: URI Rules
       http://example.com/qux?foo=bar
       """
 
-  Scenario: QueryRule with RegExp constraint
+  Scenario: QueryRule with RegExp matcher
     Given the following Rule:
       """
       query foo: /ba/
@@ -108,7 +112,7 @@ Feature: URI Rules
       http://example.com/qux?foo=baz
       """
 
-  Scenario: QueryRule with Integer constraint
+  Scenario: QueryRule with Integer matcher
     Given the following Rule:
       """
       query foo: 42
@@ -128,7 +132,7 @@ Feature: URI Rules
       http://example.com?foo=42
       """
 
-  Scenario: QueryRule with Range constraint
+  Scenario: QueryRule with Range matcher
     Given the following Rule:
       """
       query foo: 1..99
