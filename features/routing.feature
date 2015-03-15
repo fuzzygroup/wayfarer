@@ -128,3 +128,26 @@ Feature: URI Rules
       http://example.com?foo=42
       """
 
+  Scenario: QueryRule with Range constraint
+    Given the following Rule:
+      """
+      query foo: 1..99
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        http://example.com?foo=0
+        http://example.com?foo=25
+        http://example.com?foo=50
+        http://example.com?foo=75
+        http://example.com?foo=100
+        http://example.com/qux?foo=bar
+        http://example.com/qux?foo=baz
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com?foo=25
+      http://example.com?foo=50
+      http://example.com?foo=75
+      """
