@@ -9,7 +9,7 @@ Given(/^the following list of URIs:$/) do |str|
   @uris = str.split("\n").map { |str| URI(str) }
 end
 
-When(/^I match the URIs against the HostRule$/) do
+When(/^I match the URIs against the Rule$/) do
   @filtered_uris = @uris.find_all { |uri| @rule.matches?(uri) }
 end
 

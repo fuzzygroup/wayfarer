@@ -10,30 +10,26 @@ module Scrapespeare
       end
 
       def matches?(uri)
-        match(uri) || @sub_rules.any? { |rule| rule.matches?(uri) }
+        @sub_rules.inject(match(uri)) do |bool, rule|
+          bool && rule.matches?(uri)
+        end
       end
 
       def match(uri)
-        false
+        true
       end
 
-      def host(str_or_regexp)
-        @sub_rules << HostRule.new(str_or_regexp)
+      def host(str_or_regexp, &proc)
+        @sub_rules << HostRule.new(str_or_regexp, &proc)
       end
 
-      alias_method :add_host_sub_rule, :host
-
-      def path(pattern_str)
-        @sub_rules << PathRule.new(pattern_str)
+      def path(pattern_str, &proc)
+        @sub_rules << PathRule.new(pattern_str, &proc)
       end
 
-      alias_method :add_path_sub_rule, :path
-
-      def query(constraints)
-        @sub_rules << QueryRule.new(constraints)
+      def query(constraints, &proc)
+        @sub_rules << QueryRule.new(constraints, &proc)
       end
-
-      alias_method :add_query_sub_rule, :query
 
     end
   end
