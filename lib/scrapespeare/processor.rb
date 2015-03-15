@@ -23,15 +23,13 @@ module Scrapespeare
     end
 
     def process
-      uri = next_uri
+      fail unless uri = next_uri
+
       page = fetch(uri)
-
       links = recognized_links(page.internal_links)
+      puts "---------------------------------"
+      puts page.links.to_a
       stage_uris(links)
-
-      scraper = @router.invoke(uri)
-      extract = scraper.scrape(page.parsed_document)
-      @result << extract
     end
 
     private

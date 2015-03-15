@@ -22,7 +22,7 @@ module Scrapespeare
         expand_uri(node.attr("href"))
       end
 
-      Set.new(uris)
+      Set.new(uris).to_a
     end
 
     def internal_links
