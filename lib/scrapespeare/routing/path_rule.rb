@@ -2,10 +2,11 @@ require "mustermann"
 
 module Scrapespeare
   module Routing
-    class PathRule
+    class PathRule < Rule
 
-      def initialize(pattern_str)
+      def initialize(pattern_str, &proc)
         @pattern = Mustermann.new(pattern_str, type: :template)
+        super(&proc)
       end
 
       def matches?(uri)

@@ -2,10 +2,11 @@ require "cgi"
 
 module Scrapespeare
   module Routing
-    class QueryRule
+    class QueryRule < Rule
 
-      def initialize(field_constraints)
+      def initialize(field_constraints, &proc)
         @field_constraints = field_constraints
+        super(&proc)
       end
 
       def matches?(uri)
