@@ -9,16 +9,12 @@ module Scrapespeare
         instance_eval(&proc) if block_given?
       end
 
-      def match(uri)
-        if matches?(uri)
-          @sub_rules.any? { |rule| rule.match(uri) }
+      def matches?(uri)
+        if match(uri)
+          @sub_rules.any? { |rule| rule.matches?(uri) }
         else
           false
         end
-      end
-
-      def matches?(uri)
-        false
       end
 
       def host(str_or_regexp)

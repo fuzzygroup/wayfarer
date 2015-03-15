@@ -12,12 +12,6 @@ describe Scrapespeare::Routing::Rule do
     end
   end
 
-  describe "#matches?" do
-    it "returns `false`" do
-      expect(rule).not_to match(nil)
-    end
-  end
-
   describe "#host" do
     it "adds a HostRule as a sub-rule" do
       rule.host "example.com"
@@ -38,5 +32,17 @@ describe Scrapespeare::Routing::Rule do
       expect(rule.sub_rules.first).to be_a QueryRule
     end
   end
+
+
+
+
+  it "works" do
+    rule = HostRule.new("http://google.com")
+    rule.path("/foo/bar")
+
+    uri = URI("http://google.com")
+    expect(rule.matches?(uri)).to be true
+  end
+
 
 end

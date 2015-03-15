@@ -4,7 +4,7 @@ describe Scrapespeare::Routing::HostRule do
 
   subject(:rule) { HostRule.new(str_or_regexp) }
 
-  describe "#matches?" do
+  describe "#match" do
     describe "String matching" do
       let(:str_or_regexp) { "example.com" }
 
@@ -12,7 +12,7 @@ describe Scrapespeare::Routing::HostRule do
         let(:uri) { URI("http://example.com/foo/bar") }
 
         it "returns `true`" do
-          expect(rule.matches?(uri)).to be true
+          expect(rule.match(uri)).to be true
         end
       end
 
@@ -20,7 +20,7 @@ describe Scrapespeare::Routing::HostRule do
         let(:uri) { URI("http://google.com/bar/qux") }
 
         it "returns `false`" do
-          expect(rule.matches?(uri)).to be false
+          expect(rule.match(uri)).to be false
         end
       end
     end
@@ -32,7 +32,7 @@ describe Scrapespeare::Routing::HostRule do
         let(:uri) { URI("http://sub.example.com") }
 
         it "returns `true`" do
-          expect(rule.matches?(uri)).to be true
+          expect(rule.match(uri)).to be true
         end
       end
 
@@ -40,7 +40,7 @@ describe Scrapespeare::Routing::HostRule do
         let(:uri) { URI("http://example.sub.com") }
 
         it "returns `false`" do
-          expect(rule.matches?(uri)).to be false
+          expect(rule.match(uri)).to be false
         end
       end
     end

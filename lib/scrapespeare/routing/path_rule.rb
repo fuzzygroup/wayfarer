@@ -9,7 +9,7 @@ module Scrapespeare
         super(&proc)
       end
 
-      def matches?(uri)
+      def match(uri)
         @pattern === uri.path
       end
 
