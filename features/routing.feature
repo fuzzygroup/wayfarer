@@ -108,3 +108,23 @@ Feature: URI Rules
       http://example.com/qux?foo=baz
       """
 
+  Scenario: QueryRule with Integer constraint
+    Given the following Rule:
+      """
+      query foo: 42
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        http://example.com?foo=bar
+        http://example.com?foo=baz
+        http://example.com?foo=42
+        http://example.com/qux?foo=bar
+        http://example.com/qux?foo=baz
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com?foo=42
+      """
+
