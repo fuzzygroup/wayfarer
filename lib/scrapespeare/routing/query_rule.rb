@@ -12,8 +12,8 @@ module Scrapespeare
       def match(uri)
         CGI::parse(uri.query).none? { |field, vals| violates?(field, vals) }
       rescue NoMethodError
-        # If a URI lacks a query string, `CGI::parse` throws a NoMethodError
-        # TODO Add a test case for this edge case
+        # `CGI::parse` throws a NoMethodError if `uri.query` is an empty string.
+        # TODO Test case
       end
 
       private
@@ -39,7 +39,9 @@ module Scrapespeare
       def violates_integer?(int, vals)
         vals.none? { |val| int == Integer(val) }
       rescue ArgumentError
-        # `String#to_i` returns `0` if the string can not be coerced into a valid number, therefore `Kernel#Integer` is used, which throws an `ArgumentError` instead
+        # `String#to_i` returns `0` if the receiver can not be coerced into a
+        # valid number. Therefore `Kernel#Integer` is used, which throws an
+        # `ArgumentError` instead
         true
       end
 
