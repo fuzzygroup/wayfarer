@@ -23,11 +23,16 @@ module Scrapespeare
       def violates_constraint?(constraint, vals)
         case constraint
         when Regexp then violates_regexp?(constraint, vals)
+        when String then violates_string?(constraint, vals)
         end
       end
 
       def violates_regexp?(regexp, vals)
         vals.none? { |val| regexp === val }
+      end
+
+      def violates_string?(str, vals)
+        vals.none? { |val| str == val }
       end
 
     end
