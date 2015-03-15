@@ -12,6 +12,12 @@ describe Scrapespeare::Routing::Rule do
     end
   end
 
+  describe "#applies_to?" do
+    it "returns `false`" do
+      expect(rule.applies_to?(nil)).to be false
+    end
+  end
+
   describe "#host" do
     it "adds a HostRule as a sub-rule" do
       rule.host "example.com"

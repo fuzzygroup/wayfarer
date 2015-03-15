@@ -9,7 +9,10 @@ module Scrapespeare
         instance_eval(&proc) if block_given?
       end
 
-      def matches?(uri)
+      def check(uri)
+      end
+
+      def applies_to?(uri)
         false
       end
 
