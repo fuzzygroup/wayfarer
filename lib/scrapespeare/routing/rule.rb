@@ -13,6 +13,10 @@ module Scrapespeare
         match(uri) || @sub_rules.any? { |rule| rule.matches?(uri) }
       end
 
+      def match(uri)
+        false
+      end
+
       def host(str_or_regexp)
         @sub_rules << HostRule.new(str_or_regexp)
       end

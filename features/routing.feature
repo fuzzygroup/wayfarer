@@ -4,7 +4,10 @@ Feature: URI Rules
     I want to describe desired URIs with Rules
 
   Scenario: Single HostRule with String matching
-    Given the HostRule "example.com"
+    Given the following Rule:
+      """
+      host "example.com"
+      """
       And the following list of URIs:
         """
         http://example.com/
@@ -13,8 +16,9 @@ Feature: URI Rules
         http://google.com/
         http://yahoo.com/
         """
-    When I crawl "index.html"
-    Then I get the following Result:
+    When I match the URIs against the HostRule
+    Then I get the following list of URIs:
       """
-      { site_title: "Employee listing" }
+      http://example.com/
+      https://example.com/
       """

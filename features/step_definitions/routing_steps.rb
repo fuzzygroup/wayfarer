@@ -1,16 +1,19 @@
-Given(/^a Crawler$/) do
-  @crawler = Scrapespeare::Crawler.new
+require "uri"
+
+Given(/^the following Rule:$/) do |str|
+  @rule = Rule.new
+  @rule.instance_eval(str)
 end
 
-Given(/^the following Scraper:$/) do |code|
-  @crawler.define_scraper { eval(code) }
+Given(/^the following list of URIs:$/) do |str|
+  @uris = str.split("\n").map { |str| URI(str) }
 end
 
-When(/^I crawl "(.*?)"$/) do |path|
-  uri = "http://localhost:9876/#{path}"
-  @result = @crawler.crawl(uri)
+When(/^I match the URIs against the HostRule$/) do
+  @filtered_uris = @uris.find_all { |uri| @rule.matches?(uri) }
 end
 
-Then(/^I get the following Result:$/) do |code|
-  expect(@result.to_h).to eq eval(code)
+Then(/^I get the following list of URIs:$/) do |str|
+  expected_uris = str.split("\n").map { |str| URI(str) }
+  expect(@filtered_uris).to eq expected_uris
 end
