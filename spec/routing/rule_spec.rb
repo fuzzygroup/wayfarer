@@ -38,7 +38,7 @@ describe Scrapespeare::Routing::Rule do
 
   it "works" do
     rule = HostRule.new("http://google.com")
-    rule.path("/foo/bar")
+    # rule.path("/foo/bar")
 
     uri = URI("http://google.com")
     expect(rule.matches?(uri)).to be true
