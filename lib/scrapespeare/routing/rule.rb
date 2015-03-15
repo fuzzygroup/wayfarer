@@ -10,7 +10,9 @@ module Scrapespeare
       end
 
       def matches?(uri)
-        @sub_rules.inject(match(uri)) do |bool, rule|
+        return false unless match(uri)
+
+        @sub_rules.reduce(true) do |bool, rule|
           bool && rule.matches?(uri)
         end
       end

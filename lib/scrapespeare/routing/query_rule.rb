@@ -11,6 +11,8 @@ module Scrapespeare
 
       def match(uri)
         CGI::parse(uri.query).none? { |field, vals| violates?(field, vals) }
+      rescue NoMethodError
+        # When a URI lacks a query string, `CGI::parse` throws a NoMethodError
       end
 
       private
