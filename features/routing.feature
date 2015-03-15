@@ -44,6 +44,25 @@ Feature: URI Rules
       http://sub.example.com
       """
 
+  Scenario: HostRule with Path option
+    Given the following Rule:
+      """
+      host "example.com", path: "/foo"
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        https://example.com
+        http://example.com/foo
+        https://example.com/foo
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com/foo
+      https://example.com/foo
+      """
+
       Scenario: Single PathRule
         Given the following Rule:
           """
