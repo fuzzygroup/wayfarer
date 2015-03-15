@@ -33,4 +33,13 @@ describe Scrapespeare::Routing::Rule do
     end
   end
 
+  describe "#add_sub_rules_from_options" do
+    context "with `:path` option present" do
+      it "adds a PathRule as a sub-rule" do
+        rule = Rule.new(path: "/foo")
+        expect(rule.sub_rules.first).to be_a PathRule
+      end
+    end
+  end
+
 end

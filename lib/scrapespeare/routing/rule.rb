@@ -33,6 +33,7 @@ module Scrapespeare
 
       private
       def add_sub_rules_from_options(opts)
+        path(opts[:path]) if opts[:path]
       end
 
     end
