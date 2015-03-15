@@ -9,8 +9,7 @@ module Scrapespeare
       end
 
       def matches?(uri)
-        query_params = CGI::parse(uri.query)
-        query_params.none? { |field, vals| violates?(field, vals) }
+        CGI::parse(uri.query).none? { |field, vals| violates?(field, vals) }
       end
 
       private
