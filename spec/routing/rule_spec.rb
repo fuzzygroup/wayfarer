@@ -47,6 +47,13 @@ describe Scrapespeare::Routing::Rule do
         expect(rule.sub_rules.first).to be_a QueryRule
       end
     end
+
+    context "with `:host` option present" do
+      it "adds a HostRule as a sub-rule" do
+        rule = Rule.new(host: "example.com")
+        expect(rule.sub_rules.first).to be_a HostRule
+      end
+    end
   end
 
 end
