@@ -8,7 +8,6 @@ $: << File.dirname(__FILE__)
 require "scrapespeare/core_ext/uri"
 
 require "scrapespeare/routing/path_rule"
-require "scrapespeare/routing/route"
 require "scrapespeare/routing/router"
 require "scrapespeare/processor"
 require "scrapespeare/fetcher"
