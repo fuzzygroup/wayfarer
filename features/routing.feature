@@ -3,7 +3,7 @@ Feature: URI Rules
     In order to filter URIs
     I want to describe desired URIs with Rules
 
-  Scenario: Single HostRule with String constraint
+  Scenario: HostRule with String constraint
     Given the following Rule:
       """
       host "example.com"
@@ -23,7 +23,7 @@ Feature: URI Rules
       https://example.com
       """
 
-  Scenario: Single HostRule with RegExp constraint
+  Scenario: HostRule with RegExp constraint
     Given the following Rule:
       """
       host /example.com/
@@ -44,7 +44,7 @@ Feature: URI Rules
       http://sub.example.com
       """
 
-  Scenario: Single HostRule with RegExp matching
+  Scenario: HostRule with RegExp matching
     Given the following Rule:
       """
       host /example.com/
@@ -150,4 +150,29 @@ Feature: URI Rules
       http://example.com?foo=25
       http://example.com?foo=50
       http://example.com?foo=75
+      """
+
+  Scenario: HostRule with nested Path constraint
+    Given the following Rule:
+      """
+      host "example.com" do
+        path "/foo/bar"
+      end
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        http://example.com/foo
+        http://example.com/bar
+        http://example.com/foo/bar
+        https://example.com
+        https://example.com/foo
+        https://example.com/bar
+        https://example.com/foo/bar
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com/foo/bar
+      https://example.com/foo/bar
       """
