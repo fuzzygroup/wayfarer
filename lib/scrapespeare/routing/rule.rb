@@ -4,8 +4,9 @@ module Scrapespeare
 
       attr_reader :sub_rules
 
-      def initialize(&proc)
+      def initialize(opts = {}, &proc)
         @sub_rules = []
+        add_sub_rules_from_options(opts)
         instance_eval(&proc) if block_given?
       end
 
@@ -28,6 +29,10 @@ module Scrapespeare
 
       def query(constraints, &proc)
         @sub_rules << QueryRule.new(constraints, &proc)
+      end
+
+      private
+      def add_sub_rules_from_options(opts)
       end
 
     end
