@@ -152,7 +152,7 @@ Feature: URI Rules
       http://example.com?foo=75
       """
 
-  Scenario: HostRule with nested Path constraint
+  Scenario: HostRule with nested PathRule
     Given the following Rule:
       """
       host "example.com" do
@@ -175,4 +175,34 @@ Feature: URI Rules
       """
       http://example.com/foo/bar
       https://example.com/foo/bar
+      """
+
+  Scenario: HostRule with multiple nested PathRules
+    Given the following Rule:
+      """
+      host "example.com" do
+        path "/foo/bar"
+        path "/qux"
+      end
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        http://example.com/foo
+        http://example.com/bar
+        http://example.com/foo/bar
+        http://example.com/qux
+        https://example.com
+        https://example.com/foo
+        https://example.com/bar
+        https://example.com/foo/bar
+        https://example.com/qux
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com/foo/bar
+      http://example.com/qux
+      https://example.com/foo/bar
+      https://example.com/qux
       """
