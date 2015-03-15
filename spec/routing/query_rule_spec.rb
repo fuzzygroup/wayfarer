@@ -62,6 +62,14 @@ describe Scrapespeare::Routing::QueryRule do
         expect(rule.matches?(uri)).to be false
       end
     end
+
+    context "with non-numeric query field value" do
+      let(:uri) { URI("http://example.com?arg=foo") }
+
+      it "returns `false`" do
+        expect(rule.matches?(uri)).to be false
+      end
+    end
   end
 
 end
