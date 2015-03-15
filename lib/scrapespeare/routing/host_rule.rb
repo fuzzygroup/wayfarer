@@ -2,7 +2,7 @@ module Scrapespeare
   module Routing
     class HostRule < Rule
 
-      def initialize(str_or_regexp, &proc)
+      def initialize(str_or_regexp, opts = {}, &proc)
         @str_or_regexp = str_or_regexp
         super(&proc)
       end

@@ -51,7 +51,7 @@ describe Scrapespeare::Routing::Router do
       end
     end
 
-    context "with black- and whitelisted URI given" do
+    context "with both black- and whitelisted URI given" do
       before do
         router.forbid.host("example.com")
         router.allow.host("example.com")
