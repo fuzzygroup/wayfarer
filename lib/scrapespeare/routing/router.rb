@@ -11,11 +11,14 @@ module Scrapespeare
       end
 
       def allow(&proc)
-        @whitelist.instance_eval(&proc)
+        block_given? ? @whitelist.instance_eval(&proc) : @whitelist
       end
 
       def forbid(&proc)
-        @blacklist.instance_eval(&proc)
+        block_given? ? @blacklist.instance_eval(&proc) : @blacklist
+      end
+
+      def allowed?(uri)
       end
 
     end
