@@ -33,9 +33,7 @@ module Scrapespeare
       end
 
       def violates_integer?(int, vals)
-        vals.none? do |val|
-           int == Integer(val)
-        end
+        vals.none? { |val| int == Integer(val) }
       rescue ArgumentError
         true
       end
