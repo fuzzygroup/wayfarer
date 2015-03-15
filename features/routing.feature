@@ -43,3 +43,23 @@ Feature: URI Rules
       https://example.com/
       http://sub.example.com/
       """
+
+  Scenario: HostRule with nested PathRule
+    Given the following Rule:
+      """
+      host "example.com" do
+        path "/foo"
+      end
+      """
+      And the following list of URIs:
+        """
+        http://example.com/
+        http://example.com/foo
+        http://example.com/bar
+        http://example.com/foo/bar
+        """
+    When I match the URIs against the HostRule
+    Then I get the following list of URIs:
+      """
+      http://example.com/foo
+      """
