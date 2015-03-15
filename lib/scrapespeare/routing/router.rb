@@ -22,6 +22,14 @@ module Scrapespeare
         !@blacklist.matches?(uri) and @whitelist.matches?(uri)
       end
 
+      def forbids?(uri)
+        !allows?(uri)
+      end
+
+      private
+      def register_scraper(scraper_sym)
+      end
+
     end
   end
 end
