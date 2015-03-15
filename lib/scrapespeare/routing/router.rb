@@ -18,7 +18,8 @@ module Scrapespeare
         block_given? ? @blacklist.instance_eval(&proc) : @blacklist
       end
 
-      def allowed?(uri)
+      def allows?(uri)
+        !@blacklist.matches?(uri) and @whitelist.matches?(uri)
       end
 
     end
