@@ -102,19 +102,19 @@ describe Scrapespeare::Routing::QueryRule do
 
   describe "Mixed constraints" do
     let(:constraints) do
-      Hash[foo: 1..5, bar: /baz/, qux: "zot"]
+      Hash[foo: 1..5, bar: /baz/, qux: "zot", toto: 2]
     end
 
     context "with matching query field values" do
-      let(:uri) { URI("http://example.com?foo=4&bar=bazqux&qux=zot") }
+      let(:uri) { URI("http://example.com?foo=4&bar=bazqux&qux=zot&toto=2") }
 
       it "returns `true`" do
         expect(rule.matches?(uri)).to be true
       end
     end
 
-    context "with mismatching query field value" do
-      let(:uri) { URI("http://example.com?foo=bar&bar=qux&qux=6") }
+    context "with mismatching query field values" do
+      let(:uri) { URI("http://example.com?foo=bar&bar=qux&qux=6toto=0") }
 
       it "returns `false`" do
         expect(rule.matches?(uri)).to be false
