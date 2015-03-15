@@ -1,3 +1,5 @@
+require "mustermann"
+
 module Scrapespeare
   module Routing
     class PathRule
