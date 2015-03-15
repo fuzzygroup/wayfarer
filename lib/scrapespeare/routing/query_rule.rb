@@ -4,8 +4,8 @@ module Scrapespeare
   module Routing
     class QueryRule
 
-      def initialize(constraints)
-        @constraints = constraints
+      def initialize(field_constraints)
+        @field_constraints = field_constraints
       end
 
       def matches?(uri)
@@ -14,7 +14,7 @@ module Scrapespeare
 
       private
       def violates?(field, vals)
-        if constraint = @constraints[field.to_sym]
+        if constraint = @field_constraints[field.to_sym]
           violates_constraint?(constraint, vals)
         end
       end
