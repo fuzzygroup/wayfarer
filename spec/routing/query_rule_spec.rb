@@ -4,7 +4,7 @@ describe Scrapespeare::Routing::QueryRule do
 
   subject(:rule) { QueryRule.new(constraints) }
 
-  describe "String matching constraints" do
+  describe "String constraints" do
     let(:constraints) { Hash[arg: "foo"]  }
 
     context "with matching query field value" do
@@ -17,6 +17,34 @@ describe Scrapespeare::Routing::QueryRule do
 
     context "with mismatching query field value" do
       let(:uri) { URI("http://example.com?arg=bar") }
+
+      it "returns `false`" do
+        expect(rule.matches?(uri)).to be false
+      end
+    end
+  end
+
+  describe "Integer constraints" do
+    let(:constraints) { Hash[arg: 0]  }
+
+    context "with matching query field value" do
+      let(:uri) { URI("http://example.com?arg=0") }
+
+      it "returns `true`" do
+        expect(rule.matches?(uri)).to be true
+      end
+    end
+
+    context "with mismatching query field value" do
+      let(:uri) { URI("http://example.com?arg=1") }
+
+      it "returns `false`" do
+        expect(rule.matches?(uri)).to be false
+      end
+    end
+
+    context "with non-numeric query field value" do
+      let(:uri) { URI("http://example.com?arg=foo") }
 
       it "returns `false`" do
         expect(rule.matches?(uri)).to be false
