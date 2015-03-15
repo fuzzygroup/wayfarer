@@ -10,8 +10,7 @@ module Scrapespeare
       end
 
       def matches?(uri)
-        return true if match(uri)
-        @sub_rules.any? { |rule| rule.matches?(uri) }
+        match(uri) ? true : @sub_rules.any? { |rule| rule.matches?(uri) }
       end
 
       def host(str_or_regexp)
