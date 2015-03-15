@@ -19,6 +19,13 @@ describe Scrapespeare::Routing::Rule do
     end
   end
 
+  describe "#path" do
+    it "adds a PathRule as a sub-rule" do
+      rule.path "foo/bar"
+      expect(rule.sub_rules.first).to be_a PathRule
+    end
+  end
+
   describe "#query" do
     it "adds a QueryRule as a sub-rule" do
       rule.query foo: "bar"

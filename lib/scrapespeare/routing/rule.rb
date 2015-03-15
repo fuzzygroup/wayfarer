@@ -17,6 +17,10 @@ module Scrapespeare
         @sub_rules << HostRule.new(str_or_regexp)
       end
 
+      def path(pattern_str)
+        @sub_rules << PathRule.new(pattern_str)
+      end
+
       def query(constraints)
         @sub_rules << QueryRule.new(constraints)
       end
