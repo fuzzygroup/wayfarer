@@ -256,6 +256,35 @@ Feature: URI Rules
       https://example.com/qux
       """
 
+  Scenario: HostRule with multiple nested PathRules and Query Option
+    Given the following Rule:
+      """
+      host "example.com" do
+        path "/foo/bar"
+        path "/qux", query: { foo: 5 }
+      end
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        http://example.com/foo
+        http://example.com/bar
+        http://example.com/foo/bar
+        http://example.com/qux
+        https://example.com
+        https://example.com/foo
+        https://example.com/bar
+        https://example.com/foo/bar
+        https://example.com/qux?foo=5
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com/foo/bar
+      https://example.com/foo/bar
+      https://example.com/qux?foo=5
+      """
+
   Scenario: PathRule with nested QueryRule
     Given the following Rule:
       """

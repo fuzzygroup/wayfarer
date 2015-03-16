@@ -9,8 +9,12 @@ module Scrapespeare
         super(opts, &proc)
       end
 
+      private
       def apply(uri)
         @pattern === uri.path
+      end
+
+      def concatenated_path(path)
       end
 
     end
