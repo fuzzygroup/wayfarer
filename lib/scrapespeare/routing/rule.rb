@@ -16,6 +16,12 @@ module Scrapespeare
         @sub_rules.reduce(false) { |bool, rule| bool || rule.applies_to?(uri) }
       end
 
+      def add_uri_sub_rule(uri_str, opts = {}, &proc)
+        add_rule(URIRule.new(uri_str, opts, &proc))
+      end
+
+      alias_method :uri, :add_uri_sub_rule
+
       def add_host_sub_rule(str_or_regexp, opts = {}, &proc)
         add_rule(HostRule.new(str_or_regexp, opts, &proc))
       end
