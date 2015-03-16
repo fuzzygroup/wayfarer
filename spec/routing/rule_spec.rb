@@ -35,23 +35,23 @@ describe Scrapespeare::Routing::Rule do
     end
   end
 
-  describe "#host" do
+  describe "#add_host_sub_rule" do
     it "adds a HostRule as a sub-rule" do
-      rule.host "example.com"
+      rule.add_host_sub_rule "example.com"
       expect(rule.sub_rules.first).to be_a HostRule
     end
   end
 
-  describe "#path" do
+  describe "#add_path_sub_rule" do
     it "adds a PathRule as a sub-rule" do
-      rule.path "foo/bar"
+      rule.add_path_sub_rule "foo/bar"
       expect(rule.sub_rules.first).to be_a PathRule
     end
   end
 
-  describe "#query" do
+  describe "#add_query_sub_rule" do
     it "adds a QueryRule as a sub-rule" do
-      rule.query foo: "bar"
+      rule.add_query_sub_rule foo: "bar"
       expect(rule.sub_rules.first).to be_a QueryRule
     end
   end

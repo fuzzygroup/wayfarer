@@ -20,17 +20,23 @@ module Scrapespeare
         true
       end
 
-      def host(str_or_regexp, opts = {}, &proc)
+      def add_host_sub_rule(str_or_regexp, opts = {}, &proc)
         @sub_rules << HostRule.new(str_or_regexp, opts, &proc)
       end
 
-      def path(pattern_str, opts = {}, &proc)
+      alias_method :host, :add_host_sub_rule
+
+      def add_path_sub_rule(pattern_str, opts = {}, &proc)
         @sub_rules << PathRule.new(pattern_str, opts, &proc)
       end
 
-      def query(constraints, opts = {}, &proc)
+      alias_method :path, :add_path_sub_rule
+
+      def add_query_sub_rule(constraints, opts = {}, &proc)
         @sub_rules << QueryRule.new(constraints, opts, &proc)
       end
+
+      alias_method :query, :add_query_sub_rule
 
       private
       def add_sub_rules_from_options(opts)
