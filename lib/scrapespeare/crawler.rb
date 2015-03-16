@@ -2,12 +2,11 @@ module Scrapespeare
   class Crawler
 
     attr_reader   :base_uri
-    attr_reader   :scraper_table
     attr_accessor :uri_template
 
     def initialize(&proc)
-      @scraper_table = {}
-      @router        = Router.new
+      @scraper = Scraper.new
+      @router  = Router.new
 
       instance_eval(&proc) if block_given?
     end
@@ -19,11 +18,11 @@ module Scrapespeare
                   end
     end
 
-    def scrape(sym = :default, &proc)
-      @scraper_table[sym] = Scraper.new(&proc)
+    def setup_scraper(&proc)
+      block_given? ? @scraper.instance_eval(&proc) : @scraper
     end
 
-    alias_method :define_scraper, :scrape
+    alias_method :scraper, :setup_scraper
 
     def route(&proc)
       @router.instance_eval(&proc)

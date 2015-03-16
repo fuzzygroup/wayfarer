@@ -53,23 +53,19 @@ describe Scrapespeare::Crawler do
     end
   end
 
-  describe "#scrape" do
-    it "stores a Scraper" do
-      crawler.scrape(:foo)
-      expect(crawler.scraper_table).to have_key :foo
-    end
-
-    context "without identifier Symbol given" do
-      it "sets the identifier Symbol to `:default`" do
-        crawler.scrape { css(:bar, "#bar") }
-        expect(crawler.scraper_table).to have_key :default
+  describe "#setup_scraper, #scraper" do
+    context "with Proc given" do
+      it "evaluates the given Proc in its Scraper's instance context" do
+        this = nil
+        crawler.setup_scraper { |scraper| this = scraper }
+        expect(this).to be crawler.scraper
       end
     end
 
-    it "yields the added Scraper" do
-      crawler.scrape(:foo) { css(:bar, "#bar") }
-      added_scraper = crawler.scraper_table[:foo]
-      expect(added_scraper.extractables.count).to be 1
+    context "without Proc given" do
+      it "returns its Scraper" do
+        expect(crawler.scraper).to be_a Scraper
+      end
     end
   end
 
