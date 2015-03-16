@@ -44,30 +44,52 @@ Feature: URI Rules
       http://sub.example.com
       """
 
-      Scenario: Single PathRule
-        Given the following Rule:
-          """
-          path "/foo"
-          """
-          And the following list of URIs:
-            """
-            http://example.com
-            https://example.com
-            http://example.com/foo
-            https://example.com/foo
-            http://example.com/foo?bar=1
-            https://example.com/foo?bar=1
-            http://example.com/foo/bar
-            https://example.com/foo/bar
-            """
-        When I match the URIs against the Rule
-        Then I get the following list of URIs:
-          """
-          http://example.com/foo
-          https://example.com/foo
-          http://example.com/foo?bar=1
-          https://example.com/foo?bar=1
-          """
+  Scenario: HostRule with Path option
+    Given the following Rule:
+      """
+      host "example.com", path: "/foo"
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        https://example.com
+        http://example.com/foo
+        https://example.com/foo
+        http://example.com/foo/bar
+        https://example.com/foo/bar
+        
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com/foo
+      https://example.com/foo
+      """
+
+  Scenario: Single PathRule
+    Given the following Rule:
+      """
+      path "/foo"
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        https://example.com
+        http://example.com/foo
+        https://example.com/foo
+        http://example.com/foo?bar=1
+        https://example.com/foo?bar=1
+        http://example.com/foo/bar
+        https://example.com/foo/bar
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com/foo
+      https://example.com/foo
+      http://example.com/foo?bar=1
+      https://example.com/foo?bar=1
+      """
 
   Scenario: Multiple HostRules
     Given the following Rule:
