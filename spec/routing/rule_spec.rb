@@ -41,8 +41,8 @@ describe Scrapespeare::Routing::Rule do
       expect(rule.sub_rules.first).to be_a URIRule
     end
 
-    it "returns the added URIRule" do
-      expect(rule.uri("example.com")).to be_a URIRule
+    it "returns the root Rule" do
+      expect(rule.uri("example.com")).to be rule
     end
   end
 
@@ -52,8 +52,8 @@ describe Scrapespeare::Routing::Rule do
       expect(rule.sub_rules.first).to be_a HostRule
     end
 
-    it "returns the added HostRule" do
-      expect(rule.host("example.com")).to be_a HostRule
+    it "returns the root Rule" do
+      expect(rule.uri("example.com")).to be rule
     end
   end
 
@@ -63,8 +63,8 @@ describe Scrapespeare::Routing::Rule do
       expect(rule.sub_rules.first).to be_a PathRule
     end
 
-    it "returns the added PathRule" do
-      expect(rule.path("/foo/bar")).to be_a PathRule
+    it "returns the root Rule" do
+      expect(rule.uri("example.com")).to be rule
     end
   end
 
@@ -74,8 +74,8 @@ describe Scrapespeare::Routing::Rule do
       expect(rule.sub_rules.first).to be_a QueryRule
     end
 
-    it "returns the added QueryRule" do
-      expect(rule.query(foo: "bar")).to be_a QueryRule
+    it "returns the root Rule" do
+      expect(rule.uri("example.com")).to be rule
     end
   end
 
