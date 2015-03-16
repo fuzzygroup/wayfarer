@@ -17,19 +17,19 @@ module Scrapespeare
       end
 
       def add_host_sub_rule(str_or_regexp, opts = {}, &proc)
-        @sub_rules << HostRule.new(str_or_regexp, opts, &proc)
+        add_rule(HostRule.new(str_or_regexp, opts, &proc))
       end
 
       alias_method :host, :add_host_sub_rule
 
       def add_path_sub_rule(pattern_str, opts = {}, &proc)
-        @sub_rules << PathRule.new(pattern_str, opts, &proc)
+        add_rule(PathRule.new(pattern_str, opts, &proc))
       end
 
       alias_method :path, :add_path_sub_rule
 
       def add_query_sub_rule(constraints, opts = {}, &proc)
-        @sub_rules << QueryRule.new(constraints, opts, &proc)
+        add_rule(QueryRule.new(constraints, opts, &proc))
       end
 
       alias_method :query, :add_query_sub_rule
@@ -43,6 +43,11 @@ module Scrapespeare
 
       def apply(uri)
         @sub_rules.any?
+      end
+
+      def add_rule(rule)
+        @sub_rules << rule
+        rule
       end
 
     end
