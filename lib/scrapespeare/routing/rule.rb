@@ -11,12 +11,12 @@ module Scrapespeare
       end
 
       def matches?(uri)
-        return false unless match(uri)
-        return match(uri) if @sub_rules.empty?
+        return false unless apply(uri)
+        return apply(uri) if @sub_rules.empty?
         @sub_rules.reduce(false) { |bool, rule| bool || rule.matches?(uri) }
       end
 
-      def match(uri)
+      def apply(uri)
         @sub_rules.any?
       end
 

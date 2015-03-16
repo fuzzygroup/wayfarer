@@ -9,7 +9,7 @@ module Scrapespeare
         super(opts, &proc)
       end
 
-      def match(uri)
+      def apply(uri)
         CGI::parse(uri.query).none? { |field, vals| violates?(field, vals) }
       rescue NoMethodError
         # `CGI::parse` throws a NoMethodError if `uri.query` is an empty string.
