@@ -17,7 +17,7 @@ module Scrapespeare
       end
 
       def match(uri)
-        true
+        @sub_rules.any?
       end
 
       def add_host_sub_rule(str_or_regexp, opts = {}, &proc)
