@@ -11,7 +11,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?arg=foo") }
 
       it "returns `true`" do
-        expect(rule.matches?(uri)).to be true
+        expect(rule.applies_to?(uri)).to be true
       end
     end
 
@@ -19,7 +19,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?arg=bar") }
 
       it "returns `false`" do
-        expect(rule.matches?(uri)).to be false
+        expect(rule.applies_to?(uri)).to be false
       end
     end
   end
@@ -31,7 +31,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?arg=0") }
 
       it "returns `true`" do
-        expect(rule.matches?(uri)).to be true
+        expect(rule.applies_to?(uri)).to be true
       end
     end
 
@@ -39,7 +39,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?arg=1") }
 
       it "returns `false`" do
-        expect(rule.matches?(uri)).to be false
+        expect(rule.applies_to?(uri)).to be false
       end
     end
 
@@ -47,7 +47,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?arg=foo") }
 
       it "returns `false`" do
-        expect(rule.matches?(uri)).to be false
+        expect(rule.applies_to?(uri)).to be false
       end
     end
   end
@@ -59,7 +59,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?arg=foo") }
 
       it "returns `true`" do
-        expect(rule.matches?(uri)).to be true
+        expect(rule.applies_to?(uri)).to be true
       end
     end
 
@@ -67,7 +67,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?arg=bar") }
 
       it "returns `false`" do
-        expect(rule.matches?(uri)).to be false
+        expect(rule.applies_to?(uri)).to be false
       end
     end
   end
@@ -79,7 +79,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?arg=5") }
 
       it "returns `true`" do
-        expect(rule.matches?(uri)).to be true
+        expect(rule.applies_to?(uri)).to be true
       end
     end
 
@@ -87,7 +87,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?arg=11") }
 
       it "returns `false`" do
-        expect(rule.matches?(uri)).to be false
+        expect(rule.applies_to?(uri)).to be false
       end
     end
 
@@ -95,7 +95,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?arg=foo") }
 
       it "returns `false`" do
-        expect(rule.matches?(uri)).to be false
+        expect(rule.applies_to?(uri)).to be false
       end
     end
   end
@@ -109,7 +109,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?foo=4&bar=bazqux&qux=zot&toto=2") }
 
       it "returns `true`" do
-        expect(rule.matches?(uri)).to be true
+        expect(rule.applies_to?(uri)).to be true
       end
     end
 
@@ -117,7 +117,7 @@ describe Scrapespeare::Routing::QueryRule do
       let(:uri) { URI("http://example.com?foo=bar&bar=qux&qux=6toto=0") }
 
       it "returns `false`" do
-        expect(rule.matches?(uri)).to be false
+        expect(rule.applies_to?(uri)).to be false
       end
     end
   end

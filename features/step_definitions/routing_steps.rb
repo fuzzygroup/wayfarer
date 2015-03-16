@@ -10,7 +10,7 @@ Given(/^the following list of URIs:$/) do |str|
 end
 
 When(/^I match the URIs against the Rule$/) do
-  @filtered_uris = @uris.find_all { |uri| @rule.matches?(uri) }
+  @filtered_uris = @uris.find_all { |uri| @rule.applies_to?(uri) }
 end
 
 Then(/^I get the following list of URIs:$/) do |str|
