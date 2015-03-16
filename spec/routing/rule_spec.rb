@@ -41,7 +41,7 @@ describe Scrapespeare::Routing::Rule do
       expect(rule.sub_rules.first).to be_a URIRule
     end
 
-    it "returns the root Rule" do
+    it "returns `self`" do
       expect(rule.uri("example.com")).to be rule
     end
   end
@@ -52,7 +52,7 @@ describe Scrapespeare::Routing::Rule do
       expect(rule.sub_rules.first).to be_a HostRule
     end
 
-    it "returns the root Rule" do
+    it "returns `self`" do
       expect(rule.uri("example.com")).to be rule
     end
   end
@@ -63,7 +63,7 @@ describe Scrapespeare::Routing::Rule do
       expect(rule.sub_rules.first).to be_a PathRule
     end
 
-    it "returns the root Rule" do
+    it "returns `self`" do
       expect(rule.uri("example.com")).to be rule
     end
   end
@@ -74,7 +74,7 @@ describe Scrapespeare::Routing::Rule do
       expect(rule.sub_rules.first).to be_a QueryRule
     end
 
-    it "returns the root Rule" do
+    it "returns `self`" do
       expect(rule.uri("example.com")).to be rule
     end
   end

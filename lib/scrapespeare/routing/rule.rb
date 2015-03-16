@@ -17,41 +17,41 @@ module Scrapespeare
       end
 
       def add_uri_sub_rule(uri_str, opts = {}, &proc)
-        add_rule(URIRule.new(uri_str, opts, &proc))
+        add_sub_rule(URIRule.new(uri_str, opts, &proc))
       end
 
       alias_method :uri, :add_uri_sub_rule
 
       def add_host_sub_rule(str_or_regexp, opts = {}, &proc)
-        add_rule(HostRule.new(str_or_regexp, opts, &proc))
+        add_sub_rule(HostRule.new(str_or_regexp, opts, &proc))
       end
 
       alias_method :host, :add_host_sub_rule
 
       def add_path_sub_rule(pattern_str, opts = {}, &proc)
-        add_rule(PathRule.new(pattern_str, opts, &proc))
+        add_sub_rule(PathRule.new(pattern_str, opts, &proc))
       end
 
       alias_method :path, :add_path_sub_rule
 
       def add_query_sub_rule(constraints, opts = {}, &proc)
-        add_rule(QueryRule.new(constraints, opts, &proc))
+        add_sub_rule(QueryRule.new(constraints, opts, &proc))
       end
 
       alias_method :query, :add_query_sub_rule
 
       private
       def add_sub_rules_from_options(opts)
-        host(opts[:host])   if opts[:host]
-        path(opts[:path])   if opts[:path]
-        query(opts[:query]) if opts[:query]
+        add_host_sub_rule(opts[:host])   if opts[:host]
+        add_path_sub_rule(opts[:path])   if opts[:path]
+        add_query_sub_rule(opts[:query]) if opts[:query]
       end
 
       def apply(uri)
         @sub_rules.any?
       end
 
-      def add_rule(rule)
+      def add_sub_rule(rule)
         @sub_rules << rule
         self
       end
