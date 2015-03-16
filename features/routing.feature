@@ -256,3 +256,31 @@ Feature: URI Rules
       http://example.com/foo?bar=qux
       https://google.com/foo?bar=qux
       """
+
+  Scenario: PathRule with nested QueryRule
+    Given the following Rule:
+      """
+      path "/foo" do
+        query bar: "qux"
+      end
+
+      host "google.com" do
+        path "/foo"
+      end
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        http://example.com/foo
+        http://example.com/foo?bar=qux
+        https://google.com
+        https://google.com/foo
+        https://google.com/foo?bar=qux
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com/foo?bar=qux
+      https://google.com/foo
+      https://google.com/foo?bar=qux
+      """
