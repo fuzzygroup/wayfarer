@@ -17,11 +17,11 @@ module Scrapespeare
 
     alias_method :scraper, :setup_scraper
 
-    def route(&proc)
-      @router.instance_eval(&proc)
+    def setup_router(&proc)
+      block_given? ? @router.instance_eval(&proc) : @router
     end
 
-    alias_method :setup_routes, :route
+    alias_method :router, :setup_router
 
     def config
       yield Scrapespeare.config if block_given?

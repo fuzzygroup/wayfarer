@@ -20,4 +20,20 @@ describe Scrapespeare::Crawler do
     end
   end
 
+  describe "#setup_router, #routes" do
+    context "with Proc given" do
+      it "evaluates the given Proc in its Router's instance context" do
+        this = nil
+        crawler.setup_router { |router| this = router }
+        expect(this).to be crawler.router
+      end
+    end
+
+    context "without Proc given" do
+      it "returns its Router" do
+        expect(crawler.router).to be_a Router
+      end
+    end
+  end
+
 end
