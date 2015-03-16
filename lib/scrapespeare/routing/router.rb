@@ -26,10 +26,6 @@ module Scrapespeare
         !allows?(uri)
       end
 
-      private
-      def register_scraper(scraper_sym)
-      end
-
     end
   end
 end
