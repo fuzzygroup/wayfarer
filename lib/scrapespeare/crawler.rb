@@ -23,11 +23,5 @@ module Scrapespeare
 
     alias_method :router, :setup_router
 
-    def config
-      yield Scrapespeare.config if block_given?
-    end
-
-    alias_method :configure, :config
-
   end
 end
