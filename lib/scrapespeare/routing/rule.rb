@@ -16,10 +16,6 @@ module Scrapespeare
         @sub_rules.reduce(false) { |bool, rule| bool || rule.applies_to?(uri) }
       end
 
-      def apply(uri)
-        @sub_rules.any?
-      end
-
       def add_host_sub_rule(str_or_regexp, opts = {}, &proc)
         @sub_rules << HostRule.new(str_or_regexp, opts, &proc)
       end
@@ -43,6 +39,10 @@ module Scrapespeare
         host(opts[:host])   if opts[:host]
         path(opts[:path])   if opts[:path]
         query(opts[:query]) if opts[:query]
+      end
+
+      def apply(uri)
+        @sub_rules.any?
       end
 
     end
