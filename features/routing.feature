@@ -44,25 +44,6 @@ Feature: URI Rules
       http://sub.example.com
       """
 
-  Scenario: HostRule with Path option
-    Given the following Rule:
-      """
-      host "example.com", path: "/foo"
-      """
-      And the following list of URIs:
-        """
-        http://example.com
-        https://example.com
-        http://example.com/foo
-        https://example.com/foo
-        """
-    When I match the URIs against the Rule
-    Then I get the following list of URIs:
-      """
-      http://example.com/foo
-      https://example.com/foo
-      """
-
       Scenario: Single PathRule
         Given the following Rule:
           """
@@ -87,6 +68,29 @@ Feature: URI Rules
           http://example.com/foo?bar=1
           https://example.com/foo?bar=1
           """
+
+  Scenario: Multiple HostRules
+    Given the following Rule:
+      """
+      host "example.com"
+      host /.org/
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        https://example.com
+        http://sub.example.com
+        http://google.com
+        http://yahoo.com
+        http://fsf.org
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com
+      https://example.com
+      http://fsf.org
+      """
 
   Scenario: QueryRule with String matcher
     Given the following Rule:
