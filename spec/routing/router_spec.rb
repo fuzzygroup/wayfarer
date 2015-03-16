@@ -37,7 +37,7 @@ describe Scrapespeare::Routing::Router do
   end
 
   describe "#allows?" do
-    let(:uri) { URI("http://example.com") }
+    let(:uri) { URI("http://example.com/foo") }
 
     it "returns `false` for all URIs as default" do
       expect(router.allows?(uri)).to be false
@@ -48,6 +48,15 @@ describe Scrapespeare::Routing::Router do
 
       it "returns `true`" do
         expect(router.allows?(uri)).to be true
+      end
+    end
+
+    context "with blacklisted URI given" do
+      before { router.forbid.host("example.com") }
+      before { router.allow.path("/foo") }
+
+      it "returns `false`" do
+        expect(router.allows?(uri)).to be false
       end
     end
 
