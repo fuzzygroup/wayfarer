@@ -22,10 +22,4 @@ describe Scrapespeare::Routing::PathRule do
     end
   end
 
-  describe "#concatenated_path" do
-    it "works" do
-      
-    end
-  end
-
 end

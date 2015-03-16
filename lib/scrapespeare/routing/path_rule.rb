@@ -14,9 +14,6 @@ module Scrapespeare
         @pattern === uri.path
       end
 
-      def concatenated_path(path)
-      end
-
     end
   end
 end
