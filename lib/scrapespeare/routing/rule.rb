@@ -11,8 +11,8 @@ module Scrapespeare
       end
 
       def applies_to?(uri)
-        return false unless apply(uri)
-        return apply(uri) if @sub_rules.empty?
+        return false unless applied = apply(uri)
+        return applied if @sub_rules.empty?
         @sub_rules.inject(false) { |bool, rule| bool || rule.applies_to?(uri) }
       end
 
