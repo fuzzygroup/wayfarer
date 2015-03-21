@@ -40,13 +40,11 @@ module Scrapespeare
 
       alias_method :query, :append_query_sub_rule
 
+      private
       def append_sub_rule(other)
         @sub_rules << other and other
       end
 
-      alias_method :<<, :append_sub_rule
-
-      private
       def append_sub_rule_from_options(opts)
         opts.reject! { |key, _| not [:host, :path, :query].include?(key) }
 
