@@ -66,6 +66,23 @@ Feature: URI Rules
       https://example.com/foo
       """
 
+  Scenario: Multiple options
+    Given the following Rule:
+      """
+      host "example.com", path: "/foo", query: { bar: "qux" }
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        http://example.com/foo
+        http://example.com/foo?bar=qux
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com/foo?bar=qux
+      """
+
   Scenario: Single PathRule
     Given the following Rule:
       """

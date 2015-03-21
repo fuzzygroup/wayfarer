@@ -1,3 +1,5 @@
+require "pry"
+
 module Scrapespeare
   module Routing
     class Rule
@@ -6,7 +8,7 @@ module Scrapespeare
 
       def initialize(opts = {}, &proc)
         @sub_rules = []
-        add_sub_rules_from_options(opts)
+        add_sub_rule_from_options(opts) unless opts.empty?
         instance_eval(&proc) if block_given?
       end
 
@@ -40,19 +42,29 @@ module Scrapespeare
 
       alias_method :query, :add_query_sub_rule
 
+      def add_sub_rule(other)
+        @sub_rules << other and other
+      end
+
+      alias_method :<<, :add_sub_rule
+
       private
-      def add_sub_rules_from_options(opts)
-        add_host_sub_rule(opts[:host])   if opts[:host]
-        add_path_sub_rule(opts[:path])   if opts[:path]
-        add_query_sub_rule(opts[:query]) if opts[:query]
+      def add_sub_rule_from_options(opts)
+        opts.reject! { |key, _ | not [:host, :path, :query].include?(key) }
+
+        sub_rule = opts.inject(Rule.new) do |rule, (key, val)|
+          case key
+          when :host  then rule.add_host_sub_rule(val)
+          when :path  then rule.add_path_sub_rule(val)
+          when :query then rule.add_query_sub_rule(val)
+          end
+        end
+
+        add_sub_rule(sub_rule)
       end
 
       def apply(uri)
         @sub_rules.any?
-      end
-
-      def add_sub_rule(rule)
-        @sub_rules << rule and rule
       end
 
     end
