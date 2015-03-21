@@ -52,8 +52,7 @@ module Scrapespeare
       end
 
       def add_sub_rule(rule)
-        @sub_rules << rule
-        self
+        @sub_rules << rule and rule
       end
 
     end
