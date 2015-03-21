@@ -72,7 +72,7 @@ describe Scrapespeare::Routing::Rule do
     end
 
     context "with `:query` option present" do
-      let(:opts) { Hash[query: { foo: "bar" }] }
+      let(:opts) { Hash[query: { bar: "qux" }] }
 
       it "adds a QueryRule as a sub-rule" do
         expect(rule.sub_rules.first).to be_a QueryRule
@@ -88,6 +88,19 @@ describe Scrapespeare::Routing::Rule do
     end
 
     context "with multiple options present" do
+      let(:opts) do
+        Hash[host: "example.com", path: "/foo", query: { bar: "qux" }]
+      end
+
+      it "adds chained sub-rules" do
+        first  = rule.sub_rules.first
+        second = first.sub_rules.first
+        third  = second.sub_rules.first
+
+        expect(first).to be_a HostRule
+        expect(second).to be_a PathRule
+        expect(third).to be_a QueryRule
+      end
     end
   end
 

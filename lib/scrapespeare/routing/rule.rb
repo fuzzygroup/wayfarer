@@ -52,7 +52,8 @@ module Scrapespeare
       def add_sub_rule_from_options(opts)
         opts.reject! { |key, _ | not [:host, :path, :query].include?(key) }
 
-        sub_rule = opts.inject(Rule.new) do |rule, (key, val)|
+        sub_rule = Rule.new
+        opts.inject(sub_rule) do |rule, (key, val)|
           case key
           when :host  then rule.add_host_sub_rule(val)
           when :path  then rule.add_path_sub_rule(val)
@@ -60,7 +61,7 @@ module Scrapespeare
           end
         end
 
-        add_sub_rule(sub_rule)
+        add_sub_rule(sub_rule.sub_rules.first)
       end
 
       def apply(uri)
