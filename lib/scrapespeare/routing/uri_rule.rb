@@ -10,7 +10,7 @@ module Scrapespeare
       end
 
       private
-      def apply(uri)
+      def match(uri)
         uri == @uri
       end
 

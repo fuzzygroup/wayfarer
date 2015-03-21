@@ -4,12 +4,12 @@ describe Scrapespeare::Routing::PathRule do
 
   subject(:rule) { PathRule.new("/foo/bar") }
 
-  describe "#applies_to?" do
+  describe "#===" do
     context "with matching URI" do
       let(:uri) { URI("http://example.com/foo/bar") }
 
       it "returns `true`" do
-        expect(rule.applies_to?(uri)).to be true
+        expect(rule === uri).to be true
       end
     end
 
@@ -17,7 +17,7 @@ describe Scrapespeare::Routing::PathRule do
       let(:uri) { URI("http://example.com/bar/qux") }
 
       it "returns `false`" do
-        expect(rule.applies_to?(uri)).to be false
+        expect(rule === uri).to be false
       end
     end
   end

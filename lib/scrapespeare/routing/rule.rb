@@ -10,10 +10,10 @@ module Scrapespeare
         instance_eval(&proc) if block_given?
       end
 
-      def applies_to?(uri)
-        return false unless applied = apply(uri)
-        return applied if @sub_rules.empty?
-        @sub_rules.inject(false) { |bool, rule| bool || rule.applies_to?(uri) }
+      def ===(uri)
+        return false unless matched = match(uri)
+        return matched if @sub_rules.empty?
+        @sub_rules.inject(false) { |bool, rule| bool || rule === uri }
       end
 
       def append_uri_sub_rule(uri_str, opts = {}, &proc)
@@ -57,7 +57,7 @@ module Scrapespeare
         end
       end
 
-      def apply(uri)
+      def match(uri)
         @sub_rules.any?
       end
 

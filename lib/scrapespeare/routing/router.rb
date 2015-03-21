@@ -19,7 +19,7 @@ module Scrapespeare
       end
 
       def allows?(uri)
-        !@blacklist.applies_to?(uri) and @whitelist.applies_to?(uri)
+        !(@blacklist === uri) and @whitelist === uri
       end
 
       def forbids?(uri)

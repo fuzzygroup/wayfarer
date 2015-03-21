@@ -7,7 +7,7 @@ module Scrapespeare
         super(opts, &proc)
       end
 
-      def apply(uri)
+      def match(uri)
         @str_or_regexp === uri.host
       end
 
