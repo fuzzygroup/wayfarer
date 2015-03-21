@@ -48,7 +48,7 @@ module Scrapespeare
 
       private
       def append_sub_rule_from_options(opts)
-        opts.reject! { |key, _ | not [:host, :path, :query].include?(key) }
+        opts.reject! { |key, _| not [:host, :path, :query].include?(key) }
 
         opts.inject(self) do |rule, (key, val)|
           case key
