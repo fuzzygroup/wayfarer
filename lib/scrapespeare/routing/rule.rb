@@ -57,7 +57,7 @@ module Scrapespeare
         end
       end
 
-      def match(uri)
+      def match(*)
         @sub_rules.any?
       end
 

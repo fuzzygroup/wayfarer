@@ -29,9 +29,8 @@ namespace :features do
 end
 
 desc "Run all scenarios"
-task features: %w(features:isolated)
+task features: ["features:isolated"]
 
-# Make sure the HTTP server thread gets terminated
 %w(spec:isolated spec:live features).each do |task|
   Rake::Task[task].enhance { Rake::Task["stop_test_app"].invoke }
 end
