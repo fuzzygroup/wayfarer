@@ -12,9 +12,9 @@ describe Scrapespeare::Routing::Rule do
     end
   end
 
-  describe "#add_uri_sub_rule, #uri" do
+  describe "#append_uri_sub_rule, #uri" do
     it "adds a URIRule as a sub-rule" do
-      rule.add_uri_sub_rule("http://example.com/foo/bar")
+      rule.append_uri_sub_rule("http://example.com/foo/bar")
       expect(rule.sub_rules.first).to be_a URIRule
     end
 
@@ -23,9 +23,9 @@ describe Scrapespeare::Routing::Rule do
     end
   end
 
-  describe "#add_host_sub_rule, #host" do
+  describe "#append_host_sub_rule, #host" do
     it "adds a HostRule as a sub-rule" do
-      rule.add_host_sub_rule("example.com")
+      rule.append_host_sub_rule("example.com")
       expect(rule.sub_rules.first).to be_a HostRule
     end
 
@@ -34,9 +34,9 @@ describe Scrapespeare::Routing::Rule do
     end
   end
 
-  describe "#add_path_sub_rule, #path" do
+  describe "#append_path_sub_rule, #path" do
     it "adds a PathRule as a sub-rule" do
-      rule.add_path_sub_rule("/foo/bar")
+      rule.append_path_sub_rule("/foo/bar")
       expect(rule.sub_rules.first).to be_a PathRule
     end
 
@@ -45,9 +45,9 @@ describe Scrapespeare::Routing::Rule do
     end
   end
 
-  describe "#add_query_sub_rule, #query" do
+  describe "#append_query_sub_rule, #query" do
     it "adds a QueryRule as a sub-rule" do
-      rule.add_query_sub_rule(foo: "bar")
+      rule.append_query_sub_rule(foo: "bar")
       expect(rule.sub_rules.first).to be_a QueryRule
     end
 
@@ -56,10 +56,10 @@ describe Scrapespeare::Routing::Rule do
     end
   end
 
-  describe "#add_sub_rule_from_options" do
+  describe "#append_sub_rule_from_options" do
     subject(:rule) do
       rule = Rule.new
-      rule.send(:add_sub_rule_from_options, opts)
+      rule.send(:append_sub_rule_from_options, opts)
       rule
     end 
 

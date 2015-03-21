@@ -6,7 +6,7 @@ module Scrapespeare
 
       def initialize(opts = {}, &proc)
         @sub_rules = []
-        add_sub_rule_from_options(opts) unless opts.empty?
+        append_sub_rule_from_options(opts) unless opts.empty?
         instance_eval(&proc) if block_given?
       end
 
@@ -16,45 +16,45 @@ module Scrapespeare
         @sub_rules.inject(false) { |bool, rule| bool || rule.applies_to?(uri) }
       end
 
-      def add_uri_sub_rule(uri_str, opts = {}, &proc)
-        add_sub_rule(URIRule.new(uri_str, opts, &proc))
+      def append_uri_sub_rule(uri_str, opts = {}, &proc)
+        append_sub_rule(URIRule.new(uri_str, opts, &proc))
       end
 
-      alias_method :uri, :add_uri_sub_rule
+      alias_method :uri, :append_uri_sub_rule
 
-      def add_host_sub_rule(str_or_regexp, opts = {}, &proc)
-        add_sub_rule(HostRule.new(str_or_regexp, opts, &proc))
+      def append_host_sub_rule(str_or_regexp, opts = {}, &proc)
+        append_sub_rule(HostRule.new(str_or_regexp, opts, &proc))
       end
 
-      alias_method :host, :add_host_sub_rule
+      alias_method :host, :append_host_sub_rule
 
-      def add_path_sub_rule(pattern_str, opts = {}, &proc)
-        add_sub_rule(PathRule.new(pattern_str, opts, &proc))
+      def append_path_sub_rule(pattern_str, opts = {}, &proc)
+        append_sub_rule(PathRule.new(pattern_str, opts, &proc))
       end
 
-      alias_method :path, :add_path_sub_rule
+      alias_method :path, :append_path_sub_rule
 
-      def add_query_sub_rule(constraints, opts = {}, &proc)
-        add_sub_rule(QueryRule.new(constraints, opts, &proc))
+      def append_query_sub_rule(constraints, opts = {}, &proc)
+        append_sub_rule(QueryRule.new(constraints, opts, &proc))
       end
 
-      alias_method :query, :add_query_sub_rule
+      alias_method :query, :append_query_sub_rule
 
-      def add_sub_rule(other)
+      def append_sub_rule(other)
         @sub_rules << other and other
       end
 
-      alias_method :<<, :add_sub_rule
+      alias_method :<<, :append_sub_rule
 
       private
-      def add_sub_rule_from_options(opts)
+      def append_sub_rule_from_options(opts)
         opts.reject! { |key, _ | not [:host, :path, :query].include?(key) }
 
         opts.inject(self) do |rule, (key, val)|
           case key
-          when :host  then rule.add_host_sub_rule(val)
-          when :path  then rule.add_path_sub_rule(val)
-          when :query then rule.add_query_sub_rule(val)
+          when :host  then rule.append_host_sub_rule(val)
+          when :path  then rule.append_path_sub_rule(val)
+          when :query then rule.append_query_sub_rule(val)
           end
         end
       end
