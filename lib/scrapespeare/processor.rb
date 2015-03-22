@@ -42,7 +42,7 @@ module Scrapespeare
 
     def has_next_uri?
       return true unless @current_uris.empty?
-      @staged_uris.empty? ? false : (cycle; true)
+      @staged_uris.any? ? (cycle; true) : false
     end
 
     def stage_uri(uri)
