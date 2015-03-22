@@ -4,9 +4,9 @@ require "thread"
 module Scrapespeare
   class Processor
 
-    def initialize(scraper, router)
-      @scraper = scraper
-      @router  = router
+    attr_reader :cached_uris
+
+    def initialize()
       @fetcher = Fetcher.new
 
       @current_uris = []
@@ -20,6 +20,10 @@ module Scrapespeare
     private
     def fetch(uri)
       @fetcher.fetch(uri)
+    end
+
+    def cache_uri(uri)
+      @cached_uris << uri
     end
 
   end
