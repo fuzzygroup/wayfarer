@@ -32,4 +32,19 @@ describe Scrapespeare::Processor do
       end
     end
   end
+
+  describe "#cycle" do
+    let(:uri) { URI("http://example.com") }
+    before { processor.send(:stage_uri, uri) }
+
+    it "sets the former staged URIs as current" do
+      processor.send(:cycle)
+      expect(processor.current_uris).to eq [uri]
+    end
+
+    it "empties the staged URIs" do
+      processor.send(:cycle)
+      expect(processor.staged_uris).to be_empty
+    end
+  end
 end
