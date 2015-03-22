@@ -27,6 +27,10 @@ module Scrapespeare
       page = fetch(uri)
       doc  = page.parsed_document
 
+      page.links.each do |uri|
+        stage_uri(uri)
+      end
+
       extract = @scraper.extract(doc)
       @result << extract
     end

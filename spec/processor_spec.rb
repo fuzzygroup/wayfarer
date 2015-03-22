@@ -97,7 +97,7 @@ describe Scrapespeare::Processor do
   describe "#process" do
     it "works" do
       result = processor.process
-      expect(result).to eq 1
+      expect(processor.staged_uris).to eq "lel"
     end
   end
 
