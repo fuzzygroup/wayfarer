@@ -33,6 +33,19 @@ describe Scrapespeare::Processor do
     end
   end
 
+  describe "#next_uri" do
+    let(:uri) { URI("http://example.com") }
+
+    before do
+      processor.instance_variable_set(:@current_uris, [uri])
+    end
+
+    it "pops the next current URI" do
+      expect(processor.send(:next_uri)).to eq uri
+      expect(processor.current_uris).to be_empty
+    end
+  end
+
   describe "#cycle" do
     let(:uri) { URI("http://example.com") }
     before { processor.send(:stage_uri, uri) }

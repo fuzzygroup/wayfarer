@@ -24,6 +24,10 @@ module Scrapespeare
       @fetcher.fetch(uri)
     end
 
+    def next_uri
+      @current_uris.shift
+    end
+
     def stage_uri(uri)
       @staged_uris << uri unless @cached_uris.include?(uri)
     end
