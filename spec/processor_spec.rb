@@ -46,6 +46,20 @@ describe Scrapespeare::Processor do
     end
   end
 
+  describe "#has_next_uri?" do
+    context "with current URIs present" do
+      let(:uri) { URI("http://example.com") }
+
+      before do
+        processor.instance_variable_set(:@current_uris, [uri])
+      end
+
+      it "returns `true`" do
+        expect(processor.send(:has_next_uri?)).to be true
+      end
+    end
+  end
+
   describe "#cycle" do
     let(:uri) { URI("http://example.com") }
     before { processor.send(:stage_uri, uri) }

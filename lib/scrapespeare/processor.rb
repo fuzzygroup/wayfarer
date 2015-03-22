@@ -28,6 +28,10 @@ module Scrapespeare
       @current_uris.shift
     end
 
+    def has_next_uri?
+      return true unless @current_uris.empty?
+    end
+
     def stage_uri(uri)
       @staged_uris << uri unless @cached_uris.include?(uri)
     end
