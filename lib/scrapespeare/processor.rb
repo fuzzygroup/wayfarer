@@ -8,13 +8,16 @@ module Scrapespeare
     attr_reader :staged_uris
     attr_reader :cached_uris
 
-    def initialize(scraper, router)
-      @scraper = Scraper.new
+    attr_accessor :scraper
+    attr_accessor :router
+
+    def initialize(entry_uri, scraper, router)
+      @scraper = scraper
+      @router  = router
       @fetcher = Fetcher.new
+      @result  = []
 
-      @result = []
-
-      @current_uris = []
+      @current_uris = [entry_uri]
       @staged_uris  = []
       @cached_uris  = []
     end

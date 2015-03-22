@@ -2,9 +2,10 @@ require "spec_helpers"
 
 describe Scrapespeare::Processor do
 
+  let(:entry_uri) { URI("http://0.0.0.0:9876/links.html") }
   let(:scraper) { Scraper.new { css :title, ".title" } }
   let(:router) { Router.new }
-  subject(:processor) { Processor.new(scraper, router) }
+  subject(:processor) { Processor.new(entry_uri, scraper, router) }
 
   describe "#cache_uri" do
     it "caches an URI" do
@@ -62,6 +63,8 @@ describe Scrapespeare::Processor do
     end
 
     context "without current URIs present" do
+      before { processor.instance_variable_set(:@current_uris, []) }
+
       context "with staged URIs present" do
         let(:uri) { URI("http://example.com") }
         before { processor.send(:stage_uri, uri) }
