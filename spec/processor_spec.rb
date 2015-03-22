@@ -2,8 +2,8 @@ require "spec_helpers"
 
 describe Scrapespeare::Processor do
 
-  let(:entry_uri) { URI("http://0.0.0.0:9876/links.html") }
-  let(:scraper) { Scraper.new { css :title, ".title" } }
+  let(:entry_uri) { URI("http://0.0.0.0:9876/links/links.html") }
+  let(:scraper) { Scraper.new { css :title, "title" } }
   let(:router) { Router.new }
   subject(:processor) { Processor.new(entry_uri, scraper, router) }
 
@@ -96,7 +96,8 @@ describe Scrapespeare::Processor do
 
   describe "#process" do
     it "works" do
-      
+      result = processor.process
+      expect(result).to eq 1
     end
   end
 
