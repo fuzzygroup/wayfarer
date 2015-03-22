@@ -2,7 +2,9 @@ require "spec_helpers"
 
 describe Scrapespeare::Processor do
 
-  subject(:processor) { Processor.new }
+  let(:scraper) { Scraper.new { css :title, ".title" } }
+  let(:router) { Router.new }
+  subject(:processor) { Processor.new(scraper, router) }
 
   describe "#cache_uri" do
     it "caches an URI" do
@@ -91,4 +93,11 @@ describe Scrapespeare::Processor do
       expect(processor.staged_uris).to be_empty
     end
   end
+
+  describe "#process" do
+    it "works" do
+      
+    end
+  end
+
 end

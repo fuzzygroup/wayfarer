@@ -8,8 +8,11 @@ module Scrapespeare
     attr_reader :staged_uris
     attr_reader :cached_uris
 
-    def initialize()
+    def initialize(scraper, router)
+      @scraper = Scraper.new
       @fetcher = Fetcher.new
+
+      @result = []
 
       @current_uris = []
       @staged_uris  = []
@@ -17,6 +20,12 @@ module Scrapespeare
     end
 
     def process
+      uri  = next_uri
+      page = fetch(uri)
+      doc  = page.parsed_document
+
+      extract = @scraper.extract(doc)
+      @result << extract
     end
 
     private
