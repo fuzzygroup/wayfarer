@@ -76,6 +76,12 @@ describe Scrapespeare::Processor do
           expect(processor.staged_uris).to be_empty
         end
       end
+
+      context "without staged URIS present" do
+        it "returns `false`" do
+          expect(processor.send(:has_next_uri?)).to be false
+        end
+      end
     end
   end
 
