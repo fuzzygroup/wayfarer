@@ -30,6 +30,13 @@ module Scrapespeare
 
     def has_next_uri?
       return true unless @current_uris.empty?
+
+      if not @staged_uris.empty?
+        cycle
+        true
+      else
+        false
+      end
     end
 
     def stage_uri(uri)

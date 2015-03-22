@@ -58,6 +58,23 @@ describe Scrapespeare::Processor do
         expect(processor.send(:has_next_uri?)).to be true
       end
     end
+
+    context "without current URIs present" do
+      context "with staged URIs present" do
+        let(:uri) { URI("http://example.com") }
+        before { processor.send(:stage_uri, uri) }
+
+        it "returns `true`" do
+          expect(processor.send(:has_next_uri?)).to be true
+        end
+
+        it "cycles" do
+          expect(processor.send(:has_next_uri?)).to be true
+          expect(processor.current_uris).to eq [uri]
+          expect(processor.staged_uris).to be_empty
+        end
+      end
+    end
   end
 
   describe "#cycle" do
