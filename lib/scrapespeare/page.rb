@@ -1,5 +1,4 @@
 require "uri"
-require "set"
 
 module Scrapespeare
   class Page
@@ -22,7 +21,7 @@ module Scrapespeare
         expand_uri(node.attr("href"))
       end
 
-      Set.new(uris).to_a
+      uris.to_a.uniq
     end
 
     private
