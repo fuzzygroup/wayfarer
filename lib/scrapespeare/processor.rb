@@ -5,6 +5,7 @@ module Scrapespeare
   class Processor
 
     attr_reader :cached_uris
+    attr_reader :staged_uris
 
     def initialize()
       @fetcher = Fetcher.new
@@ -20,6 +21,10 @@ module Scrapespeare
     private
     def fetch(uri)
       @fetcher.fetch(uri)
+    end
+
+    def stage_uri(uri)
+      @staged_uris << uri unless @cached_uris.include?(uri)
     end
 
     def cache_uri(uri)
