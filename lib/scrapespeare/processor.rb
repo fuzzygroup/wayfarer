@@ -22,9 +22,5 @@ module Scrapespeare
       @fetcher.fetch(uri)
     end
 
-    def next_uri
-      
-    end
-
   end
 end

@@ -29,27 +29,4 @@ describe Scrapespeare::Page do
     end
   end
 
-  describe "#internal_links" do
-    it "returns an Array of all internal links" do
-      expect(page.internal_links.map(&:to_s)).to eq %w(
-        http://0.0.0.0:9876/foo
-        http://0.0.0.0:9876/bar
-        http://0.0.0.0:9876/baz
-        http://0.0.0.0:9876/links/foo
-        http://0.0.0.0:9876/links/bar
-        http://0.0.0.0:9876/links/baz
-      )
-    end
-  end
-
-  describe "#external_links" do
-    it "returns an Array of all external links" do
-      expect(page.external_links.map(&:to_s)).to eq %w(
-        http://google.com
-        http://yahoo.com
-        http://aol.com
-      )
-    end
-  end
-
 end

@@ -25,21 +25,9 @@ module Scrapespeare
       Set.new(uris).to_a
     end
 
-    def internal_links
-      links.find_all { |uri| is_internal_link?(uri) }
-    end
-
-    def external_links
-      links.reject { |uri| is_internal_link?(uri) }
-    end
-
     private
     def expand_uri(path)
       URI.join(@uri, path) rescue ArgumentError
-    end
-
-    def is_internal_link?(uri)
-      uri.host == @uri.host rescue ArgumentError
     end
 
   end
