@@ -8,6 +8,7 @@ crawler = Scrapespeare::Crawler.new do
 
   scraper do
     css :title, "title"
+    css :headings, "h1"
   end
 
   router.allow do
