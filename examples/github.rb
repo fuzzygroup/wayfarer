@@ -2,9 +2,7 @@ require_relative "../lib/schablone"
 
 crawler = Schablone::Crawler.new do
 
-  config do
-    log_level = Logger::INFO
-  end
+  config.log_level = Logger::INFO
 
   scraper do
     css :title, "title"

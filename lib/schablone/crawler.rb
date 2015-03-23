@@ -2,7 +2,7 @@ module Schablone
   class Crawler
 
     def initialize(&proc)
-      @scraper = Scraper.new
+      @scraper = Extraction::Scraper.new
       @router  = Routing::Router.new
 
       instance_eval(&proc) if block_given?
