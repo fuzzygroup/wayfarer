@@ -11,10 +11,10 @@ module Scrapespeare
       end
 
       def match(doc_or_nodes)
-        case @type
-        when :css then doc_or_nodes.css(@expression)
-        when :xpath then doc_or_nodes.xpath(@expression)
-        else fail "Unknown selector type `#{@type}`"
+        case type
+        when :css then doc_or_nodes.css(expression)
+        when :xpath then doc_or_nodes.xpath(expression)
+        else fail "Unknown selector type `#{type}`"
         end
       end
 

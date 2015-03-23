@@ -16,7 +16,7 @@ describe Scrapespeare::Extraction::Extractable do
       extractable.css(:foo, ".bar", :href, :src)
       added_extractor = extractable.extractables.first
 
-      expect(added_extractor.identifier).to be :foo
+      expect(added_extractor.key).to be :foo
       expect(added_extractor.target_attrs).to eq [:href, :src]
     end
 
@@ -41,7 +41,7 @@ describe Scrapespeare::Extraction::Extractable do
       extractable.xpath(:foo, ".bar", :href, :src)
       added_extractor = extractable.extractables.first
 
-      expect(added_extractor.identifier).to be :foo
+      expect(added_extractor.key).to be :foo
       expect(added_extractor.target_attrs).to eq [:href, :src]
     end
 
@@ -66,7 +66,7 @@ describe Scrapespeare::Extraction::Extractable do
       extractable.group(:foo)
       added_extractor_group = extractable.extractables.first
 
-      expect(added_extractor_group.identifier).to be :foo
+      expect(added_extractor_group.key).to be :foo
     end
   end
 

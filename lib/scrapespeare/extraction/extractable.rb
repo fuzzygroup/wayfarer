@@ -2,7 +2,7 @@ module Scrapespeare
   module Extraction
     module Extractable
 
-      attr_reader :identifier
+      attr_reader :key
       attr_accessor :evaluator
 
       def extractables

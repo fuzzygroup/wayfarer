@@ -29,8 +29,8 @@ describe Scrapespeare::Extraction::Extractor do
       Extractor.new(:foo, { css: "#foo" }, "href")
     end
 
-    it "sets @identifier" do
-      expect(extractor.identifier).to be :foo
+    it "sets @key" do
+      expect(extractor.key).to be :foo
     end
 
     it "sets @matcher" do

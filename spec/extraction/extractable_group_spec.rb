@@ -5,8 +5,8 @@ describe Scrapespeare::Extraction::ExtractableGroup do
   let(:extractable_group) { ExtractableGroup.new(:foo) }
 
   describe "#initialize" do
-    it "sets @identifier correctly" do
-      expect(extractable_group.identifier).to be :foo
+    it "sets @key correctly" do
+      expect(extractable_group.key).to be :foo
     end
   end
 

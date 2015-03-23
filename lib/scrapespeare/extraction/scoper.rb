@@ -13,7 +13,7 @@ module Scrapespeare
       end
 
       def extract(doc_or_nodes)
-        matched_nodes = @matcher.match(doc_or_nodes)
+        matched_nodes = matcher.match(doc_or_nodes)
 
         if extractables.empty?
           {}

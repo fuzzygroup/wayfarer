@@ -4,8 +4,8 @@ module Scrapespeare
 
       include Extractable
 
-      def initialize(identifier, &proc)
-        @identifier = identifier
+      def initialize(key, &proc)
+        @key = key
         instance_eval(&proc) if block_given?
       end
 
@@ -18,7 +18,7 @@ module Scrapespeare
           end
         end
 
-        { @identifier => result }
+        { key => result }
       end
 
     end

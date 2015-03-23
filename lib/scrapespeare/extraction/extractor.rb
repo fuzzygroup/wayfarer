@@ -7,8 +7,8 @@ module Scrapespeare
       attr_reader :matcher
       attr_reader :target_attrs
 
-      def initialize(identifier, matcher_hash, *target_attrs, &proc)
-        @identifier = identifier
+      def initialize(key, matcher_hash, *target_attrs, &proc)
+        @key = key
         @matcher = Matcher.new(matcher_hash)
         @target_attrs = target_attrs
         @evaluator = Evaluator
@@ -17,7 +17,7 @@ module Scrapespeare
       end
 
       def extract(doc_or_nodes)
-        matched_nodes = @matcher.match(doc_or_nodes)
+        matched_nodes = matcher.match(doc_or_nodes)
 
         if extractables.empty?
           result = evaluate(matched_nodes, *@target_attrs)
@@ -29,7 +29,7 @@ module Scrapespeare
           end
         end
 
-        { @identifier => result }
+        { key => result }
       end
 
       private
