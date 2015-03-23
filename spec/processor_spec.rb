@@ -152,6 +152,7 @@ describe Schablone::Processor do
         http://0.0.0.0:9876/status_code/403
         http://0.0.0.0:9876/status_code/404
         http://bro.ken
+        http://0.0.0.0:9876/redirect_loop
       ).map { |str| URI(str) }
       expect(processor.staged_uris).to eq expected_uris
     end

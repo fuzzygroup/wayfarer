@@ -32,15 +32,10 @@ module Schablone
     def step
       uri  = next_uri
       page = fetch(uri)
-
       return if page.status_code > 299
-
       doc  = page.parsed_document
-
       cache_uri(uri)
-
       page.links.each { |uri| stage_uri(uri) }
-
       extract = @scraper.extract(doc)
       @result << extract
     end
