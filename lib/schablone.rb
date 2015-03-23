@@ -3,35 +3,33 @@ require "logger"
 require "nokogiri"
 require "hashie"
 
-$: << File.dirname(__FILE__)
-
 # Internals
-require "schablone/configuration"
+require_relative "schablone/configuration"
 
 # Routing
-require "schablone/routing/rule"
-require "schablone/routing/uri_rule"
-require "schablone/routing/host_rule"
-require "schablone/routing/path_rule"
-require "schablone/routing/query_rule"
-require "schablone/routing/router"
+require_relative "schablone/routing/rule"
+require_relative "schablone/routing/uri_rule"
+require_relative "schablone/routing/host_rule"
+require_relative "schablone/routing/path_rule"
+require_relative "schablone/routing/query_rule"
+require_relative "schablone/routing/router"
 
 # Extraction
-require "schablone/extraction/extractable"
-require "schablone/extraction/matcher"
-require "schablone/extraction/evaluator"
-require "schablone/extraction/scraper"
-require "schablone/extraction/extractor"
-require "schablone/extraction/extractable_group"
-require "schablone/extraction/scoper"
+require_relative "schablone/extraction/extractable"
+require_relative "schablone/extraction/matcher"
+require_relative "schablone/extraction/evaluator"
+require_relative "schablone/extraction/scraper"
+require_relative "schablone/extraction/extractor"
+require_relative "schablone/extraction/extractable_group"
+require_relative "schablone/extraction/scoper"
 
 # Processing
-require "schablone/parser"
-require "schablone/page"
-require "schablone/fetcher"
-require "schablone/result"
-require "schablone/processor"
-require "schablone/crawler"
+require_relative "schablone/parser"
+require_relative "schablone/page"
+require_relative "schablone/fetcher"
+require_relative "schablone/result"
+require_relative "schablone/processor"
+require_relative "schablone/crawler"
 
 module Schablone
 
