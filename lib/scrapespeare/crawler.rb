@@ -3,12 +3,15 @@ module Scrapespeare
 
     def initialize(&proc)
       @scraper = Scraper.new
-      @router  = Router.new
+      @router  = Routing::Router.new
 
       instance_eval(&proc) if block_given?
     end
 
     def crawl(uri)
+      processor = Processor.new(uri, @scraper, @router)
+      processor.run
+      processor.result
     end
 
     def setup_scraper(&proc)
