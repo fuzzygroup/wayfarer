@@ -15,6 +15,7 @@ describe Scrapespeare::Configuration do
     expect(config.max_http_redirects).to be 3
     expect(config.sanitize_node_content).to be true
     expect(config.log_level).to be Logger::FATAL
+    expect(config.threads).to be 4
   end
 
   it "allows overriding default values" do

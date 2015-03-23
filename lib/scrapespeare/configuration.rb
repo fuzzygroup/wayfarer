@@ -15,11 +15,12 @@ module Scrapespeare
     private
     def defaults
       {
-        http_adapter: :net_http,
-        verbose: false,
-        max_http_redirects: 3,
+        http_adapter:          :net_http,
+        verbose:               false,
+        max_http_redirects:    3,
         sanitize_node_content: true,
-        log_level: Logger::FATAL
+        log_level:             Logger::FATAL,
+        threads:               4
       }
     end
 
