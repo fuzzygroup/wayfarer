@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Extractable do
+describe Scrapespeare::Extraction::Extractable do
 
   let(:extractable) { Object.new.extend(subject) }
 

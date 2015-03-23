@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Scoper do
+describe Scrapespeare::Extraction::Scoper do
 
   describe "#initialize" do
     let(:scoper) { Scoper.new(css: ".foo") }

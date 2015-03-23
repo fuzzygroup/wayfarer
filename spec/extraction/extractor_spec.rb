@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Extractor do
+describe Scrapespeare::Extraction::Extractor do
 
   let(:doc) do
     Nokogiri::HTML <<-html
@@ -26,7 +26,7 @@ describe Scrapespeare::Extractor do
 
   describe "#initialize" do
     let(:extractor) do
-      Scrapespeare::Extractor.new(:foo, { css: "#foo" }, "href")
+      Extractor.new(:foo, { css: "#foo" }, "href")
     end
 
     it "sets @identifier" do
@@ -51,7 +51,7 @@ describe Scrapespeare::Extractor do
   describe "#extract" do
     context "without nested Extractables" do
       let(:extractor) do
-        Scrapespeare::Extractor.new(:foo, { css: "#foo" })
+        Extractor.new(:foo, { css: "#foo" })
       end
 
       it "evaluates matched Elements' contents" do
@@ -62,7 +62,7 @@ describe Scrapespeare::Extractor do
 
     context "with nested Extractables" do
       let(:extractor) do
-        Scrapespeare::Extractor.new(:alphas, { css: ".alpha" })
+        Extractor.new(:alphas, { css: ".alpha" })
       end
 
       before { extractor.css(:betas, ".beta") }
@@ -88,7 +88,7 @@ describe Scrapespeare::Extractor do
 
   describe "#evaluate" do
     let(:extractor) do
-      Scrapespeare::Extractor.new(:beta_count, { css: ".beta" })
+      Extractor.new(:beta_count, { css: ".beta" })
     end
 
     context "when @evaluator is a Proc" do

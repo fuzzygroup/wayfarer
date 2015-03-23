@@ -2,31 +2,36 @@ require "logger"
 
 require "nokogiri"
 require "hashie"
-require "selenium-webdriver"
-require "selenium/emulated_features"
 
 $: << File.dirname(__FILE__)
 
+# Internals
+require "scrapespeare/configuration"
+
+# Routing
 require "scrapespeare/routing/rule"
 require "scrapespeare/routing/uri_rule"
-require "scrapespeare/routing/query_rule"
 require "scrapespeare/routing/host_rule"
 require "scrapespeare/routing/path_rule"
+require "scrapespeare/routing/query_rule"
 require "scrapespeare/routing/router"
-require "scrapespeare/processor"
-require "scrapespeare/fetcher"
-require "scrapespeare/page"
-require "scrapespeare/configuration"
-require "scrapespeare/extractable"
-require "scrapespeare/result"
-require "scrapespeare/evaluator"
-require "scrapespeare/matcher"
-require "scrapespeare/scoper"
-require "scrapespeare/extractable_group"
-require "scrapespeare/extractor"
-require "scrapespeare/scraper"
-require "scrapespeare/crawler"
+
+# Extraction
+require "scrapespeare/extraction/extractable"
+require "scrapespeare/extraction/matcher"
+require "scrapespeare/extraction/evaluator"
+require "scrapespeare/extraction/scraper"
+require "scrapespeare/extraction/extractor"
+require "scrapespeare/extraction/extractable_group"
+require "scrapespeare/extraction/scoper"
+
+# Processing
 require "scrapespeare/parser"
+require "scrapespeare/page"
+require "scrapespeare/fetcher"
+require "scrapespeare/result"
+require "scrapespeare/processor"
+require "scrapespeare/crawler"
 
 module Scrapespeare
 

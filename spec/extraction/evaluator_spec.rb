@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Evaluator do
+describe Scrapespeare::Extraction::Evaluator do
 
   let(:evaluator) { subject }
 

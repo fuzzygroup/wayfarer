@@ -1,8 +1,8 @@
 require "spec_helpers"
 
-describe Scrapespeare::Scraper do
+describe Scrapespeare::Extraction::Scraper do
 
-  let(:scraper) { subject.class.new }
+  let(:scraper) { Scraper.new }
 
   let(:doc) do
     Nokogiri::HTML <<-html
