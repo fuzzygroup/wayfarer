@@ -1,4 +1,4 @@
-$:.push(File.expand_path("../lib", __FILE__))
+require_relative "lib/schablone"
 
 Gem::Specification.new do |s|
   s.name          = "schablone"
