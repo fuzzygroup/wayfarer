@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Crawler do
+describe Schablone::Crawler do
 
   let(:crawler) { subject.class.new }
 

@@ -2,7 +2,7 @@ require "hashie"
 require "json"
 require "yaml"
 
-module Scrapespeare
+module Schablone
   class Result
 
     def initialize

@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Extraction::Scraper do
+describe Schablone::Extraction::Scraper do
 
   let(:scraper) { Scraper.new }
 

@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Extraction::Extractor do
+describe Schablone::Extraction::Extractor do
 
   let(:doc) do
     Nokogiri::HTML <<-html
@@ -43,7 +43,7 @@ describe Scrapespeare::Extraction::Extractor do
       expect(extractor.target_attrs).to eq ["href"]
     end
 
-    it "sets @evaluator to Scrapespeare::Evaluator" do
+    it "sets @evaluator to Schablone::Evaluator" do
       expect(extractor.evaluator).to be Evaluator
     end
   end

@@ -55,8 +55,8 @@ desc "Start a Ruby shell"
 task :shell do
   require_relative "lib/scrapespeare"
 
-  include Scrapespeare
-  include Scrapespeare::Routing
+  include Schablone
+  include Schablone::Routing
 
   begin
     require "pry"

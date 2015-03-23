@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Extraction::Extractable do
+describe Schablone::Extraction::Extractable do
 
   let(:extractable) { Object.new.extend(Extractable) }
 

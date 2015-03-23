@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Routing::HostRule do
+describe Schablone::Routing::HostRule do
 
   subject(:rule) { HostRule.new(str_or_regexp) }
 

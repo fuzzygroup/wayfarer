@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Configuration do
+describe Schablone::Configuration do
 
   let(:config) { subject.class.new }
 

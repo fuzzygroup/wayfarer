@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Result do
+describe Schablone::Result do
 
   let(:result) { subject.class.new }
 

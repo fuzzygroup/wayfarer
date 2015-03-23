@@ -1,3 +1,3 @@
-# Getting started with Scrapespeare
+# Getting started with Schablone
 
 TODO

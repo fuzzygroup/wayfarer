@@ -2,4 +2,4 @@
 
 require_relative "../lib/scrapespeare"
 
-Scrapespeare::CLI.start(ARGV)
+Schablone::CLI.start(ARGV)

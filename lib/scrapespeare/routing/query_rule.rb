@@ -1,6 +1,6 @@
 require "cgi"
 
-module Scrapespeare
+module Schablone
   module Routing
     class QueryRule < Rule
 

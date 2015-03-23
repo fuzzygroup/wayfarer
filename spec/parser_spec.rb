@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Parser do
+describe Schablone::Parser do
 
   let(:parser) { subject }
 

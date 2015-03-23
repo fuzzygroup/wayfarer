@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Routing::PathRule do
+describe Schablone::Routing::PathRule do
 
   subject(:rule) { PathRule.new("/foo/bar") }
 

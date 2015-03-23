@@ -3,7 +3,7 @@ require "scrapespeare"
 
 Gem::Specification.new do |s|
   s.name          = "scrapespeare"
-  s.version       = Scrapespeare::VERSION
+  s.version       = Schablone::VERSION
   s.license       = "MIT"
 
   s.homepage      = "http://github.com/bauerd/scrapespeare"

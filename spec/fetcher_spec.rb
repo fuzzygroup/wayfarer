@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Fetcher do
+describe Schablone::Fetcher do
 
   let(:fetcher) { subject.class.new }
 
@@ -44,8 +44,8 @@ describe Scrapespeare::Fetcher do
       end
 
       context "when maximum number of redirects reached" do
-        before { Scrapespeare.config.max_http_redirects = 5 }
-        after  { Scrapespeare.config.reset! }
+        before { Schablone.config.max_http_redirects = 5 }
+        after  { Schablone.config.reset! }
 
         it "raises a RuntimeError" do
           expect {

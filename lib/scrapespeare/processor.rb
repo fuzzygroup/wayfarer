@@ -1,7 +1,7 @@
 require "thread"
 require "thread/pool"
 
-module Scrapespeare
+module Schablone
   class Processor
 
     attr_reader :current_uris
@@ -20,7 +20,7 @@ module Scrapespeare
       @staged_uris  = []
       @cached_uris  = []
 
-      @pool  = Thread.pool(Scrapespeare.config.threads)
+      @pool  = Thread.pool(Schablone.config.threads)
       @mutex = Mutex.new
     end
 

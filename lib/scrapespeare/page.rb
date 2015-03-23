@@ -1,6 +1,6 @@
 require "uri"
 
-module Scrapespeare
+module Schablone
   class Page
 
     attr_reader :uri

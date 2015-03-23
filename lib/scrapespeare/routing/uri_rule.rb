@@ -1,6 +1,6 @@
 require "uri"
 
-module Scrapespeare
+module Schablone
   module Routing
     class URIRule < Rule
 

@@ -1,4 +1,4 @@
-module Scrapespeare
+module Schablone
   class Configuration < Hash
 
     include Hashie::Extensions::MethodAccess

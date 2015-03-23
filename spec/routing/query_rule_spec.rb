@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Routing::QueryRule do
+describe Schablone::Routing::QueryRule do
 
   subject(:rule) { QueryRule.new(constraints) }
 

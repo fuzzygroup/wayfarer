@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Routing::URIRule do
+describe Schablone::Routing::URIRule do
 
   subject(:rule) { URIRule.new("http://example.com/foo/bar") }
 

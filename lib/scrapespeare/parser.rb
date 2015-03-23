@@ -1,4 +1,4 @@
-module Scrapespeare
+module Schablone
   module Parser
 
     module_function

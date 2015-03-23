@@ -1,6 +1,6 @@
 require "mustermann"
 
-module Scrapespeare
+module Schablone
   module Routing
     class PathRule < Rule
 

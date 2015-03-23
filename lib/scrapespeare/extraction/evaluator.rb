@@ -1,4 +1,4 @@
-module Scrapespeare
+module Schablone
   module Extraction
     module Evaluator
 
@@ -36,7 +36,7 @@ module Scrapespeare
       end
 
       def evaluate_content(element)
-        if Scrapespeare.config.sanitize_node_content
+        if Schablone.config.sanitize_node_content
           sanitize(element.content)
         else
           element.content

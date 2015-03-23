@@ -1,4 +1,4 @@
-module Scrapespeare
+module Schablone
   class Crawler
 
     def initialize(&proc)
@@ -15,7 +15,7 @@ module Scrapespeare
     end
 
     def configure(&proc)
-      Scrapespeare.configure(&proc)
+      Schablone.configure(&proc)
     end
 
     alias_method :config, :configure

@@ -1,6 +1,6 @@
 require_relative "../lib/scrapespeare"
 
-crawler = Scrapespeare::Crawler.new do
+crawler = Schablone::Crawler.new do
 
   config do
     log_level = Logger::INFO

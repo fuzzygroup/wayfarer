@@ -1,10 +1,10 @@
 require "net/http"
 
-module Scrapespeare
+module Schablone
   class Fetcher
 
     def fetch(uri, redirects_followed = 0)
-      fail if redirects_followed > Scrapespeare.config.max_http_redirects
+      fail if redirects_followed > Schablone.config.max_http_redirects
 
       res = Net::HTTP.get_response(uri)
 

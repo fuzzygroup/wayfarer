@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Routing::Rule do
+describe Schablone::Routing::Rule do
 
   subject(:rule) { Rule.new }
 

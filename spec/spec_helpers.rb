@@ -1,8 +1,8 @@
 require "scrapespeare"
 
-include Scrapespeare
-include Scrapespeare::Extraction
-include Scrapespeare::Routing
+include Schablone
+include Schablone::Extraction
+include Schablone::Routing
 
 module SpecHelpers
 

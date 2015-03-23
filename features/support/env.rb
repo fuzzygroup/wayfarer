@@ -1,4 +1,4 @@
 require "scrapespeare"
 
-include Scrapespeare
-include Scrapespeare::Routing
+include Schablone
+include Schablone::Routing

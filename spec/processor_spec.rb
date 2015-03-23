@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Processor do
+describe Schablone::Processor do
 
   let(:entry_uri) { URI("http://0.0.0.0:9876/graph/index.html") }
   let(:scraper) { Scraper.new { css :title, "title" } }

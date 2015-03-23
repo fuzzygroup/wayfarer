@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Extraction::ExtractableGroup do
+describe Schablone::Extraction::ExtractableGroup do
 
   let(:extractable_group) { ExtractableGroup.new(:foo) }
 

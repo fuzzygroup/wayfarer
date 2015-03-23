@@ -1,4 +1,4 @@
-module Scrapespeare
+module Schablone
   module Extraction
     class Scraper
 

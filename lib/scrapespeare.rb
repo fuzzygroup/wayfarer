@@ -33,7 +33,7 @@ require "scrapespeare/result"
 require "scrapespeare/processor"
 require "scrapespeare/crawler"
 
-module Scrapespeare
+module Schablone
 
   VERSION = "0.0.1-alpha.1"
 
@@ -52,7 +52,7 @@ module Scrapespeare
 
     def logger
       @logger ||= Logger.new(STDOUT)
-      @logger.level = Scrapespeare.config.log_level
+      @logger.level = Schablone.config.log_level
       @logger
     end
   end

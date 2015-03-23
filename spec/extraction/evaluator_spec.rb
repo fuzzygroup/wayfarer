@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Scrapespeare::Extraction::Evaluator do
+describe Schablone::Extraction::Evaluator do
 
   let(:evaluator) { Evaluator }
 
@@ -95,8 +95,8 @@ describe Scrapespeare::Extraction::Evaluator do
     end
 
     context "when config.sanitize_node_content is `true`" do
-      before { Scrapespeare.config.sanitize_node_content = true }
-      after { Scrapespeare.config.reset! }
+      before { Schablone.config.sanitize_node_content = true }
+      after { Schablone.config.reset! }
 
       it "sanitizes the element's content" do
         element = node_set("<span>\n   Foobar   \n</span>").first
@@ -107,8 +107,8 @@ describe Scrapespeare::Extraction::Evaluator do
     end
 
     context "when config.sanitize_node_content is `false`" do
-      before { Scrapespeare.config.sanitize_node_content = false }
-      after { Scrapespeare.config.reset! }
+      before { Schablone.config.sanitize_node_content = false }
+      after { Schablone.config.reset! }
 
       it "does not sanitize the element's content" do
         element = node_set("<span>\n   Foobar   \n</span>").first
