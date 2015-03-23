@@ -53,7 +53,6 @@ module Scrapespeare
       unless @cached_uris.include?(uri) or @router.forbids?(uri)
         @staged_uris << uri
       end
-      # @staged_uris << uri unless @cached_uris.include?(uri) || @router.forbids?(uri)
     end
 
     def cache_uri(uri)

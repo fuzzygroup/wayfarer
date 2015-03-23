@@ -12,6 +12,12 @@ describe Scrapespeare::Processor do
 
   subject(:processor) { Processor.new(entry_uri, scraper, router) }
 
+  describe "#initialize" do
+    it "sets the entry URI as current" do
+      expect(processor.current_uris).to eq [entry_uri]
+    end
+  end
+
   describe "#cache_uri" do
     it "caches the URI" do
       uri = URI("http://example.com")
@@ -119,10 +125,7 @@ describe Scrapespeare::Processor do
   end
 
   describe "#process" do
-    it "works" do
-      result = processor.process
-      expect(processor.staged_uris).to eq "lel"
-    end
+    
   end
 
 end
