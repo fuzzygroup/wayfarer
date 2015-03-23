@@ -9,12 +9,12 @@ Features include:
 Install from Bundler by adding the following to your `Gemfile`:
 
 ```
-gem scrapespeare
+gem schablone
 ```
 Or install from RubyGems:
 
 ```
-$ gem install scrapespeare
+$ gem install schablone
 ```
 
 ## Example

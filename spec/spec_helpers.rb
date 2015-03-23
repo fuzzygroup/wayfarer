@@ -1,4 +1,4 @@
-require "scrapespeare"
+require "schablone"
 
 include Schablone
 include Schablone::Extraction

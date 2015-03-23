@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require_relative "../lib/scrapespeare"
+require_relative "../lib/schablone"
 
 Schablone::CLI.start(ARGV)

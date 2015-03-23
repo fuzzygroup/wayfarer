@@ -43,7 +43,7 @@ YARD::Rake::YardocTask.new :doc
 
 desc "Build the RubyGem"
 task :build do
-  sh "gem build scrapespeare.gemspec --verbose"
+  sh "gem build schablone.gemspec --verbose"
 end
 
 desc %(List lines that contain "FIXME" or "TODO")
@@ -53,7 +53,7 @@ end
 
 desc "Start a Ruby shell"
 task :shell do
-  require_relative "lib/scrapespeare"
+  require_relative "lib/schablone"
 
   include Schablone
   include Schablone::Routing

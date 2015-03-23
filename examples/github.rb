@@ -1,4 +1,4 @@
-require_relative "../lib/scrapespeare"
+require_relative "../lib/schablone"
 
 crawler = Schablone::Crawler.new do
 
