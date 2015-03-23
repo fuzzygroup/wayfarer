@@ -2,7 +2,7 @@ require "spec_helpers"
 
 describe Scrapespeare::Processor do
 
-  let(:entry_uri) { URI("http://0.0.0.0:9876/links/links.html") }
+  let(:entry_uri) { URI("http://0.0.0.0:9876/graph/index.html") }
   let(:scraper) { Scraper.new { css :title, "title" } }
   let(:router) do
     router = Router.new
@@ -125,7 +125,19 @@ describe Scrapespeare::Processor do
   end
 
   describe "#process" do
-    
+    it "processes the current URI" do
+      processor.process
+      expect(processor.current_uris).to be_empty
+    end
+
+    it "stages the linked URIs" do
+      processor.process
+      expected_uris = %w(
+        http://0.0.0.0:9876/graph/details/a.html
+        http://0.0.0.0:9876/graph/details/b.html
+      ).map { |str| URI(str) }
+      expect(processor.staged_uris).to eq expected_uris
+    end
   end
 
 end
