@@ -9,20 +9,20 @@ module Scrapespeare
         @extractables ||= []
       end
 
-      def css(identifier, selector, *target_attrs, &proc)
+      def css(key, selector, *target_attrs, &proc)
         extractables << Extractor.new(
-          identifier, { css: selector }, *target_attrs, &proc
+          key, { css: selector }, *target_attrs, &proc
         )
       end
 
-      def xpath(identifier, expression, *target_attrs, &proc)
+      def xpath(key, expression, *target_attrs, &proc)
         extractables << Extractor.new(
-          identifier, { xpath: expression }, *target_attrs, &proc
+          key, { xpath: expression }, *target_attrs, &proc
         )
       end
 
-      def group(identifier, &proc)
-        extractables << ExtractableGroup.new(identifier, &proc)
+      def group(key, &proc)
+        extractables << ExtractableGroup.new(key, &proc)
       end
 
       def scope(matcher_hash, &proc)

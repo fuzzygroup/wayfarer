@@ -2,23 +2,7 @@ require "spec_helpers"
 
 describe Scrapespeare::Extraction::Extractable do
 
-  let(:extractable) { Object.new.extend(subject) }
-
-  describe "#extractables" do
-    context "with @extractables set" do
-      before { extractable.instance_variable_set(:@extractables, :set) }
-
-      it "exposes @extractables" do
-        expect(extractable.extractables).to be :set
-      end
-    end
-
-    context "without @extractables set" do
-      it "returns an empty list" do
-        expect(extractable.extractables).to eq []
-      end
-    end
-  end
+  let(:extractable) { Object.new.extend(Extractable) }
 
   describe "#css" do
     it "adds a CSS Extractor" do
