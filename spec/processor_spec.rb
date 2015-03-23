@@ -36,6 +36,12 @@ describe Scrapespeare::Processor do
           processor.send(:stage_uri, uri)
         }.to change { processor.staged_uris.count }.by(1)
       end
+
+      it "does not store the same URI twice" do
+        processor.send(:stage_uri, uri)
+        processor.send(:stage_uri, uri)
+        expect(processor.staged_uris.count).to be 1
+      end
     end
 
     context "with URI forbidden by Router given" do
@@ -125,13 +131,13 @@ describe Scrapespeare::Processor do
   end
 
   describe "#process" do
+    before { processor.process }
+
     it "processes the current URI" do
-      processor.process
       expect(processor.current_uris).to be_empty
     end
 
     it "stages the linked URIs" do
-      processor.process
       expected_uris = %w(
         http://0.0.0.0:9876/graph/details/a.html
         http://0.0.0.0:9876/graph/details/b.html
@@ -140,13 +146,18 @@ describe Scrapespeare::Processor do
     end
 
     it "caches the processed URI" do
-      processor.process
       expect(processor.cached_uris).to eq [entry_uri]
     end
 
     it "appends to `@result`" do
-      processor.process
       expect(processor.result.count).to be 1
+    end
+  end
+
+  describe "#run" do
+    it "works" do
+      processor.run
+      expect(processor.cached_uris).to be 3
     end
   end
 
