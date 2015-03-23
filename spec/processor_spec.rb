@@ -4,11 +4,16 @@ describe Scrapespeare::Processor do
 
   let(:entry_uri) { URI("http://0.0.0.0:9876/links/links.html") }
   let(:scraper) { Scraper.new { css :title, "title" } }
-  let(:router) { Router.new }
+  let(:router) do
+    router = Router.new
+    router.allow.host("0.0.0.0")
+    router
+  end
+
   subject(:processor) { Processor.new(entry_uri, scraper, router) }
 
   describe "#cache_uri" do
-    it "caches an URI" do
+    it "caches the URI" do
       uri = URI("http://example.com")
       expect {
         processor.send(:cache_uri, uri)
@@ -17,14 +22,27 @@ describe Scrapespeare::Processor do
   end
 
   describe "#stage_uri" do
-    it "stages an URI" do
-      uri = URI("http://example.com")
-      expect {
-        processor.send(:stage_uri, uri)
-      }.to change { processor.staged_uris.count }.by(1)
+    context "with URI allowed by Router given" do
+      let(:uri) { URI("http://0.0.0.0/foo") }
+
+      it "stages the URI" do
+        expect {
+          processor.send(:stage_uri, uri)
+        }.to change { processor.staged_uris.count }.by(1)
+      end
     end
 
-    context "with cached URI given" do
+    context "with URI forbidden by Router given" do
+      let(:uri) { URI("http://example.com") }
+
+      it "does not stage the URI" do
+        expect {
+          processor.send(:stage_uri, uri)
+        }.not_to change { processor.staged_uris.count }
+      end
+    end
+
+    context "with already cached URI given" do
       let(:uri) { URI("http://example.com") }
       before { processor.send(:cache_uri, uri) }
 
@@ -63,7 +81,7 @@ describe Scrapespeare::Processor do
       before { processor.instance_variable_set(:@current_uris, []) }
 
       context "with staged URIs present" do
-        let(:uri) { URI("http://example.com") }
+        let(:uri) { URI("http://0.0.0.0/foo") }
         before { processor.send(:stage_uri, uri) }
 
         it "returns `true`" do
@@ -86,7 +104,7 @@ describe Scrapespeare::Processor do
   end
 
   describe "#cycle" do
-    let(:uri) { URI("http://example.com") }
+    let(:uri) { URI("http://0.0.0.0/foo") }
     before { processor.send(:stage_uri, uri) }
 
     it "sets the former staged URIs as current" do
