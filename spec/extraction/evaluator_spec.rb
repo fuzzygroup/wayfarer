@@ -2,40 +2,40 @@ require "spec_helpers"
 
 describe Scrapespeare::Extraction::Evaluator do
 
-  let(:evaluator) { subject }
+  let(:evaluator) { Evaluator }
 
   describe ".evaluate" do
     context "with empty NodeSet" do
       let(:nodes) { node_set "" }
 
       it "returns an empty String" do
-        evaluated = evaluator.evaluate(nodes)
-        expect(evaluated).to eq ""
+        result = evaluator.evaluate(nodes)
+        expect(result).to eq ""
       end
     end
 
     context "with NodeSet containing 1 Node" do
       let(:nodes) { node_set %(<span class="foo" id="bar">Foobar</span>) }
 
-      describe "Default content evaluation" do
+      context "without target attributes" do
         it "returns the element's content" do
-          evaluated = evaluator.evaluate(nodes)
-          expect(evaluated).to eq "Foobar"
+          result = evaluator.evaluate(nodes)
+          expect(result).to eq "Foobar"
         end
       end
 
-      describe "Attribute evaluation" do
-        context "with 1 attribute" do
+      context "with target attributes" do
+        context "with 1 target attribute" do
           it "returns the element's attribute value" do
-            evaluated = evaluator.evaluate(nodes, :class)
-            expect(evaluated).to eq "foo"
+            result = evaluator.evaluate(nodes, :class)
+            expect(result).to eq "foo"
           end
         end
 
-        context "with > 1 attributes" do
+        context "with > 1 target attributes" do
           it "returns a Hash of mapped attribute values" do
-            evaluated = evaluator.evaluate(nodes, :class, :id)
-            expect(evaluated).to eq({ class: "foo", id: "bar" })
+            result = evaluator.evaluate(nodes, :class, :id)
+            expect(result).to eq({ class: "foo", id: "bar" })
           end
         end
       end
@@ -50,25 +50,25 @@ describe Scrapespeare::Extraction::Evaluator do
         html
       end
 
-      describe "Default content evaluation" do
+      context "without target attributes" do
         it "returns an Array of the elements' contents" do
-          evaluated = evaluator.evaluate(nodes)
-          expect(evaluated).to eq ["Alpha", "Beta"]
+          result = evaluator.evaluate(nodes)
+          expect(result).to eq ["Alpha", "Beta"]
         end
       end
 
-      describe "Custom attribute evaluation" do
-        context "with 1 attribute" do
+      context "with target attributes" do
+        context "with 1 target attribute" do
           it "returns the element's attribute value" do
-            evaluated = evaluator.evaluate(nodes, :id)
-            expect(evaluated).to eq ["alpha", "beta"]
+            result = evaluator.evaluate(nodes, :id)
+            expect(result).to eq ["alpha", "beta"]
           end
         end
 
-        context "with > 1 attributes" do
+        context "with > 1 target attributes" do
           it "returns a Hash of mapped attribute values" do
-            evaluated = evaluator.evaluate(nodes, :class, :id)
-            expect(evaluated).to eq([
+            result = evaluator.evaluate(nodes, :class, :id)
+            expect(result).to eq([
               {
                 class: "foo",
                 id: "alpha"
@@ -82,7 +82,6 @@ describe Scrapespeare::Extraction::Evaluator do
         end
       end
     end
-
   end
 
   describe ".evaluate_content" do
@@ -91,8 +90,8 @@ describe Scrapespeare::Extraction::Evaluator do
     end
 
     it "returns the element's content" do
-      evaluated = evaluator.evaluate_content(element)
-      expect(evaluated).to eq "Foobar"
+      result = evaluator.evaluate_content(element)
+      expect(result).to eq "Foobar"
     end
 
     context "when config.sanitize_node_content is `true`" do
@@ -102,8 +101,8 @@ describe Scrapespeare::Extraction::Evaluator do
       it "sanitizes the element's content" do
         element = node_set("<span>\n   Foobar   \n</span>").first
 
-        evaluated = evaluator.evaluate_content(element)
-        expect(evaluated).to eq "Foobar"
+        result = evaluator.evaluate_content(element)
+        expect(result).to eq "Foobar"
       end
     end
 
@@ -126,8 +125,8 @@ describe Scrapespeare::Extraction::Evaluator do
     end
 
     it "returns the attribute's value" do
-      evaluated = evaluator.evaluate_attribute(element, :class)
-      expect(evaluated).to eq "foo"
+      result = evaluator.evaluate_attribute(element, :class)
+      expect(result).to eq "foo"
     end
   end
 
@@ -137,8 +136,8 @@ describe Scrapespeare::Extraction::Evaluator do
     end
 
     it "returns the attribute's value" do
-      evaluated = evaluator.evaluate_attribute(element, :class)
-      expect(evaluated).to eq "foo"
+      result = evaluator.evaluate_attribute(element, :class)
+      expect(result).to eq "foo"
     end
   end
 
@@ -149,15 +148,15 @@ describe Scrapespeare::Extraction::Evaluator do
 
     context "when attribute is `:content!`" do
       it "returns the element's content" do
-        evaluated = evaluator.evaluate_attribute(element, :content!)
-        expect(evaluated).to eq "Foobar"
+        result = evaluator.evaluate_attribute(element, :content!)
+        expect(result).to eq "Foobar"
       end
     end
 
     context "when attribute is `:html!`" do
-      it "returns the element's HTML representation" do
-        evaluated = evaluator.evaluate_attribute(element, :html!)
-        expect(evaluated).to eq %(<span class="foo" id="bar">Foobar</span>)
+      it "returns the element's inner HTML" do
+        result = evaluator.evaluate_attribute(element, :html!)
+        expect(result).to eq %(<span class="foo" id="bar">Foobar</span>)
       end
     end
   end
@@ -168,14 +167,14 @@ describe Scrapespeare::Extraction::Evaluator do
     end
 
     it "returns a Hash of mapped evaluated attributes" do
-      evaluated = evaluator.evaluate_attributes(element, :class, :id)
-      expect(evaluated).to eq({ class: "foo", id: "bar" })
+      result = evaluator.evaluate_attributes(element, :class, :id)
+      expect(result).to eq({ class: "foo", id: "bar" })
     end
 
     context "with mismatching attribute" do
       it "maps the attribute to an empty String" do
-        evaluated = evaluator.send(:evaluate_attributes, element, :baz)
-        expect(evaluated).to eq({ :baz => "" })
+        result = evaluator.send(:evaluate_attributes, element, :baz)
+        expect(result).to eq({ :baz => "" })
       end
     end
   end
