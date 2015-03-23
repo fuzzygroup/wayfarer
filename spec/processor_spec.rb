@@ -137,6 +137,7 @@ describe Schablone::Processor do
   end
 
   describe "#step" do
+    before { router.allow.host(/.ken/) }
     before { processor.step }
 
     it "processes the current URI" do
@@ -150,6 +151,7 @@ describe Schablone::Processor do
         http://0.0.0.0:9876/status_code/400
         http://0.0.0.0:9876/status_code/403
         http://0.0.0.0:9876/status_code/404
+        http://bro.ken
       ).map { |str| URI(str) }
       expect(processor.staged_uris).to eq expected_uris
     end
@@ -164,6 +166,8 @@ describe Schablone::Processor do
   end
 
   describe "#run" do
+    before { router.allow.host(/.ken/) }
+
     it "works" do
       processor.run
       expect(processor.result).to eq [
