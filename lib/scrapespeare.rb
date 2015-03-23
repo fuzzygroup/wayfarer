@@ -32,20 +32,24 @@ module Scrapespeare
 
   VERSION = "0.0.1-alpha.1"
 
-  def self.config(&proc)
-    @config ||= Configuration.new
+  class << self
+    def configure(&proc)
+      @config ||= Configuration.new
 
-    if block_given?
-      proc.arity == 1 ? (yield @config) : @config.instance_eval(&proc)
-    else
-      @config
+      if block_given?
+        proc.arity == 1 ? (yield @config) : @config.instance_eval(&proc)
+      else
+        @config
+      end
     end
-  end
 
-  def self.logger
-    @logger ||= Logger.new(STDOUT)
-    @logger.level = Scrapespeare.config.log_level
-    @logger
+    alias_method :config, :configure
+
+    def logger
+      @logger ||= Logger.new(STDOUT)
+      @logger.level = Scrapespeare.config.log_level
+      @logger
+    end
   end
 
 end

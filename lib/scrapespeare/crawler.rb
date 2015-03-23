@@ -14,6 +14,12 @@ module Scrapespeare
       processor.result
     end
 
+    def configure(&proc)
+      Scrapespeare.configure(&proc)
+    end
+
+    alias_method :config, :configure
+
     def setup_scraper(&proc)
       if block_given?
         proc.arity == 1 ? (yield @scraper) : @scraper.instance_eval(&proc)

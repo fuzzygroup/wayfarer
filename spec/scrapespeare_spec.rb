@@ -6,7 +6,7 @@ describe Scrapespeare do
     it("is present") { expect(defined? Scrapespeare::VERSION).not_to be nil }
   end
 
-  describe "#config" do
+  describe "::configure, ::config" do
     context "without Proc given" do
       it "returns the Configuration" do
         expect(Scrapespeare.config).to be_a Scrapespeare::Configuration
@@ -16,20 +16,20 @@ describe Scrapespeare do
     context "with Proc of arity 0 given" do
       it "evaluates the Proc in its Configuration's instance context" do
         this = nil
-        Scrapespeare.config { this = self }
+        Scrapespeare.configure { this = self }
         expect(this).to be_a Configuration
       end
     end
 
     context "with Proc of arity 1 given" do
       it "yields the Configuration" do
-        Scrapespeare.config { |conf| @config = conf }
+        Scrapespeare.configure { |conf| @config = conf }
         expect(@config).to be Scrapespeare.config
       end
     end
   end
 
-  describe "#logger" do
+  describe "::logger" do
     it "exposes the Logger" do
       expect(Scrapespeare.logger).to be_a Logger
     end
