@@ -37,10 +37,16 @@ describe Scrapespeare::Processor do
         }.to change { processor.staged_uris.count }.by(1)
       end
 
-      it "does not store the same URI twice" do
+      it "does not stage the same URI twice" do
         processor.send(:stage_uri, uri)
         processor.send(:stage_uri, uri)
         expect(processor.staged_uris.count).to be 1
+      end
+
+      it "does not stage current URIs" do
+        processor.instance_variable_set(:@current_uris, [uri])
+        processor.send(:stage_uri, uri)
+        expect(processor.staged_uris).to be_empty
       end
     end
 
