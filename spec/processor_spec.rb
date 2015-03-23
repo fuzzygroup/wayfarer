@@ -143,6 +143,11 @@ describe Scrapespeare::Processor do
       processor.process
       expect(processor.cached_uris).to eq [entry_uri]
     end
+
+    it "appends to `@result`" do
+      processor.process
+      expect(processor.result.count).to be 1
+    end
   end
 
 end

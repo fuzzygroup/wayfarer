@@ -8,6 +8,8 @@ module Scrapespeare
     attr_reader :staged_uris
     attr_reader :cached_uris
 
+    attr_reader :result
+
     attr_accessor :scraper
     attr_accessor :router
 
@@ -20,6 +22,10 @@ module Scrapespeare
       @current_uris = [entry_uri]
       @staged_uris  = []
       @cached_uris  = []
+    end
+
+    def run
+      process while has_next_uri?
     end
 
     def process
