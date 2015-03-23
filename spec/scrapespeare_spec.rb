@@ -3,7 +3,7 @@ require "spec_helpers"
 describe Scrapespeare do
 
   describe "::VERSION" do
-    it("is present") { expect(defined? Scrapespeare::VERSION) }
+    it("is present") { expect(defined? Scrapespeare::VERSION).not_to be nil }
   end
 
   describe "#config" do
@@ -40,5 +40,4 @@ describe Scrapespeare do
       Scrapespeare.config.reset!
     end
   end
-
 end
