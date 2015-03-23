@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency "selenium-emulated_features", "~> 0.0",  ">= 0.0.2"
   s.add_dependency "hashie",                     "~> 3.4",  ">= 3.4.0"
   s.add_dependency "rack",                       "~> 1.6",  ">= 1.6.0"
+  s.add_dependency "ansi",                       "~> 1.5",  ">= 1.5.0"
 
   s.add_development_dependency "rake",           "~> 10.4", ">= 10.4.2"
   s.add_development_dependency "rspec",          "~> 3.1",  ">= 3.1.0"

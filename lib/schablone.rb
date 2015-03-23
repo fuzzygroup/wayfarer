@@ -1,4 +1,5 @@
 require "logger"
+require "ansi"
 
 # Internals
 require_relative "schablone/configuration"
@@ -46,9 +47,16 @@ module Schablone
     alias_method :config, :configure
 
     def logger
-      @logger ||= Logger.new(STDOUT)
+      @logger ||= logger_instance
       @logger.level = Schablone.config.log_level
       @logger
+    end
+
+    private
+    def logger_instance
+      logger = Logger.new(STDOUT)
+      logger.datetime_format = "%m-%d %H:%M:%S"
+      logger
     end
   end
 
