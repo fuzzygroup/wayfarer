@@ -44,6 +44,8 @@ module Scrapespeare
 
   def self.logger
     @logger ||= Logger.new(STDOUT)
+    @logger.level = Scrapespeare.config.log_level
+    @logger
   end
 
 end

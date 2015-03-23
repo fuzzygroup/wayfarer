@@ -33,6 +33,12 @@ describe Scrapespeare do
     it "exposes the Logger" do
       expect(Scrapespeare.logger).to be_a Logger
     end
+
+    it "sets the correct log level" do
+      Scrapespeare.config.log_level = Logger::INFO
+      expect(Scrapespeare.logger.level).to be Logger::INFO
+      Scrapespeare.config.reset!
+    end
   end
 
 end
