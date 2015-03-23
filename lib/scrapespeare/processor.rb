@@ -27,6 +27,8 @@ module Scrapespeare
       page = fetch(uri)
       doc  = page.parsed_document
 
+      cache_uri(uri)
+
       page.links.each do |uri|
         stage_uri(uri)
       end

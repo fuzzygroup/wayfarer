@@ -138,6 +138,11 @@ describe Scrapespeare::Processor do
       ).map { |str| URI(str) }
       expect(processor.staged_uris).to eq expected_uris
     end
+
+    it "caches the processed URI" do
+      processor.process
+      expect(processor.cached_uris).to eq [entry_uri]
+    end
   end
 
 end
