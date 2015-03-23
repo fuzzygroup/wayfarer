@@ -1,3 +1,5 @@
+require "logger"
+
 require "nokogiri"
 require "hashie"
 require "selenium-webdriver"
@@ -30,9 +32,18 @@ module Scrapespeare
 
   VERSION = "0.0.1-alpha.1"
 
-  def self.config
+  def self.config(&proc)
     @config ||= Configuration.new
-    block_given? ? (yield @config) : @config
+
+    if block_given?
+      proc.arity == 1 ? (yield @config) : @config.instance_eval(&proc)
+    else
+      @config
+    end
+  end
+
+  def self.logger
+    @logger ||= Logger.new(STDOUT)
   end
 
 end

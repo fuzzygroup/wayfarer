@@ -7,17 +7,29 @@ describe Scrapespeare do
   end
 
   describe "#config" do
-    it "exposes the configuration" do
+    it "returns the Configuration" do
       expect(Scrapespeare.config).to be_a Scrapespeare::Configuration
     end
 
-    context "with block given" do
-      after { Scrapespeare.config.reset! }
-
-      it "yields the configuration" do
-        Scrapespeare.config { |config| config.foo = :foo }
-        expect(Scrapespeare.config.foo).to be :foo
+    context "with Proc of arity 1 given" do
+      it "yields the Configuration" do
+        Scrapespeare.config { |conf| @config = conf }
+        expect(@config).to be_a Configuration
       end
+    end
+
+    context "with Proc of arity 0 given" do
+      it "evaluates the Proc in its Configuration's instance context" do
+        this = nil
+        Scrapespeare.config { this = self }
+        expect(this).to be_a Configuration
+      end
+    end
+  end
+
+  describe "#logger" do
+    it "exposes the Logger" do
+      expect(Scrapespeare.logger).to be_a Logger
     end
   end
 
