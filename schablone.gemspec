@@ -1,15 +1,14 @@
 $:.push(File.expand_path("../lib", __FILE__))
-require "scrapespeare"
 
 Gem::Specification.new do |s|
-  s.name          = "scrapespeare"
+  s.name          = "schablone"
   s.version       = Schablone::VERSION
   s.license       = "MIT"
 
   s.homepage      = "http://github.com/bauerd/scrapespeare"
   s.description   = "A web scraping library"
   s.summary       = <<-summary
-    scrapespeare is a web scraping library
+    schablone is a web scraping library
   summary
 
   s.date          = "2014-11-12"
