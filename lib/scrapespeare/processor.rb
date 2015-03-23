@@ -1,4 +1,3 @@
-require "uri"
 require "thread"
 require "thread/pool"
 
