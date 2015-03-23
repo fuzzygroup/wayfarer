@@ -1,3 +1,5 @@
+require "hashie/extensions/method_access"
+
 module Schablone
   class Configuration < Hash
 

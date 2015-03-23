@@ -1,8 +1,5 @@
 require "logger"
 
-require "nokogiri"
-require "hashie"
-
 # Internals
 require_relative "schablone/configuration"
 

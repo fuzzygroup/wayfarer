@@ -1,4 +1,5 @@
 require "uri"
+require "nokogiri"
 
 module Schablone
   class Page
