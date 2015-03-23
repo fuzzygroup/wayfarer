@@ -63,10 +63,10 @@ module Schablone
 
     def stage_uri(uri)
       @mutex.synchronize do
-        return false if @current_uris.include?(uri) ||
-                        @staged_uris.include?(uri)  ||
-                        @cached_uris.include?(uri)  ||
-                        @router.forbids?(uri)
+        return if @current_uris.include?(uri) ||
+                  @staged_uris.include?(uri)  ||
+                  @cached_uris.include?(uri)  ||
+                  @router.forbids?(uri)
 
         @staged_uris << uri
       end

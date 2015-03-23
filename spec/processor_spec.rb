@@ -147,7 +147,9 @@ describe Schablone::Processor do
       expected_uris = %w(
         http://0.0.0.0:9876/graph/details/a.html
         http://0.0.0.0:9876/graph/details/b.html
-        http://0.0.0.0:9876/graph/dead.html
+        http://0.0.0.0:9876/status_code/400
+        http://0.0.0.0:9876/status_code/403
+        http://0.0.0.0:9876/status_code/404
       ).map { |str| URI(str) }
       expect(processor.staged_uris).to eq expected_uris
     end
