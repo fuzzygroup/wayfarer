@@ -13,13 +13,14 @@ module Scrapespeare
       @scraper = scraper
       @router  = router
       @fetcher = Fetcher.new
+
       @result  = []
 
       @current_uris = [entry_uri]
       @staged_uris  = []
       @cached_uris  = []
 
-      @pool  = Thread.pool(4)
+      @pool  = Thread.pool(Scrapespeare.config.threads)
       @mutex = Mutex.new
     end
 
