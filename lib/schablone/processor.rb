@@ -32,8 +32,13 @@ module Schablone
 
     def step
       uri = next_uri
+
+      Schablone.logger.info "About to hit #{uri}"
+
       cache_uri(uri)
       page = fetch(uri)
+
+      Schablone.logger.info "Reponse from #{uri}: #{page.status_code}"
 
       return if page.status_code > 299
 

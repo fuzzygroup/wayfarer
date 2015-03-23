@@ -23,16 +23,14 @@ module Schablone
           expand_uri(node.attr("href"))
         rescue ArgumentError, URI::InvalidURIError
           # `URI::join` raises an exception if its arguments can not be used to
-          # build a valid URI
+          # construct a valid URI
           nil
         end
       end
 
       # Filter duplicates and `nil`s resulting from exceptions raised by
       # `URI::join`
-      uris
-        .uniq
-        .find_all { |uri| uri.is_a? URI }
+      uris.uniq.find_all { |uri| uri.is_a? URI }
     end
 
     private
