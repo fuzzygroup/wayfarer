@@ -36,9 +36,7 @@ module Scrapespeare
 
       cache_uri(uri)
 
-      page.links.each do |uri|
-        stage_uri(uri)
-      end
+      page.links.each { |uri| stage_uri(uri) }
 
       extract = @scraper.extract(doc)
       @result << extract
