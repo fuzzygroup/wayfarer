@@ -1,3 +1,4 @@
+require "pry"
 require "thread"
 require "thread/pool"
 
@@ -30,14 +31,18 @@ module Schablone
     end
 
     def step
-      uri  = next_uri
-      page = fetch(uri)
-      return if page.status_code > 299
-      doc  = page.parsed_document
+      uri = next_uri
       cache_uri(uri)
+      page = fetch(uri)
+
+      return if page.status_code > 299
+
       page.links.each { |uri| stage_uri(uri) }
-      extract = @scraper.extract(doc)
-      @result << extract
+
+      @result << @scraper.extract(page.parsed_document)
+
+    rescue => error
+      Schablone.logger.fatal(error)
     end
 
     private

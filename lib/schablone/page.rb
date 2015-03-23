@@ -19,15 +19,25 @@ module Schablone
 
     def links
       uris = parsed_document.css("a").map do |node|
-        expand_uri(node.attr("href"))
+        begin
+          expand_uri(node.attr("href"))
+        rescue ArgumentError, URI::InvalidURIError
+          # `URI::join` raises an exception if its arguments can not be used to
+          # build a valid URI
+          nil
+        end
       end
 
-      uris.to_a.uniq
+      # Filter duplicates and `nil`s resulting from exceptions raised by
+      # `URI::join`
+      uris
+        .uniq
+        .find_all { |uri| uri.is_a? URI }
     end
 
     private
     def expand_uri(path)
-      URI.join(@uri, path) rescue ArgumentError
+      URI.join(@uri, path)
     end
 
   end

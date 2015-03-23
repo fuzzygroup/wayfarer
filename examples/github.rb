@@ -10,10 +10,10 @@ crawler = Schablone::Crawler.new do
   end
 
   router.allow do
-    uri "http://github.com"
+    host /.de/
   end
 
 end
 
-result = crawler.crawl(URI("http://github.com"))
+result = crawler.crawl(URI("http://faz.de"))
 puts result
