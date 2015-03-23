@@ -7,8 +7,10 @@ describe Scrapespeare do
   end
 
   describe "#config" do
-    it "returns the Configuration" do
-      expect(Scrapespeare.config).to be_a Scrapespeare::Configuration
+    context "without Proc given" do
+      it "returns the Configuration" do
+        expect(Scrapespeare.config).to be_a Scrapespeare::Configuration
+      end
     end
 
     context "with Proc of arity 0 given" do
@@ -22,7 +24,7 @@ describe Scrapespeare do
     context "with Proc of arity 1 given" do
       it "yields the Configuration" do
         Scrapespeare.config { |conf| @config = conf }
-        expect(@config).to be_a Configuration
+        expect(@config).to be Scrapespeare.config
       end
     end
   end
