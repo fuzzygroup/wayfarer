@@ -11,18 +11,18 @@ describe Scrapespeare do
       expect(Scrapespeare.config).to be_a Scrapespeare::Configuration
     end
 
-    context "with Proc of arity 1 given" do
-      it "yields the Configuration" do
-        Scrapespeare.config { |conf| @config = conf }
-        expect(@config).to be_a Configuration
-      end
-    end
-
     context "with Proc of arity 0 given" do
       it "evaluates the Proc in its Configuration's instance context" do
         this = nil
         Scrapespeare.config { this = self }
         expect(this).to be_a Configuration
+      end
+    end
+
+    context "with Proc of arity 1 given" do
+      it "yields the Configuration" do
+        Scrapespeare.config { |conf| @config = conf }
+        expect(@config).to be_a Configuration
       end
     end
   end

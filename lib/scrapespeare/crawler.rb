@@ -15,13 +15,21 @@ module Scrapespeare
     end
 
     def setup_scraper(&proc)
-      block_given? ? @scraper.instance_eval(&proc) : @scraper
+      if block_given?
+        proc.arity == 1 ? (yield @scraper) : @scraper.instance_eval(&proc)
+      else
+        @scraper
+      end
     end
 
     alias_method :scraper, :setup_scraper
 
     def setup_router(&proc)
-      block_given? ? @router.instance_eval(&proc) : @router
+      if block_given?
+        proc.arity == 1 ? (yield @router) : @router.instance_eval(&proc)
+      else
+        @router
+      end
     end
 
     alias_method :router, :setup_router

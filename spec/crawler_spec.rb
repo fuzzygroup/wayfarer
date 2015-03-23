@@ -21,7 +21,13 @@ describe Scrapespeare::Crawler do
   end
 
   describe "#setup_router, #routes" do
-    context "with Proc given" do
+    context "without Proc given" do
+      it "returns its Router" do
+        expect(crawler.router).to be_a Router
+      end
+    end
+
+    context "with Proc of arity 0 given" do
       it "evaluates the given Proc in its Router's instance context" do
         this = nil
         crawler.setup_router { |router| this = router }
@@ -29,9 +35,10 @@ describe Scrapespeare::Crawler do
       end
     end
 
-    context "without Proc given" do
-      it "returns its Router" do
-        expect(crawler.router).to be_a Router
+    context "with Proc of arity 1 given" do
+      it "yields the Router" do
+        crawler.setup_router { |router| @router = router }
+        expect(@router).to be_a Router
       end
     end
   end
