@@ -18,7 +18,8 @@ module Scrapespeare
         http_adapter: :net_http,
         verbose: false,
         max_http_redirects: 3,
-        sanitize_node_content: true
+        sanitize_node_content: true,
+        log_level: Logger::FATAL
       }
     end
 
