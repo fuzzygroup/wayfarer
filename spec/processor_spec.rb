@@ -158,6 +158,8 @@ describe Scrapespeare::Processor do
     it "works" do
       processor.run
       expect(processor.cached_uris.count).to be 3
+
+      fail "#{processor.result}"
     end
   end
 
