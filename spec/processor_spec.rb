@@ -130,8 +130,8 @@ describe Scrapespeare::Processor do
     end
   end
 
-  describe "#process" do
-    before { processor.process }
+  describe "#step" do
+    before { processor.step }
 
     it "processes the current URI" do
       expect(processor.current_uris).to be_empty

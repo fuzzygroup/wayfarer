@@ -25,10 +25,11 @@ module Scrapespeare
     end
 
     def run
-      process while has_next_uri?
+      @pool.process { step while has_next_uri? }
+      @pool.shutdown
     end
 
-    def process
+    def step
       uri  = next_uri
       page = fetch(uri)
       doc  = page.parsed_document
