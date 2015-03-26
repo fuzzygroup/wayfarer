@@ -17,8 +17,8 @@ module Schablone
         end
       end
 
-      def extract(doc_or_nodes)
-        matched_nodes = matcher.match(doc_or_nodes)
+      def extract(nodes)
+        matched_nodes = matcher.match(nodes)
 
         if extractables.empty?
           result = evaluate(matched_nodes, *@target_attrs)
