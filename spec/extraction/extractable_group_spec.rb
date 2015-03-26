@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Extraction::ExtractableGroup do
-
   let(:extractable_group) { ExtractableGroup.new(:foo) }
 
   describe "#initialize" do
@@ -21,7 +20,7 @@ describe Schablone::Extraction::ExtractableGroup do
     context "without nested Extractables" do
       it "returns a Hash with an empty String as value" do
         result = extractable_group.extract(doc)
-        expect(result).to eq({ foo: "" })
+        expect(result).to eq(foo: "")
       end
     end
 
@@ -32,11 +31,8 @@ describe Schablone::Extraction::ExtractableGroup do
 
       it "returns the expected Hash structure" do
         result = extractable_group.extract(doc)
-        expect(result).to eq({
-          foo: { bar: "Bar" }
-        })
+        expect(result).to eq(foo: { bar: "Bar" })
       end
     end
   end
-
 end

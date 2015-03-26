@@ -1,7 +1,6 @@
 module Schablone
   module Extraction
     class Extractor
-
       include Extractable
 
       attr_reader :matcher
@@ -35,6 +34,7 @@ module Schablone
       end
 
       private
+
       def evaluate(matched_nodes, *target_attrs)
         if @evaluator.is_a?(Proc)
           @evaluator.call(matched_nodes, *target_attrs)
@@ -42,7 +42,6 @@ module Schablone
           @evaluator.evaluate(matched_nodes, *target_attrs)
         end
       end
-
     end
   end
 end

@@ -1,7 +1,6 @@
 module Schablone
   module Extraction
     class Scoper
-
       include Extractable
 
       attr_reader :matcher
@@ -23,7 +22,6 @@ module Schablone
           end
         end
       end
-
     end
   end
 end

@@ -1,7 +1,6 @@
 module Schablone
   module Extraction
     class Matcher
-
       attr_reader :type
       attr_reader :expression
 
@@ -17,7 +16,6 @@ module Schablone
         else fail "Unknown selector type `#{type}`"
         end
       end
-
     end
   end
 end

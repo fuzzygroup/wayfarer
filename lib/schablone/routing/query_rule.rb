@@ -3,20 +3,20 @@ require "cgi"
 module Schablone
   module Routing
     class QueryRule < Rule
-
       def initialize(field_constraints, opts = {}, &proc)
         @field_constraints = field_constraints
         super(opts, &proc)
       end
 
       def match(uri)
-        CGI::parse(uri.query).none? { |field, vals| violates?(field, vals) }
+        CGI.parse(uri.query).none? { |field, vals| violates?(field, vals) }
       rescue NoMethodError
         # `CGI::parse` throws a NoMethodError if `uri.query` is an empty string
         # TODO Test case
       end
 
       private
+
       def violates?(field, vals)
         if constraint = @field_constraints[field.to_sym]
           violates_constraint?(constraint, vals)
@@ -52,7 +52,6 @@ module Schablone
       def violates_range?(range, vals)
         vals.none? { |val| range.include?(val.to_i) }
       end
-
     end
   end
 end

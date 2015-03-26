@@ -1,7 +1,6 @@
 module Schablone
   module Extraction
     module Extractable
-
       attr_reader :key
       attr_accessor :evaluator
 
@@ -28,7 +27,6 @@ module Schablone
       def scope(matcher_hash, &proc)
         extractables << Scoper.new(matcher_hash, &proc)
       end
-
     end
   end
 end

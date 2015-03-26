@@ -2,7 +2,6 @@ require "hashie/extensions/method_access"
 
 module Schablone
   class Configuration < Hash
-
     include Hashie::Extensions::MethodAccess
 
     def initialize
@@ -11,10 +10,11 @@ module Schablone
     end
 
     def reset!
-      self.replace(defaults)
+      replace(defaults)
     end
 
     private
+
     def defaults
       {
         http_adapter:          :net_http,
@@ -30,6 +30,5 @@ module Schablone
     def convert_key(key)
       key.to_sym
     end
-
   end
 end

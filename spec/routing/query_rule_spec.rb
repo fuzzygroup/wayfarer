@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Routing::QueryRule do
-
   subject(:rule) { QueryRule.new(constraints) }
 
   describe "String constraints" do
@@ -121,5 +120,4 @@ describe Schablone::Routing::QueryRule do
       end
     end
   end
-
 end

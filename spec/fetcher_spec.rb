@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Fetcher do
-
   let(:fetcher) { subject.class.new }
 
   describe "#fetch" do
@@ -48,14 +47,12 @@ describe Schablone::Fetcher do
         after  { Schablone.config.reset! }
 
         it "raises a RuntimeError" do
-          expect {
+          expect do
             uri = URI("http://0.0.0.0:9876/redirect?times=6")
             page = fetcher.fetch(uri)
-          }.to raise_error(RuntimeError)
+          end.to raise_error(RuntimeError)
         end
       end
     end
-
   end
-
 end

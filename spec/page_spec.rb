@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Page do
-
   subject(:page) do
     uri = URI("http://0.0.0.0:9876/links/links.html")
     Fetcher.new.fetch(uri)
@@ -28,5 +27,4 @@ describe Schablone::Page do
       )
     end
   end
-
 end

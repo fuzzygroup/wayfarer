@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Routing::PathRule do
-
   subject(:rule) { PathRule.new("/foo/bar") }
 
   describe "#===" do
@@ -21,5 +20,4 @@ describe Schablone::Routing::PathRule do
       end
     end
   end
-
 end

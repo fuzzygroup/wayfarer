@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Extraction::Extractor do
-
   let(:doc) do
     Nokogiri::HTML <<-html
       <span id="foo">Foo</span>
@@ -55,7 +54,7 @@ describe Schablone::Extraction::Extractor do
 
     context "with Proc of arity 1 given" do
       it "stores the Proc as its `@evaluator`" do
-        proc = -> (nodes) {}
+        proc = -> (_nodes) {}
         extractor = Extractor.new(:foo, css: "#foo", &proc)
         expect(extractor.evaluator).to be proc
       end
@@ -68,7 +67,7 @@ describe Schablone::Extraction::Extractor do
 
       it "evaluates matched Elements' contents" do
         result = extractor.extract(doc)
-        expect(result).to eq({ foo: "Foo" })
+        expect(result).to eq(foo: "Foo")
       end
     end
 
@@ -78,13 +77,11 @@ describe Schablone::Extraction::Extractor do
 
       it "evaluates nested Extractables" do
         result = extractor.extract(doc)
-        expect(result).to eq({
-          alphas: [
-            { betas: ["Lorem", "Ipsum"] },
-            { betas: ["Dolor", "Sit"] },
-            { betas: ["Amet", "Consetetur"] }
-          ]
-        })
+        expect(result).to eq(alphas: [
+          { betas: %w(Lorem Ipsum) },
+          { betas: %w(Dolor Sit) },
+          { betas: %w(Amet Consetetur) }
+        ])
       end
     end
   end
@@ -94,19 +91,19 @@ describe Schablone::Extraction::Extractor do
 
     context "when @evaluator is a Proc" do
       let(:evaluator) do
-        -> (matched_nodes, *target_attrs) { matched_nodes.count }
+        -> (matched_nodes, *_target_attrs) { matched_nodes.count }
       end
 
       before { extractor.evaluator = evaluator }
 
       it "evaluates the matched NodeSet by calling the Proc" do
         result = extractor.extract(doc)
-        expect(result).to eq({ beta_count: 6 })
+        expect(result).to eq(beta_count: 6)
       end
     end
 
     context "when @evaluator is not a Proc" do
-      let(:evaluator) { spy() }
+      let(:evaluator) { spy }
 
       before { extractor.evaluator = evaluator }
 
@@ -116,5 +113,4 @@ describe Schablone::Extraction::Extractor do
       end
     end
   end
-
 end

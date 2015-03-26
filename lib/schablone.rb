@@ -30,7 +30,6 @@ require_relative "schablone/processor"
 require_relative "schablone/crawler"
 
 module Schablone
-
   VERSION = "0.0.1-alpha.1"
 
   class << self
@@ -55,11 +54,11 @@ module Schablone
     alias_method :log, :logger
 
     private
+
     def logger_instance
       logger = Logger.new(STDOUT)
       logger.datetime_format = "%m-%d %H:%M:%S"
       logger
     end
   end
-
 end

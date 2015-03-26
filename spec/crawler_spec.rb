@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Crawler do
-
   let(:crawler) { subject.class.new }
 
   describe "#setup_scraper, #scraper" do
@@ -21,7 +20,7 @@ describe Schablone::Crawler do
 
     context "with Proc of arity 1 given" do
       it "yields the Scraper" do
-        crawler.setup_scraper { |scraper| @scraper = scraper}
+        crawler.setup_scraper { |scraper| @scraper = scraper }
         expect(@scraper).to be crawler.scraper
       end
     end
@@ -49,5 +48,4 @@ describe Schablone::Crawler do
       end
     end
   end
-
 end

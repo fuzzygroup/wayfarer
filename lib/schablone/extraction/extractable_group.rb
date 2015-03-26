@@ -1,7 +1,6 @@
 module Schablone
   module Extraction
     class ExtractableGroup
-
       include Extractable
 
       def initialize(key, &proc)
@@ -13,14 +12,13 @@ module Schablone
         if extractables.empty?
           result = ""
         else
-          result = extractables.reduce(Hash.new) do |hash, extractable|
+          result = extractables.reduce({}) do |hash, extractable|
             hash.merge(extractable.extract(doc_or_nodes))
           end
         end
 
         { key => result }
       end
-
     end
   end
 end

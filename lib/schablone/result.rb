@@ -4,7 +4,6 @@ require "yaml"
 
 module Schablone
   class Result
-
     def initialize
       @result = {}
     end
@@ -32,6 +31,5 @@ module Schablone
     def to_yaml
       Hashie.stringify_keys(@result).to_yaml
     end
-
   end
 end

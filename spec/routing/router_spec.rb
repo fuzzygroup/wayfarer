@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Routing::Router do
-
   subject(:router) { Router.new }
 
   describe "#allow" do
@@ -71,5 +70,4 @@ describe Schablone::Routing::Router do
       end
     end
   end
-
 end

@@ -2,7 +2,6 @@ require "net/http"
 
 module Schablone
   class Fetcher
-
     def fetch(uri, redirects_followed = 0)
       fail if redirects_followed > Schablone.config.max_http_redirects
 
@@ -19,6 +18,5 @@ module Schablone
 
       Page.new(uri, status_code, body, headers)
     end
-
   end
 end

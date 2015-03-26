@@ -3,7 +3,6 @@ require "nokogiri"
 
 module Schablone
   class Page
-
     attr_reader :uri
     attr_reader :status_code
     attr_reader :body
@@ -34,9 +33,9 @@ module Schablone
     end
 
     private
+
     def expand_uri(path)
       URI.join(@uri, path)
     end
-
   end
 end

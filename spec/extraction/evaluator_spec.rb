@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Extraction::Evaluator do
-
   let(:evaluator) { Evaluator }
 
   describe ".evaluate" do
@@ -35,11 +34,10 @@ describe Schablone::Extraction::Evaluator do
         context "with > 1 target attributes" do
           it "returns a Hash of mapped attribute values" do
             result = evaluator.evaluate(nodes, :class, :id)
-            expect(result).to eq({ class: "foo", id: "bar" })
+            expect(result).to eq(class: "foo", id: "bar")
           end
         end
       end
-
     end
 
     context "with NodeSet containing > 1 Nodes" do
@@ -53,7 +51,7 @@ describe Schablone::Extraction::Evaluator do
       context "without target attributes" do
         it "returns an Array of the elements' contents" do
           result = evaluator.evaluate(nodes)
-          expect(result).to eq ["Alpha", "Beta"]
+          expect(result).to eq %w(Alpha Beta)
         end
       end
 
@@ -61,7 +59,7 @@ describe Schablone::Extraction::Evaluator do
         context "with 1 target attribute" do
           it "returns the element's attribute value" do
             result = evaluator.evaluate(nodes, :id)
-            expect(result).to eq ["alpha", "beta"]
+            expect(result).to eq %w(alpha beta)
           end
         end
 
@@ -168,13 +166,13 @@ describe Schablone::Extraction::Evaluator do
 
     it "returns a Hash of mapped evaluated attributes" do
       result = evaluator.evaluate_attributes(element, :class, :id)
-      expect(result).to eq({ class: "foo", id: "bar" })
+      expect(result).to eq(class: "foo", id: "bar")
     end
 
     context "with mismatching attribute" do
       it "maps the attribute to an empty String" do
         result = evaluator.send(:evaluate_attributes, element, :baz)
-        expect(result).to eq({ :baz => "" })
+        expect(result).to eq(baz: "")
       end
     end
   end
@@ -207,5 +205,4 @@ describe Schablone::Extraction::Evaluator do
       expect(evaluator::RESERVED_ATTRIBUTES).to eq([:content!, :html!])
     end
   end
-
 end

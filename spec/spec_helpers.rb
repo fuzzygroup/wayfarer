@@ -5,7 +5,6 @@ include Schablone::Extraction
 include Schablone::Routing
 
 module SpecHelpers
-
   def html_fragment(html_string)
     Nokogiri::HTML.fragment(html_string)
   end
@@ -13,7 +12,6 @@ module SpecHelpers
   def node_set(html_string)
     html_fragment(html_string).css("*")
   end
-
 end
 
 RSpec.configure do |config|

@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Extraction::Extractable do
-
   let(:extractable) { Object.new.extend(Extractable) }
 
   describe "#css" do
@@ -72,19 +71,18 @@ describe Schablone::Extraction::Extractable do
 
   describe "#scope" do
     it "adds a Scoper" do
-      extractable.scope({ css: "#foo .bar" })
+      extractable.scope(css: "#foo .bar")
       added_extractable = extractable.extractables.first
 
       expect(added_extractable).to be_a Scoper
     end
 
     it "initializes the added Scoper's Matcher correctly" do
-      extractable.scope({ css: "#foo .bar" })
+      extractable.scope(css: "#foo .bar")
       matcher = extractable.extractables.first.matcher
 
       expect(matcher.type).to be :css
       expect(matcher.expression).to eq "#foo .bar"
     end
   end
-
 end

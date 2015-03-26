@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Configuration do
-
   let(:config) { subject.class.new }
 
   it "allows setting keys and values" do
@@ -36,5 +35,4 @@ describe Schablone::Configuration do
       expect(config.foo?).to be false
     end
   end
-
 end

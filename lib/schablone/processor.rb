@@ -4,7 +4,6 @@ require "thread/pool"
 
 module Schablone
   class Processor
-
     attr_reader :current_uris
     attr_reader :staged_uris
     attr_reader :cached_uris
@@ -51,6 +50,7 @@ module Schablone
     end
 
     private
+
     def fetch(uri)
       @fetcher.fetch(uri)
     end
@@ -84,6 +84,5 @@ module Schablone
     def cycle
       @current_uris, @staged_uris = @staged_uris, []
     end
-
   end
 end

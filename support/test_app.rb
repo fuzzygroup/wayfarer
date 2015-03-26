@@ -1,7 +1,6 @@
 require "sinatra"
 
 class TestApp < Sinatra::Base
-
   set :root, File.dirname(__FILE__)
   set :public_folder, -> { File.join(root, "static") }
 
@@ -24,8 +23,8 @@ class TestApp < Sinatra::Base
   end
 
   private
+
   def static_file(file_path)
     File.expand_path(file_path, settings.public_folder)
   end
-
 end

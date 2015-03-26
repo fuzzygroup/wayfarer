@@ -1,6 +1,5 @@
 module Schablone
   class Crawler
-
     def initialize(&proc)
       @scraper = Extraction::Scraper.new
       @router  = Routing::Router.new
@@ -39,6 +38,5 @@ module Schablone
     end
 
     alias_method :router, :setup_router
-
   end
 end

@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Parser do
-
   let(:parser) { subject }
 
   describe ".parse" do
@@ -12,5 +11,4 @@ describe Schablone::Parser do
       expect(doc).to be_a Nokogiri::HTML::Document
     end
   end
-
 end

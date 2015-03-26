@@ -15,8 +15,8 @@ Gem::Specification.new do |s|
   s.authors       = ["Dominic Bauer"]
   s.email         = "bauerdominic@gmail.com"
 
-  s.files         = %x(git ls-files).split("\n")
-  s.test_files    = %x(git ls-files -- {spec,features}/*).split("\n")
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {spec,features}/*`.split("\n")
 
   s.require_paths = ["lib"]
   s.executables   << "scrapespeare"

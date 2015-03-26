@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Routing::Rule do
-
   subject(:rule) { Rule.new }
 
   describe "#initialize" do
@@ -61,7 +60,7 @@ describe Schablone::Routing::Rule do
       rule = Rule.new
       rule.send(:append_sub_rule_from_options, opts)
       rule
-    end 
+    end
 
     context "with `:path` option present" do
       let(:opts) { Hash[path: "/foo"] }
@@ -103,5 +102,4 @@ describe Schablone::Routing::Rule do
       end
     end
   end
-
 end

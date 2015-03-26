@@ -1,7 +1,6 @@
 module Schablone
   module Extraction
     module Evaluator
-
       RESERVED_ATTRIBUTES = [
         :content!,
         :html!
@@ -58,16 +57,15 @@ module Schablone
         end
       end
 
-      def evaluate_attributes(element, *attrs)      
+      def evaluate_attributes(element, *attrs)
         attrs.reduce({}) do |hash, attr|
-          hash.merge({ attr => evaluate_attribute(element, attr) })
+          hash.merge(attr => evaluate_attribute(element, attr))
         end
       end
 
       def sanitize(str)
         str.gsub("\n", "").strip
       end
-
     end
   end
 end

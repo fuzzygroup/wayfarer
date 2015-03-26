@@ -1,7 +1,6 @@
 module Schablone
   module Extraction
     class Scraper
-
       include Extractable
 
       def initialize(&proc)
@@ -13,13 +12,12 @@ module Schablone
       def extract(doc)
         return @evaluator.call(doc) if @evaluator
 
-        extractables.reduce(Hash.new) do |hash, extractable|
+        extractables.reduce({}) do |hash, extractable|
           hash.merge(extractable.extract(doc))
         end
       end
 
       alias_method :scrape, :extract
-
     end
   end
 end

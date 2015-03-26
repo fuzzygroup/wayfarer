@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Routing::URIRule do
-
   subject(:rule) { URIRule.new("http://example.com/foo/bar") }
 
   describe "#===" do
@@ -21,5 +20,4 @@ describe Schablone::Routing::URIRule do
       end
     end
   end
-
 end

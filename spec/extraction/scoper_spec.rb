@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Extraction::Scoper do
-
   describe "#initialize" do
     let(:scoper) { Scoper.new(css: ".foo") }
 
@@ -39,11 +38,8 @@ describe Schablone::Extraction::Scoper do
 
         result = scoper.extract(doc)
 
-        expect(result).to eq({
-          alpha: "Sit"
-        })
+        expect(result).to eq(alpha: "Sit")
       end
     end
   end
-
 end

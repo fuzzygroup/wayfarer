@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Processor do
-
   let(:entry_uri) { URI("http://0.0.0.0:9876/graph/index.html") }
   let(:scraper) { Scraper.new { css :title, "title" } }
   let(:router) do
@@ -21,9 +20,9 @@ describe Schablone::Processor do
   describe "#cache_uri" do
     it "caches the URI" do
       uri = URI("http://example.com")
-      expect {
+      expect do
         processor.send(:cache_uri, uri)
-      }.to change { processor.cached_uris.count }.by(1)
+      end.to change { processor.cached_uris.count }.by(1)
     end
   end
 
@@ -32,9 +31,9 @@ describe Schablone::Processor do
       let(:uri) { URI("http://0.0.0.0/foo") }
 
       it "stages the URI" do
-        expect {
+        expect do
           processor.send(:stage_uri, uri)
-        }.to change { processor.staged_uris.count }.by(1)
+        end.to change { processor.staged_uris.count }.by(1)
       end
 
       it "does not stage the same URI twice" do
@@ -54,9 +53,9 @@ describe Schablone::Processor do
       let(:uri) { URI("http://example.com") }
 
       it "does not stage the URI" do
-        expect {
+        expect do
           processor.send(:stage_uri, uri)
-        }.not_to change { processor.staged_uris.count }
+        end.not_to change { processor.staged_uris.count }
       end
     end
 
@@ -65,9 +64,9 @@ describe Schablone::Processor do
       before { processor.send(:cache_uri, uri) }
 
       it "does not stage the URI" do
-        expect {
+        expect do
           processor.send(:stage_uri, uri)
-        }.not_to change { processor.staged_uris.count }
+        end.not_to change { processor.staged_uris.count }
       end
     end
   end
@@ -174,9 +173,8 @@ describe Schablone::Processor do
       expect(processor.result).to eq [
         { title: "Index" },
         { title: "Detail A" },
-        { title: "Detail B" },
+        { title: "Detail B" }
       ]
     end
   end
-
 end

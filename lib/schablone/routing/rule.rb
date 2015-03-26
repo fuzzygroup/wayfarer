@@ -1,7 +1,6 @@
 module Schablone
   module Routing
     class Rule
-
       attr_reader :sub_rules
 
       def initialize(opts = {}, &proc)
@@ -41,12 +40,13 @@ module Schablone
       alias_method :query, :append_query_sub_rule
 
       private
+
       def append_sub_rule(other)
-        @sub_rules << other and other
+        @sub_rules << other && other
       end
 
       def append_sub_rule_from_options(opts)
-        opts.reject! { |key, _| not [:host, :path, :query].include?(key) }
+        opts.reject! { |key, _| ![:host, :path, :query].include?(key) }
 
         opts.inject(self) do |rule, (key, val)|
           case key
@@ -60,7 +60,6 @@ module Schablone
       def match(*)
         @sub_rules.any?
       end
-
     end
   end
 end

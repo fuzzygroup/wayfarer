@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Extraction::Scraper do
-
   subject(:scraper) { Scraper.new }
 
   let(:doc) do
@@ -37,7 +36,7 @@ describe Schablone::Extraction::Scraper do
 
     context "with Proc of arity 1 given" do
       it "stores the Proc as its `@evaluator`" do
-        proc = -> (doc) {}
+        proc = -> (_doc) {}
         scraper = Scraper.new(&proc)
         expect(scraper.evaluator).to be proc
       end
@@ -56,10 +55,8 @@ describe Schablone::Extraction::Scraper do
       it "returns the expected Hash structure" do
         result = scraper.extract(doc)
 
-        expect(result).to eq({
-          foo: "Foo",
-          betas: %w(Lorem Ipsum Dolor Sit Amet Consetetur)
-        })
+        expect(result).to eq(foo: "Foo",
+                             betas: %w(Lorem Ipsum Dolor Sit Amet Consetetur))
       end
     end
 

@@ -1,7 +1,6 @@
 module Schablone
   module Routing
     class Router
-
       attr_reader :whitelist
       attr_reader :blacklist
 
@@ -19,13 +18,12 @@ module Schablone
       end
 
       def allows?(uri)
-        !(@blacklist === uri) and @whitelist === uri
+        !(@blacklist === uri) && @whitelist === uri
       end
 
       def forbids?(uri)
         !allows?(uri)
       end
-
     end
   end
 end

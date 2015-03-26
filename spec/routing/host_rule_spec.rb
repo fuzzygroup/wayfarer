@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Routing::HostRule do
-
   subject(:rule) { HostRule.new(str_or_regexp) }
 
   describe "#===" do
@@ -45,5 +44,4 @@ describe Schablone::Routing::HostRule do
       end
     end
   end
-
 end
