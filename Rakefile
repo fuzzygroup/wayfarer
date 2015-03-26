@@ -6,6 +6,10 @@ require "rack"
 
 require_relative "support/test_app"
 
+
+# ==============================================================================
+# RSpec
+# ==============================================================================
 namespace :spec do
   desc "Run environment-agnostic examples"
   RSpec::Core::RakeTask.new isolated: [:start_test_app] do |task|
@@ -21,31 +25,47 @@ end
 desc "Run all examples"
 task spec: %w(spec:isolated spec:live)
 
+
+# ==============================================================================
+# Cucumber
+# ==============================================================================
 namespace :features do
   desc "Run environment-agnostic scenarios"
   Cucumber::Rake::Task.new isolated: [:start_test_app] do |task|
-    task.cucumber_opts = "--format progress"
+    task.cucumber_opts = ["--format progress"]
   end
 end
 
 desc "Run all scenarios"
 task features: ["features:isolated"]
 
-%w(spec:isolated spec:live features).each do |task|
-  Rake::Task[task].enhance { Rake::Task["stop_test_app"].invoke }
-end
 
+# ==============================================================================
+# RuboCop
+# ==============================================================================
 RuboCop::RakeTask.new do |task|
   task.formatters = ["clang"]
 end
 
+
+# ==============================================================================
+# YARD
+# ==============================================================================
 YARD::Rake::YardocTask.new :doc
 
+
+# ==============================================================================
+# RubyGems
+# ==============================================================================
 desc "Build the RubyGem"
 task :build do
   sh "gem build schablone.gemspec --verbose"
 end
 
+
+# ==============================================================================
+# Plumbing
+# ==============================================================================
 desc %(List lines that contain "FIXME" or "TODO")
 task :todo do
   sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec features | tr -s [:space:])
@@ -69,6 +89,10 @@ task :shell do
   end
 end
 
+
+# ==============================================================================
+# Test web app
+# ==============================================================================
 task :run_test_app do
   Rack::Handler::WEBrick.run(
     TestApp,
@@ -86,4 +110,8 @@ end
 
 task :stop_test_app do
   @server_thread.kill
+end
+
+%w(spec:isolated spec:live features).each do |task|
+  Rake::Task[task].enhance { Rake::Task["stop_test_app"].invoke }
 end
