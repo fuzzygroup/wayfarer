@@ -13,7 +13,9 @@ module Schablone
         @target_attrs = target_attrs
         @evaluator = Evaluator
 
-        instance_eval(&proc) if block_given?
+        if block_given?
+          proc.arity == 1 ? (@evaluator = proc) : instance_eval(&proc)
+        end
       end
 
       def extract(doc_or_nodes)

@@ -46,6 +46,22 @@ describe Schablone::Extraction::Extractor do
     it "sets @evaluator to Schablone::Evaluator" do
       expect(extractor.evaluator).to be Evaluator
     end
+
+    context "with Proc of arity 0 given" do
+      it "evaluates the Proc in its instance context" do
+        this = nil
+        Extractor.new(:foo, css: "#foo") { this = self }
+        expect(this).to be_an Extractor
+      end
+    end
+
+    context "with Proc of arity 1 given" do
+      it "stores the Proc as its `@evaluator`" do
+        proc = -> (nodes) {}
+        extractor = Extractor.new(:foo, css: "#foo", &proc)
+        expect(extractor.evaluator).to be proc
+      end
+    end
   end
 
   describe "#extract" do
