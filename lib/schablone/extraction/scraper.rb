@@ -13,11 +13,9 @@ module Schablone
       def extract(doc)
         return @evaluator.call(doc) if @evaluator
 
-        result = extractables.reduce(Hash.new) do |hash, extractable|
+        extractables.reduce(Hash.new) do |hash, extractable|
           hash.merge(extractable.extract(doc))
         end
-
-        result.taint
       end
 
       alias_method :scrape, :extract

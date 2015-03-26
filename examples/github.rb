@@ -5,9 +5,10 @@ crawler = Schablone::Crawler.new do
   config.log_level = Logger::INFO
   config.threads = 32
 
-  scraper do
-    css :title, "title"
-    css :headings, "h1"
+  scraper do |doc|
+    {
+      foo: doc.css("lel").count
+    }
   end
 
   router.allow do

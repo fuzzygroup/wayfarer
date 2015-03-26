@@ -45,11 +45,6 @@ describe Schablone::Extraction::Scraper do
   end
 
   describe "#extract" do
-    it "returns a tainted Object" do
-      result = scraper.extract(doc)
-      expect(result).to be_tainted
-    end
-
     context "without `@evaluator` Proc present" do
       let(:scraper) do
         Scraper.new do
@@ -69,9 +64,7 @@ describe Schablone::Extraction::Scraper do
     end
 
     context "with `@evaluator` Proc present" do
-      let(:scraper) do
-        Scraper.new { |doc| doc.css(".alpha").count }
-      end
+      let(:scraper) { Scraper.new { |doc| doc.css(".alpha").count } }
 
       it "returns the expected extract" do
         result = scraper.extract(doc)
