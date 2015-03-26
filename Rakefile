@@ -13,17 +13,17 @@ require_relative "support/test_app"
 namespace :spec do
   desc "Run environment-agnostic examples"
   RSpec::Core::RakeTask.new isolated: [:start_test_app] do |task|
-    task.rspec_opts = %w(--tag ~live)
+    task.rspec_opts = ["--tag ~live"]
   end
 
   desc "Run examples that require a live environment"
   RSpec::Core::RakeTask.new live: [:start_test_app] do |task|
-    task.rspec_opts = %w(--tag live)
+    task.rspec_opts = ["--tag live"]
   end
 end
 
 desc "Run all examples"
-task spec: %w(spec:isolated spec:live)
+task spec: ["spec:isolated", "spec:live"]
 
 
 # ==============================================================================
@@ -44,7 +44,7 @@ task features: ["features:isolated"]
 # RuboCop
 # ==============================================================================
 RuboCop::RakeTask.new do |task|
-  task.formatters = ["clang"]
+  task.formatters = ["simple"]
 end
 
 
@@ -81,7 +81,7 @@ task :shell do
 
   begin
     require "pry"
-    binding.pry(quiet: true)
+    Pry.new.repl(self)
   rescue LoadError
     require "irb"
     ARGV.clear
@@ -112,6 +112,6 @@ task :stop_test_app do
   @server_thread.kill
 end
 
-%w(spec:isolated spec:live features).each do |task|
+["spec:isolated", "spec:live", "features"].each do |task|
   Rake::Task[task].enhance { Rake::Task["stop_test_app"].invoke }
 end
