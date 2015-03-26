@@ -25,26 +25,20 @@ describe Schablone::Extraction::Extractor do
   end
 
   describe "#initialize" do
-    let(:extractor) do
-      Extractor.new(:foo, { css: "#foo" }, "href")
-    end
+    let(:extractor) { Extractor.new(:foo, { css: "#foo" }, "href") }
 
-    it "sets @key" do
+    it "sets `@key`" do
       expect(extractor.key).to be :foo
     end
 
-    it "sets @matcher" do
+    it "initializes `@matcher`" do
       matcher = extractor.matcher
       expect(matcher.type).to be :css
       expect(matcher.expression).to eq "#foo"
     end
 
-    it "sets @target_attrs" do
+    it "sets `@target_attrs`" do
       expect(extractor.target_attrs).to eq ["href"]
-    end
-
-    it "sets @evaluator to Schablone::Evaluator" do
-      expect(extractor.evaluator).to be Evaluator
     end
 
     context "with Proc of arity 0 given" do
@@ -52,6 +46,10 @@ describe Schablone::Extraction::Extractor do
         this = nil
         Extractor.new(:foo, css: "#foo") { this = self }
         expect(this).to be_an Extractor
+      end
+
+      it "stores `Schablone::Extraction::Evaluator` as its `@evaluator`" do
+        expect(extractor.evaluator).to be Evaluator
       end
     end
 
@@ -66,9 +64,7 @@ describe Schablone::Extraction::Extractor do
 
   describe "#extract" do
     context "without nested Extractables" do
-      let(:extractor) do
-        Extractor.new(:foo, { css: "#foo" })
-      end
+      let(:extractor) { Extractor.new(:foo, css: "#foo") }
 
       it "evaluates matched Elements' contents" do
         result = extractor.extract(doc)
@@ -77,25 +73,16 @@ describe Schablone::Extraction::Extractor do
     end
 
     context "with nested Extractables" do
-      let(:extractor) do
-        Extractor.new(:alphas, { css: ".alpha" })
-      end
-
+      let(:extractor) { Extractor.new(:alphas, css: ".alpha") }
       before { extractor.css(:betas, ".beta") }
 
       it "evaluates nested Extractables" do
         result = extractor.extract(doc)
         expect(result).to eq({
           alphas: [
-            {
-              betas: ["Lorem", "Ipsum"]
-            },
-            {
-              betas: ["Dolor", "Sit"]
-            },
-            {
-              betas: ["Amet", "Consetetur"]
-            }
+            { betas: ["Lorem", "Ipsum"] },
+            { betas: ["Dolor", "Sit"] },
+            { betas: ["Amet", "Consetetur"] }
           ]
         })
       end
@@ -103,9 +90,7 @@ describe Schablone::Extraction::Extractor do
   end
 
   describe "#evaluate" do
-    let(:extractor) do
-      Extractor.new(:beta_count, { css: ".beta" })
-    end
+    let(:extractor) { Extractor.new(:beta_count, css: ".beta") }
 
     context "when @evaluator is a Proc" do
       let(:evaluator) do

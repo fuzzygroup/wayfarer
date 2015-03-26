@@ -52,6 +52,8 @@ module Schablone
       @logger
     end
 
+    alias_method :log, :logger
+
     private
     def logger_instance
       logger = Logger.new(STDOUT)
