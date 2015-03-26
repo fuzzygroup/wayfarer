@@ -1,36 +1,34 @@
 require "spec_helpers"
 
 describe Schablone::Extraction::ExtractableGroup do
-  let(:extractable_group) { ExtractableGroup.new(:foo) }
+  subject(:group) { ExtractableGroup.new(:foo) }
 
-  describe "#initialize" do
-    it "sets @key correctly" do
-      expect(extractable_group.key).to be :foo
-    end
-  end
-
-  describe "#extract" do
-    let(:doc) do
+  let(:doc) do
       Nokogiri::HTML <<-html
         <span id="foo">Foo</span>
         <span id="bar">Bar</span>
       html
     end
 
+  describe "#initialize" do
+    it "sets `@key` correctly" do
+      expect(group.key).to be :foo
+    end
+  end
+
+  describe "#extract" do
     context "without nested Extractables" do
       it "returns a Hash with an empty String as value" do
-        result = extractable_group.extract(doc)
+        result = group.extract(doc)
         expect(result).to eq(foo: "")
       end
     end
 
     context "with nested Extractables" do
-      before do
-        extractable_group.css(:bar, "#bar")
-      end
+      before { group.css(:bar, "#bar") }
 
       it "returns the expected Hash structure" do
-        result = extractable_group.extract(doc)
+        result = group.extract(doc)
         expect(result).to eq(foo: { bar: "Bar" })
       end
     end

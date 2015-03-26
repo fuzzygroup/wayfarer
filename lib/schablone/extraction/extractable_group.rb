@@ -8,12 +8,12 @@ module Schablone
         instance_eval(&proc) if block_given?
       end
 
-      def extract(doc_or_nodes)
+      def extract(nodes)
         if extractables.empty?
           result = ""
         else
           result = extractables.reduce({}) do |hash, extractable|
-            hash.merge(extractable.extract(doc_or_nodes))
+            hash.merge(extractable.extract(nodes))
           end
         end
 
