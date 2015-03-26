@@ -3,7 +3,7 @@ require "spec_helpers"
 describe Schablone::Extraction::Extractable do
   let(:extractable) { Object.new.extend(Extractable) }
 
-  describe "#css" do
+  describe "#add_css_extractor, #css" do
     it "adds a CSS Extractor" do
       extractable.css(:foo, ".bar")
       added_extractable = extractable.extractables.first
@@ -28,7 +28,7 @@ describe Schablone::Extraction::Extractable do
     end
   end
 
-  describe "#xpath" do
+  describe "#add_xpath_extractor, #xpath" do
     it "adds an XPath Extractor" do
       extractable.xpath(:foo, ".bar")
       added_extractable = extractable.extractables.first
@@ -53,7 +53,7 @@ describe Schablone::Extraction::Extractable do
     end
   end
 
-  describe "#group" do
+  describe "#add_group, #group" do
     it "adds an ExtractableGroup" do
       extractable.group(:foo)
       added_extractable = extractable.extractables.first
@@ -69,7 +69,7 @@ describe Schablone::Extraction::Extractable do
     end
   end
 
-  describe "#scope" do
+  describe "#add_scoper, #scope" do
     it "adds a Scoper" do
       extractable.scope(css: "#foo .bar")
       added_extractable = extractable.extractables.first
