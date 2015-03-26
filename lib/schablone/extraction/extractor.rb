@@ -34,6 +34,7 @@ module Schablone
       end
 
       private
+
       def evaluate(matched_nodes, *target_attrs)
         if @evaluator.is_a?(Proc)
           @evaluator.call(matched_nodes)

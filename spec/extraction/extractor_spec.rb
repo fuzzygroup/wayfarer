@@ -53,7 +53,7 @@ describe Schablone::Extraction::Extractor do
 
     context "with Proc of arity 1 given" do
       it "stores the Proc as its `@evaluator`" do
-        proc = -> (nodes) {}
+        proc = -> (_nodes) {}
         extractor = Extractor.new(:foo, css: "#foo", &proc)
         expect(extractor.evaluator).to be proc
       end
