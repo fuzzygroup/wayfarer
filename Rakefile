@@ -57,7 +57,7 @@ YARD::Rake::YardocTask.new :doc
 # ==============================================================================
 # RubyGems
 # ==============================================================================
-desc "Build the RubyGem"
+desc "Build RubyGem"
 task :build do
   sh "gem build schablone.gemspec --verbose"
 end
