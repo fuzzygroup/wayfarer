@@ -31,9 +31,8 @@ describe Schablone::Extraction::Extractor do
     end
 
     it "initializes `@matcher`" do
-      matcher = extractor.matcher
-      expect(matcher.type).to be :css
-      expect(matcher.expression).to eq "#foo"
+      expect(extractor.matcher.type).to be :css
+      expect(extractor.matcher.expression).to eq "#foo"
     end
 
     it "sets `@target_attrs`" do
@@ -54,7 +53,7 @@ describe Schablone::Extraction::Extractor do
 
     context "with Proc of arity 1 given" do
       it "stores the Proc as its `@evaluator`" do
-        proc = -> (_nodes) {}
+        proc = -> (nodes) {}
         extractor = Extractor.new(:foo, css: "#foo", &proc)
         expect(extractor.evaluator).to be proc
       end
