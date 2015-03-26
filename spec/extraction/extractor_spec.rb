@@ -24,7 +24,7 @@ describe Schablone::Extraction::Extractor do
   end
 
   describe "#initialize" do
-    let(:extractor) { Extractor.new(:foo, { css: "#foo" }, "href") }
+    subject(:extractor) { Extractor.new(:foo, { css: "#foo" }, "href") }
 
     it "sets `@key`" do
       expect(extractor.key).to be :foo
@@ -63,7 +63,7 @@ describe Schablone::Extraction::Extractor do
 
   describe "#extract" do
     context "without nested Extractables" do
-      let(:extractor) { Extractor.new(:foo, css: "#foo") }
+      subject(:extractor) { Extractor.new(:foo, css: "#foo") }
 
       it "evaluates matched Elements' contents" do
         result = extractor.extract(doc)
@@ -72,8 +72,11 @@ describe Schablone::Extraction::Extractor do
     end
 
     context "with nested Extractables" do
-      let(:extractor) { Extractor.new(:alphas, css: ".alpha") }
-      before { extractor.css(:betas, ".beta") }
+      subject(:extractor) do
+        extractor = Extractor.new(:alphas, css: ".alpha")
+        extractor.css(:betas, ".beta")
+        extractor
+      end
 
       it "evaluates nested Extractables" do
         result = extractor.extract(doc)
@@ -89,27 +92,13 @@ describe Schablone::Extraction::Extractor do
   describe "#evaluate" do
     let(:extractor) { Extractor.new(:beta_count, css: ".beta") }
 
-    context "when @evaluator is a Proc" do
-      let(:evaluator) do
-        -> (matched_nodes, *_target_attrs) { matched_nodes.count }
-      end
+    context "when `@evaluator` is a Proc" do
+      let(:proc) { -> (matched_nodes) { matched_nodes.count } }
+      subject(:extractor) { Extractor.new(:alpha_count, css: ".alpha", &proc) }
 
-      before { extractor.evaluator = evaluator }
-
-      it "evaluates the matched NodeSet by calling the Proc" do
+      it "calls `@evaluator` and returns its value" do
         result = extractor.extract(doc)
-        expect(result).to eq(beta_count: 6)
-      end
-    end
-
-    context "when @evaluator is not a Proc" do
-      let(:evaluator) { spy }
-
-      before { extractor.evaluator = evaluator }
-
-      it "calls #evaluate on @evaluator" do
-        result = extractor.extract(doc)
-        expect(evaluator).to have_received :evaluate
+        expect(result).to eq(alpha_count: 3)
       end
     end
   end
