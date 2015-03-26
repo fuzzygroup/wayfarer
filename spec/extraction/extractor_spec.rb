@@ -90,15 +90,27 @@ describe Schablone::Extraction::Extractor do
   end
 
   describe "#evaluate" do
-    let(:extractor) { Extractor.new(:beta_count, css: ".beta") }
-
     context "when `@evaluator` is a Proc" do
       let(:proc) { -> (matched_nodes) { matched_nodes.count } }
       subject(:extractor) { Extractor.new(:alpha_count, css: ".alpha", &proc) }
 
-      it "calls `@evaluator` and returns its value" do
+      it "calls `@evaluator` with its matched NodeSet" do
         result = extractor.extract(doc)
         expect(result).to eq(alpha_count: 3)
+      end
+    end
+
+    context "when `@evaluator` is not a Proc" do
+      let(:evaluator) { spy }
+      subject(:extractor) do
+        extractor = Extractor.new(:foo, css: "#foo")
+        extractor.evaluator = evaluator
+        extractor
+      end
+
+      it "calls #evaluate on its `@evaluator`" do
+        extractor.extract(doc)
+        expect(evaluator).to have_received(:evaluate)
       end
     end
   end
