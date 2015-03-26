@@ -92,7 +92,11 @@ describe Schablone::Extraction::Extractor do
   describe "#evaluate" do
     context "when `@evaluator` is a Proc" do
       let(:proc) { -> (matched_nodes) { matched_nodes.count } }
-      subject(:extractor) { Extractor.new(:alpha_count, css: ".alpha", &proc) }
+      subject(:extractor) do
+        extractor = Extractor.new(:alpha_count, css: ".alpha")
+        extractor.evaluator = proc
+        extractor
+      end
 
       it "calls `@evaluator` with its matched NodeSet" do
         result = extractor.extract(doc)
