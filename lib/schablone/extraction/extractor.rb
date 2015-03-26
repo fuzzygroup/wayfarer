@@ -21,16 +21,16 @@ module Schablone
         matched_nodes = matcher.match(nodes)
 
         if extractables.empty?
-          result = evaluate(matched_nodes, *@target_attrs)
+          extract = evaluate(matched_nodes, *@target_attrs)
         else
-          result = matched_nodes.map do |node|
+          extract = matched_nodes.map do |node|
             extractables.reduce({}) do |hash, extractable|
               hash.merge(extractable.extract(node))
             end
           end
         end
 
-        { key => result }
+        { key => extract }
       end
 
       private

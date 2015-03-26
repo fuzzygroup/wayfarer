@@ -65,8 +65,8 @@ describe Schablone::Extraction::Extractor do
       subject(:extractor) { Extractor.new(:foo, css: "#foo") }
 
       it "evaluates matched Elements' contents" do
-        result = extractor.extract(doc)
-        expect(result).to eq(foo: "Foo")
+        extract = extractor.extract(doc)
+        expect(extract).to eq(foo: "Foo")
       end
     end
 
@@ -78,8 +78,8 @@ describe Schablone::Extraction::Extractor do
       end
 
       it "evaluates nested Extractables" do
-        result = extractor.extract(doc)
-        expect(result).to eq(alphas: [
+        extract = extractor.extract(doc)
+        expect(extract).to eq(alphas: [
           { betas: %w(Lorem Ipsum) },
           { betas: %w(Dolor Sit) },
           { betas: %w(Amet Consetetur) }
@@ -98,8 +98,8 @@ describe Schablone::Extraction::Extractor do
       end
 
       it "calls `@evaluator` with its matched NodeSet" do
-        result = extractor.extract(doc)
-        expect(result).to eq(alpha_count: 3)
+        extract = extractor.extract(doc)
+        expect(extract).to eq(alpha_count: 3)
       end
     end
 
