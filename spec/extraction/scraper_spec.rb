@@ -2,6 +2,8 @@ require "spec_helpers"
 
 describe Schablone::Extraction::Scraper do
 
+  subject(:scraper) { Scraper.new }
+
   let(:doc) do
     Nokogiri::HTML <<-html
       <span id="foo">Foo</span>
@@ -35,7 +37,7 @@ describe Schablone::Extraction::Scraper do
 
     context "with Proc of arity 1 given" do
       it "stores the Proc as its `@evaluator`" do
-        proc = -> (nodes) {}
+        proc = -> (doc) {}
         scraper = Scraper.new(&proc)
         expect(scraper.evaluator).to be proc
       end
@@ -43,7 +45,12 @@ describe Schablone::Extraction::Scraper do
   end
 
   describe "#extract" do
-    context "with Proc of arity 0 given" do
+    it "returns a tainted Object" do
+      result = scraper.extract(doc)
+      expect(result).to be_tainted
+    end
+
+    context "without `@evaluator` Proc present" do
       let(:scraper) do
         Scraper.new do
           css(:foo, "#foo")
@@ -59,12 +66,17 @@ describe Schablone::Extraction::Scraper do
           betas: %w(Lorem Ipsum Dolor Sit Amet Consetetur)
         })
       end
+    end
 
-      it "returns a tainted Object" do
+    context "with `@evaluator` Proc present" do
+      let(:scraper) do
+        Scraper.new { |doc| doc.css(".alpha").count }
+      end
+
+      it "returns the expected extract" do
         result = scraper.extract(doc)
-        expect(result).to be_tainted
+        expect(result).to eq(3)
       end
     end
   end
-
 end

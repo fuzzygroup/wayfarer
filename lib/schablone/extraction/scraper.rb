@@ -11,6 +11,8 @@ module Schablone
       end
 
       def extract(doc)
+        return @evaluator.call(doc) if @evaluator
+
         result = extractables.reduce(Hash.new) do |hash, extractable|
           hash.merge(extractable.extract(doc))
         end
