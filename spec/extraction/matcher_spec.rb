@@ -33,12 +33,20 @@ describe Schablone::Extraction::Matcher do
       end
     end
 
-    context "with XPath selector" do
+    context "with XPath expression" do
       let(:matcher_hash) { { xpath: "//*[@id='foo']" } }
 
       it "returns the matched NodeSet" do
         matched_nodes = matcher.match(doc)
         expect(matched_nodes.count).to be 1
+      end
+    end
+
+    context "with unknown selector type" do
+      let(:matcher_hash) { { unknown: nil } }
+
+      it "raises a RuntimeError" do
+        expect { matcher.match(doc) }.to raise_error(RuntimeError)
       end
     end
   end
