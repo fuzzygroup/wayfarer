@@ -13,9 +13,9 @@ module Schablone
 
       @result = []
 
-      @current_uris   = [entry_uri]
-      @staged_uris    = []
-      @cached_uris = []
+      @current_uris = [entry_uri]
+      @staged_uris  = []
+      @cached_uris  = []
 
       @fetcher = Fetcher.new
 
@@ -36,15 +36,7 @@ module Schablone
     end
 
     def run
-      current_uris.each do |uri|
-        @pool.process { process(uri) }
-      end
-
-      @pool.shutdown
-
-      current_uris.clear
-
-      staged_uris.any? ? (cycle; run) : @result
+      
     end
 
     private
@@ -53,6 +45,10 @@ module Schablone
       page.links.each { |uri| stage(uri) }
       @result << @scraper.extract(page.parsed_document)
       cache(uri)
+    end
+
+    def current_uri_queue
+      current_uris.inject(Queue.new) { |queue, uri| queue << uri }
     end
 
     def stage(uri)

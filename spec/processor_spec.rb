@@ -150,6 +150,13 @@ describe Schablone::Processor do
     end
   end
 
+  describe "#current_uri_queue" do
+    it "returns a `Queue` of the correct size" do
+      processor.instance_variable_set(:@current_uris, [1, 2, 3])
+      expect(processor.send(:current_uri_queue).size).to be 3
+    end
+  end
+
   describe "#process" do
     let(:uri) { URI("http://0.0.0.0:9876/graph/index.html") }
     before { router.allow.host("0.0.0.0") }
@@ -178,10 +185,6 @@ describe Schablone::Processor do
   end
 
   describe "#run" do
-    it "works" do
-      processor.run
-      expect(processor.result).to eq 5
-    end
   end
 
 end
