@@ -141,11 +141,11 @@ describe Schablone::Processor do
   end
 
   describe "#process" do
-    let(:uri) { URI("http://0.0.0.0:9876/graph/index.html") }
+    let(:entry_uri) { URI("http://0.0.0.0:9876/graph/index.html") }
 
     it "works" do
       processor.send(:process)
-      expect(processor.result).to eq 123
+      expect(processor.result).to eq [{ title: "Index" }]
     end
   end
 
