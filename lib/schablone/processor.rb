@@ -36,33 +36,34 @@ module Schablone
     end
 
     def run
-      @pool.process(&:process) until current_uris.empty?
+      current_uris.each do |uri|
+        @pool.process { process(uri) }
+      end
+
+      @pool.shutdown
+
+      current_uris.clear
+
       staged_uris.any? ? (cycle; run) : @result
     end
 
     private
-    def process
-      uri = current_uris.shift
+    def process(uri)
       page = @fetcher.fetch(uri)
-
       page.links.each { |uri| stage(uri) }
-
-      extract = @scraper.extract(page.parsed_document)
-      @result << extract
-
+      @result << @scraper.extract(page.parsed_document)
       cache(uri)
     end
 
     def stage(uri)
       return if current?(uri)   ||
                 staged?(uri)    ||
-                cached?(uri) ||
+                cached?(uri)    ||
                 forbidden?(uri)
 
       staged_uris.push(uri)
     end
 
-    # untested
     def cache(uri)
       cached_uris.push(uri)
     end
