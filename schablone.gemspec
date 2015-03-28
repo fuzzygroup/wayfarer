@@ -37,4 +37,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "cucumber",       "~> 1.3",  ">= 1.3.17"
   s.add_development_dependency "sinatra",        "~> 1.4",  ">= 1.4.5"
   s.add_development_dependency "rubocop",        "~> 0.29", ">= 0.29.1"
+  s.add_development_dependency "faker",          "~> 1.4",  ">= 1.4.3"
+
 end
