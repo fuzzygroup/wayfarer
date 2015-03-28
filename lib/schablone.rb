@@ -62,7 +62,6 @@ module Schablone
         <<-log
           #{severity} (#{datetime}):
           #{message}
-
         log
       end
       logger

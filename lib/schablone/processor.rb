@@ -11,13 +11,13 @@ module Schablone
 
     def initialize(entry_uri, scraper, router)
       @scraper = scraper
-      @router  = router
+      @router = router
 
       @result = []
 
       @current_uris = [entry_uri]
-      @staged_uris  = []
-      @cached_uris  = []
+      @staged_uris = []
+      @cached_uris = []
 
       @fetcher = Fetcher.new
       @mutex = Mutex.new

@@ -156,6 +156,10 @@ describe Schablone::Processor do
     end
   end
 
+  describe "#emit" do
+    it ""
+  end
+
   describe "#process" do
     let(:uri) { URI("http://0.0.0.0:9876/graph/index.html") }
     before { router.allow.host("0.0.0.0") }
