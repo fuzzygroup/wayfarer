@@ -1,3 +1,4 @@
+require "set"
 require "thread"
 
 module Schablone
@@ -11,7 +12,7 @@ module Schablone
       @result = []
 
       @current_uris = [entry_uri]
-      @staged_uris = []
+      @staged_uris = Set.new([])
       @cached_uris = []
 
       @mutex = Mutex.new
@@ -22,7 +23,7 @@ module Schablone
     end
 
     def staged_uris
-      @mutex.synchronize { @staged_uris }
+      @mutex.synchronize { @staged_uris.to_a }
     end
 
     def cached_uris
@@ -74,11 +75,10 @@ module Schablone
 
     def stage(uri)
       return if current?(uri)   ||
-                staged?(uri)    ||
                 forbidden?(uri) ||
                 cached?(uri)
 
-      @staged_uris.push(uri)
+      @staged_uris << uri
     end
 
     def cache(uri)
