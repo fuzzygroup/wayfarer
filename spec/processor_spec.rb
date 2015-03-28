@@ -3,7 +3,11 @@ require "spec_helpers"
 describe Schablone::Processor do
 
   let(:scraper) { Scraper.new.css(:title, "title") }
-  let(:router) { Router.new.allow.host("http://example.com") }
+  let(:router) do
+    router = Router.new
+    router.allow.host("example.com")
+    router
+  end
 
   subject(:processor) { Processor.new(scraper, router) }
 
@@ -22,15 +26,15 @@ describe Schablone::Processor do
   end
 
   describe "#stage" do
+    let(:uri) { URI("http://example.com") }
+
     it "stages a URI" do
-      uri = URI("http://example.com")
       expect {
         processor.send(:stage, uri)
       }.to change { processor.staged_uris.count }.by(1)
     end
 
     context "with processed URI" do
-      let(:uri) { URI("http://example.com") }
       before { processor.instance_variable_set(:@processed_uris, [uri]) }
 
       it "does not stage the URI" do
@@ -41,10 +45,19 @@ describe Schablone::Processor do
     end
 
     context "with staged URI" do
-      let(:uri) { URI("http://example.com") }
       before { processor.send(:stage, uri) }
 
       it "does not stage the URI again" do
+        expect {
+          processor.send(:stage, uri)
+        }.not_to change { processor.staged_uris.count }
+      end
+    end
+
+    context "with URI forbidden by `@router`" do
+      before { router.forbid.host("example.com") }
+
+      it "does not stage the URI" do
         expect {
           processor.send(:stage, uri)
         }.not_to change { processor.staged_uris.count }

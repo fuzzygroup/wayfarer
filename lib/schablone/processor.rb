@@ -39,9 +39,10 @@ module Schablone
     end
 
     def stage(uri)
-      return if current?(uri) ||
-                staged?(uri)  ||
-                processed?(uri)
+      return if current?(uri)   ||
+                staged?(uri)    ||
+                processed?(uri) ||
+                forbidden?(uri)
 
       @staged_uris << uri
     end
@@ -59,6 +60,7 @@ module Schablone
     end
 
     def forbidden?(uri)
+      @router.forbids?(uri)
     end
 
     def cycle
