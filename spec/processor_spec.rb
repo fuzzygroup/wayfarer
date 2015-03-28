@@ -26,8 +26,8 @@ describe Schablone::Processor do
       expect(processor.staged_uris).to eq []
     end
 
-    it "sets `@processed_uris` to an empty list" do
-      expect(processor.processed_uris).to eq []
+    it "sets `@cached_uris` to an empty list" do
+      expect(processor.cached_uris).to eq []
     end
   end
 
@@ -40,8 +40,8 @@ describe Schablone::Processor do
       }.to change { processor.staged_uris.count }.by(1)
     end
 
-    context "with processed URI" do
-      before { processor.instance_variable_set(:@processed_uris, [uri]) }
+    context "with cached URI" do
+      before { processor.instance_variable_set(:@cached_uris, [uri]) }
 
       it "does not stage the URI" do
         expect {
@@ -68,6 +68,16 @@ describe Schablone::Processor do
           processor.send(:stage, uri)
         }.not_to change { processor.staged_uris.count }
       end
+    end
+  end
+
+  describe "#cache" do
+    let(:uri) { URI("http://example.com") }
+
+    it "caches a URI" do
+      expect {
+        processor.send(:cache, uri)
+      }.to change { processor.cached_uris.count }.by(1)
     end
   end
 
@@ -107,20 +117,20 @@ describe Schablone::Processor do
     end
   end
 
-  describe "#processed?" do
+  describe "#cached?" do
     let(:uri) { URI("http://example.com") }
 
     context "with processed URI" do
-      before { processor.instance_variable_set(:@processed_uris, [uri]) }
+      before { processor.instance_variable_set(:@cached_uris, [uri]) }
 
       it "returns `true`" do
-        expect(processor.send(:processed?, uri)).to be true
+        expect(processor.send(:cached?, uri)).to be true
       end
     end
 
     context "with unprocessed URI" do
       it "returns `false`" do
-        expect(processor.send(:processed?, uri)).to be false
+        expect(processor.send(:cached?, uri)).to be false
       end
     end
   end
@@ -158,6 +168,12 @@ describe Schablone::Processor do
         http://0.0.0.0:9876/status_code/404
         http://0.0.0.0:9876/redirect_loop
       ).map { |str| URI(str) }
+    end
+
+    it "caches processed URIs" do
+      expect(processor.cached_uris).to eq [
+        URI("http://0.0.0.0:9876/graph/index.html")
+      ]
     end
   end
 

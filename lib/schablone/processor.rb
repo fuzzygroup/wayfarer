@@ -15,7 +15,7 @@ module Schablone
 
       @current_uris   = [entry_uri]
       @staged_uris    = []
-      @processed_uris = []
+      @cached_uris = []
 
       @fetcher = Fetcher.new
 
@@ -31,8 +31,8 @@ module Schablone
       @mutex.synchronize { @staged_uris }
     end
 
-    def processed_uris
-      @mutex.synchronize { @processed_uris }
+    def cached_uris
+      @mutex.synchronize { @cached_uris }
     end
 
     def run
@@ -49,15 +49,22 @@ module Schablone
 
       extract = @scraper.extract(page.parsed_document)
       @result << extract
+
+      cache(uri)
     end
 
     def stage(uri)
       return if current?(uri)   ||
                 staged?(uri)    ||
-                processed?(uri) ||
+                cached?(uri) ||
                 forbidden?(uri)
 
-      @staged_uris << uri
+      staged_uris.push(uri)
+    end
+
+    # untested
+    def cache(uri)
+      cached_uris.push(uri)
     end
 
     def current?(uri)
@@ -68,8 +75,8 @@ module Schablone
       staged_uris.include?(uri)
     end
 
-    def processed?(uri)
-      processed_uris.include?(uri)
+    def cached?(uri)
+      cached_uris.include?(uri)
     end
 
     def forbidden?(uri)
