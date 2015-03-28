@@ -1,4 +1,3 @@
-require "pry"
 require "thread"
 
 module Schablone
