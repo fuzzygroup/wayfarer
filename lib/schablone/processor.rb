@@ -51,14 +51,18 @@ module Schablone
     private
 
     def process(uri)
-      page = @fetcher.fetch(uri)
-      page.links.each { |uri| stage(uri) }
-      @result << @scraper.extract(page.parsed_document)
-      cache(uri)
+      @mutex.synchronize do
+        page = @fetcher.fetch(uri)
+        page.links.each { |uri| stage(uri) }
+        @result << @scraper.extract(page.parsed_document)
+        cache(uri)
+      end
     end
 
     def current_uri_queue
-      @current_uris.inject(Queue.new) { |queue, uri| queue << uri }
+      @mutex.synchronize do
+        @current_uris.inject(Queue.new) { |queue, uri| queue << uri }
+      end
     end
 
     def stage(uri)
