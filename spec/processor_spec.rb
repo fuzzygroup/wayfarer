@@ -67,6 +67,24 @@ describe Schablone::Processor do
     end
   end
 
+  describe "#staged?" do
+    let(:uri) { URI("http://example.com") }
+
+    context "with staged URI" do
+      before { processor.send(:stage, uri) }
+
+      it "returns `true`" do
+        expect(processor.send(:staged?, uri)).to be true
+      end
+    end
+
+    context "with non-staged URI" do
+      it "returns `false`" do
+        expect(processor.send(:staged?, uri)).to be false
+      end
+    end
+  end
+
   describe "#processed?" do
     let(:uri) { URI("http://example.com") }
 
@@ -87,7 +105,6 @@ describe Schablone::Processor do
 
   describe "#cycle" do
     before do
-      processor.instance_variable_set(:@current_uris, [])
       processor.instance_variable_set(:@staged_uris, [:staged])
       processor.send(:cycle)
     end

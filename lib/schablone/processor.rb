@@ -1,4 +1,3 @@
-require "set"
 require "pry"
 require "thread"
 require "thread/pool"
@@ -11,7 +10,7 @@ module Schablone
 
     def initialize
       @current_uris = []
-      @staged_uris = Set.new
+      @staged_uris = []
       @processed_uris = []
     end
 
@@ -21,11 +20,16 @@ module Schablone
 
     private
     def stage(uri)
-      @staged_uris << uri unless processed?(uri)
+      return if current?(uri) || staged?(uri) || processed?(uri)
+      @staged_uris << uri
     end
 
     def current?(uri)
       @current_uris.include?(uri)
+    end
+
+    def staged?(uri)
+      @staged_uris.include?(uri)
     end
 
     def processed?(uri)
@@ -33,7 +37,8 @@ module Schablone
     end
 
     def cycle
-      @current_uris, @staged_uris = @staged_uris, Set.new([])
+      @current_uris = staged_uris
+      @staged_uris.clear
     end
 
   end
