@@ -3,7 +3,6 @@ require "thread"
 
 module Schablone
   class Processor
-
     attr_reader :result
 
     attr_reader :current_uris
@@ -50,6 +49,7 @@ module Schablone
     end
 
     private
+
     def process(uri)
       page = @fetcher.fetch(uri)
       page.links.each { |uri| stage(uri) }
@@ -93,6 +93,5 @@ module Schablone
     def cycle
       @current_uris, @staged_uris = staged_uris, []
     end
-
   end
 end

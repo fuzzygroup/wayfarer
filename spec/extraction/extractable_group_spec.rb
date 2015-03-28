@@ -4,11 +4,11 @@ describe Schablone::Extraction::ExtractableGroup do
   subject(:group) { ExtractableGroup.new(:foo) }
 
   let(:doc) do
-      Nokogiri::HTML <<-html
+    Nokogiri::HTML <<-html
         <span id="foo">Foo</span>
         <span id="bar">Bar</span>
       html
-    end
+  end
 
   describe "#initialize" do
     it "sets `@key` correctly" do

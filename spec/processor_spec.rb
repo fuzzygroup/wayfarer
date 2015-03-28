@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Processor do
-
   let(:entry_uri) { URI("http://example.com/entry") }
   let(:scraper) do
     scraper = Scraper.new
@@ -35,18 +34,18 @@ describe Schablone::Processor do
     let(:uri) { URI("http://example.com") }
 
     it "stages a URI" do
-      expect {
+      expect do
         processor.send(:stage, uri)
-      }.to change { processor.staged_uris.count }.by(1)
+      end.to change { processor.staged_uris.count }.by(1)
     end
 
     context "with cached URI" do
       before { processor.instance_variable_set(:@cached_uris, [uri]) }
 
       it "does not stage the URI" do
-        expect {
+        expect do
           processor.send(:stage, uri)
-        }.not_to change { processor.staged_uris.count }
+        end.not_to change { processor.staged_uris.count }
       end
     end
 
@@ -54,9 +53,9 @@ describe Schablone::Processor do
       before { processor.send(:stage, uri) }
 
       it "does not stage the URI again" do
-        expect {
+        expect do
           processor.send(:stage, uri)
-        }.not_to change { processor.staged_uris.count }
+        end.not_to change { processor.staged_uris.count }
       end
     end
 
@@ -64,9 +63,9 @@ describe Schablone::Processor do
       before { router.forbid.host("example.com") }
 
       it "does not stage the URI" do
-        expect {
+        expect do
           processor.send(:stage, uri)
-        }.not_to change { processor.staged_uris.count }
+        end.not_to change { processor.staged_uris.count }
       end
     end
   end
@@ -75,9 +74,9 @@ describe Schablone::Processor do
     let(:uri) { URI("http://example.com") }
 
     it "caches a URI" do
-      expect {
+      expect do
         processor.send(:cache, uri)
-      }.to change { processor.cached_uris.count }.by(1)
+      end.to change { processor.cached_uris.count }.by(1)
     end
   end
 
@@ -193,5 +192,4 @@ describe Schablone::Processor do
       expect(processor.result).to be 5
     end
   end
-
 end

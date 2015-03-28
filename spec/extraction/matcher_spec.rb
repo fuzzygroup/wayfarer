@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Extraction::Matcher do
-
   let(:doc) do
     Nokogiri::HTML <<-html
       <span id="foo">Foo</span>
@@ -50,5 +49,4 @@ describe Schablone::Extraction::Matcher do
       end
     end
   end
-
 end
