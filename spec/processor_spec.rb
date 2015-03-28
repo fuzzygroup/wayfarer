@@ -189,7 +189,7 @@ describe Schablone::Processor do
 
     it "works" do
       processor.run
-      expect(processor.result).to be 5
+      expect(processor.result.count).to be 6
     end
   end
 end
