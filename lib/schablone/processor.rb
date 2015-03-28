@@ -5,10 +5,6 @@ module Schablone
   class Processor
     attr_reader :result
 
-    attr_reader :current_uris
-    attr_reader :staged_uris
-    attr_reader :cached_uris
-
     def initialize(entry_uri, scraper, router)
       @scraper = scraper
       @router = router
@@ -48,6 +44,18 @@ module Schablone
       Schablone.log.error(e)
     end
 
+    def current_uris
+      @mutex.synchronize { @current_uris }
+    end
+
+    def staged_uris
+      @mutex.synchronize { @staged_uris }
+    end
+
+    def cached_uris
+      @mutex.synchronize { @cached_uris }
+    end
+
     private
 
     def process(uri)
@@ -69,7 +77,7 @@ module Schablone
                 cached?(uri)    ||
                 forbidden?(uri)
 
-      staged_uris.push(uri)
+      @staged_uris.push(uri)
     end
 
     def cache(uri)
