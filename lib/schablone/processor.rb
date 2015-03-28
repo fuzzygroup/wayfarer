@@ -5,17 +5,32 @@ require "thread/pool"
 module Schablone
   class Processor
 
-    attr_reader :current_uris
-    attr_reader :staged_uris
-    attr_reader :processed_uris
-
     def initialize
       @current_uris   = []
       @staged_uris    = []
       @processed_uris = []
+
+      @pool  = Thread.pool(4)
+      @mutex = Mutex.new
+    end
+
+    def current_uris
+      @mutex.synchronize { @current_uris }
+    end
+
+    def staged_uris
+      @mutex.synchronize { @staged_uris }
+    end
+
+    def processed_uris
+      @mutex.synchronize { @processed_uris }
     end
 
     private
+    def prefetch
+
+    end
+
     def stage(uri)
       return if current?(uri) || staged?(uri) || processed?(uri)
       @staged_uris << uri
