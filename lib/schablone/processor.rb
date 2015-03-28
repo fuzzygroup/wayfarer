@@ -44,6 +44,9 @@ module Schablone
     def process
       uri = current_uris.shift
       page = @fetcher.fetch(uri)
+
+      page.links.each { |uri| stage(uri) }
+
       extract = @scraper.extract(page.parsed_document)
       @result << extract
     end

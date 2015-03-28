@@ -142,10 +142,22 @@ describe Schablone::Processor do
 
   describe "#process" do
     let(:entry_uri) { URI("http://0.0.0.0:9876/graph/index.html") }
+    before { router.allow.host("0.0.0.0") }
+    before { processor.send(:process) }
 
     it "works" do
-      processor.send(:process)
       expect(processor.result).to eq [{ title: "Index" }]
+    end
+
+    it "stages the expected URIs" do
+      expect(processor.staged_uris).to eq %w(
+        http://0.0.0.0:9876/graph/details/a.html
+        http://0.0.0.0:9876/graph/details/b.html
+        http://0.0.0.0:9876/status_code/400
+        http://0.0.0.0:9876/status_code/403
+        http://0.0.0.0:9876/status_code/404
+        http://0.0.0.0:9876/redirect_loop
+      ).map { |str| URI(str) }
     end
   end
 
