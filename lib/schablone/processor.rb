@@ -33,7 +33,7 @@ module Schablone
     end
 
     def cycle
-
+      @current_uris, @staged_uris = @staged_uris, Set.new([])
     end
 
   end

@@ -86,7 +86,19 @@ describe Schablone::Processor do
   end
 
   describe "#cycle" do
+    before do
+      processor.instance_variable_set(:@current_uris, [])
+      processor.instance_variable_set(:@staged_uris, [:staged])
+      processor.send(:cycle)
+    end
 
+    it "sets `@current_uris` to `@staged_uris`" do
+      expect(processor.current_uris).to eq [:staged]
+    end
+
+    it "sets `@staged_uris` to an empty list" do
+      expect(processor.staged_uris).to eq []
+    end
   end
 
 end
