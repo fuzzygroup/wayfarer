@@ -2,7 +2,10 @@ require "spec_helpers"
 
 describe Schablone::Processor do
 
-  subject(:processor) { Processor.new }
+  let(:scraper) { Scraper.new.css(:title, "title") }
+  let(:router) { Router.new.allow.host("http://example.com") }
+
+  subject(:processor) { Processor.new(scraper, router) }
 
   describe "#initialize" do
     it "sets `@current_uris` to an empty list" do

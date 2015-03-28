@@ -5,10 +5,15 @@ require "thread/pool"
 module Schablone
   class Processor
 
-    def initialize
+    def initialize(scraper, router)
+      @scraper = scraper
+      @router  = router
+
       @current_uris   = []
       @staged_uris    = []
       @processed_uris = []
+
+      @fetcher = Fetcher.new
 
       @pool  = Thread.pool(4)
       @mutex = Mutex.new
@@ -27,12 +32,17 @@ module Schablone
     end
 
     private
-    def prefetch
-
+    def step
+      uri = staged_uris.shift
+      page = @fetcher.fetch(uri)
+      extract = nil
     end
 
     def stage(uri)
-      return if current?(uri) || staged?(uri) || processed?(uri)
+      return if current?(uri) ||
+                staged?(uri)  ||
+                processed?(uri)
+
       @staged_uris << uri
     end
 
@@ -46,6 +56,9 @@ module Schablone
 
     def processed?(uri)
       @processed_uris.include?(uri)
+    end
+
+    def forbidden?(uri)
     end
 
     def cycle
