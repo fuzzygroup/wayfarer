@@ -19,6 +19,18 @@ module Schablone
       @mutex = Mutex.new
     end
 
+    def current_uris
+      @mutex.synchronize { @current_uris }
+    end
+
+    def staged_uris
+      @mutex.synchronize { @staged_uris }
+    end
+
+    def cached_uris
+      @mutex.synchronize { @cached_uris }
+    end
+
     def run
       loop do
         queue = current_uri_queue
@@ -29,6 +41,8 @@ module Schablone
             until queue.empty?
               if uri = queue.pop(true) rescue nil
                 process(uri)
+              else
+                Thread.current.stop
               end
             end
           end
@@ -42,18 +56,6 @@ module Schablone
 
     rescue RuntimeError => e
       Schablone.log.error(e)
-    end
-
-    def current_uris
-      @mutex.synchronize { @current_uris }
-    end
-
-    def staged_uris
-      @mutex.synchronize { @staged_uris }
-    end
-
-    def cached_uris
-      @mutex.synchronize { @cached_uris }
     end
 
     private
