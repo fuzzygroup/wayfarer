@@ -36,6 +36,17 @@ describe Schablone::Processor do
         }.not_to change { processor.staged_uris.count }
       end
     end
+
+    context "with staged URI" do
+      let(:uri) { URI("http://example.com") }
+      before { processor.send(:stage, uri) }
+
+      it "does not stage the URI" do
+        expect {
+          processor.send(:stage, uri)
+        }.not_to change { processor.staged_uris.count }
+      end
+    end
   end
 
   describe "#processed?" do
