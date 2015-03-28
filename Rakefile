@@ -108,3 +108,12 @@ end
 ["spec:isolated", "spec:live", "features"].each do |task|
   Rake::Task[task].enhance { Rake::Task["stop_test_app"].invoke }
 end
+
+# ==============================================================================
+# Benchmarks
+# ==============================================================================
+desc "Run benchmarks"
+task :benchmark do
+  FileList.new("benchmarks/*_bm.rb").each { |file| ruby(file) }
+end
+
