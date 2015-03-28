@@ -2,18 +2,24 @@ require "spec_helpers"
 
 describe Schablone::Processor do
 
-  let(:scraper) { Scraper.new.css(:title, "title") }
+  let(:entry_uri) { URI("http://example.com/entry") }
+  let(:scraper) do
+    scraper = Scraper.new
+    scraper.css(:title, "title")
+    scraper
+  end
+
   let(:router) do
     router = Router.new
     router.allow.host("example.com")
     router
   end
 
-  subject(:processor) { Processor.new(scraper, router) }
+  subject(:processor) { Processor.new(entry_uri, scraper, router) }
 
   describe "#initialize" do
-    it "sets `@current_uris` to an empty list" do
-      expect(processor.current_uris).to eq []
+    it "appends `entry_uri` to `@current_uris`" do
+      expect(processor.current_uris).to eq [entry_uri]
     end
 
     it "sets `@staged_uris` to an empty list" do
@@ -131,6 +137,15 @@ describe Schablone::Processor do
 
     it "sets `@staged_uris` to an empty list" do
       expect(processor.staged_uris).to eq []
+    end
+  end
+
+  describe "#process" do
+    let(:uri) { URI("http://0.0.0.0:9876/graph/index.html") }
+
+    it "works" do
+      processor.send(:process)
+      expect(processor.result).to eq 123
     end
   end
 

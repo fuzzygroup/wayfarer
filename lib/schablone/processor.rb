@@ -5,11 +5,15 @@ require "thread/pool"
 module Schablone
   class Processor
 
-    def initialize(scraper, router)
+    attr_reader :result
+
+    def initialize(entry_uri, scraper, router)
       @scraper = scraper
       @router  = router
 
-      @current_uris   = []
+      @result = []
+
+      @current_uris   = [entry_uri]
       @staged_uris    = []
       @processed_uris = []
 
@@ -31,11 +35,17 @@ module Schablone
       @mutex.synchronize { @processed_uris }
     end
 
+    def run
+      @pool.process(&:process) until current_uris.empty?
+      staged_uris.any? ? (cycle; run) : @result
+    end
+
     private
-    def step
-      uri = staged_uris.shift
+    def process
+      uri = current_uris.shift
       page = @fetcher.fetch(uri)
-      extract = nil
+      extract = @scraper.extract(page.parsed_document)
+      @result << extract
     end
 
     def stage(uri)
