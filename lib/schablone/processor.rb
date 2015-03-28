@@ -37,8 +37,7 @@ module Schablone
     end
 
     def cycle
-      @current_uris = staged_uris
-      @staged_uris.clear
+      @current_uris, @staged_uris = staged_uris, []
     end
 
   end
