@@ -47,15 +47,12 @@ module Schablone
         end
 
         threads.each(&:join)
-        @current_uris.clear
 
         @staged_uris.any? ? cycle : break
       end
 
     rescue RuntimeError => error
       Schablone.log.error(error)
-    rescue => error
-      Schablone.log.error("This was not supposed to happen: #{caller}")
     end
 
     private
@@ -87,10 +84,6 @@ module Schablone
 
     def current?(uri)
       @current_uris.include?(uri)
-    end
-
-    def staged?(uri)
-      @staged_uris.include?(uri)
     end
 
     def cached?(uri)
