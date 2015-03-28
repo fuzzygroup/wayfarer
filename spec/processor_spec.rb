@@ -158,9 +158,9 @@ describe Schablone::Processor do
   end
 
   describe "#process" do
-    let(:uri) { URI("http://0.0.0.0:9876/graph/index.html") }
+    let(:entry_uri) { URI("http://0.0.0.0:9876/graph/index.html") }
     before { router.allow.host("0.0.0.0") }
-    before { processor.send(:process, uri) }
+    before { processor.send(:process) }
 
     it "works" do
       expect(processor.result).to eq [{ title: "Index" }]

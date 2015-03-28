@@ -36,11 +36,12 @@ module Schablone
     end
 
     def run
-      
+
     end
 
     private
-    def process(uri)
+    def process
+      uri = current_uri_queue.pop
       page = @fetcher.fetch(uri)
       page.links.each { |uri| stage(uri) }
       @result << @scraper.extract(page.parsed_document)
