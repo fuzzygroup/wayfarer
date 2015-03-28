@@ -6,16 +6,13 @@ module Schablone
   class Processor
 
     attr_reader :current_uris
+    attr_reader :staged_uris
     attr_reader :processed_uris
 
     def initialize
-      @current_uris = []
-      @staged_uris = []
+      @current_uris   = []
+      @staged_uris    = []
       @processed_uris = []
-    end
-
-    def staged_uris
-      @staged_uris.to_a
     end
 
     private
