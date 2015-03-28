@@ -60,9 +60,7 @@ module Schablone
     end
 
     def current_uri_queue
-      @mutex.synchronize do
-        @current_uris.inject(Queue.new) { |queue, uri| queue << uri }
-      end
+      @current_uris.inject(Queue.new) { |queue, uri| queue << uri }
     end
 
     def stage(uri)
