@@ -26,7 +26,7 @@ describe Schablone::Processor do
       }.to change { processor.staged_uris.count }.by(1)
     end
 
-    context "with already processed URI" do
+    context "with processed URI" do
       let(:uri) { URI("http://example.com") }
       before { processor.instance_variable_set(:@processed_uris, [uri]) }
 
@@ -39,8 +39,9 @@ describe Schablone::Processor do
   end
 
   describe "#processed?" do
-    context "with already processed URI" do
-      let(:uri) { URI("http://example.com") }
+    let(:uri) { URI("http://example.com") }
+
+    context "with processed URI" do
       before { processor.instance_variable_set(:@processed_uris, [uri]) }
 
       it "returns `true`" do
@@ -49,11 +50,8 @@ describe Schablone::Processor do
     end
 
     context "with unprocessed URI" do
-      let(:uri) { URI("http://example.com") }
-      before { processor.instance_variable_set(:@processed_uris, [uri]) }
-
-      it "returns `true`" do
-        expect(processor.send(:processed?, uri)).to be true
+      it "returns `false`" do
+        expect(processor.send(:processed?, uri)).to be false
       end
     end
   end
