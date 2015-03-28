@@ -41,10 +41,28 @@ describe Schablone::Processor do
       let(:uri) { URI("http://example.com") }
       before { processor.send(:stage, uri) }
 
-      it "does not stage the URI" do
+      it "does not stage the URI again" do
         expect {
           processor.send(:stage, uri)
         }.not_to change { processor.staged_uris.count }
+      end
+    end
+  end
+
+  describe "#current?" do
+    let(:uri) { URI("http://example.com") }
+
+    context "with current URI" do
+      before { processor.instance_variable_set(:@current_uris, [uri]) }
+
+      it "returns `true`" do
+        expect(processor.send(:current?, uri)).to be true
+      end
+    end
+
+    context "with non-current URI" do
+      it "returns `false`" do
+        expect(processor.send(:current?, uri)).to be false
       end
     end
   end
@@ -65,6 +83,10 @@ describe Schablone::Processor do
         expect(processor.send(:processed?, uri)).to be false
       end
     end
+  end
+
+  describe "#cycle" do
+
   end
 
 end

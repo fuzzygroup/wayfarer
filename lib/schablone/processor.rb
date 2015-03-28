@@ -1,3 +1,4 @@
+require "set"
 require "pry"
 require "thread"
 require "thread/pool"
@@ -23,8 +24,16 @@ module Schablone
       @staged_uris << uri unless processed?(uri)
     end
 
+    def current?(uri)
+      @current_uris.include?(uri)
+    end
+
     def processed?(uri)
       @processed_uris.include?(uri)
+    end
+
+    def cycle
+
     end
 
   end
