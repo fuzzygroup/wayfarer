@@ -119,3 +119,19 @@ end
 ["spec:isolated", "spec:live", "features", "benchmark"].each do |task|
   Rake::Task[task].enhance { Rake::Task["stop_test_app"].invoke }
 end
+
+# ==============================================================================
+# Test dependencies
+# ==============================================================================
+namespace :deps do
+  directory "support/static/html40"
+
+  task fetch_html_spec: "support/static/html40" do
+    sh "wget -P support/static http://www.w3.org/TR/html401/html40.zip"
+    sh "unzip -o support/static/html40.zip -d support/static/html40"
+    sh "rm support/static/html40.zip"
+  end
+
+  desc "Fetch external test files"
+  task fetch: ["fetch_html_spec"]
+end
