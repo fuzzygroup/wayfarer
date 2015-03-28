@@ -1,11 +1,13 @@
 require "pry"
 require "thread"
-require "thread/pool"
 
 module Schablone
   class Processor
 
     attr_reader :result
+
+    attr_reader :current_uris
+    attr_reader :staged_uris
 
     def initialize(entry_uri, scraper, router)
       @scraper = scraper
@@ -18,17 +20,7 @@ module Schablone
       @cached_uris  = []
 
       @fetcher = Fetcher.new
-
-      @pool  = Thread.pool(4)
       @mutex = Mutex.new
-    end
-
-    def current_uris
-      @mutex.synchronize { @current_uris }
-    end
-
-    def staged_uris
-      @mutex.synchronize { @staged_uris }
     end
 
     def cached_uris
@@ -37,14 +29,23 @@ module Schablone
 
     def run
       queue = current_uri_queue
+      threads = []
 
-      @pool.process do
-        process(queue) until queue.empty?
+      4.times do
+        threads << Thread.new do
+          until queue.empty?
+            (uri = queue.pop) ? process(uri) : Thread.current.stop
+          end
+        end
       end
 
-      current_uris.clear
+      threads.each(&:join)
+      @current_uris.clear
 
+      (cycle; run) if @staged_uris.any?
 
+    rescue RuntimeError => e
+      puts e
     end
 
     private
