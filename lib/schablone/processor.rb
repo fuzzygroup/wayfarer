@@ -8,6 +8,7 @@ module Schablone
 
     attr_reader :current_uris
     attr_reader :staged_uris
+    attr_reader :cached_uris
 
     def initialize(entry_uri, scraper, router)
       @scraper = scraper
@@ -23,10 +24,6 @@ module Schablone
       @mutex = Mutex.new
     end
 
-    def cached_uris
-      @mutex.synchronize { @cached_uris }
-    end
-
     def run
       queue = current_uri_queue
       threads = []
@@ -34,7 +31,11 @@ module Schablone
       4.times do
         threads << Thread.new do
           until queue.empty?
-            (uri = queue.pop) ? process(uri) : Thread.current.stop
+            if uri = queue.pop(true) rescue nil
+              process(uri)
+            else
+              Thread.current.stop
+            end
           end
         end
       end
@@ -70,19 +71,19 @@ module Schablone
     end
 
     def cache(uri)
-      cached_uris.push(uri)
+      @cached_uris.push(uri)
     end
 
     def current?(uri)
-      current_uris.include?(uri)
+      @current_uris.include?(uri)
     end
 
     def staged?(uri)
-      staged_uris.include?(uri)
+      @staged_uris.include?(uri)
     end
 
     def cached?(uri)
-      cached_uris.include?(uri)
+      @cached_uris.include?(uri)
     end
 
     def forbidden?(uri)

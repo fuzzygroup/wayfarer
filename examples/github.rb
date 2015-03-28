@@ -9,6 +9,7 @@ crawler = Schablone::Crawler.new do
   end
 
   router.allow do
+    host /zeit.de/
   end
 end
 
