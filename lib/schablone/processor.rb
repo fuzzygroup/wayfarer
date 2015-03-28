@@ -41,7 +41,7 @@ module Schablone
         threads.each(&:join)
         @current_uris.clear
 
-        @staged_uris.any? ? (cycle) : break
+        @staged_uris.any? ? cycle : break
       end
 
     rescue RuntimeError => e
