@@ -190,6 +190,8 @@ describe Schablone::Processor do
   describe "#run" do
     let(:entry_uri) { URI("http://0.0.0.0:9876/graph/index.html") }
     before { router.allow.host("0.0.0.0") }
+    before { Schablone.config.log_level = Logger::INFO }
+    after { Schablone.config.reset! }
 
     it "works" do
       processor.run

@@ -14,7 +14,6 @@ module Schablone
       @staged_uris = []
       @cached_uris = []
 
-      @fetcher = Fetcher.new
       @mutex = Mutex.new
     end
 
@@ -39,9 +38,8 @@ module Schablone
           threads << Thread.new do
             until queue.empty?
               if uri = queue.pop(true) rescue nil
+                Schablone.log.info("About to hit: #{uri}")
                 process(uri)
-              else
-                Thread.current.stop
               end
             end
           end
@@ -53,15 +51,17 @@ module Schablone
         @staged_uris.any? ? cycle : break
       end
 
-    rescue RuntimeError => e
-      Schablone.log.error(e)
+    rescue RuntimeError => error
+      Schablone.log.error(error)
+    rescue => error
+      Schablone.log.error("This was not supposed to happen: #{caller}")
     end
 
     private
 
     def process(uri)
       @mutex.synchronize do
-        page = @fetcher.fetch(uri)
+        page = Fetcher.new.fetch(uri)
         page.links.each { |uri| stage(uri) }
         @result << @scraper.extract(page.parsed_document)
         cache(uri)
@@ -75,8 +75,8 @@ module Schablone
     def stage(uri)
       return if current?(uri)   ||
                 staged?(uri)    ||
-                cached?(uri)    ||
-                forbidden?(uri)
+                forbidden?(uri) ||
+                cached?(uri)
 
       @staged_uris.push(uri)
     end
