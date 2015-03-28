@@ -38,6 +38,17 @@ desc "Run all scenarios"
 task features: ["features:isolated"]
 
 # ==============================================================================
+# Benchmarks
+# ==============================================================================
+desc "Run benchmarks"
+task benchmark: ["start_test_app"] do
+  FileList.new("benchmarks/*_bm.rb").each do |file|
+    puts "=" * `tput cols`.to_i
+    ruby(file)
+  end
+end
+
+# ==============================================================================
 # RuboCop
 # ==============================================================================
 RuboCop::RakeTask.new do |task|
@@ -105,15 +116,6 @@ task :stop_test_app do
   @server_thread.kill
 end
 
-["spec:isolated", "spec:live", "features"].each do |task|
+["spec:isolated", "spec:live", "features", "benchmark"].each do |task|
   Rake::Task[task].enhance { Rake::Task["stop_test_app"].invoke }
 end
-
-# ==============================================================================
-# Benchmarks
-# ==============================================================================
-desc "Run benchmarks"
-task :benchmark do
-  FileList.new("benchmarks/*_bm.rb").each { |file| ruby(file) }
-end
-
