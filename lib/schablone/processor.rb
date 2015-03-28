@@ -48,15 +48,15 @@ module Schablone
     end
 
     def current?(uri)
-      @current_uris.include?(uri)
+      current_uris.include?(uri)
     end
 
     def staged?(uri)
-      @staged_uris.include?(uri)
+      staged_uris.include?(uri)
     end
 
     def processed?(uri)
-      @processed_uris.include?(uri)
+      processed_uris.include?(uri)
     end
 
     def forbidden?(uri)
