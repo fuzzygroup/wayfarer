@@ -58,6 +58,13 @@ module Schablone
     def logger_instance
       logger = Logger.new(STDOUT)
       logger.datetime_format = "%m-%d %H:%M:%S"
+      logger.formatter = lambda  do |severity, datetime, _, message|
+        <<-log
+          #{severity} (#{datetime}):
+          #{message}
+
+        log
+      end
       logger
     end
   end

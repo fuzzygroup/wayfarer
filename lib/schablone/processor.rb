@@ -24,28 +24,28 @@ module Schablone
     end
 
     def run
-      queue = current_uri_queue
-      threads = []
+      loop do
+        queue = current_uri_queue
+        threads = []
 
-      4.times do
-        threads << Thread.new do
-          until queue.empty?
-            if uri = queue.pop(true) rescue nil
-              process(uri)
-            else
-              Thread.current.stop
+        Schablone.config.threads.times do
+          threads << Thread.new do
+            until queue.empty?
+              if uri = queue.pop(true) rescue nil
+                process(uri)
+              end
             end
           end
         end
+
+        threads.each(&:join)
+        @current_uris.clear
+
+        @staged_uris.any? ? (cycle) : break
       end
 
-      threads.each(&:join)
-      @current_uris.clear
-
-      (cycle; run) if @staged_uris.any?
-
     rescue RuntimeError => e
-      puts e
+      Schablone.log.error(e)
     end
 
     private
@@ -58,7 +58,7 @@ module Schablone
     end
 
     def current_uri_queue
-      current_uris.inject(Queue.new) { |queue, uri| queue << uri }
+      @current_uris.inject(Queue.new) { |queue, uri| queue << uri }
     end
 
     def stage(uri)
@@ -92,6 +92,9 @@ module Schablone
 
     def cycle
       @current_uris, @staged_uris = staged_uris, []
+    end
+
+    def emit
     end
   end
 end
