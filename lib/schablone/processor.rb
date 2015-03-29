@@ -77,7 +77,7 @@ module Schablone
     end
 
     def stage(uri)
-      @staged_uris << uri
+      @staged_uris << remove_fragment_identifier(uri)
     end
 
     def cache(uri)
@@ -107,7 +107,7 @@ module Schablone
       @current_uris, @staged_uris = @staged_uris, []
     end
 
-    def remove_fragment_identifier_from_uri(uri)
+    def remove_fragment_identifier(uri)
       return uri unless uri.fragment
       URI(uri.to_s.sub(/#.*/, ""))
     end

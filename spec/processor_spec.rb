@@ -40,7 +40,9 @@ describe Schablone::Processor do
     end
 
     it "removes fragment identifier from URIs" do
-
+      uri = URI("http://example.com/foo#bar")
+      processor.send(:stage, uri)
+      expect(processor.staged_uris.last.to_s).to eq "http://example.com/foo"
     end
   end
 
@@ -91,13 +93,14 @@ describe Schablone::Processor do
   end
 
   describe "#cycle" do
+    let(:uri) { URI("http://example.com") }
     before do
-      processor.send(:stage, :staged)
+      processor.send(:stage, uri)
       processor.send(:cycle)
     end
 
     it "sets `@current_uris` to `@staged_uris`" do
-      expect(processor.current_uris).to eq [:staged]
+      expect(processor.current_uris).to eq [uri]
     end
 
     it "sets `@staged_uris` to an empty list" do
@@ -151,7 +154,7 @@ describe Schablone::Processor do
     end
   end
 
-  describe "#remove_fragment_identifier_from_uri" do
+  describe "#remove_fragment_identifier" do
     it "works" do
       uris = %w(
         http://example.com
@@ -162,7 +165,7 @@ describe Schablone::Processor do
       ).map { |str| URI(str) }
 
       cleaned = uris.map do |uri|
-        processor.send(:remove_fragment_identifier_from_uri, uri)
+        processor.send(:remove_fragment_identifier, uri)
       end
 
       expect(cleaned).to eq %w(
