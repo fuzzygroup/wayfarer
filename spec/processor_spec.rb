@@ -39,33 +39,13 @@ describe Schablone::Processor do
       end.to change { processor.staged_uris.count }.by(1)
     end
 
-    context "with cached URI" do
-      before { processor.instance_variable_set(:@cached_uris, [uri]) }
-
-      it "does not stage the URI" do
-        expect do
-          processor.send(:stage, uri)
-        end.not_to change { processor.staged_uris.count }
-      end
-    end
-
-    context "with staged URI" do
+    context "with already staged URI" do
       before { processor.send(:stage, uri) }
 
       it "does not stage the URI again" do
-        expect do
+        expect {
           processor.send(:stage, uri)
-        end.not_to change { processor.staged_uris.count }
-      end
-    end
-
-    context "with URI forbidden by `@router`" do
-      before { router.forbid.host("example.com") }
-
-      it "does not stage the URI" do
-        expect do
-          processor.send(:stage, uri)
-        end.not_to change { processor.staged_uris.count }
+        }.not_to change { processor.staged_uris.count }
       end
     end
   end
@@ -138,8 +118,35 @@ describe Schablone::Processor do
     end
   end
 
-  describe "#emit" do
-    it ""
+  describe "#filter_staged_uris" do
+    let(:uri) { URI("http://example.com") }
+    before do
+      router.allow.host("example.com")
+    end
+
+    it "filters URIs included in `@current_uris`" do
+      processor.instance_variable_set(:@current_uris, [uri])
+      processor.send(:stage, uri)
+      expect {
+        processor.send(:filter_staged_uris)
+      }.to change { processor.staged_uris.count }.by(-1)
+    end
+
+    it "filters URIs included in `@cached_uris`" do
+      processor.send(:cache, uri)
+      processor.send(:stage, uri)
+      expect {
+        processor.send(:filter_staged_uris)
+      }.to change { processor.staged_uris.count }.by(-1)
+    end
+
+    it "filters URIs forbidden by `@router`" do
+      router.forbid.host("example.com")
+      processor.send(:stage, uri)
+      expect {
+        processor.send(:filter_staged_uris)
+      }.to change { processor.staged_uris.count }.by(-1)
+    end
   end
 
   describe "#process" do
@@ -158,6 +165,7 @@ describe Schablone::Processor do
         http://0.0.0.0:9876/status_code/400
         http://0.0.0.0:9876/status_code/403
         http://0.0.0.0:9876/status_code/404
+        http://bro.ken
         http://0.0.0.0:9876/redirect_loop
       ).map { |str| URI(str) }
     end

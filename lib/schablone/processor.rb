@@ -48,7 +48,12 @@ module Schablone
 
         threads.each(&:join)
 
-        @staged_uris.any? ? cycle : break
+        if @staged_uris.any?
+          filter_staged_uris
+          cycle
+        else
+          break
+        end
       end
 
     rescue RuntimeError => error
@@ -71,10 +76,6 @@ module Schablone
     end
 
     def stage(uri)
-      return if current?(uri)   ||
-                forbidden?(uri) ||
-                cached?(uri)
-
       @staged_uris << uri
     end
 
@@ -92,6 +93,12 @@ module Schablone
 
     def forbidden?(uri)
       @router.forbids?(uri)
+    end
+
+    def filter_staged_uris
+      @staged_uris.delete_if do |uri|
+        forbidden?(uri) || current?(uri) || cached?(uri)
+      end
     end
 
     def cycle
