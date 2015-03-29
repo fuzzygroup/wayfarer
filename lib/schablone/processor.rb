@@ -13,7 +13,7 @@ module Schablone
 
       @current_uris = [entry_uri]
       @staged_uris = []
-      @cached_uris = []
+      @cached_uris = Set.new([])
 
       @mutex = Mutex.new
     end
@@ -23,11 +23,11 @@ module Schablone
     end
 
     def staged_uris
-      @mutex.synchronize { @staged_uris.to_a }
+      @mutex.synchronize { @staged_uris }
     end
 
     def cached_uris
-      @mutex.synchronize { @cached_uris }
+      @mutex.synchronize { @cached_uris.to_a }
     end
 
     def run
@@ -81,7 +81,7 @@ module Schablone
     end
 
     def cache(uri)
-      @cached_uris.push(uri.to_s)
+      @cached_uris << uri.to_s
     end
 
     def current?(uri)
