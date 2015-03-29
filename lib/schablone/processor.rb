@@ -97,6 +97,7 @@ module Schablone
     end
 
     def filter_staged_uris
+      @staged_uris.uniq!
       @staged_uris.delete_if do |uri|
         forbidden?(uri) || current?(uri) || cached?(uri)
       end

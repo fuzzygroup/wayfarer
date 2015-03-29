@@ -118,6 +118,14 @@ describe Schablone::Processor do
       router.allow.host("example.com")
     end
 
+    it "filters duplicate URIs" do
+      processor.send(:stage, uri)
+      processor.send(:stage, uri)
+      expect {
+        processor.send(:filter_staged_uris)
+      }.to change { processor.staged_uris.count }.by(-1)
+    end
+
     it "filters URIs included in `@current_uris`" do
       processor.instance_variable_set(:@current_uris, [uri])
       processor.send(:stage, uri)
