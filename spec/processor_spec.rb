@@ -139,6 +139,30 @@ describe Schablone::Processor do
     end
   end
 
+  describe "#remove_fragment_from_uri" do
+    it "works" do
+      uris = %w(
+        http://example.com
+        http://example.com#foo
+        http://example.com#/foo
+        http://example.com/foo#bar
+        http://example.com/foo?bar=qux#quux
+      ).map { |str| URI(str) }
+
+      cleaned = uris.map do |uri|
+        processor.send(:remove_fragment_from_uri, uri)
+      end
+
+      expect(cleaned).to eq %w(
+        http://example.com
+        http://example.com
+        http://example.com
+        http://example.com/foo
+        http://example.com/foo?bar=qux
+      ).map { |str| URI(str) }
+    end
+  end
+
   describe "#process" do
     let(:uri) { URI("http://0.0.0.0:9876/graph/index.html") }
     before { router.allow.host("0.0.0.0") }
