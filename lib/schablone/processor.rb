@@ -81,7 +81,7 @@ module Schablone
     end
 
     def cache(uri)
-      @cached_uris.push(uri)
+      @cached_uris.push(uri.to_s)
     end
 
     def current?(uri)
@@ -89,7 +89,7 @@ module Schablone
     end
 
     def cached?(uri)
-      @cached_uris.include?(uri)
+      @cached_uris.include?(uri.to_s)
     end
 
     def forbidden?(uri)

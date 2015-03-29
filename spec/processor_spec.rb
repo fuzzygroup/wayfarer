@@ -82,7 +82,7 @@ describe Schablone::Processor do
     let(:uri) { URI("http://example.com") }
 
     context "with processed URI" do
-      before { processor.instance_variable_set(:@cached_uris, [uri]) }
+      before { processor.send(:cache, uri) }
 
       it "returns `true`" do
         expect(processor.send(:cached?, uri)).to be true
@@ -172,7 +172,7 @@ describe Schablone::Processor do
 
     it "caches processed URIs" do
       expect(processor.cached_uris).to eq [
-        URI("http://0.0.0.0:9876/graph/index.html")
+        "http://0.0.0.0:9876/graph/index.html"
       ]
     end
   end
