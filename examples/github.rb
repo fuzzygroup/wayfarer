@@ -9,8 +9,8 @@ crawler = Schablone::Crawler.new do
   end
 
   router.allow do
-    host /heise.de/
+    host /zeit.de/
   end
 end
 
-result = crawler.crawl(URI("http://heise.de"))
+result = crawler.crawl(URI("http://zeit.de"))
