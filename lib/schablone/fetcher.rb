@@ -1,11 +1,17 @@
 require "net/http"
+require "net/http/persistent"
 
 module Schablone
   class Fetcher
+
+    def initialize
+      @conn = Net::HTTP::Persistent.new("schablone")
+    end
+
     def fetch(uri, redirects_followed = 0)
       fail if redirects_followed > Schablone.config.max_http_redirects
 
-      res = Net::HTTP.get_response(uri)
+      res = @conn.request(uri)
 
       if res.is_a? Net::HTTPRedirection
         redirect_uri = URI(res["location"])
@@ -17,6 +23,10 @@ module Schablone
       headers     = res.to_hash
 
       Page.new(uri, status_code, body, headers)
+    end
+
+    def free
+      @conn.shutdown
     end
   end
 end
