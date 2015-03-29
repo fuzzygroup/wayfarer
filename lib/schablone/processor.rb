@@ -52,6 +52,7 @@ module Schablone
           filter_staged_uris
           cycle
         else
+          thread.each(&:kill)
           break
         end
       end
