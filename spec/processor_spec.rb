@@ -38,6 +38,10 @@ describe Schablone::Processor do
         processor.send(:stage, uri)
       end.to change { processor.staged_uris.count }.by(1)
     end
+
+    it "removes fragment identifier from URIs" do
+
+    end
   end
 
   describe "#cache" do
@@ -139,7 +143,7 @@ describe Schablone::Processor do
     end
   end
 
-  describe "#remove_fragment_from_uri" do
+  describe "#remove_fragment_identifier_from_uri" do
     it "works" do
       uris = %w(
         http://example.com
@@ -150,7 +154,7 @@ describe Schablone::Processor do
       ).map { |str| URI(str) }
 
       cleaned = uris.map do |uri|
-        processor.send(:remove_fragment_from_uri, uri)
+        processor.send(:remove_fragment_identifier_from_uri, uri)
       end
 
       expect(cleaned).to eq %w(
