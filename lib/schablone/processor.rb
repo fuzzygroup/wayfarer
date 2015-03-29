@@ -9,6 +9,7 @@ module Schablone
       @scraper = scraper
       @router = router
 
+      @fetcher = Fetcher.new
       @result = []
 
       @current_uris = [entry_uri]
@@ -53,6 +54,7 @@ module Schablone
           cycle
         else
           threads.each(&:kill)
+          @fetcher.free
           break
         end
       end
@@ -64,12 +66,10 @@ module Schablone
     private
 
     def process(uri)
-      @mutex.synchronize do
-        page = Fetcher.new.fetch(uri)
-        page.links.each { |uri| stage(uri) }
-        @result << @scraper.extract(page.parsed_document)
-        cache(uri)
-      end
+      page = @fetcher.fetch(uri)
+      page.links.each { |uri| stage(uri) }
+      @result << @scraper.extract(page.parsed_document)
+      cache(uri)
     end
 
     def current_uri_queue
@@ -77,11 +77,11 @@ module Schablone
     end
 
     def stage(uri)
-      @staged_uris << remove_fragment_identifier(uri)
+      @mutex.synchronize { @staged_uris << remove_fragment_identifier(uri) }
     end
 
     def cache(uri)
-      @cached_uris << uri.to_s
+      @mutex.synchronize { @cached_uris << uri.to_s }
     end
 
     def current?(uri)
