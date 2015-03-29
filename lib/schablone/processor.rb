@@ -12,7 +12,7 @@ module Schablone
       @result = []
 
       @current_uris = [entry_uri]
-      @staged_uris = Set.new([])
+      @staged_uris = []
       @cached_uris = []
 
       @mutex = Mutex.new
@@ -52,7 +52,7 @@ module Schablone
           filter_staged_uris
           cycle
         else
-          thread.each(&:kill)
+          threads.each(&:kill)
           break
         end
       end

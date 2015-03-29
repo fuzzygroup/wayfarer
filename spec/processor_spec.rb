@@ -38,16 +38,6 @@ describe Schablone::Processor do
         processor.send(:stage, uri)
       end.to change { processor.staged_uris.count }.by(1)
     end
-
-    context "with already staged URI" do
-      before { processor.send(:stage, uri) }
-
-      it "does not stage the URI again" do
-        expect {
-          processor.send(:stage, uri)
-        }.not_to change { processor.staged_uris.count }
-      end
-    end
   end
 
   describe "#cache" do
@@ -103,7 +93,7 @@ describe Schablone::Processor do
     end
 
     it "sets `@current_uris` to `@staged_uris`" do
-      expect(processor.current_uris).to eq Set.new([:staged])
+      expect(processor.current_uris).to eq [:staged]
     end
 
     it "sets `@staged_uris` to an empty list" do
