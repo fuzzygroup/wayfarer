@@ -26,6 +26,7 @@ require_relative "schablone/parser"
 require_relative "schablone/page"
 require_relative "schablone/fetcher"
 require_relative "schablone/result"
+require_relative "schablone/navigator"
 require_relative "schablone/processor"
 require_relative "schablone/crawler"
 

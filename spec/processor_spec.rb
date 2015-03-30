@@ -16,6 +16,7 @@ describe Schablone::Processor do
 
   subject(:processor) { Processor.new(entry_uri, scraper, router) }
 
+  # covered
   describe "#initialize" do
     it "appends `entry_uri` to `@current_uris`" do
       expect(processor.current_uris).to eq [entry_uri]
@@ -30,6 +31,7 @@ describe Schablone::Processor do
     end
   end
 
+  # covered
   describe "#stage" do
     let(:uri) { URI("http://example.com") }
 
@@ -46,6 +48,7 @@ describe Schablone::Processor do
     end
   end
 
+  # covered
   describe "#cache" do
     let(:uri) { URI("http://example.com") }
 
@@ -56,6 +59,7 @@ describe Schablone::Processor do
     end
   end
 
+  # covered
   describe "#current?" do
     let(:uri) { URI("http://example.com") }
 
@@ -74,6 +78,7 @@ describe Schablone::Processor do
     end
   end
 
+  # covered
   describe "#cached?" do
     let(:uri) { URI("http://example.com") }
 
@@ -92,6 +97,7 @@ describe Schablone::Processor do
     end
   end
 
+  # covered
   describe "#cycle" do
     let(:uri) { URI("http://example.com") }
     before do
@@ -108,6 +114,7 @@ describe Schablone::Processor do
     end
   end
 
+  # covered
   describe "#current_uri_queue" do
     it "returns a `Queue` of the correct size" do
       processor.instance_variable_set(:@current_uris, [1, 2, 3])
@@ -115,6 +122,7 @@ describe Schablone::Processor do
     end
   end
 
+  # covered
   describe "#filter_staged_uris" do
     let(:uri) { URI("http://example.com") }
     before do
