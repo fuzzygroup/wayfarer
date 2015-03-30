@@ -46,11 +46,11 @@ describe Schablone::Fetcher do
         before { Schablone.config.max_http_redirects = 5 }
         after  { Schablone.config.reset! }
 
-        it "raises a RuntimeError" do
-          expect do
+        it "raises a MaximumRedirectCountReached" do
+          expect {
             uri = URI("http://0.0.0.0:9876/redirect?times=6")
             page = fetcher.fetch(uri)
-          end.to raise_error(RuntimeError)
+          }.to raise_error(Schablone::Fetcher::MaximumRedirectCountReached )
         end
       end
     end

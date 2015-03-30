@@ -4,12 +4,16 @@ require "net/http/persistent"
 module Schablone
   class Fetcher
 
+    class MaximumRedirectCountReached < StandardError; end
+
     def initialize
       @conn = Net::HTTP::Persistent.new("schablone")
     end
 
     def fetch(uri, redirects_followed = 0)
-      fail if redirects_followed > Schablone.config.max_http_redirects
+      if redirects_followed > Schablone.config.max_http_redirects
+        fail MaximumRedirectCountReached
+      end
 
       res = @conn.request(uri)
 

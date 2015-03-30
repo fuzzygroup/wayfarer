@@ -41,8 +41,8 @@ module Schablone
         end
       end
 
-    rescue RuntimeError => error
-      Schablone.log.error(error)
+    rescue Schablone::Fetcher::MaximumRedirectCountReached
+      Schablone.log.error("Maximum number of HTTP redirects reached")
     end
 
     private
