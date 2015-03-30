@@ -36,7 +36,9 @@ module Schablone
     end
 
     def cycle
+      return false if @staged_uris.empty?
       @current_uris, @staged_uris = @staged_uris, []
+      true
     end
 
     def filter_staged_uris

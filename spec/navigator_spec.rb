@@ -6,7 +6,7 @@ describe Schablone::Navigator do
   subject(:navigator) { Navigator.new(router) }
 
   describe "#initialize" do
-    it "appends `entry_uri` to an empty List" do
+    it "sets `current_uris` to an empty List" do
       expect(navigator.current_uris).to eq []
     end
 
@@ -100,18 +100,31 @@ describe Schablone::Navigator do
   end
 
   describe "#cycle" do
-    let(:uri) { URI("http://example.com") }
-    before do
-      navigator.stage(uri)
-      navigator.send(:cycle)
+    context "with non-empty `@staged_uris`" do
+      let(:uri) { URI("http://example.com") }
+      before do
+        navigator.stage(uri)
+        navigator.send(:cycle)
+      end
+
+      it "sets `@current_uris` to `@staged_uris`" do
+        expect(navigator.current_uris).to eq [uri]
+      end
+
+      it "sets `@staged_uris` to an empty list" do
+        expect(navigator.staged_uris).to eq []
+      end
+
+      it "returns `true`" do
+        navigator.stage(uri)
+        expect(navigator.cycle).to be true
+      end
     end
 
-    it "sets `@current_uris` to `@staged_uris`" do
-      expect(navigator.current_uris).to eq [uri]
-    end
-
-    it "sets `@staged_uris` to an empty list" do
-      expect(navigator.staged_uris).to eq []
+    context "with empty `@staged_uris`" do
+      it "returns false" do
+        expect(navigator.cycle).to be false
+      end
     end
   end
 
