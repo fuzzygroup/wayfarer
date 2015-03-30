@@ -34,10 +34,7 @@ module Schablone
 
         threads.each(&:join)
 
-        if @navigator.staged_uris.any?
-          @navigator.filter_staged_uris
-          @navigator.cycle
-        else
+        unless @navigator.cycle
           threads.each(&:kill)
           @fetcher.free
           break

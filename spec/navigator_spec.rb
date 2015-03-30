@@ -100,23 +100,31 @@ describe Schablone::Navigator do
   end
 
   describe "#cycle" do
+    let(:uri) { URI("http://example.com") }
+    before { router.allow.host("example.com") }
+
+    it "filters `@staged_uris`" do
+      navigator.stage(uri)
+      navigator.stage(uri)
+      expect {
+        navigator.cycle
+      }.to change { navigator.current_uris.count }.by(1)
+    end
+
     context "with non-empty `@staged_uris`" do
-      let(:uri) { URI("http://example.com") }
-      before do
-        navigator.stage(uri)
-        navigator.send(:cycle)
-      end
+      before { navigator.stage(uri) }
 
       it "sets `@current_uris` to `@staged_uris`" do
+        navigator.send(:cycle)
         expect(navigator.current_uris).to eq [uri]
       end
 
       it "sets `@staged_uris` to an empty list" do
+        navigator.send(:cycle)
         expect(navigator.staged_uris).to eq []
       end
 
       it "returns `true`" do
-        navigator.stage(uri)
         expect(navigator.cycle).to be true
       end
     end

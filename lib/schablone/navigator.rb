@@ -36,16 +36,10 @@ module Schablone
     end
 
     def cycle
+      filter_staged_uris
       return false if @staged_uris.empty?
       @current_uris, @staged_uris = @staged_uris, []
       true
-    end
-
-    def filter_staged_uris
-      @staged_uris.uniq!
-      @staged_uris.delete_if do |uri|
-        forbidden?(uri) || current?(uri) || cached?(uri)
-      end
     end
 
     private
@@ -59,6 +53,13 @@ module Schablone
 
     def forbidden?(uri)
       @router.forbids?(uri)
+    end
+
+    def filter_staged_uris
+      @staged_uris.uniq!
+      @staged_uris.delete_if do |uri|
+        forbidden?(uri) || current?(uri) || cached?(uri)
+      end
     end
 
     def remove_fragment_identifier(uri)
