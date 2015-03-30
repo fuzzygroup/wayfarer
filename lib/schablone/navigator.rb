@@ -8,7 +8,6 @@ module Schablone
       @current_uris = []
       @staged_uris = []
       @cached_uris = Set.new([])
-
       @mutex = Mutex.new
     end
 
@@ -36,6 +35,17 @@ module Schablone
       @mutex.synchronize { @cached_uris << uri.to_s }
     end
 
+    def cycle
+      @current_uris, @staged_uris = @staged_uris, []
+    end
+
+    def filter_staged_uris
+      @staged_uris.uniq!
+      @staged_uris.delete_if do |uri|
+        forbidden?(uri) || current?(uri) || cached?(uri)
+      end
+    end
+
     private
     def current?(uri)
       @current_uris.include?(uri)
@@ -47,17 +57,6 @@ module Schablone
 
     def forbidden?(uri)
       @router.forbids?(uri)
-    end
-
-    def filter_staged_uris
-      @staged_uris.uniq!
-      @staged_uris.delete_if do |uri|
-        forbidden?(uri) || current?(uri) || cached?(uri)
-      end
-    end
-
-    def cycle
-      @current_uris, @staged_uris = @staged_uris, []
     end
 
     def remove_fragment_identifier(uri)

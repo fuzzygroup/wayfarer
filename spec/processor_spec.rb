@@ -16,173 +16,9 @@ describe Schablone::Processor do
 
   subject(:processor) { Processor.new(entry_uri, scraper, router) }
 
-  # covered
   describe "#initialize" do
-    it "appends `entry_uri` to `@current_uris`" do
-      expect(processor.current_uris).to eq [entry_uri]
-    end
-
-    it "sets `@staged_uris` to an empty list" do
-      expect(processor.staged_uris).to eq []
-    end
-
-    it "sets `@cached_uris` to an empty list" do
-      expect(processor.cached_uris).to eq []
-    end
-  end
-
-  # covered
-  describe "#stage" do
-    let(:uri) { URI("http://example.com") }
-
-    it "stages a URI" do
-      expect do
-        processor.send(:stage, uri)
-      end.to change { processor.staged_uris.count }.by(1)
-    end
-
-    it "removes fragment identifier from URIs" do
-      uri = URI("http://example.com/foo#bar")
-      processor.send(:stage, uri)
-      expect(processor.staged_uris.last.to_s).to eq "http://example.com/foo"
-    end
-  end
-
-  # covered
-  describe "#cache" do
-    let(:uri) { URI("http://example.com") }
-
-    it "caches a URI" do
-      expect do
-        processor.send(:cache, uri)
-      end.to change { processor.cached_uris.count }.by(1)
-    end
-  end
-
-  # covered
-  describe "#current?" do
-    let(:uri) { URI("http://example.com") }
-
-    context "with current URI" do
-      before { processor.instance_variable_set(:@current_uris, [uri]) }
-
-      it "returns `true`" do
-        expect(processor.send(:current?, uri)).to be true
-      end
-    end
-
-    context "with non-current URI" do
-      it "returns `false`" do
-        expect(processor.send(:current?, uri)).to be false
-      end
-    end
-  end
-
-  # covered
-  describe "#cached?" do
-    let(:uri) { URI("http://example.com") }
-
-    context "with processed URI" do
-      before { processor.send(:cache, uri) }
-
-      it "returns `true`" do
-        expect(processor.send(:cached?, uri)).to be true
-      end
-    end
-
-    context "with unprocessed URI" do
-      it "returns `false`" do
-        expect(processor.send(:cached?, uri)).to be false
-      end
-    end
-  end
-
-  # covered
-  describe "#cycle" do
-    let(:uri) { URI("http://example.com") }
-    before do
-      processor.send(:stage, uri)
-      processor.send(:cycle)
-    end
-
-    it "sets `@current_uris` to `@staged_uris`" do
-      expect(processor.current_uris).to eq [uri]
-    end
-
-    it "sets `@staged_uris` to an empty list" do
-      expect(processor.staged_uris).to eq []
-    end
-  end
-
-  # covered
-  describe "#current_uri_queue" do
-    it "returns a `Queue` of the correct size" do
-      processor.instance_variable_set(:@current_uris, [1, 2, 3])
-      expect(processor.send(:current_uri_queue).size).to be 3
-    end
-  end
-
-  # covered
-  describe "#filter_staged_uris" do
-    let(:uri) { URI("http://example.com") }
-    before do
-      router.allow.host("example.com")
-    end
-
-    it "filters duplicate URIs" do
-      processor.send(:stage, uri)
-      processor.send(:stage, uri)
-      expect {
-        processor.send(:filter_staged_uris)
-      }.to change { processor.staged_uris.count }.by(-1)
-    end
-
-    it "filters URIs included in `@current_uris`" do
-      processor.instance_variable_set(:@current_uris, [uri])
-      processor.send(:stage, uri)
-      expect {
-        processor.send(:filter_staged_uris)
-      }.to change { processor.staged_uris.count }.by(-1)
-    end
-
-    it "filters URIs included in `@cached_uris`" do
-      processor.send(:cache, uri)
-      processor.send(:stage, uri)
-      expect {
-        processor.send(:filter_staged_uris)
-      }.to change { processor.staged_uris.count }.by(-1)
-    end
-
-    it "filters URIs forbidden by `@router`" do
-      router.forbid.host("example.com")
-      processor.send(:stage, uri)
-      expect {
-        processor.send(:filter_staged_uris)
-      }.to change { processor.staged_uris.count }.by(-1)
-    end
-  end
-
-  describe "#remove_fragment_identifier" do
-    it "works" do
-      uris = %w(
-        http://example.com
-        http://example.com#foo
-        http://example.com#/foo
-        http://example.com/foo#bar
-        http://example.com/foo?bar=qux#quux
-      ).map { |str| URI(str) }
-
-      cleaned = uris.map do |uri|
-        processor.send(:remove_fragment_identifier, uri)
-      end
-
-      expect(cleaned).to eq %w(
-        http://example.com
-        http://example.com
-        http://example.com
-        http://example.com/foo
-        http://example.com/foo?bar=qux
-      ).map { |str| URI(str) }
+    it "adds `entry_uri` to fuck this bullshit" do
+      expect(processor.navigator.current_uris).to eq [entry_uri]
     end
   end
 
@@ -196,7 +32,7 @@ describe Schablone::Processor do
     end
 
     it "stages the expected URIs" do
-      expect(processor.staged_uris).to eq %w(
+      expect(processor.navigator.staged_uris).to eq %w(
         http://0.0.0.0:9876/graph/details/a.html
         http://0.0.0.0:9876/graph/details/b.html
         http://0.0.0.0:9876/status_code/400
@@ -208,7 +44,7 @@ describe Schablone::Processor do
     end
 
     it "caches processed URIs" do
-      expect(processor.cached_uris).to eq [
+      expect(processor.navigator.cached_uris).to eq [
         "http://0.0.0.0:9876/graph/index.html"
       ]
     end

@@ -4,36 +4,21 @@ require "thread"
 module Schablone
   class Processor
     attr_reader :result
+    attr_reader :navigator
 
     def initialize(entry_uri, scraper, router)
       @scraper = scraper
-      @router = router
-
+      @navigator = Navigator.new(router)
       @fetcher = Fetcher.new
       @result = []
 
-      @current_uris = [entry_uri]
-      @staged_uris = []
-      @cached_uris = Set.new([])
-
-      @mutex = Mutex.new
-    end
-
-    def current_uris
-      @mutex.synchronize { @current_uris }
-    end
-
-    def staged_uris
-      @mutex.synchronize { @staged_uris }
-    end
-
-    def cached_uris
-      @mutex.synchronize { @cached_uris.to_a }
+      @navigator.stage(entry_uri)
+      @navigator.cycle
     end
 
     def run
       loop do
-        queue = current_uri_queue
+        queue = @navigator.current_uri_queue
         threads = []
 
         Schablone.config.threads.times do
@@ -49,9 +34,9 @@ module Schablone
 
         threads.each(&:join)
 
-        if @staged_uris.any?
-          filter_staged_uris
-          cycle
+        if @navigator.staged_uris.any?
+          @navigator.filter_staged_uris
+          @navigator.cycle
         else
           threads.each(&:kill)
           @fetcher.free
@@ -67,49 +52,9 @@ module Schablone
 
     def process(uri)
       page = @fetcher.fetch(uri)
-      page.links.each { |uri| stage(uri) }
+      page.links.each { |uri| @navigator.stage(uri) }
       @result << @scraper.extract(page.parsed_document)
-      cache(uri)
-    end
-
-    def current_uri_queue
-      @current_uris.inject(Queue.new) { |queue, uri| queue << uri }
-    end
-
-    def stage(uri)
-      @mutex.synchronize { @staged_uris << remove_fragment_identifier(uri) }
-    end
-
-    def cache(uri)
-      @mutex.synchronize { @cached_uris << uri.to_s }
-    end
-
-    def current?(uri)
-      @current_uris.include?(uri)
-    end
-
-    def cached?(uri)
-      @cached_uris.include?(uri.to_s)
-    end
-
-    def forbidden?(uri)
-      @router.forbids?(uri)
-    end
-
-    def filter_staged_uris
-      @staged_uris.uniq!
-      @staged_uris.delete_if do |uri|
-        forbidden?(uri) || current?(uri) || cached?(uri)
-      end
-    end
-
-    def cycle
-      @current_uris, @staged_uris = @staged_uris, []
-    end
-
-    def remove_fragment_identifier(uri)
-      return uri unless uri.fragment
-      URI(uri.to_s.sub(/#.*/, ""))
+      @navigator.cache(uri)
     end
   end
 end
