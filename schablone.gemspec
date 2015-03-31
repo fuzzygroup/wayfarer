@@ -31,8 +31,6 @@ Gem::Specification.new do |s|
   s.add_dependency "rack",                       "~> 1.6",  ">= 1.6.0"
   s.add_dependency "ansi",                       "~> 1.5",  ">= 1.5.0"
   s.add_dependency "net-http-persistent",        "~> 2.9",  ">= 2.9.4"
-  s.add_dependency "lru_redux",                  "~> 0.8",  ">= 0.8.4"
-
 
   s.add_development_dependency "rake",           "~> 10.4", ">= 10.4.2"
   s.add_development_dependency "rspec",          "~> 3.1",  ">= 3.1.0"

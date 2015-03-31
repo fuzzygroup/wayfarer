@@ -1,11 +1,8 @@
-require "lru_redux"
-
 module Schablone
   class URIStore
 
     def initialize
       @hosts = {}
-      @cache = LruRedux::Cache.new(128)
     end
 
     def <<(uri)
@@ -13,16 +10,9 @@ module Schablone
     end
 
     def include?(uri)
-      normalized_uri_str = normalize(uri.to_s)
-
-      return true if @cache[normalized_uri_str]
       return false unless @hosts.key?(host = uri.host)
-      
-      if @hosts[host].include?(normalized_uri_str)
-        @cache[normalized_uri_str] = true
-      else
-        false
-      end
+      normalized_uri_str = normalize(uri.to_s)
+      @hosts[host].include?(normalized_uri_str)
     end
 
     def to_a
