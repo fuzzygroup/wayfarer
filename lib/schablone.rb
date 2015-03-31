@@ -1,5 +1,4 @@
 require "logger"
-require "ansi"
 
 # Internals
 require_relative "schablone/configuration"
@@ -22,6 +21,7 @@ require_relative "schablone/extraction/extractable_group"
 require_relative "schablone/extraction/scoper"
 
 # Processing
+require_relative "schablone/context"
 require_relative "schablone/parser"
 require_relative "schablone/page"
 require_relative "schablone/fetcher"

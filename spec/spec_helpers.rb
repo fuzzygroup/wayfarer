@@ -5,6 +5,10 @@ include Schablone::Extraction
 include Schablone::Routing
 
 module SpecHelpers
+  def fetch_page(uri)
+    Fetcher.new.fetch(URI(uri))
+  end
+
   def html_fragment(html_string)
     Nokogiri::HTML.fragment(html_string)
   end
