@@ -10,7 +10,7 @@ module Schablone
     end
 
     def <<(uri)
-      (@hosts[uri.host] ||= []) << normalize(uri)
+      (@hosts[uri.host] ||= Set.new([])) << normalize(uri)
     end
 
     def include?(uri)
