@@ -2,24 +2,19 @@ module Schablone
   class URIStore
 
     def initialize
-      @hosts = {}
+      @uris = Set.new
     end
 
     def <<(uri)
-      (@hosts[uri.host] ||= Set.new([])) << normalize(uri.to_s)
+      @uris << normalize(uri.to_s)
     end
 
     def include?(uri)
-      return false unless @hosts.key?(host = uri.host)
-      normalized_uri_str = normalize(uri.to_s)
-      @hosts[host].include?(normalized_uri_str)
+      @uris.include?(normalize(uri.to_s))
     end
 
     def to_a
-      @hosts.inject([]) do |array, (_, set)|
-        uris = set.to_a.map { |uri_str| URI(uri_str) }
-        array.concat(uris)
-      end
+      @uris.to_a.map { |uri_str| URI(uri_str) }
     end
 
     private
