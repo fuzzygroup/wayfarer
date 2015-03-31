@@ -7,7 +7,7 @@ module Schablone
       @router = router
       @current_uris = []
       @staged_uris = []
-      @cached_uris = Set.new([])
+      @cached_uris = URIStore.new
       @mutex = Mutex.new
     end
 
@@ -32,7 +32,7 @@ module Schablone
     end
 
     def cache(uri)
-      @mutex.synchronize { @cached_uris << uri.to_s }
+      @mutex.synchronize { @cached_uris << uri }
     end
 
     def cycle
@@ -48,7 +48,7 @@ module Schablone
     end
 
     def cached?(uri)
-      @cached_uris.include?(uri.to_s)
+      @cached_uris.include?(uri)
     end
 
     def forbidden?(uri)

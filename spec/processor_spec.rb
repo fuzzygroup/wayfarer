@@ -45,7 +45,7 @@ describe Schablone::Processor do
 
     it "caches processed URIs" do
       expect(processor.navigator.cached_uris).to eq [
-        "http://0.0.0.0:9876/graph/index.html"
+        URI("http://0.0.0.0:9876/graph/index.html")
       ]
     end
   end

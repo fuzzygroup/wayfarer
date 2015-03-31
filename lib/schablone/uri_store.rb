@@ -25,6 +25,13 @@ module Schablone
       end
     end
 
+    def to_a
+      @hosts.inject([]) do |array, (_, set)|
+        uris = set.to_a.map { |uri_str| URI(uri_str) }
+        array.concat(uris)
+      end
+    end
+
     private
 
     def normalize(uri_str)

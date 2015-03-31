@@ -1,33 +1,33 @@
 require "spec_helpers"
 
 describe Schablone::URIStore do
-  subject(:cache) { URIStore.new }
+  subject(:store) { URIStore.new }
 
   describe "#include?" do
     let(:uri) { URI("http://example.com") }
 
-    context "with cached URI" do
-      before { cache << uri }
+    context "with stored URI" do
+      before { store << uri }
 
       it "returns `true`" do
-        expect(cache).to include uri
+        expect(store).to include uri
       end
     end
 
-    context "with non-cached URI" do
+    context "with non-stored URI" do
       it "returns `false`" do
-        expect(cache).not_to include uri
+        expect(store).not_to include uri
       end
     end
 
     it "is insensitive to trailing slashes" do
-      cache << uri
+      store << uri
       dup_uri = URI("http://example.com/")
-      expect(cache).to include dup_uri
+      expect(store).to include dup_uri
     end
 
     it "is insensitive to fragment identifiers" do
-      cache << uri
+      store << uri
 
       dup_uris = %w(
         http://example.com#foo
@@ -35,7 +35,7 @@ describe Schablone::URIStore do
       ).map { |str| URI(str) }
 
       dup_uris.each do |dup_uri|
-        expect(cache).to include dup_uri
+        expect(store).to include dup_uri
       end
     end
   end
@@ -52,7 +52,7 @@ describe Schablone::URIStore do
       )
 
       truncated_uri_strs = uri_strs.map do |uri_str|
-        cache.send(:truncate_fragment_identifier, uri_str)
+        store.send(:truncate_fragment_identifier, uri_str)
       end
 
       expect(truncated_uri_strs).to eq %w(
@@ -78,7 +78,7 @@ describe Schablone::URIStore do
       )
 
       truncated_uri_strs = uri_strs.map do |uri_str|
-        cache.send(:truncate_trailing_slash, uri_str)
+        store.send(:truncate_trailing_slash, uri_str)
       end
 
       expect(truncated_uri_strs).to eq %w(
@@ -104,7 +104,7 @@ describe Schablone::URIStore do
       )
 
       normalized_uri_strs = uri_strs.map do |uri_str|
-        cache.send(:normalize, uri_str)
+        store.send(:normalize, uri_str)
       end
 
       expect(normalized_uri_strs).to eq %w(
@@ -115,6 +115,20 @@ describe Schablone::URIStore do
         http://example.com/foo
         http://example.com/foo?bar=qux
       )
+    end
+  end
+
+  describe "#to_a" do
+    it "returns the correct Array representation" do
+      uris = %w(
+        http://example.com
+        http://google.com
+        http://yahoo.com
+      ).map { |str| URI(str) }
+
+      uris.each { |uri| store << uri }
+
+      expect(store.to_a).to eq uris
     end
   end
 end

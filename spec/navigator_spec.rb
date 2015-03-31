@@ -5,20 +5,6 @@ describe Schablone::Navigator do
   let(:router) { Router.new }
   subject(:navigator) { Navigator.new(router) }
 
-  describe "#initialize" do
-    it "sets `current_uris` to an empty List" do
-      expect(navigator.current_uris).to eq []
-    end
-
-    it "sets `@staged_uris` to an empty list" do
-      expect(navigator.staged_uris).to eq []
-    end
-
-    it "sets `@cached_uris` to an empty list" do
-      expect(navigator.cached_uris).to eq []
-    end
-  end
-
   describe "#stage" do
     let(:uri) { URI("http://example.com") }
 
