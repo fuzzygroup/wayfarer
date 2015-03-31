@@ -1,12 +1,10 @@
 require_relative "../lib/schablone"
 
 crawler = Schablone::Crawler.new do
-
   scraper do
     if page.title ~= /Hitler/
       puts "Found Hitler after #{history.count} attempts!"
     end
-
     visit links
   end
 
