@@ -15,8 +15,8 @@ module Schablone
       @page
     end
 
-    def navigator
-      @navigator
+    def history
+      @navigator.cached_uris
     end
 
     def visit(uri)

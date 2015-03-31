@@ -13,9 +13,9 @@ describe Schablone::Context do
     end
   end
 
-  describe "#navigator" do
-    it "returns `@navigator`" do
-      expect(context.send(:navigator)).to be navigator
+  describe "#history" do
+    it "returns `@navigator.cached_uris`" do
+      expect(context.send(:history)).to eq navigator.cached_uris
     end
   end
 

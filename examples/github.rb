@@ -1,15 +1,17 @@
 require_relative "../lib/schablone"
 
 crawler = Schablone::Crawler.new do
-  config.log_level = Logger::INFO
-  config.threads = 32
 
   scraper do
-    css :title, "title"
+    if page.title ~= /Hitler/
+      puts "Found Hitler after #{history.count} attempts!"
+    end
+
+    visit links
   end
 
-  router.allow do
-    host "de.wikipedia.org"
+  router.map :page do
+    host "wikipedia.org", path: "/wiki"
   end
 end
 

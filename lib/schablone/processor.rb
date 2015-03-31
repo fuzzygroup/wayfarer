@@ -40,9 +40,6 @@ module Schablone
           break
         end
       end
-
-    rescue Schablone::Fetcher::MaximumRedirectCountReached
-      Schablone.log.error("Maximum number of HTTP redirects reached")
     end
 
     private
@@ -52,6 +49,9 @@ module Schablone
       page.links.each { |uri| @navigator.stage(uri) }
       @result << @scraper.extract(page.parsed_document)
       @navigator.cache(uri)
+
+    rescue Schablone::Fetcher::MaximumRedirectCountReached
+      Schablone.log.warn("Maximum number of HTTP redirects reached")
     end
   end
 end
