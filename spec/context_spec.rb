@@ -29,4 +29,12 @@ describe Schablone::Context do
     end
   end
 
+  describe "#invoke" do
+    it "evaluates the `Proc` in its instance context" do
+      this = nil
+      context.invoke { this = self }
+      expect(this).to be context
+    end
+  end
+
 end

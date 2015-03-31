@@ -6,6 +6,10 @@ module Schablone
       @navigator = navigator
     end
 
+    def invoke(&proc)
+      instance_eval(&proc)
+    end
+
     private
     def page
       @page
