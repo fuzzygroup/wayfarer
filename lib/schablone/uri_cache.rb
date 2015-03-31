@@ -10,12 +10,26 @@ module Schablone
     end
 
     def <<(uri)
-      (@hosts[uri.host] ||= []) << uri.to_s
+      (@hosts[uri.host] ||= []) << normalize(uri)
     end
 
     def include?(uri)
       return false unless @hosts.key?(host = uri.host)
-      @hosts[host].include?(uri.to_s)
+      @hosts[host].include?(normalize(uri))
+    end
+
+    private
+
+    def normalize(uri)
+      truncate_trailing_slash(truncate_fragment_identifier(uri.to_s))
+    end
+
+    def truncate_fragment_identifier(uri_str)
+      uri_str.sub(/#.*/, "")
+    end
+
+    def truncate_trailing_slash(uri_str)
+      uri_str.chomp("/")
     end
 
   end
