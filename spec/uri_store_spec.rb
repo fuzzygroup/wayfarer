@@ -1,7 +1,7 @@
 require "spec_helpers"
 
-describe Schablone::URICache do
-  subject(:cache) { URICache.new }
+describe Schablone::URIStore do
+  subject(:cache) { URIStore.new }
 
   describe "#include?" do
     let(:uri) { URI("http://example.com") }

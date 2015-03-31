@@ -1,7 +1,7 @@
 require "lru_redux"
 
 module Schablone
-  class URICache
+  class URIStore
 
     def initialize
       @hosts = {}
