@@ -35,8 +35,9 @@ module Schablone
       end
 
       def invoke(uri)
-        detected_route = @routes.detect { |_, rule| rule === uri }
-        @scraper_table[detected_route.first] if detected_route
+        if detected_route = @routes.detect { |_, rule| rule === uri }
+          @scraper_table[detected_route.first]
+        end
       end
     end
   end
