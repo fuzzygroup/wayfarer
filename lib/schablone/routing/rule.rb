@@ -42,7 +42,7 @@ module Schablone
       private
 
       def append_sub_rule(other)
-        @sub_rules << other && other
+        @sub_rules << other; other
       end
 
       def append_sub_rule_from_options(opts)
