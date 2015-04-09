@@ -95,6 +95,13 @@ describe Schablone::Routing::Router do
       end
     end
 
+    context "with URI recognized by multiple `Rule`s" do
+      it "returns the first matching `Rule`s associated `Symbol`" do
+        router.map(:bar) { host "example.com" }
+        expect(router.invoke(uri)).to be :foo
+      end
+    end
+
     context "with unrecognized URI" do
       it "returns `:missing!`" do
         uri = URI("http://unrecognized.com")
