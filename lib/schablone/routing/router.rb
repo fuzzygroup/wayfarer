@@ -30,6 +30,11 @@ module Schablone
       def map(sym, &proc)
         @routes[sym] = Rule.new(&proc)
       end
+
+      def invoke(uri)
+        detected_route = @routes.detect { |_, rule| rule === uri }
+        detected_route ? detected_route.first : :missing!
+      end
     end
   end
 end

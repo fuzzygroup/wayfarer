@@ -84,4 +84,13 @@ describe Schablone::Routing::Router do
       expect(this).to be_a Rule
     end
   end
+
+  describe "#invoke" do
+    before { router.map(:foo) { host "example.com" } }
+    let(:uri) { URI("http://example.com") }
+
+    it "works" do
+      expect(router.invoke(uri)).to be :foo
+    end
+  end
 end
