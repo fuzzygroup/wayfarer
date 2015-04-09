@@ -8,14 +8,14 @@ module Schablone
         super(opts, &proc)
       end
 
+      private
+
       def match(uri)
         CGI.parse(uri.query).none? { |field, vals| violates?(field, vals) }
       rescue NoMethodError
         # `CGI::parse` throws a NoMethodError if `uri.query` is an empty string
         # TODO Test case
       end
-
-      private
 
       def violates?(field, vals)
         if constraint = @field_constraints[field.to_sym]

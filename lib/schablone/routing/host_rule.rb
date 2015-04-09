@@ -6,6 +6,8 @@ module Schablone
         super(opts, &proc)
       end
 
+      private
+
       def match(uri)
         @str_or_regexp === uri.host
       end
