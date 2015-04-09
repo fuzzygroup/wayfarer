@@ -28,7 +28,7 @@ module Schablone
       end
 
       def map(sym, &proc)
-        @routes[sym] = Rule.new.instance_eval(&proc)
+        @routes[sym] = Rule.new(&proc)
       end
     end
   end
