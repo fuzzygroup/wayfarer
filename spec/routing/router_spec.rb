@@ -72,6 +72,12 @@ describe Schablone::Routing::Router do
   end
 
   describe "#map" do
+    it "registers a Route" do
+      expect {
+        router.map(:foo) {}
+      }.to change { router.routes.count }.by(1)
+    end
+
     it "evaluates the Proc in a `Rule`'s instance context" do
       this = nil
       router.map(:foo) { this = self }
