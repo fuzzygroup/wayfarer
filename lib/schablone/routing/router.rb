@@ -5,9 +5,12 @@ module Schablone
       attr_reader :blacklist
       attr_reader :routes
 
-      def initialize
+      def initialize(scraper_table)
+        @scraper_table = scraper_table
+
         @whitelist = Rule.new
         @blacklist = Rule.new
+
         @routes = {}
       end
 
@@ -27,13 +30,13 @@ module Schablone
         !allows?(uri)
       end
 
-      def map(sym, &proc)
-        @routes[sym] = Rule.new(&proc)
+      def map(scraper_sym, &proc)
+        @routes[scraper_sym] = Rule.new(&proc)
       end
 
       def invoke(uri)
         detected_route = @routes.detect { |_, rule| rule === uri }
-        detected_route ? detected_route.first : :missing!
+        @scraper_table[detected_route.first] if detected_route
       end
     end
   end

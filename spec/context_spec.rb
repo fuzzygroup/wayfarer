@@ -3,7 +3,7 @@ require "spec_helpers"
 describe Schablone::Context do
 
   let(:page) { fetch_page("http://example.com") }
-  let(:router) { Router.new }
+  let(:router) { Router.new({}) }
   let(:navigator) { Navigator.new(router) }
   let(:context) { Context.new(page, navigator) }
 

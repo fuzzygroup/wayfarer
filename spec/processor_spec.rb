@@ -9,7 +9,7 @@ describe Schablone::Processor do
   end
 
   let(:router) do
-    router = Router.new
+    router = Router.new({})
     router.allow.host("example.com")
     router
   end

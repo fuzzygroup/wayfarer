@@ -1,7 +1,8 @@
 require "spec_helpers"
 
 describe Schablone::Routing::Router do
-  subject(:router) { Router.new }
+  let(:scraper) { Object.new }
+  subject(:router) { Router.new({}) }
 
   describe "#allow" do
     context "with Proc given" do
@@ -86,26 +87,33 @@ describe Schablone::Routing::Router do
   end
 
   describe "#invoke" do
-    before { router.map(:foo) { host "example.com" } }
     let(:uri) { URI("http://example.com") }
+    let(:scraper_table) { {} }
+    subject(:router) { Router.new(scraper_table) }
+    before do
+      scraper_table[:foo] = 0
+      scraper_table[:bar] = 1
+      router.map(:foo) { host "example.com" }
+    end
 
     context "with recognized URI" do
-      it "returns the expect `Symbol`" do
-        expect(router.invoke(uri)).to be :foo
+      it "returns the associated `Scraper`" do
+        expect(router.invoke(uri)).to be 0
       end
     end
 
     context "with URI recognized by multiple `Rule`s" do
+      before { router.map(:bar) { host "example.com" } }
+
       it "returns the first matching `Rule`s associated `Symbol`" do
-        router.map(:bar) { host "example.com" }
-        expect(router.invoke(uri)).to be :foo
+        expect(router.invoke(uri)).to be 0
       end
     end
 
     context "with unrecognized URI" do
-      it "returns `:missing!`" do
+      it "returns `nil`" do
         uri = URI("http://unrecognized.com")
-        expect(router.invoke(uri)).to be :missing!
+        expect(router.invoke(uri)).to be nil
       end
     end
   end
