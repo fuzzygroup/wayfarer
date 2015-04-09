@@ -70,4 +70,12 @@ describe Schablone::Routing::Router do
       end
     end
   end
+
+  describe "#map" do
+    it "evaluates the Proc in a `Rule`'s instance context" do
+      this = nil
+      router.map(:foo) { this = self }
+      expect(this).to be_a Rule
+    end
+  end
 end

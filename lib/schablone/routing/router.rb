@@ -3,10 +3,12 @@ module Schablone
     class Router
       attr_reader :whitelist
       attr_reader :blacklist
+      attr_reader :routes
 
       def initialize
         @whitelist = Rule.new
         @blacklist = Rule.new
+        @routes = {}
       end
 
       def allow(&proc)
@@ -23,6 +25,10 @@ module Schablone
 
       def forbids?(uri)
         !allows?(uri)
+      end
+
+      def map(sym, &proc)
+        sym = Rule.new.instance_eval(&proc)
       end
     end
   end
