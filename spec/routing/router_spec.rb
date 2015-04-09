@@ -89,8 +89,17 @@ describe Schablone::Routing::Router do
     before { router.map(:foo) { host "example.com" } }
     let(:uri) { URI("http://example.com") }
 
-    it "works" do
-      expect(router.invoke(uri)).to be :foo
+    context "with recognized URI" do
+      it "returns the expect `Symbol`" do
+        expect(router.invoke(uri)).to be :foo
+      end
+    end
+
+    context "with unrecognized URI" do
+      it "returns `:missing!`" do
+        uri = URI("http://unrecognized.com")
+        expect(router.invoke(uri)).to be :missing!
+      end
     end
   end
 end
