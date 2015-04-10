@@ -9,6 +9,10 @@ module SpecHelpers
     Fetcher.new.fetch(URI(uri))
   end
 
+  def queue(array)
+    array.inject(Queue.new) { |queue, elem| queue << elem }
+  end
+
   def html_fragment(html_string)
     Nokogiri::HTML.fragment(html_string)
   end

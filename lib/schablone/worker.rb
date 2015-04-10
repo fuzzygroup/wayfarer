@@ -4,7 +4,8 @@ module Schablone
     attr_reader :navigator
     attr_reader :result
 
-    def initialize(navigator, router, emitter, fetcher)
+    def initialize(uri_queue, navigator, router, emitter, fetcher)
+      @uri_queue = uri_queue
       @navigator = navigator
       @router    = router
       @emitter   = emitter
@@ -16,10 +17,8 @@ module Schablone
     end
 
     def work
-      queue = @navigator.current_uri_queue
-
-      until queue.empty?
-        if uri = queue.pop(true) rescue nil
+      until @uri_queue.empty?
+        if uri = @uri_queue.pop(true) rescue nil
           Schablone.log.info("About to hit: #{uri}")
           process(uri)
         end

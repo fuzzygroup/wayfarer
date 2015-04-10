@@ -1,4 +1,3 @@
-require "set"
 require "thread"
 
 module Schablone
@@ -18,10 +17,10 @@ module Schablone
 
     def run
       loop do
-        workers = []
+        queue = @navigator.current_uri_queue
 
-        Schablone.config.threads.times do
-          workers << Worker.new(@navigator, @router, @emitter, @fetcher)
+        workers = Schablone.config.threads.times.map do
+          Worker.new(queue, @navigator, @router, @emitter, @fetcher)
         end
 
         workers.each(&:join)

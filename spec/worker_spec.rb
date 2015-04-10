@@ -1,14 +1,16 @@
 require "spec_helpers"
 
 describe Schablone::Worker do
-
+  let(:uri_queue)     { queue([URI("http://example.com")]) }
   let(:scraper)       { Proc.new { emit(:success) } }
   let(:scraper_table) { { foo: scraper } }
   let(:router)        { Router.new(scraper_table) }
   let(:navigator)     { Navigator.new(router) }
   let(:emitter)       { Emitter.new }
   let(:fetcher)       { Fetcher.new }
-  subject(:worker)    { Worker.new(navigator, router, emitter, fetcher) }
+  subject(:worker) do
+    Worker.new(uri_queue, navigator, router, emitter, fetcher)
+  end
 
   before { router.map(:foo) { host("0.0.0.0") } }
 
