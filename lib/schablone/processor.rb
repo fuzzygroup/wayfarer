@@ -21,7 +21,7 @@ module Schablone
         workers = []
 
         Schablone.config.threads.times do
-          workers << Worker.new(@navigator, @router, @fetcher)
+          workers << Worker.new(@navigator, @router, @emitter, @fetcher)
         end
 
         workers.each(&:join)

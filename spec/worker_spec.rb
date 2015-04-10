@@ -2,12 +2,13 @@ require "spec_helpers"
 
 describe Schablone::Worker do
 
-  let(:scraper)       { -> () { :success } }
+  let(:scraper)       { Proc.new { emit(:success) } }
   let(:scraper_table) { { foo: scraper } }
   let(:router)        { Router.new(scraper_table) }
   let(:navigator)     { Navigator.new(router) }
+  let(:emitter)       { Emitter.new }
   let(:fetcher)       { Fetcher.new }
-  subject(:worker)    { Worker.new(navigator, router, fetcher) }
+  subject(:worker)    { Worker.new(navigator, router, emitter, fetcher) }
 
   before { router.map(:foo) { host("0.0.0.0") } }
 
@@ -15,8 +16,13 @@ describe Schablone::Worker do
     let(:uri) { URI("http://0.0.0.0:9876/graph/index.html") }
     before { worker.send(:process, uri) }
 
-    it "works" do
-      expect(worker.result).to eq [:success]
+    it "emits as expected" do
+      emitter = spy()
+      worker.instance_variable_set(:@emitter, emitter)
+
+      worker.send(:process, uri)
+
+      expect(emitter).to have_received(:emit).with(:success)
     end
 
     it "stages the expected URIs" do

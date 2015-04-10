@@ -4,9 +4,10 @@ module Schablone
     attr_reader :navigator
     attr_reader :result
 
-    def initialize(navigator, router, fetcher)
+    def initialize(navigator, router, emitter, fetcher)
       @navigator = navigator
       @router    = router
+      @emitter   = emitter
       @fetcher   = fetcher
 
       @result = []
@@ -32,16 +33,18 @@ module Schablone
       page.links.each { |uri| @navigator.stage(uri) }
 
       if scraper = @router.invoke(uri)
-        @result << scraper.call
+        ctx = Context.new(page, @navigator, @emitter)
+        ctx.invoke(&scraper)
       end
-
-      @navigator.cache(uri)
 
     rescue Schablone::Fetcher::MaximumRedirectCountReached
       Schablone.log.warn("Maximum number of HTTP redirects reached")
 
     rescue SocketError
       Schablone.log.warn("DNS lookup failed")
+
+    ensure
+      @navigator.cache(uri)
     end
 
   end
