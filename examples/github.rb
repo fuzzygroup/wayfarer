@@ -1,7 +1,6 @@
 require_relative "../lib/schablone"
 
 crawler = Schablone::Crawler.new do
-
   scraper :page do
     if page.title ~= /Hitler/
       puts "Found Hitler after #{history.count} attempts!"
@@ -15,4 +14,6 @@ crawler = Schablone::Crawler.new do
   end
 end
 
-result = crawler.crawl(URI("http://de.wikipedia.org/wiki/Wikipedia:Hauptseite"))
+crawler.crawl(uri) do |extract|
+  
+end

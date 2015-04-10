@@ -21,6 +21,7 @@ require_relative "schablone/extraction/extractable_group"
 require_relative "schablone/extraction/scoper"
 
 # Processing
+require_relative "schablone/worker"
 require_relative "schablone/context"
 require_relative "schablone/parser"
 require_relative "schablone/page"

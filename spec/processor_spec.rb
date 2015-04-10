@@ -22,34 +22,6 @@ describe Schablone::Processor do
     end
   end
 
-  describe "#process" do
-    let(:uri) { URI("http://0.0.0.0:9876/graph/index.html") }
-    before { router.map(:foo) { host("0.0.0.0") } }
-    before { processor.send(:process, uri) }
-
-    it "works" do
-      expect(processor.result).to eq [{ title: "Index" }]
-    end
-
-    it "stages the expected URIs" do
-      expect(processor.navigator.staged_uris).to eq %w(
-        http://0.0.0.0:9876/graph/details/a.html
-        http://0.0.0.0:9876/graph/details/b.html
-        http://0.0.0.0:9876/status_code/400
-        http://0.0.0.0:9876/status_code/403
-        http://0.0.0.0:9876/status_code/404
-        http://bro.ken
-        http://0.0.0.0:9876/redirect_loop
-      ).map { |str| URI(str) }
-    end
-
-    it "caches processed URIs" do
-      expect(processor.navigator.cached_uris).to eq [
-        URI("http://0.0.0.0:9876/graph/index.html")
-      ]
-    end
-  end
-
   describe "#run" do
     let(:entry_uri) { URI("http://0.0.0.0:9876/graph/index.html") }
     before { router.map(:foo) { host("0.0.0.0") } }

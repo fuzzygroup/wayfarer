@@ -10,6 +10,7 @@ module Schablone
       @scraper = scraper
       @navigator = Navigator.new(router)
       @fetcher = Fetcher.new
+      @router = router
       @result = []
 
       @navigator.stage(entry_uri)
@@ -22,14 +23,7 @@ module Schablone
         threads = []
 
         Schablone.config.threads.times do
-          threads << Thread.new do
-            until queue.empty?
-              if uri = queue.pop(true) rescue nil
-                Schablone.log.info("About to hit: #{uri}")
-                process(uri)
-              end
-            end
-          end
+          threads << Worker.new(@navigator, @router, @fetcher)
         end
 
         threads.each(&:join)
@@ -40,18 +34,6 @@ module Schablone
           break
         end
       end
-    end
-
-    private
-
-    def process(uri)
-      page = @fetcher.fetch(uri)
-      page.links.each { |uri| @navigator.stage(uri) }
-      @result << @scraper.extract(page.parsed_document)
-      @navigator.cache(uri)
-
-    rescue Schablone::Fetcher::MaximumRedirectCountReached
-      Schablone.log.warn("Maximum number of HTTP redirects reached")
     end
   end
 end
