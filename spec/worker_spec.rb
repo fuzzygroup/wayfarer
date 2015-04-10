@@ -2,7 +2,7 @@ require "spec_helpers"
 
 describe Schablone::Worker do
 
-  let(:scraper)       { -> () { :ran } }
+  let(:scraper)       { -> () { :success } }
   let(:scraper_table) { { foo: scraper } }
   let(:router)        { Router.new(scraper_table) }
   let(:navigator)     { Navigator.new(router) }
@@ -16,7 +16,7 @@ describe Schablone::Worker do
     before { worker.send(:process, uri) }
 
     it "works" do
-      expect(worker.result).to eq [:ran]
+      expect(worker.result).to eq [:success]
     end
 
     it "stages the expected URIs" do

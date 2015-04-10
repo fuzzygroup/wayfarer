@@ -7,11 +7,10 @@ module Schablone
     attr_reader :navigator
 
     def initialize(entry_uri, scraper, router)
-      @scraper = scraper
       @navigator = Navigator.new(router)
-      @fetcher = Fetcher.new
-      @router = router
-      @result = []
+      @fetcher   = Fetcher.new
+      @router    = router
+      @result    = []
 
       @navigator.stage(entry_uri)
       @navigator.cycle

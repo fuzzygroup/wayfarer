@@ -29,6 +29,14 @@ describe Schablone::Context do
     end
   end
 
+  describe "#halt" do
+    it "throws `:halt`" do
+      expect {
+        context.send(:halt)
+      }.to throw_symbol :halt
+    end
+  end
+
   describe "#invoke" do
     it "evaluates the `Proc` in its instance context" do
       this = nil

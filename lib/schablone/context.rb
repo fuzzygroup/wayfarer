@@ -15,6 +15,10 @@ module Schablone
       @page
     end
 
+    def halt
+      throw :halt
+    end
+
     def history
       @navigator.cached_uris
     end

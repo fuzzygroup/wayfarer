@@ -1,7 +1,8 @@
 module Schablone
   class Emitter
 
-    def initialize
+    def emit(*args)
+      yield(*args)
     end
 
   end
