@@ -2,7 +2,6 @@ module Schablone
   class Worker < Thread
 
     attr_reader :navigator
-    attr_reader :result
 
     def initialize(uri_queue, navigator, router, emitter, fetcher)
       @uri_queue = uri_queue
@@ -10,8 +9,6 @@ module Schablone
       @router    = router
       @emitter   = emitter
       @fetcher   = fetcher
-
-      @result = []
 
       super(self, &:work)
     end
