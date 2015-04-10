@@ -7,27 +7,16 @@ module Schablone
 
       def initialize(scraper_table)
         @scraper_table = scraper_table
-
-        @whitelist = Rule.new
         @blacklist = Rule.new
-
         @routes = {}
-      end
-
-      def allow(&proc)
-        block_given? ? @whitelist.instance_eval(&proc) : @whitelist
       end
 
       def forbid(&proc)
         block_given? ? @blacklist.instance_eval(&proc) : @blacklist
       end
 
-      def allows?(uri)
-        !(@blacklist === uri) && @whitelist === uri
-      end
-
       def forbids?(uri)
-        !allows?(uri)
+        @blacklist === uri
       end
 
       def map(scraper_sym, &proc)

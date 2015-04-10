@@ -10,7 +10,7 @@ describe Schablone::Processor do
 
   let(:router) do
     router = Router.new({})
-    router.allow.host("example.com")
+    router.map(:foo) { host "example.com" }
     router
   end
 
@@ -24,7 +24,7 @@ describe Schablone::Processor do
 
   describe "#process" do
     let(:uri) { URI("http://0.0.0.0:9876/graph/index.html") }
-    before { router.allow.host("0.0.0.0") }
+    before { router.map(:foo) { host("0.0.0.0") } }
     before { processor.send(:process, uri) }
 
     it "works" do
@@ -52,7 +52,7 @@ describe Schablone::Processor do
 
   describe "#run" do
     let(:entry_uri) { URI("http://0.0.0.0:9876/graph/index.html") }
-    before { router.allow.host("0.0.0.0") }
+    before { router.map(:foo) { host("0.0.0.0") } }
     before { Schablone.config.log_level = Logger::INFO }
     after { Schablone.config.reset! }
 

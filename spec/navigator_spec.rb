@@ -87,7 +87,7 @@ describe Schablone::Navigator do
 
   describe "#cycle" do
     let(:uri) { URI("http://example.com") }
-    before { router.allow.host("example.com") }
+    before { router.map(:foo) { host("example.com") } }
 
     it "filters `@staged_uris`" do
       navigator.stage(uri)
@@ -131,9 +131,7 @@ describe Schablone::Navigator do
 
   describe "#filter_staged_uris" do
     let(:uri) { URI("http://example.com") }
-    before do
-      router.allow.host("example.com")
-    end
+    before { router.map(:foo) { host "example.com" } }
 
     it "filters duplicate URIs" do
       navigator.send(:stage, uri)
