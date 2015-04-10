@@ -3,6 +3,7 @@ module Schablone
     def initialize(&proc)
       @scraper = Extraction::Scraper.new
       @router  = Routing::Router.new({})
+      @emitter = Emitter.new
 
       instance_eval(&proc) if block_given?
     end
