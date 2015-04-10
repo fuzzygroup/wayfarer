@@ -19,17 +19,16 @@ module Schablone
 
     def run
       loop do
-        queue = @navigator.current_uri_queue
-        threads = []
+        workers = []
 
         Schablone.config.threads.times do
-          threads << Worker.new(@navigator, @router, @fetcher)
+          workers << Worker.new(@navigator, @router, @fetcher)
         end
 
-        threads.each(&:join)
+        workers.each(&:join)
 
         unless @navigator.cycle
-          threads.each(&:kill)
+          workers.each(&:kill)
           @fetcher.free
           break
         end
