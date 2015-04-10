@@ -1,18 +1,12 @@
 require "spec_helpers"
 
 describe Schablone::Processor do
-  let(:scraper)       { -> () { :success } }
+  let(:entry_uri)     { URI("http://example.com") }
+  let(:scraper)       { Proc.new { emit(:success) } }
   let(:scraper_table) { { foo: scraper } }
   let(:router)        { Router.new(scraper_table) }
   let(:emitter)       { Emitter.new }
-  let(:entry_uri)     { URI("http://example.com/entry") }
   subject(:processor) { Processor.new(entry_uri, router, emitter) }
-
-  let(:router) do
-    router = Router.new({})
-    router.map(:foo) { host "example.com" }
-    router
-  end
 
   describe "#initialize" do
     it "adds `entry_uri` to fuck this bullshit" do
