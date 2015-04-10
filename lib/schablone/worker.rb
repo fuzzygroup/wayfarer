@@ -39,6 +39,9 @@ module Schablone
 
     rescue Schablone::Fetcher::MaximumRedirectCountReached
       Schablone.log.warn("Maximum number of HTTP redirects reached")
+
+    rescue SocketError
+      Schablone.log.warn("DNS lookup failed")
     end
 
   end
