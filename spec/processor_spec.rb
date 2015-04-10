@@ -1,20 +1,18 @@
 require "spec_helpers"
 
 describe Schablone::Processor do
-  let(:entry_uri) { URI("http://example.com/entry") }
-  let(:scraper) do
-    scraper = Scraper.new
-    scraper.css(:title, "title")
-    scraper
-  end
+  let(:scraper)       { -> () { :success } }
+  let(:scraper_table) { { foo: scraper } }
+  let(:router)        { Router.new(scraper_table) }
+  let(:emitter)       { Emitter.new }
+  let(:entry_uri)     { URI("http://example.com/entry") }
+  subject(:processor) { Processor.new(entry_uri, router, emitter) }
 
   let(:router) do
     router = Router.new({})
     router.map(:foo) { host "example.com" }
     router
   end
-
-  subject(:processor) { Processor.new(entry_uri, scraper, router) }
 
   describe "#initialize" do
     it "adds `entry_uri` to fuck this bullshit" do
@@ -28,9 +26,13 @@ describe Schablone::Processor do
     before { Schablone.config.log_level = Logger::INFO }
     after { Schablone.config.reset! }
 
-    it "works" do
+    it "emits as expected" do
+      emitter = spy()
+      processor.instance_variable_set(:@emitter, emitter)
+
       processor.run
-      expect(processor.result.count).to be 6
+
+      expect(emitter).to have_received(:emit).exactly(6).times
     end
   end
 end

@@ -1,9 +1,10 @@
 module Schablone
   class Context
 
-    def initialize(page, navigator)
-      @page = page
+    def initialize(page, navigator, emitter)
+      @page      = page
       @navigator = navigator
+      @emitter   = emitter
     end
 
     def invoke(&proc)
@@ -13,6 +14,10 @@ module Schablone
     private
     def page
       @page
+    end
+
+    def emit(*args)
+      @emitter.emit(*args)
     end
 
     def halt

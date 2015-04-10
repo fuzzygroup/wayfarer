@@ -2,10 +2,11 @@ require "spec_helpers"
 
 describe Schablone::Context do
 
-  let(:page) { fetch_page("http://example.com") }
-  let(:router) { Router.new({}) }
+  let(:page)      { fetch_page("http://example.com") }
+  let(:router)    { Router.new({}) }
   let(:navigator) { Navigator.new(router) }
-  let(:context) { Context.new(page, navigator) }
+  let(:emitter)   { Emitter.new }
+  let(:context)   { Context.new(page, navigator, emitter) }
 
   describe "#page" do
     it "returns `@page`" do
@@ -26,6 +27,19 @@ describe Schablone::Context do
       expect {
         context.send(:visit, uri)
       }.to change { navigator.staged_uris.count }.by(1)
+    end
+  end
+
+  describe "#emit" do
+    let(:emitter) { spy() }
+
+    before do
+      context.instance_variable_set(:@emitter, emitter)
+    end
+
+    it "emits as expected" do
+      context.send(:emit, :foo, :bar)
+      expect(emitter).to have_received(:emit).with(:foo, :bar)
     end
   end
 
