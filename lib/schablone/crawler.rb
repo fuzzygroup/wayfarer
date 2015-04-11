@@ -17,8 +17,8 @@ module Schablone
       processor.result
     end
 
-    def configure(&proc)
-      Schablone.configure(&proc)
+    def configure(*argv)
+      Schablone.configure(*argv)
     end
 
     alias_method :config, :configure
