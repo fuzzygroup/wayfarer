@@ -10,6 +10,7 @@ module Schablone
       @emitter   = emitter
       @navigator = Navigator.new(router)
       @fetcher   = Fetcher.new
+      @workers   = []
 
       @navigator.stage(entry_uri)
       @navigator.cycle
@@ -19,23 +20,23 @@ module Schablone
       catch(:halt) { loop { step } }
     end
 
+    private
+
     def step
       queue = @navigator.current_uri_queue
 
-      workers = Schablone.config.threads.times.map do
-        Worker.new(queue, @navigator, @router, @emitter, @fetcher)
+      Schablone.config.threads.times do
+        @workers << Worker.new(queue, @navigator, @router, @emitter, @fetcher)
       end
 
-      workers.each(&:join)
+      @workers.each(&:join)
 
-      unless @navigator.cycle
-        workers.each(&:kill)
-        @fetcher.free
-        halt
-      end
+      halt unless @navigator.cycle
     end
 
     def halt
+      @workers.each(&:kill)
+      @fetcher.free
       throw(:halt)
     end
   end
