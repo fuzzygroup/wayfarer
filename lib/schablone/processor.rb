@@ -2,8 +2,8 @@ require "thread"
 
 module Schablone
   class Processor
-    attr_reader :result
     attr_reader :navigator
+    attr_reader :workers
 
     def initialize(entry_uri, router, emitter)
       @router    = router
@@ -24,13 +24,8 @@ module Schablone
 
     def step
       queue = @navigator.current_uri_queue
-
-      Schablone.config.threads.times do
-        @workers << Worker.new(queue, @navigator, @router, @emitter, @fetcher)
-      end
-
+      spawn_workers(queue)
       @workers.each(&:join)
-
       halt unless @navigator.cycle
     end
 
@@ -38,6 +33,12 @@ module Schablone
       @workers.each(&:kill)
       @fetcher.free
       throw(:halt)
+    end
+
+    def spawn_workers(queue)
+      Schablone.config.threads.times do
+        @workers << Worker.new(queue, @navigator, @router, @emitter, @fetcher)
+      end
     end
   end
 end

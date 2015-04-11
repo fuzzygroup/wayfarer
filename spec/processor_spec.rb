@@ -30,4 +30,16 @@ describe Schablone::Processor do
       expect(emitter).to have_received(:emit).exactly(6).times
     end
   end
+
+  describe "#spawn_workers" do
+    let(:queue) { Queue.new }
+    before { Schablone.config.threads = 2 }
+    after { Schablone.config.reset! }
+
+    it "spawns the expected number of workers" do
+      expect {
+        processor.send(:spawn_workers, queue)
+      }.to change { processor.workers.count }.by(2)
+    end
+  end
 end
