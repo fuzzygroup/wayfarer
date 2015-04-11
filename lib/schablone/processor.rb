@@ -16,21 +16,27 @@ module Schablone
     end
 
     def run
-      loop do
-        queue = @navigator.current_uri_queue
+      catch(:halt) { loop { step } }
+    end
 
-        workers = Schablone.config.threads.times.map do
-          Worker.new(queue, @navigator, @router, @emitter, @fetcher)
-        end
+    def step
+      queue = @navigator.current_uri_queue
 
-        workers.each(&:join)
-
-        unless @navigator.cycle
-          workers.each(&:kill)
-          @fetcher.free
-          break
-        end
+      workers = Schablone.config.threads.times.map do
+        Worker.new(queue, @navigator, @router, @emitter, @fetcher)
       end
+
+      workers.each(&:join)
+
+      unless @navigator.cycle
+        workers.each(&:kill)
+        @fetcher.free
+        halt
+      end
+    end
+
+    def halt
+      throw(:halt)
     end
   end
 end
