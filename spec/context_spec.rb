@@ -3,7 +3,7 @@ require "spec_helpers"
 describe Schablone::Context do
 
   let(:page)      { fetch_page("http://example.com") }
-  let(:router)    { Router.new({}) }
+  let(:router)    { Router.new }
   let(:navigator) { Navigator.new(router) }
   let(:emitter)   { Emitter.new }
   let(:context)   { Context.new(page, navigator, emitter) }
@@ -33,9 +33,7 @@ describe Schablone::Context do
   describe "#emit" do
     let(:emitter) { spy() }
 
-    before do
-      context.instance_variable_set(:@emitter, emitter)
-    end
+    before { context.instance_variable_set(:@emitter, emitter) }
 
     it "emits as expected" do
       context.send(:emit, :foo, :bar)

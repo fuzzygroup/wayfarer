@@ -4,8 +4,7 @@ module Schablone
 
     def initialize(&proc)
       @scraper = Extraction::Scraper.new
-      @scraper_table = {}
-      @router  = Routing::Router.new(@scraper_table)
+      @router  = Routing::Router.new
       @emitter = Emitter.new
 
       instance_eval(&proc) if block_given?

@@ -5,10 +5,9 @@ module Schablone
       attr_reader :targets
       attr_reader :blacklist
 
-      def initialize(scraper_table)
-        @scraper_table = scraper_table
-        @targets = {}
-        @routes = {}
+      def initialize
+        @targets   = {}
+        @routes    = {}
         @blacklist = Rule.new
       end
 
@@ -30,7 +29,7 @@ module Schablone
 
       def invoke(uri)
         if detected_route = @routes.detect { |_, rule| rule === uri }
-          @scraper_table[detected_route.first]
+          @targets[detected_route.first]
         end
       end
     end

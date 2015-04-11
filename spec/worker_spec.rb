@@ -3,8 +3,7 @@ require "spec_helpers"
 describe Schablone::Worker do
   let(:uri_queue)     { queue([URI("http://example.com")]) }
   let(:scraper)       { Proc.new { emit(:success) } }
-  let(:scraper_table) { { foo: scraper } }
-  let(:router)        { Router.new(scraper_table) }
+  let(:router)        { Router.new }
   let(:navigator)     { Navigator.new(router) }
   let(:emitter)       { Emitter.new }
   let(:fetcher)       { Fetcher.new }
@@ -12,7 +11,10 @@ describe Schablone::Worker do
     Worker.new(uri_queue, navigator, router, emitter, fetcher)
   end
 
-  before { router.map(:foo) { host("0.0.0.0") } }
+  before do
+    router.register(:foo, &scraper)
+    router.map(:foo) { host("0.0.0.0") }
+  end
 
   describe "#process" do
     let(:uri) { URI("http://0.0.0.0:9876/graph/index.html") }

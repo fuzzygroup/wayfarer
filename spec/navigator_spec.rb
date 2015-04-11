@@ -2,7 +2,7 @@ require "spec_helpers"
 
 describe Schablone::Navigator do
 
-  let(:router) { Router.new({}) }
+  let(:router) { Router.new }
   subject(:navigator) { Navigator.new(router) }
 
   describe "#stage" do
