@@ -43,6 +43,13 @@ describe Schablone::Processor do
       catch(:halt) { processor.send(:halt) }
       expect(processor.workers).to eq []
     end
+
+    it "frees its `Fetcher`" do
+      fetcher = spy()
+      processor.instance_variable_set(:@fetcher, fetcher)
+      catch(:halt) { processor.send(:halt) }
+      expect(fetcher).to have_received(:free)
+    end
   end
 
   describe "#spawn_workers" do
