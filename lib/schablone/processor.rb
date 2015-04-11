@@ -26,19 +26,19 @@ module Schablone
       queue = @navigator.current_uri_queue
       spawn_workers(queue)
       @workers.each(&:join)
-      halt unless @navigator.cycle
-    end
-
-    def halt
       @workers.clear
-      @fetcher.free
-      throw(:halt)
+      halt unless @navigator.cycle
     end
 
     def spawn_workers(queue)
       Schablone.config.threads.times do
         @workers << Worker.new(queue, @navigator, @router, @emitter, @fetcher)
       end
+    end
+
+    def halt
+      @fetcher.free
+      throw(:halt)
     end
   end
 end

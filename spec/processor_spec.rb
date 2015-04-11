@@ -31,17 +31,18 @@ describe Schablone::Processor do
     end
   end
 
+  describe "#step" do
+    it "clears its worker references" do
+      processor.send(:step)
+      expect(processor.workers).to eq []
+    end
+  end
+
   describe "#halt" do
     it "throws `:halt`" do
       expect {
         processor.send(:halt)
       }.to throw_symbol :halt
-    end
-
-    it "empties its worker references" do
-      processor.instance_variable_set(:@workers, [:a, :b])
-      catch(:halt) { processor.send(:halt) }
-      expect(processor.workers).to eq []
     end
 
     it "frees its `Fetcher`" do
