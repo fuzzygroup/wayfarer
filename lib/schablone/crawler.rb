@@ -1,8 +1,11 @@
 module Schablone
   class Crawler
+    attr_reader :scraper_table
+
     def initialize(&proc)
       @scraper = Extraction::Scraper.new
-      @router  = Routing::Router.new({})
+      @scraper_table = {}
+      @router  = Routing::Router.new(@scraper_table)
       @emitter = Emitter.new
 
       instance_eval(&proc) if block_given?
@@ -20,15 +23,11 @@ module Schablone
 
     alias_method :config, :configure
 
-    def setup_scraper(&proc)
-      if block_given?
-        proc.arity == 1 ? (yield @scraper) : @scraper.instance_eval(&proc)
-      else
-        @scraper
-      end
+    def register_scraper(sym, obj = nil, &proc)
+      @scraper_table[sym] = obj || proc
     end
 
-    alias_method :scraper, :setup_scraper
+    alias_method :scraper, :register_scraper
 
     def setup_router(&proc)
       if block_given?

@@ -3,25 +3,31 @@ require "spec_helpers"
 describe Schablone::Crawler do
   let(:crawler) { subject.class.new }
 
-  describe "#setup_scraper, #scraper" do
-    context "without Proc given" do
-      it "returns the Scraper" do
-        expect(crawler.scraper).to be_a Scraper
+  describe "#register_scraper, #scraper" do
+    context "with `Object` given" do
+      let(:scraper) { Object.new }
+
+      it "stores the `Object`" do
+        expect {
+          crawler.register_scraper(:foo, scraper)
+        }.to change { crawler.scraper_table.length }.by(1)
       end
     end
 
-    context "with Proc of arity 0 given" do
-      it "evaluates the given Proc in its Scraper's instance context" do
-        this = nil
-        crawler.setup_scraper { this = self }
-        expect(this).to be crawler.scraper
+    context "with bound `Proc` given" do
+      it "stores the `Proc`" do
+        expect {
+          crawler.register_scraper(:foo, &Proc.new {})
+        }.to change { crawler.scraper_table.length }.by(1)
       end
     end
 
-    context "with Proc of arity 1 given" do
-      it "yields the Scraper" do
-        crawler.setup_scraper { |scraper| @scraper = scraper }
-        expect(@scraper).to be crawler.scraper
+    context "with both `Object` and bound `Proc` given" do
+      let(:scraper) { Object.new }
+
+      it "stores the `Object`" do
+        crawler.register_scraper(:foo, scraper, &Proc.new {})
+        expect(crawler.scraper_table[:foo]).to be scraper
       end
     end
   end

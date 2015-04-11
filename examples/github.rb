@@ -6,7 +6,7 @@ crawler = Schablone::Crawler.new do
       puts "Found Hitler after #{history.count} attempts!"
       halt
     end
-    visit links
+    visit links.sample
   end
 
   router do
