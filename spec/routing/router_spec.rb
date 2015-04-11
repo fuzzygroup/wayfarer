@@ -20,6 +20,14 @@ describe Schablone::Routing::Router do
     end
   end
 
+  describe "#register" do
+    it "registers a route target" do
+      expect {
+        router.register(:foo, &Proc.new {})
+      }.to change { router.targets.count }.by(1)
+    end
+  end
+
   describe "#map" do
     it "registers a route" do
       expect { router.map(:foo) }.to change { router.routes.count }.by(1)

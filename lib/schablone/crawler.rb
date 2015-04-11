@@ -1,6 +1,6 @@
 module Schablone
   class Crawler
-    attr_reader :scraper_table
+    attr_reader :router
 
     def initialize(&proc)
       @scraper = Extraction::Scraper.new
@@ -23,8 +23,8 @@ module Schablone
 
     alias_method :config, :configure
 
-    def register_scraper(sym, obj = nil, &proc)
-      @scraper_table[sym] = obj || proc
+    def register_scraper(*argv)
+      @router.register(*argv)
     end
 
     alias_method :scraper, :register_scraper

@@ -4,31 +4,10 @@ describe Schablone::Crawler do
   let(:crawler) { subject.class.new }
 
   describe "#register_scraper, #scraper" do
-    context "with `Object` given" do
-      let(:scraper) { Object.new }
-
-      it "stores the `Object`" do
-        expect {
-          crawler.register_scraper(:foo, scraper)
-        }.to change { crawler.scraper_table.length }.by(1)
-      end
-    end
-
-    context "with bound `Proc` given" do
-      it "stores the `Proc`" do
-        expect {
-          crawler.register_scraper(:foo, &Proc.new {})
-        }.to change { crawler.scraper_table.length }.by(1)
-      end
-    end
-
-    context "with both `Object` and bound `Proc` given" do
-      let(:scraper) { Object.new }
-
-      it "stores the `Object`" do
-        crawler.register_scraper(:foo, scraper, &Proc.new {})
-        expect(crawler.scraper_table[:foo]).to be scraper
-      end
+    it "registers a route target" do
+      expect {
+        crawler.register_scraper(:foo, &Proc.new {})
+      }.to change { crawler.router.targets.count }.by(1)
     end
   end
 

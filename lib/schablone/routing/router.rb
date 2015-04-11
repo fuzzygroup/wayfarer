@@ -1,14 +1,15 @@
 module Schablone
   module Routing
     class Router
-      attr_reader :whitelist
-      attr_reader :blacklist
       attr_reader :routes
+      attr_reader :targets
+      attr_reader :blacklist
 
       def initialize(scraper_table)
         @scraper_table = scraper_table
-        @blacklist = Rule.new
+        @targets = {}
         @routes = {}
+        @blacklist = Rule.new
       end
 
       def forbid(&proc)
@@ -17,6 +18,10 @@ module Schablone
 
       def forbids?(uri)
         @blacklist === uri
+      end
+
+      def register(sym, &proc)
+        @targets[sym] = proc
       end
 
       def map(scraper_sym, &proc)
