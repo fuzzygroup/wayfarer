@@ -30,7 +30,7 @@ module Schablone
     end
 
     def halt
-      @workers.each(&:kill)
+      @workers.clear
       @fetcher.free
       throw(:halt)
     end
