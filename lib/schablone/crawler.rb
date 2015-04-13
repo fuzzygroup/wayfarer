@@ -21,14 +21,14 @@ module Schablone
 
     alias_method :config, :configure
 
-    def register_handler(*argv)
-      @router.register_handler(*argv)
+    def register_handler(*argv, &proc)
+      @router.register_handler(*argv, &proc)
     end
 
     alias_method :handle, :register_handler
 
-    def register_listener(*argv)
-      @emitter.register_listener(*argv)
+    def register_listener(*argv, &proc)
+      @emitter.register_listener(*argv, &proc)
     end
 
     alias_method :listen, :register_listener

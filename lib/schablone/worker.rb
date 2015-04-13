@@ -30,7 +30,9 @@ module Schablone
       page.links.each { |uri| @navigator.stage(uri) }
 
       if route = @router.invoke(uri)
-        handler, proc = route
+        handler, proc = *route
+
+        # fail "#{route}"
 
         context = Context.new(
           handler, @processor, page, @navigator, @emitter
