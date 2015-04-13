@@ -22,12 +22,19 @@ describe Schablone::Processor do
     after { Schablone.config.reset! }
 
     it "emits as expected" do
-      emitter = spy()
-      processor.instance_variable_set(:@emitter, emitter)
-
+      processor.instance_variable_set(:@emitter, emitter = spy())
       processor.run
-
       expect(emitter).to have_received(:emit).exactly(6).times
+    end
+
+    context "with halting `Scraper`" do
+      let(:scraper) { Proc.new { emit(:success); halt } }
+
+      it "halts" do
+        processor.instance_variable_set(:@emitter, emitter = spy())
+        processor.run
+        expect(emitter).to have_received(:emit).exactly(1).times
+      end
     end
   end
 
