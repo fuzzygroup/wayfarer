@@ -20,12 +20,12 @@ describe Schablone::Context do
     end
   end
 
-  describe "#visit" do
+  describe "#stage" do
     let(:uri) { URI("http://example.com") }
 
     it "stages a URI" do
       expect {
-        context.send(:visit, uri)
+        context.send(:stage, uri)
       }.to change { navigator.staged_uris.count }.by(1)
     end
   end

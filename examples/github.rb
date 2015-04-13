@@ -7,8 +7,8 @@ crawler = Schablone::Crawler.new do
       halt
     end
 
-    extract do
-      
+    extract! do
+      css :title, "title"
     end
 
     visit links.sample
@@ -19,6 +19,8 @@ crawler = Schablone::Crawler.new do
   end
 end
 
-crawler.crawl(uri) do |extract|
+crawler.process :page do |page|
   
 end
+
+crawler.crawl

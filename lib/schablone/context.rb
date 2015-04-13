@@ -29,7 +29,7 @@ module Schablone
       @navigator.cached_uris
     end
 
-    def visit(uri)
+    def stage(uri)
       @navigator.stage(uri)
     end
 
