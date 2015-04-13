@@ -32,7 +32,6 @@ describe Schablone::Context do
 
   describe "#emit" do
     let(:emitter) { spy() }
-
     before { context.instance_variable_set(:@emitter, emitter) }
 
     it "emits as expected" do
@@ -54,6 +53,29 @@ describe Schablone::Context do
       this = nil
       context.invoke { this = self }
       expect(this).to be context
+    end
+  end
+
+  describe "#extract" do
+    it "works" do
+      extract = context.send(:extract) do
+        css :title, "title"
+      end
+
+      expect(extract).to eq({ title: "Example Domain" })
+    end
+  end
+
+  describe "#extract!" do
+    let(:emitter) { spy() }
+    before { context.instance_variable_set(:@emitter, emitter) }
+
+    it "emits as expected" do
+      context.send(:extract!) do
+        css :title, "title"
+      end
+
+      expect(emitter).to have_received(:emit).with({ title: "Example Domain" })
     end
   end
 

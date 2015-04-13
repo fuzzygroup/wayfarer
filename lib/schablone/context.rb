@@ -33,5 +33,13 @@ module Schablone
       @navigator.stage(uri)
     end
 
+    def extract(&proc)
+      Scraper.new(&proc).extract(@page.parsed_document)
+    end
+
+    def extract!(&proc)
+      emit(extract(&proc))
+    end
+
   end
 end
