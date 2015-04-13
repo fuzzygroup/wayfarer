@@ -13,6 +13,10 @@ describe Schablone::Processor do
     it "adds `entry_uri` to fuck this bullshit" do
       expect(processor.navigator.current_uris).to eq [entry_uri]
     end
+
+    it "sets its `@state` to `:idle`" do
+      expect(processor.state).to be :idle
+    end
   end
 
   describe "#run" do
@@ -33,7 +37,8 @@ describe Schablone::Processor do
       it "halts" do
         processor.instance_variable_set(:@emitter, emitter = spy())
         processor.run
-        expect(emitter).to have_received(:emit).exactly(1).times
+        expect(emitter).to have_received(:emit)
+        expect(processor).to have_received(:halt)
       end
     end
   end
@@ -46,17 +51,41 @@ describe Schablone::Processor do
   end
 
   describe "#halt" do
-    it "throws `:halt`" do
-      expect {
-        processor.send(:halt)
-      }.to throw_symbol :halt
+    context "when `@state` is `:running`" do
+      before { processor.instance_variable_set(:@state, :running) }
+
+      it "throws `:halt`" do
+        expect {
+          processor.send(:halt)
+        }.to throw_symbol :halt
+      end
+
+      it "frees its `Fetcher`" do
+        fetcher = spy()
+        processor.instance_variable_set(:@fetcher, fetcher)
+        catch(:halt) { processor.send(:halt) }
+        expect(fetcher).to have_received(:free)
+      end
+
+      it "sets `@state` to `:halted`" do
+        catch(:halt) { processor.send(:halt) }
+        expect(processor.state).to be :halted
+      end
+
+      it "returns `true`" do
+        catch(:halt) { expect(processor.send(:halt)).to be true }
+      end
     end
 
-    it "frees its `Fetcher`" do
-      fetcher = spy()
-      processor.instance_variable_set(:@fetcher, fetcher)
-      catch(:halt) { processor.send(:halt) }
-      expect(fetcher).to have_received(:free)
+    context "when `@state` is not `:running`" do
+      it "does not alter `@state`" do
+        catch(:halt) { processor.send(:halt) }
+        expect(processor.state).to be :idle
+      end
+
+      it "returns `false`" do
+        expect(processor.send(:halt)).to be false
+      end
     end
   end
 

@@ -1,7 +1,8 @@
 module Schablone
   class Context
 
-    def initialize(page, navigator, emitter)
+    def initialize(processor, page, navigator, emitter)
+      @processor = processor
       @page      = page
       @navigator = navigator
       @emitter   = emitter
@@ -21,7 +22,7 @@ module Schablone
     end
 
     def halt
-      throw :halt
+      @processor.halt
     end
 
     def history

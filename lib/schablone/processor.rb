@@ -4,6 +4,7 @@ module Schablone
   class Processor
     attr_reader :navigator
     attr_reader :workers
+    attr_reader :state
 
     def initialize(entry_uri, router, emitter)
       @router    = router
@@ -11,13 +12,24 @@ module Schablone
       @navigator = Navigator.new(router)
       @fetcher   = Fetcher.new
       @workers   = []
+      @state     = :idle
 
       @navigator.stage(entry_uri)
       @navigator.cycle
     end
 
     def run
+      @state = :running
       catch(:halt) { loop { step } }
+    end
+
+    def halt
+      return false unless @state == :running
+
+      @workers.each(&:kill)
+      @fetcher.free
+      @state = :halted
+      throw(:halt)
     end
 
     private
@@ -36,11 +48,6 @@ module Schablone
           self, queue, @navigator, @router, @emitter, @fetcher
         )
       end
-    end
-
-    def halt
-      @fetcher.free
-      throw(:halt)
     end
   end
 end

@@ -30,7 +30,7 @@ module Schablone
       page.links.each { |uri| @navigator.stage(uri) }
 
       if scraper = @router.invoke(uri)
-        Context.new(page, @navigator, @emitter).invoke(&scraper)
+        Context.new(@processor, page, @navigator, @emitter).invoke(&scraper)
       end
 
     rescue Schablone::Fetcher::MaximumRedirectCountReached

@@ -1,12 +1,12 @@
 require "spec_helpers"
 
 describe Schablone::Context do
-
+  let(:processor) { Object.new }
   let(:page)      { fetch_page("http://example.com") }
   let(:router)    { Router.new }
   let(:navigator) { Navigator.new(router) }
   let(:emitter)   { Emitter.new }
-  let(:context)   { Context.new(page, navigator, emitter) }
+  let(:context)   { Context.new(processor, page, navigator, emitter) }
 
   describe "#page" do
     it "returns `@page`" do
@@ -42,10 +42,10 @@ describe Schablone::Context do
   end
 
   describe "#halt" do
-    it "throws `:halt`" do
-      expect {
-        context.send(:halt)
-      }.to throw_symbol :halt
+    it "calls #halt on its `Processor`" do
+      context.instance_variable_set(:@processor, processor = spy())
+      context.send(:halt)
+      expect(processor).to have_received(:halt)
     end
   end
 
