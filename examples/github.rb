@@ -1,15 +1,17 @@
 require_relative "../lib/schablone"
 
 crawler = Schablone::Crawler.new do
-  handle :page do
-    puts page.uri
+  handle :index do
+    puts extract { css :title, "title" }
+    visit page.links
   end
 
-  router.map(:page) { host "de.wikipedia.org" }
+  handle :issues do
+    puts extract { css :title, "title" }
+  end
+
+  router.map(:index)  { host "github.com", path: "/intridea/hashie" }
+  router.map(:issues) { host "github.com", path: "/intridea/hashie/issues" }
 end
 
-crawler.listen :page do |page|
-  puts page
-end
-
-crawler.crawl(URI("http://de.wikipedia.org/wiki/Fubar"))
+crawler.crawl(URI("https://github.com/intridea/hashie"))

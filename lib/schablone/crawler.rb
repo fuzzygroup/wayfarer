@@ -15,8 +15,8 @@ module Schablone
       Processor.new(uri, @router, @emitter).run
     end
 
-    def configure(*argv)
-      Schablone.configure(*argv)
+    def configure(*argv, &proc)
+      Schablone.configure(*argv, &proc)
     end
 
     alias_method :config, :configure

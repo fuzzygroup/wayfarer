@@ -32,8 +32,6 @@ module Schablone
       if route = @router.invoke(uri)
         handler, proc = *route
 
-        # fail "#{route}"
-
         context = Context.new(
           handler, @processor, page, @navigator, @emitter
         )
@@ -45,6 +43,9 @@ module Schablone
 
     rescue SocketError
       Schablone.log.warn("DNS lookup failed")
+
+    rescue Errno::ETIMEDOUT
+      Schablone.log.warn("HTTP connection timed out.")
 
     ensure
       @navigator.cache(uri)
