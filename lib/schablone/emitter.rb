@@ -7,7 +7,7 @@ module Schablone
       @listeners = {}
     end
 
-    def subscribe(sym, &proc)
+    def register_listener(sym, &proc)
       @listeners[sym] = proc
     end
 

@@ -1,6 +1,7 @@
 module Schablone
   class Crawler
     attr_reader :router
+    attr_reader :emitter
 
     def initialize(&proc)
       @scraper = Extraction::Scraper.new
@@ -24,6 +25,10 @@ module Schablone
 
     def register_handler(*argv)
       @router.register_handler(*argv)
+    end
+
+    def register_listener(sym, &proc)
+      @emitter.register_listener(sym, &proc)
     end
 
     def setup_router(&proc)

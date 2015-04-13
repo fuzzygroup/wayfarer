@@ -3,11 +3,19 @@ require "spec_helpers"
 describe Schablone::Crawler do
   let(:crawler) { subject.class.new }
 
-  describe "#register_handler, #scraper" do
+  describe "#register_handler, #handle" do
     it "registers a route target" do
       expect {
         crawler.register_handler(:foo, &Proc.new {})
       }.to change { crawler.router.handlers.count }.by(1)
+    end
+  end
+
+  describe "#register_listener, #listen" do
+    it "registers a listener" do
+      expect {
+        crawler.register_listener(:foo, &Proc.new {})
+      }.to change { crawler.emitter.listeners.count }.by(1)
     end
   end
 
