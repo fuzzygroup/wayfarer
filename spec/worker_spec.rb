@@ -13,7 +13,7 @@ describe Schablone::Worker do
   end
 
   before do
-    router.register(:foo, &scraper)
+    router.register_handler(:foo, &scraper)
     router.map(:foo) { host("0.0.0.0") }
   end
 
@@ -27,7 +27,7 @@ describe Schablone::Worker do
 
       worker.send(:process, uri)
 
-      expect(emitter).to have_received(:emit).with(:success)
+      expect(emitter).to have_received(:emit).with(:foo, :success)
     end
 
     it "stages the expected URIs" do

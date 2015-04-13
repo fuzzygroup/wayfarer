@@ -1,8 +1,10 @@
 module Schablone
   class Context
+    attr_reader :handler
     attr_reader :navigator
 
-    def initialize(processor, page, navigator, emitter)
+    def initialize(handler, processor, page, navigator, emitter)
+      @handler   = handler
       @processor = processor
       @page      = page
       @navigator = navigator
@@ -19,7 +21,7 @@ module Schablone
     end
 
     def emit(*args)
-      @emitter.emit(*args)
+      @emitter.emit(@handler, *args)
     end
 
     def halt

@@ -7,7 +7,7 @@ describe Schablone::Processor do
   let(:emitter)       { Emitter.new }
   subject(:processor) { Processor.new(entry_uri, router, emitter) }
 
-  before { router.register(:foo, &scraper) }
+  before { router.register_handler(:foo, &scraper) }
 
   describe "#initialize" do
     it "adds `entry_uri` to fuck this bullshit" do

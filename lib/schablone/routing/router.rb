@@ -2,11 +2,11 @@ module Schablone
   module Routing
     class Router
       attr_reader :routes
-      attr_reader :targets
+      attr_reader :handlers
       attr_reader :blacklist
 
       def initialize
-        @targets   = {}
+        @handlers  = {}
         @routes    = {}
         @blacklist = Rule.new
       end
@@ -19,17 +19,17 @@ module Schablone
         @blacklist === uri
       end
 
-      def register(sym, &proc)
-        @targets[sym] = proc
+      def register_handler(sym, &proc)
+        @handlers[sym] = proc
       end
 
-      def map(scraper_sym, &proc)
-        @routes[scraper_sym] = Rule.new(&proc)
+      def map(sym, &proc)
+        @routes[sym] = Rule.new(&proc)
       end
 
       def invoke(uri)
         if detected_route = @routes.detect { |_, rule| rule === uri }
-          @targets[detected_route.first]
+          return sym = detected_route.first, @handlers[sym]
         end
       end
     end

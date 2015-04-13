@@ -20,16 +20,16 @@ describe Schablone::Routing::Router do
     end
   end
 
-  describe "#register" do
-    it "registers a route target" do
+  describe "#register_handler" do
+    it "register_handlers a route target" do
       expect {
-        router.register(:foo, &Proc.new {})
-      }.to change { router.targets.count }.by(1)
+        router.register_handler(:foo, &Proc.new {})
+      }.to change { router.handlers.count }.by(1)
     end
   end
 
   describe "#map" do
-    it "registers a route" do
+    it "register_handlers a route" do
       expect { router.map(:foo) }.to change { router.routes.count }.by(1)
     end
 
@@ -46,22 +46,29 @@ describe Schablone::Routing::Router do
     let(:scraper_b) { Proc.new {} }
 
     before do
-      router.register(:foo, &scraper_a)
-      router.register(:bar, &scraper_b)
+      router.register_handler(:foo, &scraper_a)
+      router.register_handler(:bar, &scraper_b)
       router.map(:foo) { host "example.com" }
     end
 
     context "with URI recognized by 1 route" do
-      it "returns the matched target" do
-        expect(router.invoke(uri)).to be scraper_a
+      it "returns the handler's key `Symbol`" do
+        sym, _ = router.invoke(uri)
+        expect(sym).to be :foo
+      end
+
+      it "returns the handler's associated `Proc`" do
+        _, proc = router.invoke(uri)
+        expect(proc).to be scraper_a
       end
     end
 
     context "with URI recognized by >= 1 routes" do
       before { router.map(:bar) { host "example.com" } }
 
-      it "returns the first matched target" do
-        expect(router.invoke(uri)).to be scraper_a
+      it "returns the first matched handler" do
+        _, proc = router.invoke(uri)
+        expect(proc).to be scraper_a
       end
     end
 

@@ -22,11 +22,9 @@ module Schablone
 
     alias_method :config, :configure
 
-    def register_scraper(*argv)
-      @router.register(*argv)
+    def register_handler(*argv)
+      @router.register_handler(*argv)
     end
-
-    alias_method :scraper, :register_scraper
 
     def setup_router(&proc)
       if block_given?

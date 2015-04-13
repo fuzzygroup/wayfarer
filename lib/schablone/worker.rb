@@ -29,8 +29,13 @@ module Schablone
       page = @fetcher.fetch(uri)
       page.links.each { |uri| @navigator.stage(uri) }
 
-      if scraper = @router.invoke(uri)
-        Context.new(@processor, page, @navigator, @emitter).invoke(&scraper)
+      if route = @router.invoke(uri)
+        handler, proc = route
+
+        context = Context.new(
+          handler, @processor, page, @navigator, @emitter
+        )
+        context.invoke(&proc)
       end
 
     rescue Schablone::Fetcher::MaximumRedirectCountReached

@@ -1,12 +1,13 @@
 require "spec_helpers"
 
 describe Schablone::Context do
+  let(:handler)   { :foo }
   let(:processor) { Object.new }
   let(:page)      { fetch_page("http://example.com") }
   let(:router)    { Router.new }
   let(:navigator) { Navigator.new(router) }
   let(:emitter)   { Emitter.new }
-  let(:context)   { Context.new(processor, page, navigator, emitter) }
+  let(:context)   { Context.new(handler, processor, page, navigator, emitter) }
 
   describe "#page" do
     it "returns `@page`" do
@@ -67,8 +68,8 @@ describe Schablone::Context do
     before { context.instance_variable_set(:@emitter, emitter) }
 
     it "emits as expected" do
-      context.send(:emit, :foo, :bar)
-      expect(emitter).to have_received(:emit).with(:foo, :bar)
+      context.send(:emit, 1, 2, 3)
+      expect(emitter).to have_received(:emit).with(:foo, 1, 2, 3)
     end
   end
 
@@ -107,7 +108,9 @@ describe Schablone::Context do
         css :title, "title"
       end
 
-      expect(emitter).to have_received(:emit).with({ title: "Example Domain" })
+      expect(emitter).to have_received(:emit).with(
+        :foo, { title: "Example Domain" }
+      )
     end
   end
 
