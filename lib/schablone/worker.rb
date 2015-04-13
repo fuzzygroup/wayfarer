@@ -3,7 +3,8 @@ module Schablone
 
     attr_reader :navigator
 
-    def initialize(uri_queue, navigator, router, emitter, fetcher)
+    def initialize(processor, uri_queue, navigator, router, emitter, fetcher)
+      @processor = processor
       @uri_queue = uri_queue
       @navigator = navigator
       @router    = router

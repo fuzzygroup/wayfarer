@@ -1,6 +1,7 @@
 require "spec_helpers"
 
 describe Schablone::Worker do
+  let(:processor)     { Object.new }
   let(:uri_queue)     { queue([URI("http://example.com")]) }
   let(:scraper)       { Proc.new { emit(:success) } }
   let(:router)        { Router.new }
@@ -8,7 +9,7 @@ describe Schablone::Worker do
   let(:emitter)       { Emitter.new }
   let(:fetcher)       { Fetcher.new }
   subject(:worker) do
-    Worker.new(uri_queue, navigator, router, emitter, fetcher)
+    Worker.new(processor, uri_queue, navigator, router, emitter, fetcher)
   end
 
   before do
