@@ -1,7 +1,7 @@
 require_relative "../lib/schablone"
 
 crawler = Schablone::Crawler.new do
-  handle :page do
+  scraper :page do
     if page.title ~= /Hitler/
       puts "Found Hitler after #{history.count} attempts!"
       halt
@@ -17,10 +17,6 @@ crawler = Schablone::Crawler.new do
   router do
     map :page { path "/" }
   end
-end
-
-crawler.process :page do |page|
-  
 end
 
 crawler.crawl
