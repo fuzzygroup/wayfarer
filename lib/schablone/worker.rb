@@ -26,8 +26,6 @@ module Schablone
     private
 
     def process(uri)
-      @navigator.cache(uri)
-
       handler, proc = @router.invoke(uri)
       return unless handler && proc
 
