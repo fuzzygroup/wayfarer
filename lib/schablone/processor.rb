@@ -4,6 +4,7 @@ module Schablone
   class Processor
     attr_reader :navigator
     attr_reader :workers
+    attr_reader :state
 
     def initialize(entry_uri, router, emitter)
       @router    = router
@@ -18,27 +19,21 @@ module Schablone
       @navigator.cycle
     end
 
-    def state
-      @mutex.synchronize { @state }
-    end
-
-    def state=(sym)
-      @mutex.synchronize { @state = sym }
-    end
-
     def run
-      self.state = :running
+      @state = :running
       catch(:halt) { loop { step } }
     end
 
     def halt
-      return false unless state == :running
+      @mutex.synchronize do
+        return false unless @state == :running
 
-      @workers.each(&:kill)
-      @fetcher.free
-      self.state = :halted
+        @workers.each(&:kill)
+        @fetcher.free
+        @state = :halted
 
-      throw(:halt)
+        throw(:halt)
+      end
     end
 
     private
