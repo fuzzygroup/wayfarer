@@ -16,8 +16,10 @@ module Schablone
       @parsed_document ||= Nokogiri::HTML(@body)
     end
 
-    def links
-      uris = parsed_document.css("a").map do |node|
+    def links(matcher_hash = { css: "a" })
+      nodes = Extraction::Matcher.new(matcher_hash).match(parsed_document)
+
+      uris = nodes.map do |node|
         begin
           expand_uri(node.attr("href"))
         rescue ArgumentError, URI::InvalidURIError

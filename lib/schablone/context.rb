@@ -29,12 +29,16 @@ module Schablone
       @navigator.cached_uris
     end
 
+    def visit(arg)
+      Extraction::Matcher.new(arg).match(@page.parsed_document)
+    end
+
     def stage(uri)
       @navigator.stage(uri)
     end
 
     def extract(&proc)
-      Scraper.new(&proc).extract(@page.parsed_document)
+      Extraction::Scraper.new(&proc).extract(@page.parsed_document)
     end
 
     def extract!(&proc)

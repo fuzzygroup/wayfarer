@@ -20,6 +20,15 @@ describe Schablone::Context do
     end
   end
 
+  describe "#visit" do
+    context "with `Hash` given" do
+      it "works" do
+        foo = context.send(:visit, css: "a")
+        expect(foo.count).to be 1
+      end
+    end
+  end
+
   describe "#stage" do
     let(:uri) { URI("http://example.com") }
 
