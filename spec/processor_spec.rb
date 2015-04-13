@@ -35,10 +35,8 @@ describe Schablone::Processor do
       let(:scraper) { Proc.new { emit(:success); halt } }
 
       it "halts" do
-        processor.instance_variable_set(:@emitter, emitter = spy())
         processor.run
-        expect(emitter).to have_received(:emit)
-        expect(processor).to have_received(:halt)
+        expect(processor.state).to be :halted
       end
     end
   end
