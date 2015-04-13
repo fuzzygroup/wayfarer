@@ -26,17 +26,17 @@ module Schablone
     private
 
     def process(uri)
+      @navigator.cache(uri)
+
+      handler, proc = @router.invoke(uri)
+      return unless handler && proc
+
       page = @fetcher.fetch(uri)
       page.links.each { |uri| @navigator.stage(uri) }
 
-      if route = @router.invoke(uri)
-        handler, proc = *route
-
-        context = Context.new(
-          handler, @processor, page, @navigator, @emitter
-        )
-        context.invoke(&proc)
-      end
+      Context.new(
+        handler, @processor, page, @navigator, @emitter
+      ).invoke(&proc)
 
     rescue Schablone::Fetcher::MaximumRedirectCountReached
       Schablone.log.warn("Maximum number of HTTP redirects reached")

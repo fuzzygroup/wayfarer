@@ -43,9 +43,14 @@ describe Schablone::Worker do
     end
 
     it "caches processed URIs" do
-      expect(worker.navigator.cached_uris).to eq [
-        URI("http://0.0.0.0:9876/graph/index.html")
-      ]
+      expected_uris = %w(
+        http://0.0.0.0:9876/graph/index.html
+        http://example.com
+      ).map { |str| URI(str) }
+
+      expected_uris.each do |uri|
+        expect(worker.navigator.cached_uris).to include uri
+      end
     end
   end
 end
