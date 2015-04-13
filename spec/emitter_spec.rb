@@ -7,19 +7,19 @@ describe Schablone::Emitter do
   describe "#subscribe" do
     it "registers a listener" do
       expect {
-        emitter.subscribe(&-> () {})
+        emitter.subscribe(:foo, &Proc.new {})
       }.to change { emitter.listeners.count }.by(1)
     end
   end
 
   describe "#emit" do
-    it "calls its listeners with arbitrary arguments" do
+    it "calls the expected listener with arbitrary arguments" do
       emitted = nil
 
-      emitter.subscribe { |a, b| emitted = [a, b] }
-      emitter.emit(:foo, :bar)
+      emitter.subscribe(:foo) { |a, b, c| emitted = [a, b, c] }
+      emitter.emit(:foo, 1, 2, 3)
 
-      expect(emitted).to eq [:foo, :bar]
+      expect(emitted).to eq [1, 2, 3]
     end
   end
 

@@ -4,15 +4,15 @@ module Schablone
     attr_reader :listeners
 
     def initialize
-      @listeners = []
+      @listeners = {}
     end
 
-    def subscribe(&proc)
-      @listeners << proc
+    def subscribe(sym, &proc)
+      @listeners[sym] = proc
     end
 
-    def emit(*args)
-      @listeners.each { |listener| listener.call(*args) }
+    def emit(sym, *args)
+      @listeners[sym].call(*args)
     end
 
   end
