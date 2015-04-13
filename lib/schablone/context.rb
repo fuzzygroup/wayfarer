@@ -32,7 +32,7 @@ module Schablone
       @navigator.cached_uris
     end
 
-    def visit(uris)
+    def visit(*uris)
       uris.each { |uri| @navigator.stage(URI(uri)) }
     end
 
