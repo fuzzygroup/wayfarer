@@ -12,9 +12,7 @@ module Schablone
     end
 
     def crawl(uri)
-      processor = Processor.new(uri, @scraper, @router)
-      processor.run
-      processor.result
+      Processor.new(uri, @router, @emitter).run
     end
 
     def configure(*argv)
@@ -27,9 +25,13 @@ module Schablone
       @router.register_handler(*argv)
     end
 
-    def register_listener(sym, &proc)
-      @emitter.register_listener(sym, &proc)
+    alias_method :handle, :register_handler
+
+    def register_listener(*argv)
+      @emitter.register_listener(*argv)
     end
+
+    alias_method :listen, :register_listener
 
     def setup_router(&proc)
       if block_given?

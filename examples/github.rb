@@ -1,22 +1,15 @@
 require_relative "../lib/schablone"
 
 crawler = Schablone::Crawler.new do
-  scraper :page do
-    if page.title ~= /Hitler/
-      puts "Found Hitler after #{history.count} attempts!"
-      halt
-    end
-
-    extract! do
-      css :title, "title"
-    end
-
-    visit page.links css: "a.next-page"
+  handle :page do
+    puts page.uri
   end
 
-  router do
-    map :page { path "/" }
-  end
+  router.map(:page) { host "de.wikipedia.org" }
 end
 
-crawler.crawl
+crawler.listen :page do |page|
+  puts page
+end
+
+crawler.crawl(URI("http://de.wikipedia.org/wiki/Fubar"))

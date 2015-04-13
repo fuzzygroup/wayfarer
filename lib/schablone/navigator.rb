@@ -62,6 +62,7 @@ module Schablone
       end
     end
 
+    # TODO remove this
     def remove_fragment_identifier(uri)
       return uri unless uri.fragment
       URI(uri.to_s.sub(/#.*/, ""))
