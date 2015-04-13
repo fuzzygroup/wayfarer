@@ -11,7 +11,7 @@ crawler = Schablone::Crawler.new do
       css :title, "title"
     end
 
-    visit css: "a.next-page"
+    visit page.links css: "a.next-page"
   end
 
   router do

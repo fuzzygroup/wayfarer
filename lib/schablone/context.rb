@@ -1,5 +1,6 @@
 module Schablone
   class Context
+    attr_reader :navigator
 
     def initialize(processor, page, navigator, emitter)
       @processor = processor
@@ -29,12 +30,8 @@ module Schablone
       @navigator.cached_uris
     end
 
-    def visit(arg)
-      Extraction::Matcher.new(arg).match(@page.parsed_document)
-    end
-
-    def stage(uri)
-      @navigator.stage(uri)
+    def visit(*uris)
+      uris.each { |uri| @navigator.stage(URI(uri)) }
     end
 
     def extract(&proc)
