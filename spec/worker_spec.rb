@@ -3,7 +3,7 @@ require "spec_helpers"
 describe Schablone::Worker do
   let(:processor)     { Object.new }
   let(:uri_queue)     { queue([URI("http://example.com")]) }
-  let(:scraper)       { Proc.new { emit(:success) } }
+  let(:handler)       { Proc.new { emit(:success) } }
   let(:router)        { Router.new }
   let(:navigator)     { Navigator.new(router) }
   let(:emitter)       { Emitter.new }
@@ -13,7 +13,7 @@ describe Schablone::Worker do
   end
 
   before do
-    router.register_handler(:foo, &scraper)
+    router.register_handler(:foo, &handler)
     router.map(:foo) { host("0.0.0.0") }
   end
 
@@ -30,16 +30,28 @@ describe Schablone::Worker do
       expect(emitter).to have_received(:emit).with(:foo, :success)
     end
 
-    it "stages the expected URIs" do
-      expect(worker.navigator.staged_uris).to eq %w(
-        http://0.0.0.0:9876/graph/details/a.html
-        http://0.0.0.0:9876/graph/details/b.html
-        http://0.0.0.0:9876/status_code/400
-        http://0.0.0.0:9876/status_code/403
-        http://0.0.0.0:9876/status_code/404
-        http://bro.ken
-        http://0.0.0.0:9876/redirect_loop
-      ).map { |str| URI(str) }
+    context "with handler that does not stage URIs" do
+      let(:handler) { Proc.new {} }
+
+      it "does not stage URIs" do
+        expect(worker.navigator.staged_uris).to be_empty
+      end
+    end
+
+    context "with handler that stages URIs" do
+      let(:handler) { Proc.new { visit page.links } }
+
+      it "stages URIs" do
+        expect(worker.navigator.staged_uris).to eq %w(
+          http://0.0.0.0:9876/graph/details/a.html
+          http://0.0.0.0:9876/graph/details/b.html
+          http://0.0.0.0:9876/status_code/400
+          http://0.0.0.0:9876/status_code/403
+          http://0.0.0.0:9876/status_code/404
+          http://bro.ken
+          http://0.0.0.0:9876/redirect_loop
+        ).map { |str| URI(str) }
+      end
     end
 
     it "caches processed URIs" do

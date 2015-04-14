@@ -32,7 +32,8 @@ module Schablone
       @navigator.cached_uris
     end
 
-    def visit(*uris)
+    def visit(uris)
+      uris = *uris unless uris.respond_to?(:each)
       uris.each { |uri| @navigator.stage(URI(uri)) }
     end
 

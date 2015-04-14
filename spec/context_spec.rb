@@ -47,7 +47,7 @@ describe Schablone::Context do
 
       it "stages the `URI`s" do
         expect {
-          context.send(:visit, *uris)
+          context.send(:visit, uris)
         }.to change { navigator.staged_uris.count }.by(2)
       end
     end
@@ -57,7 +57,7 @@ describe Schablone::Context do
 
       it "stages the `URI`s" do
         expect {
-          context.send(:visit, *uri_strs)
+          context.send(:visit, uri_strs)
         }.to change { navigator.staged_uris.count }.by(2)
       end
     end

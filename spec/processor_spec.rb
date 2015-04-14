@@ -2,7 +2,7 @@ require "spec_helpers"
 
 describe Schablone::Processor do
   let(:entry_uri)     { URI("http://example.com") }
-  let(:scraper)       { Proc.new { emit(:success) } }
+  let(:scraper)       { Proc.new { emit(:success); visit page.links } }
   let(:router)        { Router.new }
   let(:emitter)       { Emitter.new }
   subject(:processor) { Processor.new(entry_uri, router, emitter) }

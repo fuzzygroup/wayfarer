@@ -30,7 +30,7 @@ module Schablone
       return unless handler && proc
 
       page = @fetcher.fetch(uri)
-      page.links.each { |uri| @navigator.stage(uri) }
+      # page.links.each { |uri| @navigator.stage(uri) }
 
       Context.new(
         handler, @processor, page, @navigator, @emitter
