@@ -10,7 +10,6 @@ module Schablone
       @router    = router
       @emitter   = emitter
       @navigator = Navigator.new(router)
-      @adapter   = http_adapter
       @workers   = []
       @state     = :idle
       @mutex     = Mutex.new
@@ -28,8 +27,7 @@ module Schablone
       @mutex.synchronize do
         return false unless @state == :running
 
-        @workers.each { |worker| worker.http_adapter.free }
-
+        HTTPAdapters::Factory.free_instances
         @workers.each(&:kill)
         @state = :halted
 
@@ -49,17 +47,12 @@ module Schablone
 
     def spawn_workers(queue)
       Schablone.config.threads.times do
+        adapter = HTTPAdapters::Factory.instance
+
         @workers << Worker.new(
-          self, queue, @navigator, @router, @emitter, @adapter
+          self, queue, @navigator, @router, @emitter, adapter
         )
       end
     end
-
-    def http_adapter
-      if Schablone.config.http_adapter == :net_http
-        HTTPAdapters::NetHTTPAdapter.new
-      end
-    end
-
   end
 end

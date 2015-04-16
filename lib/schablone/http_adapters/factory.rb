@@ -4,13 +4,23 @@ module Schablone
 
       module_function
 
-      def adapter_instance
+      def instances
+        @instances ||= []
+      end
+
+      def instance
         case Schablone.config.http_adapter
         when :net_http
-          @adapter ||= NetHTTPAdapter.new
+          instances << NetHTTPAdapter.new if instances.empty?
+          instances.first
         when :selenium
-          SeleniumAdapter.new
+          (instances << SeleniumAdapter.new).last
         end
+      end
+
+      def free_instances
+        instances.each(&:free)
+        instances.clear
       end
 
     end
