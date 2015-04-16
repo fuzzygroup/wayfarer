@@ -10,7 +10,7 @@ module Schablone
       @router    = router
       @emitter   = emitter
       @navigator = Navigator.new(router)
-      @adapter   = HTTPAdapters::NetHTTPAdapter.new
+      @adapter   = http_adapter
       @workers   = []
       @state     = :idle
       @mutex     = Mutex.new

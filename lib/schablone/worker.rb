@@ -48,5 +48,9 @@ module Schablone
       @navigator.cache(uri)
     end
 
+    def http_adapter
+      @adapter || HTTPAdapters::SeleniumAdapter.new
+    end
+
   end
 end

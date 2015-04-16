@@ -112,7 +112,7 @@ describe Schablone::Processor do
       before { Schablone.config.http_adapter = :selenium }
       after  { Schablone.config.reset! }
 
-      it "returns a `nil`" do
+      it "returns `nil`" do
         adapter = processor.send(:http_adapter)
         expect(adapter).to be nil
       end
