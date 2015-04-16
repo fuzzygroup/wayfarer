@@ -68,14 +68,8 @@ describe Schablone::Processor do
       end
 
       it "frees its workers' HTTP adapters" do
-        worker, adapter = spy(), spy()
-        worker.http_adapter = adapter
-
-        processor.instance_variable_set(:@workers, worker)
-
         catch(:halt) { processor.send(:halt) }
-
-        expect(adapter).to have_received(:free)
+        expect(Factory.instances).to be_empty
       end
     end
 

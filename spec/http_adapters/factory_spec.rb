@@ -18,7 +18,7 @@ describe Schablone::HTTPAdapters::Factory do
       end
     end
 
-    context "when config.http_adapter is :selenium" do
+    context "when config.http_adapter is :selenium", live: true do
       before { Schablone.config.http_adapter = :selenium }
       after  { Schablone.config.reset! }
 
