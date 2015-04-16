@@ -14,6 +14,10 @@ module Schablone
       super(self, &:work)
     end
 
+    def http_adapter
+      @adapter ||= HTTPAdapters::SeleniumAdapter.new
+    end
+
     def work
       until @uri_queue.empty?
         if uri = @uri_queue.pop(true) rescue nil
@@ -21,8 +25,6 @@ module Schablone
           process(uri)
         end
       end
-
-      free_http_adapter
     end
 
     private
@@ -48,14 +50,6 @@ module Schablone
 
     ensure
       @navigator.cache(uri)
-    end
-
-    def http_adapter
-      @adapter ||= HTTPAdapters::SeleniumAdapter.new
-    end
-
-    def free_http_adapter
-      http_adapter.free if Schablone.config.http_adapter == :selenium
     end
 
   end

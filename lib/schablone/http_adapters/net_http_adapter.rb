@@ -5,7 +5,10 @@ module Schablone
   module HTTPAdapters
     class NetHTTPAdapter
 
-      RECOGNIZED_URI_TYPES = [URI::HTTP, URI::HTTPS]
+      RECOGNIZED_URI_TYPES = [
+        URI::HTTP,
+        URI::HTTPS
+      ]
 
       class MalformedURI < StandardError; end
       class MalformedRedirectURI < StandardError; end

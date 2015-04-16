@@ -66,6 +66,17 @@ describe Schablone::Processor do
       it "returns `true`" do
         catch(:halt) { expect(processor.send(:halt)).to be true }
       end
+
+      it "frees its workers' HTTP adapters" do
+        worker, adapter = spy(), spy()
+        worker.http_adapter = adapter
+
+        processor.instance_variable_set(:@workers, worker)
+
+        catch(:halt) { processor.send(:halt) }
+
+        expect(adapter).to have_received(:free)
+      end
     end
 
     context "when `@state` is not `:running`" do
@@ -108,28 +119,6 @@ describe Schablone::Processor do
       it "returns `nil`" do
         adapter = processor.send(:http_adapter)
         expect(adapter).to be nil
-      end
-    end
-  end
-
-  describe "#free_http_adapter" do
-    let(:adapter) { spy() }
-    before { processor.instance_variable_set(:@adapter, adapter) }
-
-    context "when `config.http_adapter` is `:net_http`" do
-      it "calls #free on `@adapter`" do
-        processor.send(:free_http_adapter)
-        expect(adapter).to have_received(:free)
-      end
-    end
-
-    context "when `config.http_adapter` is not `:net_http`" do
-      before { Schablone.config.http_adapter = :selenium }
-      after  { Schablone.config.reset! }
-
-      it "does not call #free on `@adapter`" do
-        processor.send(:free_http_adapter)
-        expect(adapter).not_to have_received(:free)
       end
     end
   end

@@ -20,7 +20,8 @@ require_relative "schablone/extraction/extractor"
 require_relative "schablone/extraction/extractable_group"
 require_relative "schablone/extraction/scoper"
 
-# Fetching
+# HTTP adapters
+require_relative "schablone/http_adapters/factory"
 require_relative "schablone/http_adapters/net_http_adapter"
 require_relative "schablone/http_adapters/selenium_adapter"
 

@@ -28,8 +28,9 @@ module Schablone
       @mutex.synchronize do
         return false unless @state == :running
 
+        @workers.each { |worker| worker.http_adapter.free }
+
         @workers.each(&:kill)
-        free_http_adapter
         @state = :halted
 
         throw(:halt)
@@ -58,10 +59,6 @@ module Schablone
       if Schablone.config.http_adapter == :net_http
         HTTPAdapters::NetHTTPAdapter.new
       end
-    end
-
-    def free_http_adapter
-      @adapter.free if Schablone.config.http_adapter == :net_http
     end
 
   end
