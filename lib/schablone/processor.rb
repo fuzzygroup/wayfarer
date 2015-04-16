@@ -29,7 +29,7 @@ module Schablone
         return false unless @state == :running
 
         @workers.each(&:kill)
-        @adapter.free
+        free_http_adapter
         @state = :halted
 
         throw(:halt)

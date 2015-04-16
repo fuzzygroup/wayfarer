@@ -58,13 +58,6 @@ describe Schablone::Processor do
         }.to throw_symbol :halt
       end
 
-      it "frees its `Fetcher`" do
-        adapter = spy()
-        processor.instance_variable_set(:@adapter, adapter)
-        catch(:halt) { processor.send(:halt) }
-        expect(adapter).to have_received(:free)
-      end
-
       it "sets `@state` to `:halted`" do
         catch(:halt) { processor.send(:halt) }
         expect(processor.state).to be :halted

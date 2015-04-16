@@ -21,6 +21,8 @@ module Schablone
           process(uri)
         end
       end
+
+      free_http_adapter
     end
 
     private
