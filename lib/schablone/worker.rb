@@ -28,10 +28,11 @@ module Schablone
       handler, proc = @router.invoke(uri)
       return unless handler && proc
 
-      page = HTTPAdapters::Factory.instance.fetch(uri)
+      adapter = HTTPAdapters::Factory.instance
+      page = adapter.fetch(uri)
 
       Context.new(
-        handler, @processor, page, @navigator, @emitter
+        handler, @processor, page, @navigator, @emitter, adapter
       ).invoke(&proc)
 
     rescue Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached

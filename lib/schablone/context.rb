@@ -3,12 +3,13 @@ module Schablone
     attr_reader :handler
     attr_reader :navigator
 
-    def initialize(handler, processor, page, navigator, emitter)
+    def initialize(handler, processor, page, navigator, emitter, adapter)
       @handler   = handler
       @processor = processor
       @page      = page
       @navigator = navigator
       @emitter   = emitter
+      @adapter   = adapter
     end
 
     def invoke(&proc)
@@ -18,6 +19,10 @@ module Schablone
     private
     def page
       @page
+    end
+
+    def driver
+      @adapter if Schablone.config.http_adapter == :selenium
     end
 
     def emit(*args)

@@ -7,7 +7,11 @@ describe Schablone::Context do
   let(:router)    { Router.new }
   let(:navigator) { Navigator.new(router) }
   let(:emitter)   { Emitter.new }
-  let(:context)   { Context.new(handler, processor, page, navigator, emitter) }
+  let(:adapter)   { Object.new }
+
+  subject(:context) do
+    Context.new(handler, processor, page, navigator, emitter, adapter)
+  end
 
   describe "#page" do
     it "returns `@page`" do
@@ -111,6 +115,25 @@ describe Schablone::Context do
       expect(emitter).to have_received(:emit).with(
         :foo, { title: "Example Domain" }
       )
+    end
+  end
+
+  describe "#driver" do
+    context "when config.http_adapter is :net_http" do
+      it "returns nil" do
+        expect(context.send(:driver)).to be nil
+      end
+    end
+
+    context "when config.http_adapter is :selenium" do
+      let(:adapter) { spy() }
+
+      before { Schablone.config.http_adapter = :selenium }
+      after { Schablone.config.reset! }
+
+      it "returns @adapter" do
+        expect(context.send(:driver)).to be adapter
+      end
     end
   end
 
