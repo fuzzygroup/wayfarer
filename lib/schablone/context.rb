@@ -1,3 +1,5 @@
+require "thread"
+
 module Schablone
   class Context
     attr_reader :handler
@@ -10,6 +12,7 @@ module Schablone
       @navigator = navigator
       @emitter   = emitter
       @adapter   = adapter
+      @mutex     = Mutex.new
     end
 
     def invoke(&proc)
@@ -26,7 +29,7 @@ module Schablone
     end
 
     def emit(*args)
-      @emitter.emit(@handler, *args)
+      @mutex.synchronize { @emitter.emit(@handler, *args) }
     end
 
     def halt
