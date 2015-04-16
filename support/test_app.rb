@@ -22,6 +22,10 @@ class TestApp < Sinatra::Base
     n.zero? ? "You arrived!" : (redirect to "/redirect?times=#{n - 1}")
   end
 
+  get "/malformed_redirect" do
+    redirect to "hptt://bro.ken"
+  end
+
   private
 
   def static_file(file_path)

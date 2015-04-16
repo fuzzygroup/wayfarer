@@ -34,6 +34,17 @@ describe Schablone::HTTPAdapters::NetHTTPAdapter do
       expect(page.headers["hello"]).to eq ["world"]
     end
 
+    context "with malformed URI" do
+      it "raises a MalformedURI" do
+        expect {
+          uri = URI("hptt://bro.ken")
+          page = adapter.fetch(uri)
+        }.to raise_error(
+          Schablone::HTTPAdapters::NetHTTPAdapter::MalformedURI
+        )
+      end
+    end
+
     context "when response is a redirect" do
       it "follows the redirect" do
         uri = URI("http://0.0.0.0:9876/redirect?times=3")
@@ -50,7 +61,20 @@ describe Schablone::HTTPAdapters::NetHTTPAdapter do
           expect {
             uri = URI("http://0.0.0.0:9876/redirect?times=6")
             page = adapter.fetch(uri)
-          }.to raise_error(Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached )
+          }.to raise_error(
+            Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
+          )
+        end
+      end
+
+      context "when redirection URI is malformed" do
+        it "raises a MalformedRedirectURI" do
+          expect {
+            uri = test_app("/malformed_redirect")
+            page = adapter.fetch(uri)
+          }.to raise_error(
+            Schablone::HTTPAdapters::NetHTTPAdapter::MalformedRedirectURI
+          )
         end
       end
     end

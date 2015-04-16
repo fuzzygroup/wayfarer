@@ -5,15 +5,20 @@ module Schablone
   module HTTPAdapters
     class NetHTTPAdapter
 
-      class MaximumRedirectCountReached < StandardError; end
+      RECOGNIZED_URI_TYPES = [URI::HTTP, URI::HTTPS]
+
+      class MalformedURI < StandardError; end
       class MalformedRedirectURI < StandardError; end
+      class MaximumRedirectCountReached < StandardError; end
 
       def initialize
         @conn = Net::HTTP::Persistent.new("schablone")
       end
 
       def fetch(uri, redirects_followed = 0)
-        if redirects_followed > Schablone.config.max_http_redirects
+        if not RECOGNIZED_URI_TYPES.include?(uri.class)
+          fail redirects_followed > 0 ? MalformedRedirectURI : MalformedURI
+        elsif redirects_followed > Schablone.config.max_http_redirects
           fail MaximumRedirectCountReached
         end
 
