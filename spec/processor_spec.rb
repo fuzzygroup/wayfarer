@@ -101,6 +101,21 @@ describe Schablone::Processor do
   end
 
   describe "#http_adapter" do
-    
+    context "when `config.http_adapter` is `:net_http`" do
+      it "returns a `NetHTTPAdapter`" do
+        adapter = processor.send(:http_adapter)
+        expect(adapter).to be_a NetHTTPAdapter
+      end
+    end
+
+    context "when `config.http_adapter` is not `:net_http`" do
+      before { Schablone.config.http_adapter = :selenium }
+      after  { Schablone.config.reset! }
+
+      it "returns a `nil`" do
+        adapter = processor.send(:http_adapter)
+        expect(adapter).to be nil
+      end
+    end
   end
 end
