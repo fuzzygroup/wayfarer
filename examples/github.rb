@@ -1,9 +1,8 @@
 require_relative "../lib/schablone"
 
-Schablone.config.http_adapter = :selenium
-Schablone.config.threads = 8
-
 crawler = Schablone::Crawler.new do
+  config.http_adapter = :selenium
+
   handle :index do
     puts extract { css :title, "title" }
     visit page.links

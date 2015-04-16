@@ -23,7 +23,8 @@ module Schablone
         sanitize_node_content: true,
         log_level:             Logger::FATAL,
         threads:               4,
-        http_adapter:          :net_http 
+        http_adapter:          :net_http,
+        selenium_argv:         [:firefox]
       }
     end
 

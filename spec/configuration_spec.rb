@@ -16,6 +16,7 @@ describe Schablone::Configuration do
     expect(config.log_level).to be Logger::FATAL
     expect(config.threads).to be 4
     expect(config.http_adapter).to be :net_http
+    expect(config.selenium_argv).to eq [:firefox]
   end
 
   it "allows overriding default values" do

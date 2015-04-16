@@ -8,7 +8,7 @@ module Schablone
       class MalformedRedirectURI < StandardError; end
 
       def initialize
-        @driver = Selenium::WebDriver.for(:firefox)
+        @driver = Selenium::WebDriver.for(*Schablone.config.selenium_argv)
       end
 
       def fetch(uri)
