@@ -5,6 +5,7 @@ module Schablone
   class Fetcher
 
     class MaximumRedirectCountReached < StandardError; end
+    class MalformedRedirectURI < StandardError; end
 
     def initialize
       @conn = Net::HTTP::Persistent.new("schablone")

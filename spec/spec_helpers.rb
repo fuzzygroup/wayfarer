@@ -5,6 +5,10 @@ include Schablone::Extraction
 include Schablone::Routing
 
 module SpecHelpers
+  def test_app(path)
+    URI("http://0.0.0.0:9876#{path}")
+  end
+
   def fetch_page(uri)
     Fetcher.new.fetch(URI(uri))
   end

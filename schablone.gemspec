@@ -1,15 +1,11 @@
-require_relative "lib/schablone"
-
 Gem::Specification.new do |s|
   s.name          = "schablone"
-  s.version       = Schablone::VERSION
+  s.version       = "0.0.0"
   s.license       = "MIT"
 
   s.homepage      = "http://github.com/bauerd/scrapespeare"
   s.description   = "A web scraping library"
-  s.summary       = <<-summary
-    schablone is a web scraping library
-  summary
+  s.summary       = "Schablone is a web scraping library"
 
   s.date          = "2014-11-12"
   s.authors       = ["Dominic Bauer"]
@@ -26,7 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency "thread",                     "~> 0.1"
   s.add_dependency "nokogiri",                   "~> 1.6"
   s.add_dependency "selenium-webdriver",         "~> 2.43"
-  s.add_dependency "selenium-emulated_features", "~> 0.0"
   s.add_dependency "hashie",                     "~> 3.4"
   s.add_dependency "rack",                       "~> 1.6"
   s.add_dependency "ansi",                       "~> 1.5"

@@ -20,6 +20,9 @@ require_relative "schablone/extraction/extractor"
 require_relative "schablone/extraction/extractable_group"
 require_relative "schablone/extraction/scoper"
 
+# Fetching
+require_relative "schablone/http_adapters/selenium_adapter"
+
 # Processing
 require_relative "schablone/emitter"
 require_relative "schablone/worker"
