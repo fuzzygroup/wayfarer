@@ -46,8 +46,8 @@ module Schablone
     end
 
     def spawn_workers(queue)
-      Schablone.config.threads.times do
-        @workers << Worker.new(self, queue, @navigator, @router, @emitter)
+      @workers = Schablone.config.threads.times.map do
+        Worker.new(self, queue, @navigator, @router, @emitter)
       end
     end
   end
