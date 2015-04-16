@@ -42,7 +42,7 @@ describe Schablone::Processor do
   end
 
   describe "#step" do
-    it "clears its worker references" do
+    it "clears its processor references" do
       processor.send(:step)
       expect(processor.workers).to eq []
     end
@@ -93,7 +93,7 @@ describe Schablone::Processor do
     before { Schablone.config.threads = 2 }
     after { Schablone.config.reset! }
 
-    it "spawns the expected number of workers" do
+    it "spawns the expected number of processors" do
       expect {
         processor.send(:spawn_workers, queue)
       }.to change { processor.workers.count }.by(2)
@@ -115,6 +115,28 @@ describe Schablone::Processor do
       it "returns `nil`" do
         adapter = processor.send(:http_adapter)
         expect(adapter).to be nil
+      end
+    end
+  end
+
+  describe "#free_http_adapter" do
+    let(:adapter) { spy() }
+    before { processor.instance_variable_set(:@adapter, adapter) }
+
+    context "when `config.http_adapter` is `:net_http`" do
+      it "calls #free on `@adapter`" do
+        processor.send(:free_http_adapter)
+        expect(adapter).to have_received(:free)
+      end
+    end
+
+    context "when `config.http_adapter` is not `:net_http`" do
+      before { Schablone.config.http_adapter = :selenium }
+      after  { Schablone.config.reset! }
+
+      it "does not call #free on `@adapter`" do
+        processor.send(:free_http_adapter)
+        expect(adapter).not_to have_received(:free)
       end
     end
   end

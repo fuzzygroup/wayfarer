@@ -75,12 +75,34 @@ describe Schablone::Worker do
       end
     end
 
-    context "when `@adapter` is `nil`" do
+    context "when `@adapter` is `nil`", live: true do
       it "returns a `SeleniumAdapter`" do
         worker.instance_variable_set(:@adapter, nil)
         adapter = worker.send(:http_adapter)
         expect(adapter).to be_a SeleniumAdapter
         adapter.free
+      end
+    end
+  end
+
+  describe "#free_http_adapter" do
+    let(:adapter) { spy() }
+    before { worker.instance_variable_set(:@adapter, adapter) }
+
+    context "when `config.http_adapter` is not `:selenium`" do
+      it "does not call #free on `@adapter`" do
+        worker.send(:free_http_adapter)
+        expect(adapter).not_to have_received(:free)
+      end
+    end
+
+    context "when `config.http_adapter` is `:selenium`" do
+      before { Schablone.config.http_adapter = :selenium }
+      after  { Schablone.config.reset! }
+
+      it "calls #free on `@adapter`" do
+        worker.send(:free_http_adapter)
+        expect(adapter).to have_received(:free)
       end
     end
   end

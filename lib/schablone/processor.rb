@@ -59,5 +59,10 @@ module Schablone
         HTTPAdapters::NetHTTPAdapter.new
       end
     end
+
+    def free_http_adapter
+      @adapter.free if Schablone.config.http_adapter == :net_http
+    end
+
   end
 end

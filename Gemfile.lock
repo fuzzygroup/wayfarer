@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    schablone (0.0.1.pre.alpha.1)
+    schablone (0.0.0)
       ansi (~> 1.5)
       hashie (~> 3.4)
       mustermann (~> 0.4)

@@ -29,7 +29,7 @@ module Schablone
       handler, proc = @router.invoke(uri)
       return unless handler && proc
 
-      page = @adapter.fetch(uri)
+      page = http_adapter.fetch(uri)
 
       Context.new(
         handler, @processor, page, @navigator, @emitter
@@ -49,7 +49,11 @@ module Schablone
     end
 
     def http_adapter
-      @adapter || HTTPAdapters::SeleniumAdapter.new
+      @adapter ||= HTTPAdapters::SeleniumAdapter.new
+    end
+
+    def free_http_adapter
+      http_adapter.free if Schablone.config.http_adapter == :selenium
     end
 
   end
