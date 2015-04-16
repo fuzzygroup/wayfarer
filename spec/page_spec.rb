@@ -1,10 +1,7 @@
 require "spec_helpers"
 
 describe Schablone::Page do
-  subject(:page) do
-    uri = URI("http://0.0.0.0:9876/links/links.html")
-    Fetcher.new.fetch(uri)
-  end
+  subject(:page) { fetch_page(test_app("/links/links.html")) }
 
   describe "#parsed_document" do
     it "returns a parsed HTML document" do

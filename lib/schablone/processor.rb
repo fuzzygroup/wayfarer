@@ -10,7 +10,7 @@ module Schablone
       @router    = router
       @emitter   = emitter
       @navigator = Navigator.new(router)
-      @fetcher   = Fetcher.new
+      @adapter   = HTTPAdapters::NetHTTPAdapter.new
       @workers   = []
       @state     = :idle
       @mutex     = Mutex.new
@@ -29,7 +29,7 @@ module Schablone
         return false unless @state == :running
 
         @workers.each(&:kill)
-        @fetcher.free
+        @adapter.free
         @state = :halted
 
         throw(:halt)
@@ -49,7 +49,7 @@ module Schablone
     def spawn_workers(queue)
       Schablone.config.threads.times do
         @workers << Worker.new(
-          self, queue, @navigator, @router, @emitter, @fetcher
+          self, queue, @navigator, @router, @emitter, @adapter
         )
       end
     end

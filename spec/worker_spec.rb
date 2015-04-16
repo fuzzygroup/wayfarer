@@ -7,9 +7,9 @@ describe Schablone::Worker do
   let(:router)        { Router.new }
   let(:navigator)     { Navigator.new(router) }
   let(:emitter)       { Emitter.new }
-  let(:fetcher)       { Fetcher.new }
+  let(:adapter)       { HTTPAdapters::NetHTTPAdapter.new }
   subject(:worker) do
-    Worker.new(processor, uri_queue, navigator, router, emitter, fetcher)
+    Worker.new(processor, uri_queue, navigator, router, emitter, adapter)
   end
 
   before do

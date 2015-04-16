@@ -1,6 +1,7 @@
 require "schablone"
 
 include Schablone
+include Schablone::HTTPAdapters
 include Schablone::Extraction
 include Schablone::Routing
 
@@ -10,7 +11,7 @@ module SpecHelpers
   end
 
   def fetch_page(uri)
-    Fetcher.new.fetch(URI(uri))
+    NetHTTPAdapter.new.fetch(URI(uri))
   end
 
   def queue(array)

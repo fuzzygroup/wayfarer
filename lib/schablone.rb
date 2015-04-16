@@ -21,6 +21,7 @@ require_relative "schablone/extraction/extractable_group"
 require_relative "schablone/extraction/scoper"
 
 # Fetching
+require_relative "schablone/http_adapters/net_http_adapter"
 require_relative "schablone/http_adapters/selenium_adapter"
 
 # Processing
@@ -29,7 +30,6 @@ require_relative "schablone/worker"
 require_relative "schablone/context"
 require_relative "schablone/parser"
 require_relative "schablone/page"
-require_relative "schablone/fetcher"
 require_relative "schablone/uri_store"
 require_relative "schablone/result"
 require_relative "schablone/navigator"

@@ -3,13 +3,13 @@ module Schablone
 
     attr_reader :navigator
 
-    def initialize(processor, uri_queue, navigator, router, emitter, fetcher)
+    def initialize(processor, uri_queue, navigator, router, emitter, adapter)
       @processor = processor
       @uri_queue = uri_queue
       @navigator = navigator
       @router    = router
       @emitter   = emitter
-      @fetcher   = fetcher
+      @adapter   = adapter
 
       super(self, &:work)
     end
@@ -29,13 +29,13 @@ module Schablone
       handler, proc = @router.invoke(uri)
       return unless handler && proc
 
-      page = @fetcher.fetch(uri)
+      page = @adapter.fetch(uri)
 
       Context.new(
         handler, @processor, page, @navigator, @emitter
       ).invoke(&proc)
 
-    rescue Schablone::Fetcher::MaximumRedirectCountReached
+    rescue Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
       Schablone.log.warn("Maximum number of HTTP redirects reached")
 
     rescue SocketError
