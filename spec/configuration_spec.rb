@@ -15,6 +15,7 @@ describe Schablone::Configuration do
     expect(config.sanitize_node_content).to be true
     expect(config.log_level).to be Logger::FATAL
     expect(config.threads).to be 4
+    expect(config.http_adapter).to be :net_http
   end
 
   it "allows overriding default values" do

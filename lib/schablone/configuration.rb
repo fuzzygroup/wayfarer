@@ -22,7 +22,8 @@ module Schablone
         max_http_redirects:    3,
         sanitize_node_content: true,
         log_level:             Logger::FATAL,
-        threads:               4
+        threads:               4,
+        http_adapter:          :net_http 
       }
     end
 

@@ -99,4 +99,8 @@ describe Schablone::Processor do
       }.to change { processor.workers.count }.by(2)
     end
   end
+
+  describe "#http_adapter" do
+    
+  end
 end

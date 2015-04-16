@@ -53,5 +53,9 @@ module Schablone
         )
       end
     end
+
+    def http_adapter
+      
+    end
   end
 end
