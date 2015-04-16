@@ -7,10 +7,9 @@ describe Schablone::Worker do
   let(:router)        { Router.new }
   let(:navigator)     { Navigator.new(router) }
   let(:emitter)       { Emitter.new }
-  let(:adapter)       { HTTPAdapters::NetHTTPAdapter.new }
 
   subject(:worker) do
-    Worker.new(processor, uri_queue, navigator, router, emitter, adapter)
+    Worker.new(processor, uri_queue, navigator, router, emitter)
   end
 
   before do
@@ -63,24 +62,6 @@ describe Schablone::Worker do
 
       expected_uris.each do |uri|
         expect(worker.navigator.cached_uris).to include uri
-      end
-    end
-  end
-
-  describe "#http_adapter" do
-    context "when `@adapter` is not `nil`" do
-      it "returns `@adapter`" do
-        worker.instance_variable_set(:@adapter, :foo)
-        expect(worker.send(:http_adapter)).to be :foo
-      end
-    end
-
-    context "when `@adapter` is `nil`", live: true do
-      it "returns a `SeleniumAdapter`" do
-        worker.instance_variable_set(:@adapter, nil)
-        adapter = worker.send(:http_adapter)
-        expect(adapter).to be_a SeleniumAdapter
-        adapter.free
       end
     end
   end

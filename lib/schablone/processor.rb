@@ -47,11 +47,7 @@ module Schablone
 
     def spawn_workers(queue)
       Schablone.config.threads.times do
-        adapter = HTTPAdapters::Factory.instance
-
-        @workers << Worker.new(
-          self, queue, @navigator, @router, @emitter, adapter
-        )
+        @workers << Worker.new(self, queue, @navigator, @router, @emitter)
       end
     end
   end

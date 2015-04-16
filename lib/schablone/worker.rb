@@ -3,19 +3,14 @@ module Schablone
 
     attr_reader :navigator
 
-    def initialize(processor, uri_queue, navigator, router, emitter, adapter)
+    def initialize(processor, uri_queue, navigator, router, emitter)
       @processor = processor
       @uri_queue = uri_queue
       @navigator = navigator
       @router    = router
       @emitter   = emitter
-      @adapter   = adapter
 
       super(self, &:work)
-    end
-
-    def http_adapter
-      @adapter ||= HTTPAdapters::SeleniumAdapter.new
     end
 
     def work
@@ -33,7 +28,7 @@ module Schablone
       handler, proc = @router.invoke(uri)
       return unless handler && proc
 
-      page = http_adapter.fetch(uri)
+      page = HTTPAdapters::Factory.instance.fetch(uri)
 
       Context.new(
         handler, @processor, page, @navigator, @emitter
