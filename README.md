@@ -1,6 +1,11 @@
 # Schablone
 A small, versatile web scraping/crawling DSL
 
+## Features
+* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates a browser with [Selenium](https://github.com/seleniumhq/selenium)
+* Processes pages breadth-first and multithreaded
+* Enables extraction of arbitrary data structures with a predictable DSL written on top of [Nokogiri](https://github.com/sparklemotion/nokogiri)
+
 ## Installation
 Install from Bundler by adding the following to your `Gemfile`:
 
