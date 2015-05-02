@@ -131,4 +131,15 @@ describe Schablone::URISet do
       expect(uri_set.to_a).to eq uris
     end
   end
+
+  describe "#method_missing" do
+    let(:set) { spy }
+    subject(:uri_set) { URISet.new(spy) }
+    before { uri_set.instance_variable_set(:@set, set) }
+
+    it "proxies missing methods to its @set" do
+      uri_set.send(:foobar)
+      expect(set).to have_received(:foobar)
+    end
+  end
 end

@@ -39,7 +39,7 @@ module Schablone
   # navigator.staged_uris.count  # => 0
   # navigator.cached_uris.count  # => 5
   # ```
-  # Because {#cached_uris} is backed by a {URIStore}, both fragment identifiers
+  # Because {#cached_uris} is backed by a {URISet}, both fragment identifiers
   # and trailing slashes are disregarded:
   # ```
   # navigator.stage(URI("http://example.com"))
