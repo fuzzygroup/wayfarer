@@ -1,5 +1,5 @@
 module Schablone
-  class URIStore
+  class URISet
 
     def initialize
       @uris = Set.new

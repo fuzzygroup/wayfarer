@@ -57,7 +57,7 @@ module Schablone
 
       @current_uris = Set.new([])
       @staged_uris = Set.new([])
-      @cached_uris = URIStore.new
+      @cached_uris = URISet.new
 
       @mutex = Mutex.new
     end
