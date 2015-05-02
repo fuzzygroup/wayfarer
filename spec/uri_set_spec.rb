@@ -3,6 +3,10 @@ require "spec_helpers"
 describe Schablone::URISet do
   subject(:uri_set) { URISet.new }
 
+  describe "#add" do
+    
+  end
+
   describe "#include?" do
     let(:uri) { URI("http://example.com") }
 

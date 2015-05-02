@@ -4,13 +4,17 @@ module Schablone
       @set = Set.new(enumerable)
     end
 
-    def <<(uri)
+    def add(uri)
       @set << normalize(uri.to_s)
     end
+
+    alias_method :<<, :add
 
     def include?(uri)
       @set.include?(normalize(uri.to_s))
     end
+
+    alias_method :member, :include?
 
     def to_a
       @set.to_a.map { |uri_str| URI(uri_str) }
