@@ -12,7 +12,7 @@ module Schablone
     end
 
     def emit(sym, *args)
-      (listener = @listeners[sym]) ? listener.call(*args) : false
+      (listener = @listeners[sym]) ? !!listener.call(*args) : false
     end
 
   end

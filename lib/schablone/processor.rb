@@ -1,6 +1,25 @@
 require "thread"
 
 module Schablone
+  # @private
+  #
+  # A {Processor} decorates a `Set` and differs in behaviour of {#add} and
+  # {#include?}. URIs are stored as Strings internally.
+  #
+  # {#add} normalizes the passed URI by removing trailing slashes and
+  # fragment identifiers:
+  #
+  # ```
+  # uri_set << URI("http://example.com/#fragment-identifier")
+  # uri_set.to_a.first # => #<URI::HTTP:... URL:http://example.com>
+  # ```
+  #
+  # {#include?} normalizes the passed URI before checking for membership:
+  # ```
+  # uri_set << URI("http://example.com/#fragment-identifier")
+  # uri_set.include?(URI("http://example.com")) # => true
+  # ```
+  # @param enumerable [Enumerable]
   class Processor
     attr_reader :navigator
     attr_reader :workers
