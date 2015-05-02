@@ -142,4 +142,18 @@ describe Schablone::URISet do
       expect(set).to have_received(:foobar)
     end
   end
+
+  describe "#respond_to?" do
+    context "with method recognized by @set" do
+      it "returns true" do
+        expect(uri_set).to respond_to(:difference)
+      end
+    end
+
+    context "with method not recognized by @set" do
+      it "returns false" do
+        expect(uri_set).not_to respond_to(:foobar)
+      end
+    end
+  end
 end

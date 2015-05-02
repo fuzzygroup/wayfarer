@@ -42,5 +42,9 @@ module Schablone
     def method_missing(method, *args, &proc)
       @set.send(method, *args, &proc)
     end
+
+    def respond_to_missing?(method, private = false)
+      @set.respond_to?(method) || super
+    end
   end
 end
