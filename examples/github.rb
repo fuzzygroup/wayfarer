@@ -7,7 +7,11 @@ crawler = Schablone::Crawler.new do
   end
 
   handle :issues do
-    puts extract { css :title, "title" }
+    extract do
+      css :elements, ".element" do
+        css :title, ".title"
+      end
+    end
   end
 
   router.map(:foobar) do
@@ -16,8 +20,8 @@ crawler = Schablone::Crawler.new do
 
   router.allow.host "example.com"
 
-  router.map(:index, host: "github.com", path: "/intridea/hashie")
-  router.map(:issues) { host "github.com", path: "/intridea/hashie/issues" }
+  router.map :index, host: "github.com", path: "/intridea/hashie"
+  router.map :issues host: "github.com", path: "/intridea/hashie/issues"
 end
 
 crawler.crawl(URI("https://github.com/intridea/hashie"))

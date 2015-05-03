@@ -9,6 +9,7 @@ require_relative "schablone/routing/uri_rule"
 require_relative "schablone/routing/host_rule"
 require_relative "schablone/routing/path_rule"
 require_relative "schablone/routing/query_rule"
+require_relative "schablone/routing/route"
 require_relative "schablone/routing/router"
 
 # Extraction

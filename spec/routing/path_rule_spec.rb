@@ -7,7 +7,7 @@ describe Schablone::Routing::PathRule do
     context "with matching URI" do
       let(:uri) { URI("http://example.com/foo/bar") }
 
-      it "returns `true`" do
+      it "returns true" do
         expect(rule === uri).to be true
       end
     end
@@ -15,7 +15,7 @@ describe Schablone::Routing::PathRule do
     context "with mismatching URI" do
       let(:uri) { URI("http://example.com/bar/qux") }
 
-      it "returns `false`" do
+      it "returns false" do
         expect(rule === uri).to be false
       end
     end

@@ -91,6 +91,18 @@ module Schablone
         @sub_rules.inject(false) { |bool, rule| bool || rule === uri }
       end
 
+      def params_for(uri)
+        @sub_rules.inject({}) do |hash, rule|
+          hash
+            .merge(rule.params(uri))
+            .merge(rule.params_for(uri))
+        end
+      end
+
+      def params(uri)
+        respond_to?(:pattern) ? pattern.params(uri.path) : {}
+      end
+
       def append_uri_sub_rule(uri_str, opts = {}, &proc)
         append_sub_rule(URIRule.new(uri_str, opts, &proc))
       end

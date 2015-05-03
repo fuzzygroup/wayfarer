@@ -11,6 +11,46 @@ describe Schablone::Routing::Rule do
     end
   end
 
+  describe "#params" do
+    let(:uri) { URI("http://example.com/foo/bar") }
+
+    context "when Rule responds to :pattern" do
+      subject(:rule) { Rule.new.path("/{alpha}/{beta}") }
+
+      it "returns the expected Hash" do
+        expect(rule.params(uri)).to eq({
+          "alpha" => "foo", "beta" => "bar"
+        })
+      end
+    end
+
+    context "when Rule does not respond to :pattern" do
+      subject(:rule) { Rule.new }
+
+      it "returns an empty Hash" do
+        expect(rule.params(uri)).to eq({})
+      end
+    end
+  end
+
+  describe "#params_for" do
+    let(:uri) { URI("http://example.com/foo/bar") }
+
+    subject(:rule) do
+      Rule.new do
+        host "example.com" do
+          path "/{alpha}/{beta}"
+        end
+      end 
+    end
+
+    it "works" do
+      expect(rule.params_for(uri)).to eq({
+        "alpha" => "foo", "beta" => "bar"
+      })
+    end
+  end
+
   describe "#append_uri_sub_rule, #uri" do
     it "adds a URIRule as a sub-rule" do
       rule.append_uri_sub_rule("http://example.com/foo/bar")
