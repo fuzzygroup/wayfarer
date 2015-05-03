@@ -1,22 +1,39 @@
 # Schablone
-A small, versatile web scraping/crawling DSL
+A versatile web crawling/scraping library
 
 ## Features
-* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates a browser with [Selenium](https://github.com/seleniumhq/selenium)
-* Processes pages breadth-first and multithreaded
-* Enables extraction of arbitrary data structures with a predictable DSL written on top of [Nokogiri](https://github.com/sparklemotion/nokogiri)
+* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent), [mechanize](https://github.com/sparklemotion/mechanize) or automates a JavaScript-enabled browser with [Selenium](https://github.com/seleniumhq/selenium)
+* Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with [oj](https://github.com/ohler55/oj)
+* Ships with an optional data extraction DSL based on CSS/XPath
+* Traverses page graphs non-circular, breadth-first and multithreaded
+* Is agnostic about data storages
 
 ## Installation
-Install from Bundler by adding the following to your `Gemfile`:
+Install with Bundler by adding the following line to your `Gemfile`:
 
 ```
 gem schablone
 ```
-Or install from RubyGems:
+Or install via RubyGems:
 
 ```
 % gem install schablone
 ```
+
+## Example
+```
+crawler = Schablone::Crawler.new do
+  handle :index do
+    visit page.links
+  end
+
+  handle :issues do
+    visit page.links
+  end
+end
+```
+For more examples, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](http://google.com).
+
 
 ## Configuration
 ### Recognized keys and values
@@ -43,3 +60,6 @@ Or install from RubyGems:
 * __`max_http_redirects`__: Number of HTTP redirects to follow per initial request.
 	* Recognized values: Integers
 	* Default value: `3`
+
+### Presets
+Configuration presets

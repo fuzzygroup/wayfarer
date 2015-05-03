@@ -64,7 +64,7 @@ module Schablone
     #
     # @return [false] if {#state} is not `:running`
     def halt
-      return false unless state == :running
+      return false unless @state == :running
 
       HTTPAdapters::Factory.free_instances
       @workers.each(&:kill)
@@ -75,6 +75,10 @@ module Schablone
 
     private
 
+    # Spawns a number of {Worker}s and passes them the `Queue` of current URIs
+    # provided by {Navigator#current_uri_queue}. When the passed `Queue` is
+    # empty (processed), {Navigator#cycle} is called on {#navigator}. If the call returns
+    # `false`, {#halt} is called.
     def step
       queue = @navigator.current_uri_queue
       spawn_workers(queue)
@@ -83,10 +87,7 @@ module Schablone
       halt unless @navigator.cycle
     end
 
-    # Spawns a number of {Worker}s and passes them the `Queue` of current URIs
-    # provided by {Navigator#current_uri_queue}
-    #
-    # @return [false] if {#state} is not `:running`
+    # Spawns a number of {Worker}s determined by `Schablone.config.threads`
     def spawn_workers(queue)
       @workers = Schablone.config.threads.times.map do
         Worker.new(self, queue, @navigator, @router, @emitter)
