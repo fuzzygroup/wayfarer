@@ -49,19 +49,19 @@ module Schablone
       @navigator.cycle
     end
 
-    def state
-      @mutex.synchronize { @state }
-    end
-
+    # Runs the processor by calling {#step} until `:halt` is thrown.
+    # Sets {#state} to `:running`.
     def run
       @state = :running
       catch(:halt) { loop { step } }
     end
 
-    # Halts the {Processor} unl
-    # 1. 
+    # Halts the {Processor} if {#state} returns `:running`:
+    # 1. Calls {HTTPAdapters::Factory.free_instances}
+    # 2. Sends `#kill` to all its {#workers}
+    # 3. Sets {#state} to `:halted`
+    # 4. Throws `:halt`
     #
-    # @param router [Routing::Router]
     # @return [false] if {#state} is not `:running`
     def halt
       return false unless state == :running
@@ -83,6 +83,10 @@ module Schablone
       halt unless @navigator.cycle
     end
 
+    # Spawns a number of {Worker}s and passes them the `Queue` of current URIs
+    # provided by {Navigator#current_uri_queue}
+    #
+    # @return [false] if {#state} is not `:running`
     def spawn_workers(queue)
       @workers = Schablone.config.threads.times.map do
         Worker.new(self, queue, @navigator, @router, @emitter)
