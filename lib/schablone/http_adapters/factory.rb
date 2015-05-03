@@ -8,8 +8,8 @@ module Schablone
         @instances ||= []
       end
 
-      def instance
-        case Schablone.config.http_adapter
+      def instance(adapter = nil)
+        case adapter || Schablone.config.http_adapter
         when :net_http
           instances << NetHTTPAdapter.new if instances.empty?
           instances.first
