@@ -14,6 +14,8 @@ crawler = Schablone::Crawler.new do
     host "google.com", paths: "/foo", "/bar", "**/*.png"
   end
 
+  router.allow.host "example.com"
+
   router.map(:index, host: "github.com", path: "/intridea/hashie")
   router.map(:issues) { host "github.com", path: "/intridea/hashie/issues" }
 end

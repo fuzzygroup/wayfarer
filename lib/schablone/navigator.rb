@@ -50,8 +50,14 @@ module Schablone
   # ```
   # @param router [Schablone::Router]
   class Navigator
+    # @!attribute [r] router
+    # @return [Routing::Router]
     attr_reader :router
 
+    # Initializes a new {Navigator}
+    #
+    # @param router [Routing::Router]
+    # @return [Navigator] the initialized {Navigator}
     def initialize(router)
       @router = router
 

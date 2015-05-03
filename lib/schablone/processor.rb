@@ -3,12 +3,23 @@ require "thread"
 module Schablone
   # @private
   #
-  # A {Processor} decorates a `Set` and differs in behaviour of {#add} and
-  # {#include?}. URIs are stored as Strings internally.
+  # A {Processor} is a state-machine in disguise. It spawns a number of
+  # {Worker}s that are responsible for executing the actual {Scraper}s.
   #
-  # {#add} normalizes the passed URI by removing trailing slashes and
-  # fragment identifiers:
+  # Initially, its state is set to `:idle`:
+  # ```
+  # processor.state # => :idle
+  # ```
   #
+  # It also has not spawned any {Worker}s:
+  # ```
+  # processor.workers.count # => 0
+  # ```
+  #
+  # Suppose its {#router} has been set up. 
+  # ```
+  # processor.workers.count # => 0
+  # ```
   # ```
   # uri_set << URI("http://example.com/#fragment-identifier")
   # uri_set.to_a.first # => #<URI::HTTP:... URL:http://example.com>
@@ -21,6 +32,7 @@ module Schablone
   # ```
   # @param enumerable [Enumerable]
   class Processor
+    attr_reader :router
     attr_reader :navigator
     attr_reader :workers
     attr_reader :state
@@ -37,21 +49,28 @@ module Schablone
       @navigator.cycle
     end
 
+    def state
+      @mutex.synchronize { @state }
+    end
+
     def run
       @state = :running
       catch(:halt) { loop { step } }
     end
 
+    # Halts the {Processor} unl
+    # 1. 
+    #
+    # @param router [Routing::Router]
+    # @return [false] if {#state} is not `:running`
     def halt
-      @mutex.synchronize do
-        return false unless @state == :running
+      return false unless state == :running
 
-        HTTPAdapters::Factory.free_instances
-        @workers.each(&:kill)
-        @state = :halted
+      HTTPAdapters::Factory.free_instances
+      @workers.each(&:kill)
+      @state = :halted
 
-        throw(:halt)
-      end
+      throw(:halt)
     end
 
     private

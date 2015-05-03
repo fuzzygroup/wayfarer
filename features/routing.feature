@@ -352,3 +352,27 @@ Feature: URI Rules
       https://google.com/foo
       https://google.com/foo?bar=qux
       """
+
+  Scenario: PathRule with multiple paths
+    Given the following Rule:
+      """
+      paths "/foo", "/bar"
+      """
+      And the following list of URIs:
+        """
+        http://example.com
+        http://example.com/foo
+        http://example.com/bar
+        http://example.com/foo/bar
+        https://google.com
+        https://google.com/foo
+        https://google.com/foo/bar
+        """
+    When I match the URIs against the Rule
+    Then I get the following list of URIs:
+      """
+      http://example.com/foo
+      http://example.com/bar
+      https://google.com/foo
+      https://google.com/foo/bar
+      """
