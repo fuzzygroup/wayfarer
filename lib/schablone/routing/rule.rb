@@ -49,6 +49,8 @@ module Schablone
     #   rule_tree === URI("http://example.com")    # => true
     #   rule_tree === URI("http://google.com/bar") # => false
     class Rule
+      include Enumerable
+
       # @!attribute [r] sub_rules
       attr_reader :sub_rules
 
@@ -80,6 +82,10 @@ module Schablone
         instance_eval(&proc) if block_given?
       end
 
+      def each(&proc)
+        @sub_rules.each(&proc)
+      end
+
       # Checks whether the rule matches the URI
       #
       # @param [URI] uri URI to be matched
@@ -88,7 +94,10 @@ module Schablone
       def ===(uri)
         return false unless matched = match(uri)
         return matched if @sub_rules.empty?
-        @sub_rules.inject(false) { |bool, rule| bool || rule === uri }
+        inject(false) { |bool, rule| bool || rule === uri }
+      end
+
+      def matched_rule_chain(uri)
       end
 
       def params_for(uri)
@@ -130,6 +139,10 @@ module Schablone
 
       alias_method :query, :append_query_sub_rule
       alias_method :queries, :append_query_sub_rule
+
+      def inspect
+        "#{self.class}"
+      end
 
       private
 

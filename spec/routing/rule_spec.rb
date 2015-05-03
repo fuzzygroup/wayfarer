@@ -49,6 +49,41 @@ describe Schablone::Routing::Rule do
         "alpha" => "foo", "beta" => "bar"
       })
     end
+
+    context "more complicated shit" do
+      subject(:rule) do
+        Rule.new do
+          host "example.com" do
+            path "/{alpha}/{beta}"
+            path "/{gamma}/{delta}"
+          end
+        end 
+      end
+
+      it "works" do
+        expect(rule.params_for(uri)).to eq({
+          "alpha" => "foo", "beta" => "bar"
+        })
+      end
+    end
+  end
+
+  describe "#matched_rule_chain" do
+    let(:uri) { URI("http://example.com/foo/bar") }
+
+    let(:path_rule_a) { PathRule.new("/{alpha}/{beta}") }
+    let(:path_rule_b) { PathRule.new("/{gamma}/{delta}") }
+
+    subject(:rule) do
+      rule = Rule.new
+      rule.send(:append_sub_rule, path_rule_a)
+      rule.send(:append_sub_rule, path_rule_a)
+      rule
+    end
+
+    it "returns the expected Array" do
+      expect(rule.matched_rule_chain(uri)).to eq [rule, path_rule_a]
+    end
   end
 
   describe "#append_uri_sub_rule, #uri" do
