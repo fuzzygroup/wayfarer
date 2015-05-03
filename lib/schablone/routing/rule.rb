@@ -46,15 +46,7 @@ module Schablone
       end
 
       def append_sub_rule_from_options(opts)
-        opts.reject! { |key, _| ![:host, :path, :query].include?(key) }
-
-        opts.inject(self) do |rule, (key, val)|
-          case key
-          when :host  then rule.append_host_sub_rule(val)
-          when :path  then rule.append_path_sub_rule(val)
-          when :query then rule.append_query_sub_rule(val)
-          end
-        end
+        opts.inject(self) { |rule, (key, val)| rule.send(key, val) }
       end
 
       def match(*)
