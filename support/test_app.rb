@@ -26,6 +26,11 @@ class TestApp < Sinatra::Base
     redirect to "hptt://bro.ken"
   end
 
+  get "/json/:file" do
+    content_type "application/json"
+    send_file(static_file("json/#{params[:file]}"), type: :json)
+  end
+
   private
 
   def static_file(file_path)

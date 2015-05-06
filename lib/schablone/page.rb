@@ -13,7 +13,11 @@ module Schablone
     end
 
     def parsed_document
-      @parsed_document ||= Nokogiri::HTML(@body)
+      puts @headers
+      @parsed_document ||= case @headers["content-type"].first
+      when /json/ then Parsers::JSONParser.parse(@body)
+      else Parsers::XMLParser.parse(@body)
+      end
     end
 
     def links(matcher_hash = { css: "a" })

@@ -6,6 +6,8 @@ crawler = Schablone::Crawler.new do
     visit page.uri { query += 1 }
   end
 
+  scrape :images { save to: "~/Users/dom" }
+
   handle :issues do
     extract do
       css :elements, ".element" do
@@ -19,6 +21,8 @@ crawler = Schablone::Crawler.new do
   end
 
   router.allow.host "example.com"
+
+  router.map :images, paths: "**/*.png", "**/*.jpg", "**/*.gif"
 
   router.map :index, host: "github.com", path: "/intridea/hashie"
   router.map :issues host: "github.com", path: "/intridea/hashie/issues"

@@ -4,6 +4,14 @@ describe Schablone::Page do
   subject(:page) { fetch_page(test_app("/links/links.html")) }
 
   describe "#parsed_document" do
+    context "when Content-Type is application/json" do
+      subject(:page) { fetch_page(test_app("/json/dummy.json")) }
+
+      it "returns a Hash" do
+        expect(page.parsed_document).to be_a Hash
+      end
+    end
+
     it "returns a parsed HTML document" do
       expect(page.parsed_document).to be_a Nokogiri::HTML::Document
     end
