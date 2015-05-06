@@ -1,5 +1,6 @@
 require "uri"
 require "nokogiri"
+require "pismo"
 
 module Schablone
   class Page
@@ -41,6 +42,15 @@ module Schablone
     private
 
     def pismo_document
+      @pismo_document ||= build_pismo_document
+    end
+
+    def build_pismo_document
+      doc = Pismo::Document.allocate
+      doc.instance_variable_set(:@url, self.uri)
+      doc.instance_variable_set(:@html, self.body)
+      doc.instance_variable_set(:@doc, self.parsed_document)
+      doc
     end
 
     def expand_uri(path)

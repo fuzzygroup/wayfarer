@@ -42,4 +42,10 @@ describe Schablone::Page do
       end
     end
   end
+
+  describe "#pismo_document" do
+    it "returns a Pismo::Document" do
+      expect(page.send(:pismo_document)).to be_a Pismo::Document
+    end
+  end
 end
