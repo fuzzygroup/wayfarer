@@ -4,7 +4,7 @@ A versatile yet small web crawling/scraping framework, batteries included.
 [__API documentation__](https://github.com/bauerd/schablone)
 
 ## Features
-* Fires HTTP requests statelessly via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates JavaScript-enabled browsers with [Selenium](https://github.com/seleniumhq/selenium), e.g. [PhantomJS](http://phantomjs.org)
+* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates JavaScript-enabled browsers with [Selenium](https://github.com/seleniumhq/selenium), e.g. [PhantomJS](http://phantomjs.org)
 * Ensures non-circular, breadth-first and multithreaded traversal of page graphs
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Simplifies data extraction with an optional DSL based on CSS/XPath
@@ -70,7 +70,7 @@ For more, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](ht
 	Whether to trim leading/trailing whitespace and control characters from inner HTML/XML.
 	* Recognized values: Booleans
 	* Default value: `true`
-	* __NOTE__: Only applies if you’re using the data extraction DSL.
+	* __NOTE__: Only applies if you’re using `Schablone::Extraction`.
 
 * __`ignore_fragment_identifiers`__
 
@@ -99,18 +99,18 @@ For more, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](ht
 
 * __`mustermann_pattern_type`__
 
-	A `Hash` that gets passed to `Oj::load`
-	* Recognized values: Hashes, [see documentation](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/XML/ParseOptions)
-	* Default value: `:rails`
+	Which pattern type to use when matching URIs.
+	* Recognized values: Symbols, [see documentation](https://github.com/rkh/mustermann#pattern-types)
+	* Default value: `:template`
+	* __NOTE__: You might have to install the corresponding pattern type gems.
 
 ### Using oj instead of `::JSON`
-Require oj and it will be picked up automatically.
+oj provides better performance than the standard library’s `JSON` module. Due to it being a C extension, it is not listed as a dependency. In order to use oj, [install](https://github.com/ohler55/oj#installation) and `require "oj"`. It gets picked up automatically.
 
 ```ruby
 require "oj"
 
-# Set parsing options as desired
-Oj.default_options = { mode: :compat }
+crawler = Schablone::Crawler.new # JSON now gets parsed with oj
 ```
 
 ## Caveats and shortcomings
