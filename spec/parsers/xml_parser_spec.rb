@@ -1,7 +1,7 @@
 require "spec_helpers"
 
-describe Schablone::Parser do
-  let(:parser) { subject }
+describe Schablone::Parsers::XMLParser do
+  subject(:parser) { Parsers::XMLParser }
 
   describe ".parse" do
     it "returns a parsed HTML document" do

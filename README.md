@@ -2,8 +2,8 @@
 A versatile web crawling/scraping library
 
 ## Features
-* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent), [mechanize](https://github.com/sparklemotion/mechanize) or automates a JavaScript-enabled browser with [Selenium](https://github.com/seleniumhq/selenium)
-* Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with [oj](https://github.com/ohler55/oj)
+* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates JavaScript-enabled browsers with [Selenium](https://github.com/seleniumhq/selenium)
+* Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Ships with an optional data extraction DSL based on CSS/XPath
 * Traverses page graphs non-circular, breadth-first and multithreaded
 * Is agnostic about data storages
@@ -32,7 +32,7 @@ crawler = Schablone::Crawler.new do
   end
 end
 ```
-For more examples, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](http://google.com).
+For more, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](http://google.com).
 
 
 ## Configuration
@@ -61,5 +61,14 @@ For more examples, see [`examples/`](http://google.com) or read [`GETTING_STARTE
 	* Recognized values: Integers
 	* Default value: `3`
 
-### Presets
-Configuration presets
+### Using [oj](https://github.com/ohler55/oj) instead of `::JSON`
+If oj is 
+
+```ruby
+require "oj"
+
+# Configure parsing options as desired
+Oj.default_options = { mode: :compat }
+```
+
+### Setting [Nokogiri](https://github.com/ohler55/oj)’s parsing options

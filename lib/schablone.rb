@@ -26,11 +26,14 @@ require_relative "schablone/http_adapters/factory"
 require_relative "schablone/http_adapters/net_http_adapter"
 require_relative "schablone/http_adapters/selenium_adapter"
 
+# Parsers
+require_relative "schablone/parsers/xml_parser"
+require_relative "schablone/parsers/json_parser"
+
 # Processing
 require_relative "schablone/emitter"
 require_relative "schablone/worker"
 require_relative "schablone/context"
-require_relative "schablone/parser"
 require_relative "schablone/page"
 require_relative "schablone/uri_set"
 require_relative "schablone/result"
