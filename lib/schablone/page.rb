@@ -40,6 +40,9 @@ module Schablone
 
     private
 
+    def pismo_document
+    end
+
     def expand_uri(path)
       URI.join(@uri, path)
     end
