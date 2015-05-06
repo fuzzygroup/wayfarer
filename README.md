@@ -1,5 +1,5 @@
 # Robber
-A versatile yet small web crawling/scraping framework, batteries included.
+A versatile yet small web crawling/scraping framework
 
 [__API documentation__](https://github.com/bauerd/schablone)
 
@@ -9,8 +9,9 @@ A versatile yet small web crawling/scraping framework, batteries included.
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Simplifies data extraction with an optional DSL based on CSS/XPath
 * Extracts meta-data with [Pismo](https://github.com/peterc/pismo) when needed
+* Adheres to `robots.txt` if you want it to
 * Ships with [RSpec](http://rspec.info/) matchers for testing crawling behaviour
-* Is agnostic about data storages
+* Is agnostic about data storage
 
 ## Installation
 Install with Bundler by adding the following line to your `Gemfile`:
@@ -40,6 +41,22 @@ For more, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](ht
 
 
 ## Configuration
+Options can be set as follows:
+
+```ruby
+Schablone.config.key = value
+
+Schablone.config do
+  key = value
+end
+
+Schablone::Crawler.new do
+  config.key = value
+  config { |c| c.key = value }
+  config { key = value }
+end
+```
+
 ### Recognized keys and values
 * __`threads`__
 
@@ -64,13 +81,14 @@ For more, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](ht
 	Minimum level of log messages to print.
 	* Recognized values: [See documentation](http://ruby-doc.org/stdlib-2.1.0/libdoc/logger/rdoc/Logger.html)
 	* Default value: `Logger::WARN`
+	* Note: You can bring your own logger with `Schablone::logger=`
 
 * __`sanitize_node_content`__
 
 	Whether to trim leading/trailing whitespace and control characters from inner HTML/XML.
 	* Recognized values: Booleans
 	* Default value: `true`
-	* __NOTE__: Only applies if you’re using `Schablone::Extraction`.
+	* Note: Only applies when using `Schablone::Extraction`.
 
 * __`ignore_fragment_identifiers`__
 
@@ -83,14 +101,21 @@ For more, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](ht
 	Number of HTTP redirects to follow per initial request.
 	* Recognized values: Integers
 	* Default value: `3`
-	* __NOTE__: Has no effect if you’re using Selenium.
+	* Note: Has no effect when using Selenium.
+
+* __`adhere_to_robots_txt`__
+
+	Whether to adhere to `robots.txt`s.
+	* Recognized values: Booleans
+	* Default value: `true`
+	* Note: Has no effect when using Selenium.
 
 * __`nokogiri_parsing_options`__
 
-	A Proc that gets bound when calling `Nokogiri::HTML`/`Nokogiri::XML`
+	A Proc that gets bound when calling `Nokogiri::HTML`/`Nokogiri::XML` and is passed an instance of `Nokogiri::XML::ParseOptions`.
 	* Recognized values: Procs, [see documentation](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/XML/ParseOptions)
 	* Default value: `-> (config) {}`
-
+	
 * __`oj_parsing_options`__
 
 	A `Hash` that gets passed to `Oj::load`
@@ -102,7 +127,7 @@ For more, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](ht
 	Which pattern type to use when matching URIs.
 	* Recognized values: Symbols, [see documentation](https://github.com/rkh/mustermann#pattern-types)
 	* Default value: `:template`
-	* __NOTE__: You might have to install the corresponding pattern type gems.
+	* Note: You might have to install the corresponding pattern type gems.
 
 ### Using oj instead of `::JSON`
 oj provides better performance than the standard library’s `JSON` module. Due to it being a C extension, it is not listed as a dependency. In order to use oj, [install](https://github.com/ohler55/oj#installation) and `require "oj"`. It gets picked up automatically.
