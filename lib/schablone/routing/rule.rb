@@ -105,6 +105,7 @@ module Schablone
         child_rules.empty?
       end
 
+      # untested
       def first_matching_child(uri)
         detect { |child_rule| child_rule.matches?(uri) }
       end

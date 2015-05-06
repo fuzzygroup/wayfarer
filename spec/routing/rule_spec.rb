@@ -54,32 +54,47 @@ describe Schablone::Routing::Rule do
   end
 
   describe "#matching_rule_chain" do
-    let(:host_rule_a) { HostRule.new("example.com") }
-    let(:host_rule_b) { HostRule.new("google.com") }
-    let(:path_rule_a) { PathRule.new("/{alpha}/{beta}") }
-    let(:path_rule_b) { PathRule.new("/{gamma}/{delta}") }
-
-    before do
-      host_rule_a.append_child_rule(path_rule_a)
-      host_rule_a.append_child_rule(path_rule_b)
-
-      host_rule_b.append_child_rule(path_rule_a)
-      host_rule_b.append_child_rule(path_rule_b)
-    end
-
-    subject(:rule) do
-      rule = Rule.new
-      rule.append_child_rule(host_rule_a)
-      rule.append_child_rule(host_rule_b)
-      rule
-    end
-
     let(:uri) { URI("http://example.com/foo/bar") }
 
-    it "works" do
-      expect(rule.matching_rule_chain(uri)).to eq [
-        rule, host_rule_a, path_rule_a
-      ]
+    context "with matching Rule" do
+      let(:host_rule_a) { HostRule.new("example.com") }
+      let(:host_rule_b) { HostRule.new("google.com") }
+      let(:path_rule_a) { PathRule.new("/{alpha}/{beta}") }
+      let(:path_rule_b) { PathRule.new("/{gamma}/{delta}") }
+
+      before do
+        host_rule_a.append_child_rule(path_rule_a)
+        host_rule_a.append_child_rule(path_rule_b)
+
+        host_rule_b.append_child_rule(path_rule_a)
+        host_rule_b.append_child_rule(path_rule_b)
+      end
+
+      subject(:rule) do
+        rule = Rule.new
+        rule.append_child_rule(host_rule_a)
+        rule.append_child_rule(host_rule_b)
+        rule
+      end
+
+      it "returns the expected Array" do
+        expect(rule.matching_rule_chain(uri)).to eq [
+          rule, host_rule_a, path_rule_a
+        ]
+      end
+    end
+
+    context "without matching Rule" do
+      subject(:rule) do
+        rule = Rule.new
+        rule.host("yahoo.com")
+        rule.host("google.com")
+        rule
+      end
+
+      it "returns an empty Array" do
+        expect(rule.matching_rule_chain(uri)).to eq []
+      end
     end
   end
 
