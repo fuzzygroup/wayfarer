@@ -1,14 +1,15 @@
 # Robber
-A versatile yet small web crawling/scraping framework.
+A versatile yet small web crawling/scraping framework, batteries included.
 
 [__API documentation__](https://github.com/bauerd/schablone)
 
 ## Features
 * Fires HTTP requests statelessly via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates JavaScript-enabled browsers with [Selenium](https://github.com/seleniumhq/selenium), e.g. [PhantomJS](http://phantomjs.org)
+* Ensures non-circular, breadth-first and multithreaded traversal of page graphs
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Simplifies data extraction with an optional DSL based on CSS/XPath
-* Ensures non-circular, breadth-first and multithreaded traversal of page graphs
-* Ships with RSpec matchers for testing crawling behaviour
+* Extracts meta-data with [Pismo](https://github.com/peterc/pismo) when needed
+* Ships with [RSpec](http://rspec.info/) matchers for testing crawling behaviour
 * Is agnostic about data storages
 
 ## Installation
@@ -23,14 +24,14 @@ Or install via RubyGems:
 % gem install schablone
 ```
 
-## Example
+## Usage example
 ```
 crawler = Schablone::Crawler.new do
-  handle :index do
+  scrape :index do
     visit page.links
   end
 
-  handle :issues do
+  scrape :issues do
     visit page.links
   end
 end
@@ -95,9 +96,14 @@ For more, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](ht
 	A `Hash` that gets passed to `Oj::load`
 	* Recognized values: Hashes, [see documentation](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/XML/ParseOptions)
 	* Default value: `{}`
-	* __NOTE__: Has no effect if you’re using `::JSON`.
 
-### Using [oj](https://github.com/ohler55/oj) instead of `::JSON`
+* __`mustermann_pattern_type`__
+
+	A `Hash` that gets passed to `Oj::load`
+	* Recognized values: Hashes, [see documentation](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/XML/ParseOptions)
+	* Default value: `:rails`
+
+### Using oj instead of `::JSON`
 Require oj and it will be picked up automatically.
 
 ```ruby
