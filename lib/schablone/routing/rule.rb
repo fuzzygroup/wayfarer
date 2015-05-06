@@ -51,8 +51,8 @@ module Schablone
     class Rule
       include Enumerable
 
-      # @!attribute [r] sub_rules
-      attr_reader :sub_rules
+      # @!attribute [r] child_rules
+      attr_reader :child_rules
 
       # Initializes a new {Rule}
       #
@@ -77,13 +77,36 @@ module Schablone
       #
       # @return [Navigator] the initialized {Navigator}
       def initialize(opts = {}, &proc)
-        @sub_rules = []
-        append_sub_rule_from_options(opts) unless opts.empty?
+        @child_rules = []
+        append_child_rule_from_options(opts) unless opts.empty?
         instance_eval(&proc) if block_given?
       end
 
       def each(&proc)
-        @sub_rules.each(&proc)
+        child_rules.each(&proc)
+      end
+
+      def matches?(uri)
+        return false unless match(uri)
+        leaf? || any? { |child_rule| child_rule.matches?(uri) }
+      end
+
+      def matching_rule_chain(uri, chain = [])
+        if matches?(uri) && leaf?
+          chain << self
+        elsif matching_child = first_matching_child(uri)
+          matching_child.matching_rule_chain(uri, chain << self)
+        else
+          []
+        end
+      end
+
+      def leaf?
+        child_rules.empty?
+      end
+
+      def first_matching_child(uri)
+        detect { |child_rule| child_rule.matches?(uri) }
       end
 
       # Checks whether the rule matches the URI
@@ -93,19 +116,8 @@ module Schablone
       # @see #match
       def ===(uri)
         return false unless matched = match(uri)
-        return matched if @sub_rules.empty?
+        return matched if child_rules.empty?
         inject(false) { |bool, rule| bool || rule === uri }
-      end
-
-      def matched_rule_chain(uri)
-      end
-
-      def params_for(uri)
-        @sub_rules.inject({}) do |hash, rule|
-          hash
-            .merge(rule.params(uri))
-            .merge(rule.params_for(uri))
-        end
       end
 
       def params(uri)
@@ -113,32 +125,40 @@ module Schablone
       end
 
       def append_uri_sub_rule(uri_str, opts = {}, &proc)
-        append_sub_rule(URIRule.new(uri_str, opts, &proc))
+        append_child_rule(URIRule.new(uri_str, opts, &proc))
       end
 
       alias_method :uri, :append_uri_sub_rule
       alias_method :uris, :append_uri_sub_rule
 
       def append_host_sub_rule(str_or_regexp, opts = {}, &proc)
-        append_sub_rule(HostRule.new(str_or_regexp, opts, &proc))
+        append_child_rule(HostRule.new(str_or_regexp, opts, &proc))
       end
 
       alias_method :host, :append_host_sub_rule
       alias_method :hosts, :append_host_sub_rule
 
       def append_path_sub_rule(pattern_str, opts = {}, &proc)
-        append_sub_rule(PathRule.new(pattern_str, opts, &proc))
+        append_child_rule(PathRule.new(pattern_str, opts, &proc))
       end
 
       alias_method :path, :append_path_sub_rule
       alias_method :paths, :append_path_sub_rule
 
       def append_query_sub_rule(constraints, opts = {}, &proc)
-        append_sub_rule(QueryRule.new(constraints, opts, &proc))
+        append_child_rule(QueryRule.new(constraints, opts, &proc))
       end
 
       alias_method :query, :append_query_sub_rule
       alias_method :queries, :append_query_sub_rule
+
+      # Adds a child {Rule}
+      #
+      # @param other [Rule]
+      # @return [Rule] the added {Rule}
+      def append_child_rule(other)
+        @child_rules << other; other
+      end
 
       def inspect
         "#{self.class}"
@@ -146,19 +166,11 @@ module Schablone
 
       private
 
-      # Adds a child {Rule}
-      #
-      # @param other [Rule]
-      # @return [Rule] the added {Rule}
-      def append_sub_rule(other)
-        @sub_rules << other; other
-      end
-
       # Adds chained child rules from a Hash
       #
       # @param opts [Hash]
       # @return [Rule] the leaf rule
-      def append_sub_rule_from_options(opts)
+      def append_child_rule_from_options(opts)
         opts.inject(self) { |rule, (key, val)| rule.send(key, val) }
       end
 
@@ -167,7 +179,7 @@ module Schablone
       # @param uri [URI]
       # @return [true, false] whether any child rules are present
       def match(*)
-        @sub_rules.any?
+        @child_rules.any?
       end
     end
   end

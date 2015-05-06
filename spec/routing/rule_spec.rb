@@ -33,63 +33,60 @@ describe Schablone::Routing::Rule do
     end
   end
 
-  describe "#params_for" do
-    let(:uri) { URI("http://example.com/foo/bar") }
+  describe "#leaf?" do
+    let(:uri) { URI("http://example.com") }
 
-    subject(:rule) do
-      Rule.new do
-        host "example.com" do
-          path "/{alpha}/{beta}"
-        end
-      end 
-    end
+    context "when Rule has child Rules" do
+      subject(:rule) { Rule.new { host "example.com" } }
 
-    it "works" do
-      expect(rule.params_for(uri)).to eq({
-        "alpha" => "foo", "beta" => "bar"
-      })
-    end
-
-    context "more complicated shit" do
-      subject(:rule) do
-        Rule.new do
-          host "example.com" do
-            path "/{alpha}/{beta}"
-            path "/{gamma}/{delta}"
-          end
-        end 
+      it "returns false" do
+        expect(rule.leaf?).to be false
       end
+    end
 
-      it "works" do
-        expect(rule.params_for(uri)).to eq({
-          "alpha" => "foo", "beta" => "bar"
-        })
+    context "when Rule does not have child Rules" do
+      subject(:rule) { Rule.new }
+
+      it "returns true" do
+        expect(rule.leaf?).to be true
       end
     end
   end
 
-  describe "#matched_rule_chain" do
-    let(:uri) { URI("http://example.com/foo/bar") }
-
+  describe "#matching_rule_chain" do
+    let(:host_rule_a) { HostRule.new("example.com") }
+    let(:host_rule_b) { HostRule.new("google.com") }
     let(:path_rule_a) { PathRule.new("/{alpha}/{beta}") }
     let(:path_rule_b) { PathRule.new("/{gamma}/{delta}") }
 
+    before do
+      host_rule_a.append_child_rule(path_rule_a)
+      host_rule_a.append_child_rule(path_rule_b)
+
+      host_rule_b.append_child_rule(path_rule_a)
+      host_rule_b.append_child_rule(path_rule_b)
+    end
+
     subject(:rule) do
       rule = Rule.new
-      rule.send(:append_sub_rule, path_rule_a)
-      rule.send(:append_sub_rule, path_rule_a)
+      rule.append_child_rule(host_rule_a)
+      rule.append_child_rule(host_rule_b)
       rule
     end
 
-    it "returns the expected Array" do
-      expect(rule.matched_rule_chain(uri)).to eq [rule, path_rule_a]
+    let(:uri) { URI("http://example.com/foo/bar") }
+
+    it "works" do
+      expect(rule.matching_rule_chain(uri)).to eq [
+        rule, host_rule_a, path_rule_a
+      ]
     end
   end
 
   describe "#append_uri_sub_rule, #uri" do
     it "adds a URIRule as a sub-rule" do
       rule.append_uri_sub_rule("http://example.com/foo/bar")
-      expect(rule.sub_rules.first).to be_a URIRule
+      expect(rule.child_rules.first).to be_a URIRule
     end
 
     it "returns the added URIRule" do
@@ -100,7 +97,7 @@ describe Schablone::Routing::Rule do
   describe "#append_host_sub_rule, #host" do
     it "adds a HostRule as a sub-rule" do
       rule.append_host_sub_rule("example.com")
-      expect(rule.sub_rules.first).to be_a HostRule
+      expect(rule.child_rules.first).to be_a HostRule
     end
 
     it "returns the added HostRule" do
@@ -111,7 +108,7 @@ describe Schablone::Routing::Rule do
   describe "#append_path_sub_rule, #path" do
     it "adds a PathRule as a sub-rule" do
       rule.append_path_sub_rule("/foo/bar")
-      expect(rule.sub_rules.first).to be_a PathRule
+      expect(rule.child_rules.first).to be_a PathRule
     end
 
     it "returns the added PathRule" do
@@ -122,7 +119,7 @@ describe Schablone::Routing::Rule do
   describe "#append_query_sub_rule, #query" do
     it "adds a QueryRule as a sub-rule" do
       rule.append_query_sub_rule(foo: "bar")
-      expect(rule.sub_rules.first).to be_a QueryRule
+      expect(rule.child_rules.first).to be_a QueryRule
     end
 
     it "returns the added QueryRule" do
@@ -130,10 +127,10 @@ describe Schablone::Routing::Rule do
     end
   end
 
-  describe "#append_sub_rule_from_options" do
+  describe "#append_child_rule_from_options" do
     subject(:rule) do
       rule = Rule.new
-      rule.send(:append_sub_rule_from_options, opts)
+      rule.send(:append_child_rule_from_options, opts)
       rule
     end
 
@@ -141,7 +138,7 @@ describe Schablone::Routing::Rule do
       let(:opts) { Hash[path: "/foo"] }
 
       it "adds a PathRule as a sub-rule" do
-        expect(rule.sub_rules.first).to be_a PathRule
+        expect(rule.child_rules.first).to be_a PathRule
       end
     end
 
@@ -149,7 +146,7 @@ describe Schablone::Routing::Rule do
       let(:opts) { Hash[query: { bar: "qux" }] }
 
       it "adds a QueryRule as a sub-rule" do
-        expect(rule.sub_rules.first).to be_a QueryRule
+        expect(rule.child_rules.first).to be_a QueryRule
       end
     end
 
@@ -157,7 +154,7 @@ describe Schablone::Routing::Rule do
       let(:opts) { Hash[host: "example.com"] }
 
       it "adds a HostRule as a sub-rule" do
-        expect(rule.sub_rules.first).to be_a HostRule
+        expect(rule.child_rules.first).to be_a HostRule
       end
     end
 
@@ -167,9 +164,9 @@ describe Schablone::Routing::Rule do
       end
 
       it "adds chained sub-rules" do
-        first  = rule.sub_rules.first
-        second = first.sub_rules.first
-        third  = second.sub_rules.first
+        first  = rule.child_rules.first
+        second = first.child_rules.first
+        third  = second.child_rules.first
 
         expect(first).to be_a HostRule
         expect(second).to be_a PathRule
