@@ -14,10 +14,15 @@ module Schablone
     end
 
     def parsed_document
-      puts @headers
-      @parsed_document ||= case @headers["content-type"].first
-      when /json/ then Parsers::JSONParser.parse(@body)
-      else Parsers::XMLParser.parse(@body)
+      content_type = @headers["content-type"].first
+
+      @parsed_document ||= case content_type
+      when /json/
+        Parsers::JSONParser.parse(@body).extend(
+          Hashie::Extensions::MethodReader
+        )
+      else
+        Parsers::XMLParser.parse(@body)
       end
     end
 
@@ -49,13 +54,13 @@ module Schablone
     #
     # @return [Pismo::Document]
     def pismo_document
-      @pismo_document ||= build_pismo_document
+      @pismo_document ||= instantiate_pismo_document
     end
 
     # Builds a {Pismo::Document}, bypassing initialization
     #
     # @return [Pismo::Document]
-    def build_pismo_document
+    def instantiate_pismo_document
       doc = Pismo::Document.allocate
       doc.instance_variable_set(:@options, {})
       doc.instance_variable_set(:@url, self.uri)
@@ -69,8 +74,8 @@ module Schablone
     end
 
     # untested
-    def method_missing(method, *args, &proc)
-      pismo_document.send(method, *args, &proc)
+    def method_missing(method, *argv, &proc)
+      pismo_document.send(method, *argv, &proc)
     end
 
     #untested

@@ -62,8 +62,8 @@ module Schablone
       uri_str.chomp("/")
     end
 
-    def method_missing(method, *args, &proc)
-      @set.send(method, *args, &proc)
+    def method_missing(method, *argv, &proc)
+      @set.send(method, *argv, &proc)
     end
 
     def respond_to_missing?(method, private = false)

@@ -10,6 +10,10 @@ describe Schablone::Page do
       it "returns a Hash" do
         expect(page.parsed_document).to be_a Hash
       end
+
+      it "returns a Hash that allows dot notation-access" do
+        expect(page.parsed_document.id).to be 1
+      end
     end
 
     it "returns a parsed HTML document" do
@@ -46,7 +50,6 @@ describe Schablone::Page do
   describe "#pismo_document" do
     it "returns a Pismo::Document" do
       expect(page.send(:pismo_document)).to be_a Pismo::Document
-      require "pry"; binding.pry
     end
   end
 end
