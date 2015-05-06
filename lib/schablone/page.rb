@@ -41,10 +41,20 @@ module Schablone
 
     private
 
+    def current?(uri)
+      @current_uris.include?(uri)
+    end
+
+    # Returns a {Pismo::Document}
+    #
+    # @return [Pismo::Document]
     def pismo_document
       @pismo_document ||= build_pismo_document
     end
 
+    # Builds a {Pismo::Document}, bypassing initialization
+    #
+    # @return [Pismo::Document]
     def build_pismo_document
       doc = Pismo::Document.allocate
       doc.instance_variable_set(:@options, {})
@@ -58,10 +68,12 @@ module Schablone
       URI.join(@uri, path)
     end
 
+    # untested
     def method_missing(method, *args, &proc)
       pismo_document.send(method, *args, &proc)
     end
 
+    #untested
     def respond_to_missing?(method, private = false)
       pismo_document.respond_to?(method) || super
     end
