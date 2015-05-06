@@ -46,6 +46,7 @@ describe Schablone::Page do
   describe "#pismo_document" do
     it "returns a Pismo::Document" do
       expect(page.send(:pismo_document)).to be_a Pismo::Document
+      require "pry"; binding.pry
     end
   end
 end

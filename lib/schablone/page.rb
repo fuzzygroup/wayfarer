@@ -47,6 +47,7 @@ module Schablone
 
     def build_pismo_document
       doc = Pismo::Document.allocate
+      doc.instance_variable_set(:@options, {})
       doc.instance_variable_set(:@url, self.uri)
       doc.instance_variable_set(:@html, self.body)
       doc.instance_variable_set(:@doc, self.parsed_document)
@@ -55,6 +56,14 @@ module Schablone
 
     def expand_uri(path)
       URI.join(@uri, path)
+    end
+
+    def method_missing(method, *args, &proc)
+      pismo_document.send(method, *args, &proc)
+    end
+
+    def respond_to_missing?(method, private = false)
+      pismo_document.respond_to?(method) || super
     end
   end
 end
