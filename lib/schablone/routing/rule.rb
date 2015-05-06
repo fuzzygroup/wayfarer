@@ -101,6 +101,12 @@ module Schablone
         end
       end
 
+      def matching_rule_chain_params(uri)
+        matching_rule_chain(uri).inject({}) do |hash, rule|
+          hash.merge(rule.params(uri))
+        end
+      end
+
       def leaf?
         child_rules.empty?
       end

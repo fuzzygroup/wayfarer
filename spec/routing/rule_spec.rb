@@ -98,6 +98,25 @@ describe Schablone::Routing::Rule do
     end
   end
 
+  describe "#matching_rule_chain_params" do
+    let(:uri) { URI("http://example.com/foo/bar") }
+
+    context "with matching Rule" do
+      subject(:rule) do
+        rule = Rule.new
+        rule.host("example.com").path("/{alpha}/{beta}")
+        rule.host("example.com").path("/{foo}/{bar}")
+        rule
+      end
+
+      it "returns the expected URI parameters" do
+        expect(rule.matching_rule_chain_params(uri)).to eq({
+          "alpha" => "foo", "beta" => "bar"
+        })
+      end
+    end
+  end
+
   describe "#append_uri_sub_rule, #uri" do
     it "adds a URIRule as a sub-rule" do
       rule.append_uri_sub_rule("http://example.com/foo/bar")
