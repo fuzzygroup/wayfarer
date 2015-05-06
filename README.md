@@ -1,11 +1,14 @@
-# Schablone
-A versatile web crawling/scraping library
+# Robber
+A versatile yet small web crawling/scraping framework.
+
+[__API documentation__](https://github.com/bauerd/schablone)
 
 ## Features
-* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates JavaScript-enabled browsers with [Selenium](https://github.com/seleniumhq/selenium), e.g. [PhantomJS](http://phantomjs.org)
+* Fires HTTP requests statelessly via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates JavaScript-enabled browsers with [Selenium](https://github.com/seleniumhq/selenium), e.g. [PhantomJS](http://phantomjs.org)
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
-* Ships with an optional data extraction DSL based on CSS/XPath
-* Traverses page graphs non-circular, breadth-first and multithreaded
+* Simplifies data extraction with an optional DSL based on CSS/XPath
+* Ensures non-circular, breadth-first and multithreaded traversal of page graphs
+* Ships with RSpec matchers for testing crawling behaviour
 * Is agnostic about data storages
 
 ## Installation
@@ -37,38 +40,65 @@ For more, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](ht
 
 ## Configuration
 ### Recognized keys and values
-* __`threads`__: Number of threads to spawn.
+* __`threads`__
+
+	Number of threads to spawn.
 	* Recognized values: Integers
 	* Default value: `4`
 
-* __`http_adapter`__: Which HTTP adapter to use.
+* __`http_adapter`__
+
+	Which HTTP adapter to use.
 	* Recognized values: `:net_http`, `:selenium`
 	* Default value: `:net_http`
 
-* __`selenium_argv`__: Argument vector passed to [`Selenium::WebDriver::for`](http://selenium.googlecode.com/git/docs/api/rb/Selenium/WebDriver.html#for-class_method).
+* __`selenium_argv`__
+
+	Argument vector passed to `Selenium::WebDriver::for`.
 	* Recognized values: [See documentation](http://ruby-doc.org/stdlib-2.1.0/libdoc/logger/rdoc/Logger.html)
 	* Default value: `[:firefox]`
 
-* __`log_level`__: Minimum level of log messages to print.
+* __`log_level`__
+
+	Minimum level of log messages to print.
 	* Recognized values: [See documentation](http://ruby-doc.org/stdlib-2.1.0/libdoc/logger/rdoc/Logger.html)
 	* Default value: `Logger::WARN`
 
-* __`sanitize_node_content`__: Whether to trim leading/trailing whitespace and control characters from inner HTML/XML.
+* __`sanitize_node_content`__
+
+	Whether to trim leading/trailing whitespace and control characters from inner HTML/XML.
 	* Recognized values: Booleans
 	* Default value: `true`
 	* __NOTE__: Only applies if you’re using the data extraction DSL.
 
-* __`ignore_fragment_identifiers`__: Whether to treat URIs with only differing fragment identifiers as equal.
+* __`ignore_fragment_identifiers`__
+
+	Whether to treat URIs with only differing fragment identifiers as equal.
 	* Recognized values: Booleans
 	* Default value: `true`
 
-* __`max_http_redirects`__: Number of HTTP redirects to follow per initial request.
+* __`max_http_redirects`__
+
+	Number of HTTP redirects to follow per initial request.
 	* Recognized values: Integers
 	* Default value: `3`
 	* __NOTE__: Has no effect if you’re using Selenium.
 
+* __`nokogiri_parsing_options`__
+
+	A Proc that gets bound when calling `Nokogiri::HTML`/`Nokogiri::XML`
+	* Recognized values: Procs, [see documentation](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/XML/ParseOptions)
+	* Default value: `-> (config) {}`
+
+* __`oj_parsing_options`__
+
+	A `Hash` that gets passed to `Oj::load`
+	* Recognized values: Hashes, [see documentation](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/XML/ParseOptions)
+	* Default value: `{}`
+	* __NOTE__: Has no effect if you’re using `::JSON`.
+
 ### Using [oj](https://github.com/ohler55/oj) instead of `::JSON`
-If oj is 
+Require oj and it will be picked up automatically.
 
 ```ruby
 require "oj"
@@ -77,4 +107,5 @@ require "oj"
 Oj.default_options = { mode: :compat }
 ```
 
-### Setting [Nokogiri](https://github.com/ohler55/oj)’s parsing options
+## Caveats and shortcomings
+* PhantomJS is highly recommended when using Selenium. In contrast to most other WebDrivers, it implements `#response_code` and `#response_headers`.
