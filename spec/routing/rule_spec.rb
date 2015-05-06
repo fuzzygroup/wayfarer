@@ -98,21 +98,54 @@ describe Schablone::Routing::Rule do
     end
   end
 
-  describe "#matching_rule_chain_params" do
+  describe "#params_from_rule_chain" do
+    let(:uri) { URI("http://example.com/foo/bar") }
+
+    context "with matching Rule" do
+      subject(:rule_chain) do
+        rule = Rule.new
+        rule.host("example.com").path("/{alpha}/{beta}")
+        rule.host("example.com").path("/{foo}/{bar}")
+        rule.matching_rule_chain(uri)
+      end
+
+      it "returns the expected URI parameters" do
+        expect(rule.params_from_rule_chain(rule_chain, uri)).to eq({
+          "alpha" => "foo", "beta" => "bar"
+        })
+      end
+    end
+  end
+
+  describe "#=~" do
     let(:uri) { URI("http://example.com/foo/bar") }
 
     context "with matching Rule" do
       subject(:rule) do
         rule = Rule.new
         rule.host("example.com").path("/{alpha}/{beta}")
-        rule.host("example.com").path("/{foo}/{bar}")
         rule
       end
 
-      it "returns the expected URI parameters" do
-        expect(rule.matching_rule_chain_params(uri)).to eq({
-          "alpha" => "foo", "beta" => "bar"
-        })
+      it "returns a truthy value" do
+        expect(rule =~ uri).to be_truthy
+      end
+
+      it "returns the URI parameters" do
+        _, params = rule =~ uri
+        expect(params).to eq({ "alpha" => "foo", "beta" => "bar" })
+      end
+    end
+
+    context "with mismatching Rule" do
+      subject(:rule) do
+        rule = Rule.new
+        rule.host("google.com").path("/{alpha}/{beta}")
+        rule
+      end
+
+      it "returns false" do
+        expect(rule =~ uri).to be false
       end
     end
   end

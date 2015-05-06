@@ -75,7 +75,7 @@ module Schablone
       # @option opts [Hash] :query Query constraints passed to {QueryRule#initialize}
       # @option opts [Hash] :queries Query constraints passed to {QueryRule#initialize}
       #
-      # @return [Navigator] the initialized {Navigator}
+      # @return [Rule] the initialized {Rule}
       def initialize(opts = {}, &proc)
         @child_rules = []
         append_child_rule_from_options(opts) unless opts.empty?
@@ -84,6 +84,16 @@ module Schablone
 
       def each(&proc)
         child_rules.each(&proc)
+      end
+
+      def =~(uri)
+        rule_chain = matching_rule_chain(uri)
+
+        if rule_chain.any?
+          [true, params_from_rule_chain(rule_chain, uri)]
+        else
+          false
+        end
       end
 
       def matches?(uri)
@@ -101,10 +111,8 @@ module Schablone
         end
       end
 
-      def matching_rule_chain_params(uri)
-        matching_rule_chain(uri).inject({}) do |hash, rule|
-          hash.merge(rule.params(uri))
-        end
+      def params_from_rule_chain(rule_chain, uri)
+        rule_chain.inject({}) { |hash, rule| hash.merge(rule.params(uri)) }
       end
 
       def leaf?
