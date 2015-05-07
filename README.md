@@ -9,7 +9,7 @@ A versatile yet small web crawling/scraping framework
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Simplifies data extraction with an optional DSL based on CSS/XPath
 * Extracts meta-data with [Pismo](https://github.com/peterc/pismo) when needed
-* Adheres to `robots.txt` if you want it to
+* Obeys `robots.txt` if you want it to
 * Ships with [RSpec](http://rspec.info/) matchers for testing crawling behaviour
 * Is agnostic about data storage
 
@@ -103,12 +103,11 @@ end
 	* Default value: `3`
 	* Note: Has no effect when using Selenium.
 
-* __`adhere_to_robots_txt`__
+* __`obey_robots_txt`__
 
-	Whether to adhere to `robots.txt`s.
+	Whether to obey `robots.txt`.
 	* Recognized values: Booleans
-	* Default value: `true`
-	* Note: Has no effect when using Selenium.
+	* Default value: `false`
 
 * __`nokogiri_parsing_options`__
 
@@ -124,10 +123,10 @@ end
 
 * __`mustermann_pattern_type`__
 
-	Which pattern type to use when matching URIs.
+	Which pattern type to use when matching URI paths.
 	* Recognized values: Symbols, [see documentation](https://github.com/rkh/mustermann#pattern-types)
 	* Default value: `:template`
-	* Note: You might have to install the corresponding pattern type gems.
+	* Note: You might have to install the corresponding Mustermann gems.
 
 ### Using oj instead of `::JSON`
 oj provides better performance than the standard library’s `JSON` module. Due to it being a C extension, it is not listed as a dependency. In order to use oj, [install](https://github.com/ohler55/oj#installation) and `require "oj"`. It gets picked up automatically.
@@ -139,4 +138,4 @@ crawler = Schablone::Crawler.new # JSON now gets parsed with oj
 ```
 
 ## Caveats and shortcomings
-* PhantomJS is highly recommended when using Selenium. In contrast to most other WebDrivers, it implements `#response_code` and `#response_headers`.
+* PhantomJS is highly recommended when using Selenium. In contrast to other WebDrivers, it implements `#response_code` and `#response_headers`.

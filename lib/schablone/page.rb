@@ -21,6 +21,8 @@ module Schablone
         Parsers::JSONParser.parse(@body).extend(
           Hashie::Extensions::MethodReader
         )
+      when "text/xml" || "application/xml"
+        nil
       else
         Parsers::XMLParser.parse(@body)
       end
@@ -63,9 +65,9 @@ module Schablone
     def instantiate_pismo_document
       doc = Pismo::Document.allocate
       doc.instance_variable_set(:@options, {})
-      doc.instance_variable_set(:@url, self.uri)
-      doc.instance_variable_set(:@html, self.body)
-      doc.instance_variable_set(:@doc, self.parsed_document)
+      doc.instance_variable_set(:@url, uri)
+      doc.instance_variable_set(:@html, body)
+      doc.instance_variable_set(:@doc, parsed_document)
       doc
     end
 
