@@ -16,8 +16,9 @@ module Schablone
 
     def parsed_document
       content_type = @headers["content-type"].first
+      sub_type = MIME::Types[content_type].first.sub_type
 
-      @parsed_document ||= case MIME::Types[content_type].first.sub_type
+      @parsed_document ||= case sub_type
       when "json"
         Parsers::JSONParser.parse(@body).extend(
           Hashie::Extensions::MethodReader
