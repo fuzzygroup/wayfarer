@@ -27,6 +27,8 @@ Gem::Specification.new do |s|
   s.add_dependency "ansi",                       "~> 1.5"
   s.add_dependency "net-http-persistent",        "~> 2.9"
   s.add_dependency "pismo",                      "~> 0.7"
+  s.add_dependency "mime-types"
+  
 
   s.add_development_dependency "rake",           "~> 10.4"
   s.add_development_dependency "rspec",          "~> 3.1"
