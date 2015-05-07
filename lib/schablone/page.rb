@@ -1,6 +1,7 @@
 require "uri"
 require "nokogiri"
 require "pismo"
+require "mime/types"
 
 module Schablone
   class Page
@@ -16,12 +17,12 @@ module Schablone
     def parsed_document
       content_type = @headers["content-type"].first
 
-      @parsed_document ||= case content_type
-      when /json/
+      @parsed_document ||= case MIME::Types[content_type].first.sub_type
+      when "json"
         Parsers::JSONParser.parse(@body).extend(
           Hashie::Extensions::MethodReader
         )
-      when "text/xml" || "application/xml"
+      when "xml"
         Parsers::XMLParser.parse_xml(@body)
       else
         Parsers::XMLParser.parse_html(@body)
