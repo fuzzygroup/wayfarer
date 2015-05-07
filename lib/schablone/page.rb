@@ -22,9 +22,9 @@ module Schablone
           Hashie::Extensions::MethodReader
         )
       when "text/xml" || "application/xml"
-        nil
+        Parsers::XMLParser.parse_xml(@body)
       else
-        Parsers::XMLParser.parse(@body)
+        Parsers::XMLParser.parse_html(@body)
       end
     end
 
