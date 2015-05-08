@@ -37,5 +37,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sinatra",        "~> 1.4"
   s.add_development_dependency "rubocop",        "~> 0.29"
   s.add_development_dependency "faker",          "~> 1.4"
+  s.add_development_dependency "factory_girl"
 
 end

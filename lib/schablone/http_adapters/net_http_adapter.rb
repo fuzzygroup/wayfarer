@@ -36,7 +36,12 @@ module Schablone
         body        = res.body
         headers     = res.to_hash
 
-        Page.new(uri, status_code, body, headers)
+        Page.new(
+          uri: uri,
+          status_code: status_code,
+          body: body,
+          headers: headers
+        )
       end
 
       def free

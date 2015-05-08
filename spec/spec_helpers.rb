@@ -1,4 +1,5 @@
 require "schablone"
+require "factory_girl"
 
 include Schablone
 include Schablone::HTTPAdapters
@@ -29,4 +30,5 @@ end
 
 RSpec.configure do |config|
   config.include(SpecHelpers)
+  config.include(FactoryGirl::Syntax::Methods)
 end

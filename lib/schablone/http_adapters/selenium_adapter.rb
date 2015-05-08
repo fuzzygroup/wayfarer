@@ -19,7 +19,12 @@ module Schablone
         body        = @driver.page_source
         headers     = @driver.response_headers
 
-        Page.new(uri, status_code, body, headers)
+        Page.new(
+          uri: uri,
+          status_code: status_code,
+          body: body,
+          headers: headers
+        )
       end
 
       def free
