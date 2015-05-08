@@ -35,16 +35,11 @@ describe Schablone::HTTPAdapters::AdapterPool do
   end
 
   describe "::free_instances" do
-    let(:adapter_a) { spy() }
-    let(:adapter_b) { spy() }
+    let(:adapter_a) { spy }
+    let(:adapter_b) { spy }
 
     before do
       pool.instance_variable_set(:@instances, [adapter_a, adapter_b])
-    end
-
-    after do
-      pool.free_instances
-      pool.instance_variable_set(:@instances, [])
     end
 
     it "calls #free on all instances" do
