@@ -10,7 +10,7 @@ module Schablone
       end
 
       def route(uri)
-        matched_route = @routes.each do |(rule, sym)|
+        matched_route = @routes.each do |rule, sym|
           is_matching, params = rule =~ uri
           return @scrapers[sym], params if is_matching && params
         end
