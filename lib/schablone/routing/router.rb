@@ -2,39 +2,31 @@ module Schablone
   module Routing
     class Router
       attr_reader :routes
-      attr_reader :handlers
-      attr_reader :blacklist
+      attr_reader :scrapers
 
       def initialize
-        @handlers  = {}
-        @routes    = {}
-        @blacklist = Rule.new
+        @routes   = []
+        @scrapers = {}
       end
 
-      def forbid(&proc)
-        block_given? ? @blacklist.instance_eval(&proc) : @blacklist
-      end
-
-      def forbidden_by_robots?(uri)
-        
-      end
-
-      def forbids?(uri)
-        @blacklist === uri
-      end
-
-      def register_handler(sym, &proc)
-        @handlers[sym] = proc
-      end
-
-      def map(sym, &proc)
-        @routes[sym] = Rule.new(&proc)
-      end
-
-      def invoke(uri)
-        if detected_route = @routes.detect { |_, rule| rule === uri }
-          return sym = detected_route.first, @handlers[sym]
+      def route(uri)
+        matched_route = @routes.each do |(rule, sym)|
+          if ([matched, params] =~ sym).all? { |i| !!i }
+            return @scrapers[sym], params
+          end
         end
+
+        false
+      end
+
+      # Associate a scraper Proc with a Symbol
+      def register_scraper(sym, obj = nil, &proc)
+        @scrapers[sym] = obj || proc
+      end
+
+      # sadfsadf
+      def draw(sym, *argv, &proc)
+        @routes << [Rule.new(argv, &proc), sym]
       end
     end
   end

@@ -9,7 +9,7 @@ Crawler = Schablone::Crawler.new do
     puts page.links
   end
 
-  router.map(:index) { host "example.com" }
+  router.draw(:index) { host "example.com" }
 end
 
 Crawler.crawl("http://example.com")

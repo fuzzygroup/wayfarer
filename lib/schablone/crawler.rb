@@ -7,7 +7,6 @@ module Schablone
     def initialize(&proc)
       @router = Routing::Router.new
       @emitter = Emitter.new
-      @scrapers = {}
 
       instance_eval(&proc) if block_given?
     end
@@ -16,7 +15,7 @@ module Schablone
     end
 
     def scrape(sym, obj = nil, &proc)
-      scrapers[sym] ||= obj || proc
+      @router.register_scraper(sym, obj, &proc)
     end
 
     def crawl(uri)
