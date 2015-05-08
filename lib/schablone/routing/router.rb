@@ -15,6 +15,10 @@ module Schablone
         block_given? ? @blacklist.instance_eval(&proc) : @blacklist
       end
 
+      def forbidden_by_robots?(uri)
+        
+      end
+
       def forbids?(uri)
         @blacklist === uri
       end

@@ -64,6 +64,12 @@ end
 	* Recognized values: Integers
 	* Default value: `4`
 
+* __`user_agent`__
+
+	Number of threads to spawn.
+	* Recognized values: Strings
+	* Default value: `"Schablone"`
+
 * __`http_adapter`__
 
 	Which HTTP adapter to use.

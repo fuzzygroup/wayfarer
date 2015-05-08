@@ -12,6 +12,7 @@ module Schablone
         case adapter || Schablone.config.http_adapter
         when :net_http
           instances << NetHTTPAdapter.new if instances.empty?
+          # TODO breaks now
           instances.first
         when :selenium
           (instances << SeleniumAdapter.new).last
