@@ -1,6 +1,6 @@
 module Schablone
   module HTTPAdapters
-    module Factory
+    module AdapterPool
 
       module_function
 

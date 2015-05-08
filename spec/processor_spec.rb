@@ -69,7 +69,7 @@ describe Schablone::Processor do
 
       it "frees its workers' HTTP adapters" do
         catch(:halt) { processor.send(:halt) }
-        expect(Factory.instances).to be_empty
+        expect(AdapterPool.instances).to be_empty
       end
     end
 

@@ -66,7 +66,7 @@ module Schablone
     def halt
       return false unless @state == :running
 
-      HTTPAdapters::Factory.free_instances
+      HTTPAdapters::AdapterPool.free_instances
       @workers.each(&:kill)
       @state = :halted
 

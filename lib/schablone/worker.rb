@@ -28,7 +28,7 @@ module Schablone
       handler, proc = @router.invoke(uri)
       return unless handler && proc
 
-      adapter = HTTPAdapters::Factory.instance
+      adapter = HTTPAdapters::AdapterPool.instance
       page = adapter.fetch(uri)
 
       Context.new(

@@ -1,20 +1,20 @@
 require "spec_helpers"
 
-describe Schablone::HTTPAdapters::Factory do
-  subject(:factory) { Factory }
+describe Schablone::HTTPAdapters::AdapterPool do
+  subject(:pool) { AdapterPool }
 
   describe "::instance" do
-    after { factory.free_instances }
+    after { pool.free_instances }
 
     context "when config.http_adapter is :net_http" do
       it "returns a NetHTTPAdapter" do
-        expect(factory.instance).to be_a NetHTTPAdapter
+        expect(pool.instance).to be_a NetHTTPAdapter
       end
 
       it "returns a singleton" do
-        factory.instance
-        factory.instance
-        expect(factory.instances.count).to be 1
+        pool.instance
+        pool.instance
+        expect(pool.instances.count).to be 1
       end
     end
 
@@ -23,13 +23,13 @@ describe Schablone::HTTPAdapters::Factory do
       after  { Schablone.config.reset! }
 
       it "returns a SeleniumAdapter" do
-        expect(factory.instance).to be_a SeleniumAdapter
+        expect(pool.instance).to be_a SeleniumAdapter
       end
 
       it "returns multiple instances" do
-        factory.instance
-        factory.instance
-        expect(factory.instances.count).to be 2
+        pool.instance
+        pool.instance
+        expect(pool.instances.count).to be 2
       end
     end
   end
@@ -39,24 +39,24 @@ describe Schablone::HTTPAdapters::Factory do
     let(:adapter_b) { spy() }
 
     before do
-      factory.instance_variable_set(:@instances, [adapter_a, adapter_b])
+      pool.instance_variable_set(:@instances, [adapter_a, adapter_b])
     end
 
     after do
-      factory.free_instances
-      factory.instance_variable_set(:@instances, [])
+      pool.free_instances
+      pool.instance_variable_set(:@instances, [])
     end
 
     it "calls #free on all instances" do
-      factory.free_instances
+      pool.free_instances
       [adapter_a, adapter_b].each do |adapter|
         expect(adapter).to have_received(:free)
       end
     end
 
     it "empties its instance list" do
-      factory.free_instances
-      expect(factory.instances).to be_empty
+      pool.free_instances
+      expect(pool.instances).to be_empty
     end
   end
 end
