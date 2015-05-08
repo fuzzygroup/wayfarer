@@ -45,5 +45,15 @@ describe Schablone::Routing::Router do
         expect(params).to be nil
       end
     end
+
+    context "without registered scraper" do
+      it "returns false" do
+        router.draw(:foo) { host "example.com", path: "/{barqux}" }
+        uri = URI("http://example.com/42")
+        scraper, params = router.route(uri)
+        expect(scraper).to be false
+        expect(params).to be nil
+      end
+    end
   end
 end
