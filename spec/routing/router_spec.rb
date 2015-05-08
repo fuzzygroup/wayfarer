@@ -22,4 +22,15 @@ describe Schablone::Routing::Router do
       expect(this).to be_a Rule
     end
   end
+
+  describe "#route" do
+    it "returns the expected things" do
+      router.register_scraper(:foo, foo = Object.new)
+      router.draw(:foo) { host "example.com" }
+      uri = URI("http://example.com")
+      scraper, params = router.route(uri)
+      expect(scraper).to be foo
+      expect(params).to eq({})
+    end
+  end
 end

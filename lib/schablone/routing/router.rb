@@ -11,9 +11,8 @@ module Schablone
 
       def route(uri)
         matched_route = @routes.each do |(rule, sym)|
-          if ([matched, params] =~ sym).all? { |i| !!i }
-            return @scrapers[sym], params
-          end
+          is_matching, params = rule =~ uri
+          return @scrapers[sym], params if is_matching && params
         end
 
         false
