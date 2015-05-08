@@ -2,45 +2,37 @@ module Schablone
   class Crawler
     attr_reader :router
     attr_reader :emitter
+    attr_reader :scrapers
 
     def initialize(&proc)
-      @scraper = Extraction::Scraper.new
-      @router  = Routing::Router.new
+      @router = Routing::Router.new
       @emitter = Emitter.new
+      @scrapers = {}
 
       instance_eval(&proc) if block_given?
     end
 
-    def crawl(uri)
-      Processor.new(uri, @router, @emitter).run
+    def helpers
     end
 
-    def configure(*argv, &proc)
+    def scrape(sym, obj = nil, &proc)
+      scrapers[sym] ||= obj || proc
+    end
+
+    def crawl(uri)
+      Processor.new(URI(uri), @router, @emitter).run
+    end
+
+    def config(*argv, &proc)
       Schablone.configure(*argv, &proc)
     end
 
-    alias_method :config, :configure
-
-    def register_handler(*argv, &proc)
-      @router.register_handler(*argv, &proc)
-    end
-
-    alias_method :handle, :register_handler
-
-    def register_listener(*argv, &proc)
-      @emitter.register_listener(*argv, &proc)
-    end
-
-    alias_method :listen, :register_listener
-
-    def setup_router(&proc)
+    def router(&proc)
       if block_given?
-        proc.arity == 1 ? (yield @router) : @router.instance_eval(&proc)
+        proc.arity >= 1 ? (yield @router) : @router.instance_eval(&proc)
       else
         @router
       end
     end
-
-    alias_method :router, :setup_router
   end
 end

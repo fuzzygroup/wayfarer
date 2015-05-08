@@ -1,31 +1,15 @@
 require_relative "../lib/schablone"
 
-crawler = Schablone::Crawler.new do
-  handle :index, with: :net_http do
-    puts extract { css :title, "title" }
-    visit page.uri { query += 1 }
+Crawler = Schablone::Crawler.new do
+  helpers do
+    
   end
 
-  scrape :images { save to: "~/Users/dom" }
-
-  handle :issues do
-    extract do
-      css :elements, ".element" do
-        css :title, ".title"
-      end
-    end
+  scrape :index do
+    puts page.links
   end
 
-  router.map(:foobar) do
-    host "google.com", paths: "/foo", "/bar", "**/*.png"
-  end
-
-  router.allow.host "example.com"
-
-  router.map :images, paths: "**/*.png", "**/*.jpg", "**/*.gif"
-
-  router.map :index, host: "github.com", path: "/intridea/hashie"
-  router.map :issues host: "github.com", path: "/intridea/hashie/issues"
+  router.map(:index) { host "example.com" }
 end
 
-crawler.crawl(URI("https://github.com/intridea/hashie"))
+Crawler.crawl("http://example.com")
