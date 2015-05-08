@@ -24,13 +24,26 @@ describe Schablone::Routing::Router do
   end
 
   describe "#route" do
-    it "returns the expected things" do
-      router.register_scraper(:foo, foo = Object.new)
-      router.draw(:foo) { host "example.com" }
-      uri = URI("http://example.com")
-      scraper, params = router.route(uri)
-      expect(scraper).to be foo
-      expect(params).to eq({})
+    context "with matching route" do
+      it "returns the registered scraper and parameters" do
+        router.register_scraper(:foo, foo = Object.new)
+        router.draw(:foo) { host "example.com", path: "/{barqux}" }
+        uri = URI("http://example.com/42")
+        scraper, params = router.route(uri)
+        expect(scraper).to be foo
+        expect(params).to eq({ "barqux" => "42" })
+      end
+    end
+
+    context "without matching route" do
+      it "returns false" do
+        router.register_scraper(:foo, foo = Object.new)
+        router.draw(:foo) { host "example.com", path: "/{barqux}" }
+        uri = URI("http://google.com")
+        scraper, params = router.route(uri)
+        expect(scraper).to be false
+        expect(params).to be nil
+      end
     end
   end
 end
