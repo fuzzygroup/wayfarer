@@ -10,6 +10,11 @@ module Schablone
       @params    = params
     end
 
+    def self.helpers(*modules, &proc)
+      include(*modules) if modules.any?
+      class_eval(&proc) if block_given?
+    end
+
     def evaluate(&proc)
       instance_eval(&proc)
     end

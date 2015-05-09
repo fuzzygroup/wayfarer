@@ -9,7 +9,8 @@ module Schablone
       instance_eval(&proc) if block_given?
     end
 
-    def helpers
+    def helpers(*modules, &proc)
+      Context.helpers(*modules, &proc)
     end
 
     def scrape(sym, obj = nil, &proc)
