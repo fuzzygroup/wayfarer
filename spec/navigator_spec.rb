@@ -12,11 +12,6 @@ describe Schablone::Navigator do
         navigator.stage(uri)
       }.to change { navigator.staged_uris.count }.by(1)
     end
-
-    it "removes fragment identifier from URIs" do
-      navigator.stage(uri)
-      expect(navigator.staged_uris.last.to_s).to eq "http://example.com/foo"
-    end
   end
 
   describe "#cache" do
@@ -85,7 +80,6 @@ describe Schablone::Navigator do
 
   describe "#cycle" do
     let(:uri) { URI("http://example.com") }
-    before { router.map(:foo) { host("example.com") } }
 
     it "does not set the same URI as current twice" do
       navigator.stage(uri)
@@ -139,41 +133,10 @@ describe Schablone::Navigator do
     it "filters URIs included in @cached_uris" do
       navigator.cache(uri)
       navigator.stage(uri)
+
       expect {
         navigator.send(:filter_staged_uris)
       }.to change { navigator.staged_uris.count }.by(-1)
-    end
-
-    it "filters URIs forbidden by `@router`" do
-      router.forbid.host("example.com")
-      navigator.send(:stage, uri)
-      expect {
-        navigator.send(:filter_staged_uris)
-      }.to change { navigator.staged_uris.count }.by(-1)
-    end
-  end
-
-  describe "#remove_fragment_identifier" do
-    it "removes fragment identifiers from URIs" do
-      uris = %w(
-        http://example.com
-        http://example.com#foo
-        http://example.com#/foo
-        http://example.com/foo#bar
-        http://example.com/foo?bar=qux#quux
-      ).map { |str| URI(str) }
-
-      cleaned = uris.map do |uri|
-        navigator.send(:remove_fragment_identifier, uri)
-      end
-
-      expect(cleaned).to eq %w(
-        http://example.com
-        http://example.com
-        http://example.com
-        http://example.com/foo
-        http://example.com/foo?bar=qux
-      ).map { |str| URI(str) }
     end
   end
 end

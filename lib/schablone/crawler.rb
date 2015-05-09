@@ -6,8 +6,6 @@ module Schablone
 
     def initialize(&proc)
       @router = Routing::Router.new
-      @emitter = Emitter.new
-
       instance_eval(&proc) if block_given?
     end
 
@@ -19,7 +17,7 @@ module Schablone
     end
 
     def crawl(uri)
-      Processor.new(URI(uri), @router, @emitter).run
+      Processor.new(URI(uri), @router).run
     end
 
     def config(*argv, &proc)

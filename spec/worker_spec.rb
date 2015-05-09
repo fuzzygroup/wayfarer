@@ -2,67 +2,45 @@ require "spec_helpers"
 
 describe Schablone::Worker do
   let(:processor)     { Object.new }
-  let(:uri_queue)     { queue([URI("http://example.com")]) }
-  let(:handler)       { Proc.new { emit(:success) } }
+  let(:uri_queue)     { Queue.new }
   let(:router)        { Router.new }
   let(:navigator)     { Navigator.new(router) }
-  let(:emitter)       { Emitter.new }
 
   subject(:worker) do
-    Worker.new(processor, uri_queue, navigator, router, emitter)
-  end
-
-  before do
-    router.register_handler(:foo, &handler)
-    router.map(:foo) { host("0.0.0.0") }
+    Worker.new(processor, navigator, uri_queue, router)
   end
 
   describe "#process" do
-    let(:uri) { URI("http://0.0.0.0:9876/graph/index.html") }
-    before { worker.send(:process, uri) }
+    this = nil
 
-    it "emits as expected" do
-      emitter = spy()
-      worker.instance_variable_set(:@emitter, emitter)
-
-      worker.send(:process, uri)
-
-      expect(emitter).to have_received(:emit).with(:foo, :success)
+    it "calls the Proc in a Context's instance" do
+      router.register_scraper(:foo) { this = self }
+      router.draw(:foo) { host("example.com") }
+      worker.send(:process, URI("http://example.com"))
+      expect(this).to be_a Context
     end
 
-    context "with handler that does not stage URIs" do
-      let(:handler) { Proc.new {} }
-
-      it "does not stage URIs" do
-        expect(worker.navigator.staged_uris).to be_empty
-      end
+    it "allows accessing the current Page" do
+      router.register_scraper(:foo) { this = page }
+      router.draw(:foo) { host("example.com") }
+      worker.send(:process, URI("http://example.com"))
+      expect(this).to be_a Page
     end
 
-    context "with handler that stages URIs" do
-      let(:handler) { Proc.new { visit page.links } }
-
-      it "stages URIs" do
-        expect(worker.navigator.staged_uris).to eq %w(
-          http://0.0.0.0:9876/graph/details/a.html
-          http://0.0.0.0:9876/graph/details/b.html
-          http://0.0.0.0:9876/status_code/400
-          http://0.0.0.0:9876/status_code/403
-          http://0.0.0.0:9876/status_code/404
-          http://bro.ken
-          http://0.0.0.0:9876/redirect_loop
-        ).map { |str| URI(str) }
-      end
+    it "allows accessing the params" do
+      router.register_scraper(:foo) { this = params }
+      router.draw(:foo) { path "/{foo}/{bar}" }
+      worker.send(:process, URI("http://example.com/alpha/beta"))
+      expect(this).to eq({
+        "foo" => "alpha", "bar" => "beta"
+      })
     end
 
-    it "caches processed URIs" do
-      expected_uris = %w(
-        http://0.0.0.0:9876/graph/index.html
-        http://example.com
-      ).map { |str| URI(str) }
-
-      expected_uris.each do |uri|
-        expect(worker.navigator.cached_uris).to include uri
-      end
+    it "allows staging links" do
+      router.register_scraper(:foo) { visit page.links }
+      router.draw(:foo) { host "example.com" }
+      worker.send(:process, URI("http://example.com"))
+      expect(navigator.staged_uris.count).to be 1
     end
   end
 end

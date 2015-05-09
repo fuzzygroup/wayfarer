@@ -6,11 +6,11 @@ describe Schablone::Context do
   let(:page)      { fetch_page("http://example.com") }
   let(:router)    { Router.new }
   let(:navigator) { Navigator.new(router) }
-  let(:emitter)   { Emitter.new }
   let(:adapter)   { Object.new }
+  let(:params)    { {} }
 
   subject(:context) do
-    Context.new(handler, processor, page, navigator, emitter, adapter)
+    Context.new(processor, navigator, adapter, page, params)
   end
 
   describe "#page" do
@@ -67,16 +67,6 @@ describe Schablone::Context do
     end
   end
 
-  describe "#emit" do
-    let(:emitter) { spy() }
-    before { context.instance_variable_set(:@emitter, emitter) }
-
-    it "emits as expected" do
-      context.send(:emit, 1, 2, 3)
-      expect(emitter).to have_received(:emit).with(:foo, 1, 2, 3)
-    end
-  end
-
   describe "#halt" do
     it "calls #halt on its `Processor`" do
       context.instance_variable_set(:@processor, processor = spy())
@@ -93,47 +83,11 @@ describe Schablone::Context do
     end
   end
 
-  describe "#extract" do
-    it "works" do
-      extract = context.send(:extract) do
-        css :title, "title"
-      end
+  describe "#adapter" do
+    let(:adapter) { spy() }
 
-      expect(extract).to eq({ title: "Example Domain" })
-    end
-  end
-
-  describe "#extract!" do
-    let(:emitter) { spy() }
-    before { context.instance_variable_set(:@emitter, emitter) }
-
-    it "emits as expected" do
-      context.send(:extract!) do
-        css :title, "title"
-      end
-
-      expect(emitter).to have_received(:emit).with(
-        :foo, { title: "Example Domain" }
-      )
-    end
-  end
-
-  describe "#driver" do
-    context "when config.http_adapter is :net_http" do
-      it "returns nil" do
-        expect(context.send(:driver)).to be nil
-      end
-    end
-
-    context "when config.http_adapter is :selenium" do
-      let(:adapter) { spy() }
-
-      before { Schablone.config.http_adapter = :selenium }
-      after { Schablone.config.reset! }
-
-      it "returns @adapter" do
-        expect(context.send(:driver)).to be adapter
-      end
+    it "returns @adapter" do
+      expect(context.send(:adapter)).to be adapter
     end
   end
 

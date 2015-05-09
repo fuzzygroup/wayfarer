@@ -5,14 +5,12 @@ module Schablone
     attr_reader :handler
     attr_reader :navigator
 
-    def initialize(handler, processor, page, navigator, emitter, adapter)
-      @handler   = handler
+    def initialize(processor, navigator, adapter, page,  params)
       @processor = processor
-      @page      = page
       @navigator = navigator
-      @emitter   = emitter
       @adapter   = adapter
-      @mutex     = Mutex.new
+      @page      = page
+      @params    = params
     end
 
     def invoke(&proc)
@@ -20,16 +18,16 @@ module Schablone
     end
 
     private
+    def params
+      @params
+    end
+
     def page
       @page
     end
 
-    def driver
-      @adapter if Schablone.config.http_adapter == :selenium
-    end
-
-    def emit(*args)
-      @mutex.synchronize { @emitter.emit(@handler, *args) }
+    def adapter
+      @adapter
     end
 
     def halt
@@ -43,14 +41,6 @@ module Schablone
     def visit(uris)
       uris = *uris unless uris.respond_to?(:each)
       uris.each { |uri| @navigator.stage(URI(uri)) }
-    end
-
-    def extract(&proc)
-      Extraction::Scraper.new(&proc).extract(@page.parsed_document)
-    end
-
-    def extract!(&proc)
-      emit(extract(&proc))
     end
 
   end

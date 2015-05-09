@@ -6,15 +6,13 @@ module Schablone
 
       def initialize
         @routes   = []
-        @scrapers = {}
+        @scrapers = Hash.new(false)
       end
 
       def route(uri)
-        matched_route = @routes.each do |rule, sym|
+        @routes.each do |rule, sym|
           is_matching, params = rule =~ uri
-          if is_matching && params && @scrapers[sym]
-            return @scrapers[sym], params
-          end
+          return @scrapers[sym], params if is_matching && params
         end
 
         false

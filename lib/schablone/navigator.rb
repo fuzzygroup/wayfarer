@@ -101,7 +101,7 @@ module Schablone
     #
     # @param [URI] URI to be staged
     def stage(uri)
-      @mutex.synchronize { @staged_uris << remove_fragment_identifier(uri) }
+      @mutex.synchronize { @staged_uris << uri }
     end
 
     # Caches a URI
@@ -163,13 +163,8 @@ module Schablone
     # @return [true, false]
     def filter_staged_uris
       @staged_uris.delete_if do |uri|
-        current?(uri) || cached?(uri) || forbidden?(uri)
+        current?(uri) || cached?(uri)
       end
-    end
-
-    def remove_fragment_identifier(uri)
-      return uri unless uri.fragment
-      URI(uri.to_s.sub(/#.*/, ""))
     end
   end
 end

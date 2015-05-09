@@ -37,9 +37,8 @@ module Schablone
     attr_reader :workers
     attr_reader :state
 
-    def initialize(entry_uri, router, emitter)
+    def initialize(entry_uri, router)
       @router    = router
-      @emitter   = emitter
       @navigator = Navigator.new(router)
       @workers   = []
       @state     = :idle
@@ -90,7 +89,7 @@ module Schablone
     # Spawns a number of {Worker}s determined by `Schablone.config.threads`
     def spawn_workers(queue)
       @workers = Schablone.config.threads.times.map do
-        Worker.new(self, queue, @navigator, @router, @emitter)
+        Worker.new(self, @navigator, queue, @router)
       end
     end
   end

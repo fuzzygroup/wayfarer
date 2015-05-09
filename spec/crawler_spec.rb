@@ -4,10 +4,10 @@ describe Schablone::Crawler do
   let(:crawler) { subject.class.new }
 
   describe "#scrape" do
-    it "registers a target" do
+    it "registers a scraper" do
       expect {
-        crawler.scrape(:foo, &Proc.new {})
-      }.to change { crawler.scrapers.count }.by(1)
+        crawler.scrape(:foo, Object.new)
+      }.to change { crawler.router.scrapers.count }.by(1)
     end
   end
 

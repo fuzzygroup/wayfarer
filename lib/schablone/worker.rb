@@ -1,14 +1,12 @@
 module Schablone
   class Worker < Thread
-
     attr_reader :navigator
 
-    def initialize(processor, uri_queue, navigator, router, emitter)
+    def initialize(processor, navigator, uri_queue, router)
       @processor = processor
-      @uri_queue = uri_queue
       @navigator = navigator
+      @uri_queue = uri_queue
       @router    = router
-      @emitter   = emitter
 
       super(self, &:work)
     end
@@ -25,28 +23,26 @@ module Schablone
     private
 
     def process(uri)
-      handler, proc = @router.invoke(uri)
-      return unless handler && proc
+      scraper, params = @router.route(uri)
+      return unless scraper && params
 
-      adapter = HTTPAdapters::AdapterPool.instance
       page = adapter.fetch(uri)
 
-      Context.new(
-        handler, @processor, page, @navigator, @emitter, adapter
-      ).invoke(&proc)
+      context = Context.new(@processor, @navigator, adapter, page, params)
+      context.invoke(&scraper)
 
     rescue Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
       Schablone.log.warn("Maximum number of HTTP redirects reached")
-
     rescue SocketError
       Schablone.log.warn("DNS lookup failed")
-
     rescue Errno::ETIMEDOUT
       Schablone.log.warn("HTTP connection timed out.")
-
     ensure
       @navigator.cache(uri)
     end
 
+    def adapter
+      @adapter ||= HTTPAdapters::AdapterPool.instance
+    end
   end
 end
