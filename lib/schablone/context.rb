@@ -2,9 +2,6 @@ require "thread"
 
 module Schablone
   class Context
-    attr_reader :handler
-    attr_reader :navigator
-
     def initialize(processor, navigator, adapter, page,  params)
       @processor = processor
       @navigator = navigator
@@ -32,10 +29,6 @@ module Schablone
 
     def halt
       @processor.halt
-    end
-
-    def history
-      @navigator.cached_uris
     end
 
     def visit(uris)

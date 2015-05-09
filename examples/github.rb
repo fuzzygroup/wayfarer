@@ -1,7 +1,14 @@
 require_relative "../lib/schablone"
 
-Crawler = Schablone::Crawler.new do
+class Crawler < Schablone::Crawler.new
+  before do
+  end
+
   helpers do
+    def conn
+      @conn ||= RethinkDB.new
+    end
+
     def nodes
     end
 
@@ -11,9 +18,20 @@ Crawler = Schablone::Crawler.new do
     def save
       browser.execute_javascript
     end
+
+    def data
+      reviews, 
+    end
+
+    def reviews
+      css persons: ".person" do
+        css name: ".name"
+      end
+      css :address, ".address"
+    end
   end
 
-  scrape :page do
+  def page
     save nodes
     save edges
     visit page.links
@@ -22,4 +40,4 @@ Crawler = Schablone::Crawler.new do
   router.draw :page, host: /zeit.de/
 end
 
-Crawler.crawl("http://zeit.de")
+crawler = Crawler.new.crawl("http://zeit.de")

@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Context do
-  let(:handler)   { :foo }
   let(:processor) { Object.new }
   let(:page)      { fetch_page("http://example.com") }
   let(:router)    { Router.new }
@@ -14,14 +13,8 @@ describe Schablone::Context do
   end
 
   describe "#page" do
-    it "returns `@page`" do
+    it "returns @page" do
       expect(context.send(:page)).to be page
-    end
-  end
-
-  describe "#history" do
-    it "returns `@navigator.cached_uris`" do
-      expect(context.send(:history)).to eq navigator.cached_uris
     end
   end
 

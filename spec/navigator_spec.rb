@@ -17,7 +17,7 @@ describe Schablone::Navigator do
   describe "#cache" do
     let(:uri) { URI("http://example.com") }
 
-    it "caches a URI" do
+    it "caches URIs" do
       expect {
         navigator.cache(uri)
       }.to change { navigator.cached_uris.count }.by(1)
