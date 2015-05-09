@@ -1,8 +1,6 @@
 module Schablone
   class Crawler
     attr_reader :router
-    attr_reader :emitter
-    attr_reader :scrapers
 
     def initialize(&proc)
       @router = Routing::Router.new
