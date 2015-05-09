@@ -31,9 +31,8 @@ module Schablone
       @processor.halt
     end
 
-    def visit(uris)
-      uris = *uris unless uris.respond_to?(:each)
-      uris.each { |uri| @navigator.stage(URI(uri)) }
+    def visit(*uris)
+      @navigator.stage(*uris)
     end
 
   end

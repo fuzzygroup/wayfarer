@@ -19,44 +19,10 @@ describe Schablone::Context do
   end
 
   describe "#visit" do
-    context "with `URI` given" do
-      let(:uri) { URI("http://example.com") }
-
-      it "stages the `URI`" do
-        expect {
-          context.send(:visit, uri)
-        }.to change { navigator.staged_uris.count }.by(1)
-      end
-    end
-
-    context "with `String` given" do
-      let(:uri_str) { "http://example.com" }
-
-      it "converts the `String` to a `URI` and stages it" do
-        expect {
-          context.send(:visit, uri_str)
-        }.to change { navigator.staged_uris.count }.by(1)
-      end
-    end
-
-    context "with multiple `URI`s given" do
-      let(:uris) { [URI("http://example.com"), URI("http://google.com")] }
-
-      it "stages the `URI`s" do
-        expect {
-          context.send(:visit, uris)
-        }.to change { navigator.staged_uris.count }.by(2)
-      end
-    end
-
-    context "with multiple `Strings`s given" do
-      let(:uri_strs) { %w(http://example.com http://google.com) }
-
-      it "stages the `URI`s" do
-        expect {
-          context.send(:visit, uri_strs)
-        }.to change { navigator.staged_uris.count }.by(2)
-      end
+    it "stages URIs" do
+      expect {
+        context.send(:visit, "http://google.com", "http://yahoo.com")
+      }.to change { navigator.staged_uris.count }.by(2)
     end
   end
 

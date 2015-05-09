@@ -94,21 +94,21 @@ module Schablone
     #
     # @return [Queue]
     def current_uri_queue
-      @current_uris.inject(Queue.new) { |queue, uri| queue << uri }
+      current_uris.inject(Queue.new) { |queue, uri| queue << uri }
     end
 
     # Stages a URI
     #
     # @param [URI] URI to stage
     def stage(*uris)
-      @mutex.synchronize { @staged_uris |= uris.map { |uri| URI(uri) } }
+      @mutex.synchronize { @staged_uris |= uris.flatten.map { |uri| URI(uri) } }
     end
 
     # Caches a URI
     #
     # @param [URI] URI to cache
     def cache(*uris)
-      @mutex.synchronize { @cached_uris |= uris.map { |uri| URI(uri) } }
+      @mutex.synchronize { @cached_uris |= uris.flatten.map { |uri| URI(uri) } }
     end
 
     # Sets staged URIs as current and clears the set of staged URIs
@@ -129,7 +129,7 @@ module Schablone
 
     private
 
-    # Whether a URI is included in the set of current URIs
+    # Whether a URI is currently being processed
     #
     # @param [URI] URI to check
     # @return [true, false]
@@ -137,7 +137,7 @@ module Schablone
       @current_uris.include?(uri)
     end
 
-    # Whether a URI is included in the set of cached URIs
+    # Whether a URI is cached
     #
     # @param [URI] URI to check
     # @return [true, false]
