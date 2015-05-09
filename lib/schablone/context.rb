@@ -34,6 +34,5 @@ module Schablone
     def visit(*uris)
       @navigator.stage(*uris)
     end
-
   end
 end

@@ -41,13 +41,4 @@ describe Schablone::Context do
       expect(this).to be context
     end
   end
-
-  describe "#adapter" do
-    let(:adapter) { spy() }
-
-    it "returns @adapter" do
-      expect(context.send(:adapter)).to be adapter
-    end
-  end
-
 end
