@@ -29,7 +29,7 @@ module Schablone
       page = adapter.fetch(uri)
 
       context = Context.new(@processor, @navigator, adapter, page, params)
-      context.invoke(&scraper)
+      context.evaluate(&scraper)
 
     rescue Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
       Schablone.log.warn("Maximum number of HTTP redirects reached")

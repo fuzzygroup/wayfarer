@@ -10,7 +10,7 @@ module Schablone
       @params    = params
     end
 
-    def invoke(&proc)
+    def evaluate(&proc)
       instance_eval(&proc)
     end
 

@@ -27,17 +27,17 @@ describe Schablone::Context do
   end
 
   describe "#halt" do
-    it "calls #halt on its `Processor`" do
+    it "calls #halt on its @processor" do
       context.instance_variable_set(:@processor, processor = spy())
       context.send(:halt)
       expect(processor).to have_received(:halt)
     end
   end
 
-  describe "#invoke" do
-    it "evaluates the `Proc` in its instance context" do
+  describe "#evaluate" do
+    it "evaluates the Proc in its instance context" do
       this = nil
-      context.invoke { this = self }
+      context.evaluate { this = self }
       expect(this).to be context
     end
   end
