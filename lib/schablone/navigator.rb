@@ -100,8 +100,8 @@ module Schablone
     # Stages a URI
     #
     # @param [URI] URI to be staged
-    def stage(uri)
-      @mutex.synchronize { @staged_uris << uri }
+    def stage(*uris)
+      @mutex.synchronize { @staged_uris |= uris.map { |uri| URI(uri) } }
     end
 
     # Caches a URI

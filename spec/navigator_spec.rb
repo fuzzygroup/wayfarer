@@ -9,8 +9,14 @@ describe Schablone::Navigator do
 
     it "stages a URI" do
       expect {
-        navigator.stage(uri)
+        navigator.stage("http://example.com")
       }.to change { navigator.staged_uris.count }.by(1)
+    end
+
+    it "stages multiple URIs" do
+      expect {
+        navigator.stage("http://example.com", "http://google.com")
+      }.to change { navigator.staged_uris.count }.by(2)
     end
   end
 
