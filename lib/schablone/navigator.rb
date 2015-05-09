@@ -90,7 +90,7 @@ module Schablone
       @mutex.synchronize { @cached_uris.to_a }
     end
 
-    # Returns a `Queue` containing all URIs present in {#current_uris}
+    # Returns a Queue containing all URIs present in {#current_uris}
     #
     # @return [Queue]
     def current_uri_queue
@@ -99,14 +99,14 @@ module Schablone
 
     # Stages a URI
     #
-    # @param [URI] URI to be staged
+    # @param [URI] URI to stage
     def stage(*uris)
       @mutex.synchronize { @staged_uris |= uris.map { |uri| URI(uri) } }
     end
 
     # Caches a URI
     #
-    # @param [URI] URI to be cached staged
+    # @param [URI] URI to cache
     def cache(*uris)
       @mutex.synchronize { @cached_uris |= uris.map { |uri| URI(uri) } }
     end
@@ -145,14 +145,6 @@ module Schablone
       @cached_uris.include?(uri)
     end
 
-    # Whether a URI is forbidden by {#router}
-    #
-    # @param [URI] URI to check
-    # @return [true, false]
-    def forbidden?(uri)
-      @router.forbids?(uri)
-    end
-
     # Removes all URIs from {#staged_uris} that are subject to at least one of
     # the following criteria:
     # 1. The URI is included in the set of current URIs
@@ -162,9 +154,7 @@ module Schablone
     # @param [URI] URI to check
     # @return [true, false]
     def filter_staged_uris
-      @staged_uris.delete_if do |uri|
-        current?(uri) || cached?(uri)
-      end
+      @staged_uris.delete_if { |uri| current?(uri) || cached?(uri) }
     end
   end
 end
