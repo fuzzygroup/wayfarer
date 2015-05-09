@@ -49,7 +49,7 @@ module Schablone
       @config ||= Configuration.new
 
       if block_given?
-        proc.arity == 1 ? (yield @config) : @config.instance_eval(&proc)
+        proc.arity >= 1 ? (yield @config) : @config.instance_eval(&proc)
       else
         @config
       end

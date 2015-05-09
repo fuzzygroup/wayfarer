@@ -32,11 +32,15 @@ module Schablone
       context.evaluate(&scraper)
 
     rescue Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
-      Schablone.log.warn("Maximum number of HTTP redirects reached")
+      Schablone.log.warn("Maximum number of HTTP redirects reached for #{uri}")
+    rescue Schablone::HTTPAdapters::NetHTTPAdapter::MalformedRedirectURI
+      Schablone.log.warn(
+        "Server responded with a malformed redirect URI for #{uri}"
+      )
     rescue SocketError
-      Schablone.log.warn("DNS lookup failed")
+      Schablone.log.warn("DNS lookup failed for #{uri}")
     rescue Errno::ETIMEDOUT
-      Schablone.log.warn("HTTP connection timed out.")
+      Schablone.log.warn("HTTP connection timed out for #{uri}")
     ensure
       @navigator.cache(uri)
     end

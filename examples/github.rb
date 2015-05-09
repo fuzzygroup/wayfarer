@@ -1,43 +1,30 @@
 require_relative "../lib/schablone"
+require "rethinkdb"
 
-class Crawler < Schablone::Crawler.new
-  before do
-  end
+Crawler = Schablone::Crawler.new do
+  DATABASE = "dominic"
+  TABLE    = :zeit
+
+  helpers RethinkDB::Shortcuts
 
   helpers do
     def conn
-      @conn ||= RethinkDB.new
+      @conn ||= r.connect(host: "localhost", port: 28015)
     end
 
-    def nodes
-    end
-
-    def edges
-    end
-
-    def save
-      browser.execute_javascript
-    end
-
-    def data
-      reviews, 
-    end
-
-    def reviews
-      css persons: ".person" do
-        css name: ".name"
-      end
-      css :address, ".address"
+    def venues
+      css :venues
     end
   end
 
-  def page
-    save nodes
-    save edges
-    visit page.links
+  #r.db(DATABASE).table(TABLE).insert(extract).run(conn)
+  #conn.close
+
+  scrape :page do
+    
   end
 
-  router.draw :page, host: /zeit.de/
+  router.draw(:page) { host "pizza.de" }
 end
 
-crawler = Crawler.new.crawl("http://zeit.de")
+Crawler.crawl("http://pizza.de/81479")

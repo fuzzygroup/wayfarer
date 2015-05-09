@@ -11,6 +11,9 @@ module Schablone
       Context.helpers(*modules, &proc)
     end
 
+    def let(key, val)
+    end
+
     def scrape(sym, obj = nil, &proc)
       @router.register_scraper(sym, obj, &proc)
     end

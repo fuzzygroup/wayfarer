@@ -3,20 +3,6 @@ require "spec_helpers"
 describe Schablone::Crawler do
   let(:crawler) { Crawler.new }
 
-  describe "::build" do
-    it "works" do
-      TestCrawler = Schablone::Crawler.new do
-        helpers do
-          def test; 123; end
-        end
-
-        scrape :foobar do; end
-
-        router.draw(:foobar) { host "example.com" }
-      end
-    end
-  end
-
   describe "#scrape" do
     it "registers a scraper" do
       expect {
