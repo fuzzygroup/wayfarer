@@ -15,12 +15,16 @@ describe Schablone::Navigator do
   end
 
   describe "#cache" do
-    let(:uri) { URI("http://example.com") }
-
-    it "caches URIs" do
+    it "caches a URI" do
       expect {
-        navigator.cache(uri)
+        navigator.cache("http://example.com")
       }.to change { navigator.cached_uris.count }.by(1)
+    end
+
+    it "caches multiple URIs" do
+      expect {
+        navigator.cache("http://example.com", "http://google.com")
+      }.to change { navigator.cached_uris.count }.by(2)
     end
   end
 
