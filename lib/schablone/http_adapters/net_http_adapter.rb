@@ -32,15 +32,11 @@ module Schablone
           return fetch(redirect_uri, redirects_followed + 1)
         end
 
-        status_code = res.code.to_i
-        body        = res.body
-        headers     = res.to_hash
-
         Page.new(
           uri: uri,
-          status_code: status_code,
-          body: body,
-          headers: headers
+          status_code: res.code.to_i,
+          body: res.body,
+          headers: res.to_hash
         )
       end
 

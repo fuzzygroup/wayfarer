@@ -13,27 +13,27 @@ describe Schablone::Processor do
       expect(processor.navigator.current_uris).to eq [entry_uri]
     end
 
-    it "sets @state to :idle" do
+    it "sets state to :idle" do
       expect(processor.state).to be :idle
     end
   end
 
   describe "#run" do
-    it "sets @state to :halted after execution" do
+    it "sets state to :halted" do
       processor.run
       expect(processor.state).to be :halted
     end
   end
 
   describe "#step" do
-    it "clears its @workers" do
+    it "clears its workers" do
       processor.send(:step)
       expect(processor.workers).to eq []
     end
   end
 
   describe "#halt" do
-    context "when @state is :running" do
+    context "when state is :running" do
       before { processor.instance_variable_set(:@state, :running) }
 
       it "throws :halt" do
@@ -42,18 +42,13 @@ describe Schablone::Processor do
         }.to throw_symbol :halt
       end
 
-      it "sets @state to :halted" do
-        catch(:halt) { processor.send(:halt) }
-        expect(processor.state).to be :halted
-      end
-
       it "returns true" do
         catch(:halt) { expect(processor.send(:halt)).to be true }
       end
     end
 
-    context "when @state is not :running" do
-      it "does not alter @state" do
+    context "when state is not :running" do
+      it "does not alter state" do
         expect {
           catch(:halt) { processor.send(:halt) }
         }.not_to change { processor.state }
