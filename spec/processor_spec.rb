@@ -50,11 +50,6 @@ describe Schablone::Processor do
       it "returns true" do
         catch(:halt) { expect(processor.send(:halt)).to be true }
       end
-
-      it "frees adapter instances" do
-        catch(:halt) { processor.send(:halt) }
-        expect(AdapterPool.instances).to be_empty
-      end
     end
 
     context "when @state is not :running" do
