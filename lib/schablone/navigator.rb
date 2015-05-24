@@ -62,8 +62,8 @@ module Schablone
       @router = router
 
       @current_uris = Set.new([])
-      @staged_uris = Set.new([])
-      @cached_uris = URISet.new
+      @staged_uris  = Set.new([])
+      @cached_uris  = URISet.new
 
       @mutex = Mutex.new
     end
@@ -145,11 +145,7 @@ module Schablone
       @cached_uris.include?(uri)
     end
 
-    # Removes all URIs from {#staged_uris} that are subject to at least one of
-    # the following criteria:
-    # 1. The URI is included in the set of current URIs
-    # 2. The URI is included in the set of cached URIs
-    # 3. The URI is forbidden by {#router}
+    # Filters staged URIs
     #
     # @param [URI] URI to check
     # @return [true, false]

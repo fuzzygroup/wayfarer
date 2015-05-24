@@ -9,6 +9,10 @@ describe Schablone::Routing::Rule do
       rule = Rule.new { this = self }
       expect(this).to be rule
     end
+
+    it "sets no path offset" do
+      expect(rule.path_offset).to eq ""
+    end
   end
 
   describe "#params" do
