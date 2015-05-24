@@ -31,12 +31,10 @@ require_relative "schablone/parsers/xml_parser"
 require_relative "schablone/parsers/json_parser"
 
 # Processing
-require_relative "schablone/emitter"
 require_relative "schablone/worker"
 require_relative "schablone/context"
 require_relative "schablone/page"
 require_relative "schablone/uri_set"
-require_relative "schablone/result"
 require_relative "schablone/navigator"
 require_relative "schablone/processor"
 require_relative "schablone/crawler"
