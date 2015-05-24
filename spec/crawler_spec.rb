@@ -6,7 +6,7 @@ describe Schablone::Crawler do
   describe "#scrape" do
     it "registers a scraper" do
       expect {
-        crawler.scrape(:foo, Object.new)
+        crawler.scrape(:foo, &Proc.new {})
       }.to change { crawler.router.scrapers.count }.by(1)
     end
   end

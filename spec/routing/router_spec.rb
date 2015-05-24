@@ -6,7 +6,7 @@ describe Schablone::Routing::Router do
   describe "#register_scraper" do
     it "registers a scraper" do
       expect {
-        router.register_scraper(:foo, Object.new)
+        router.register_scraper(:foo, &Proc.new {})
       }.to change { router.scrapers.count }.by(1)
     end
   end
@@ -26,7 +26,7 @@ describe Schablone::Routing::Router do
   describe "#route" do
     context "with matching route" do
       it "returns the registered scraper and parameters" do
-        router.register_scraper(:foo, foo = Object.new)
+        router.register_scraper(:foo, &(foo = Proc.new {}))
         router.draw(:foo) { host "example.com", path: "/{barqux}" }
         uri = URI("http://example.com/42")
         scraper, params = router.route(uri)
@@ -37,7 +37,7 @@ describe Schablone::Routing::Router do
 
     context "without matching route" do
       it "returns false" do
-        router.register_scraper(:foo, foo = Object.new)
+        router.register_scraper(:foo, &(foo = Proc.new {}))
         router.draw(:foo) { host "example.com", path: "/{barqux}" }
         uri = URI("http://google.com")
         scraper, params = router.route(uri)

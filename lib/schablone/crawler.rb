@@ -14,8 +14,8 @@ module Schablone
     def let(key, val)
     end
 
-    def scrape(sym, obj = nil, &proc)
-      @router.register_scraper(sym, obj, &proc)
+    def scrape(sym, &proc)
+      @router.register_scraper(sym, &proc)
     end
 
     def crawl(uri)

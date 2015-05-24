@@ -1,7 +1,7 @@
 require_relative "../lib/schablone"
 require "rethinkdb"
 
-Crawler = Schablone::Crawler.new do
+Crawler = Schablone::Crawler.new do |result|
   DATABASE = "dominic"
   TABLE    = :zeit
 
@@ -17,8 +17,8 @@ Crawler = Schablone::Crawler.new do
     end
   end
 
-  #r.db(DATABASE).table(TABLE).insert(extract).run(conn)
-  #conn.close
+  scrape path: "/foo/bar" do
+  end
 
   scrape :page do
     

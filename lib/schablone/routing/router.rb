@@ -18,12 +18,10 @@ module Schablone
         false
       end
 
-      # Associate a scraper Proc with a Symbol
-      def register_scraper(sym, obj = nil, &proc)
-        @scrapers[sym] = obj || proc
+      def register_scraper(sym, &proc)
+        @scrapers[sym] = proc
       end
 
-      # sadfsadf
       def draw(sym, *argv, &proc)
         @routes << [Rule.new(argv, &proc), sym]
       end
