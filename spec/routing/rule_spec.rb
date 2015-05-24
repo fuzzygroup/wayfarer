@@ -13,6 +13,12 @@ describe Schablone::Routing::Rule do
     it "sets no path offset" do
       expect(rule.path_offset).to eq ""
     end
+
+    it "works" do
+      Rule.new do |rule|
+        rule.host("example.com").path("/foo/bar").query(a: "lel")
+      end
+    end
   end
 
   describe "#params" do
@@ -33,26 +39,6 @@ describe Schablone::Routing::Rule do
 
       it "returns an empty Hash" do
         expect(rule.params(uri)).to eq({})
-      end
-    end
-  end
-
-  describe "#leaf?" do
-    let(:uri) { URI("http://example.com") }
-
-    context "when Rule has child Rules" do
-      subject(:rule) { Rule.new { host "example.com" } }
-
-      it "returns false" do
-        expect(rule.leaf?).to be false
-      end
-    end
-
-    context "when Rule does not have child Rules" do
-      subject(:rule) { Rule.new }
-
-      it "returns true" do
-        expect(rule.leaf?).to be true
       end
     end
   end
@@ -154,9 +140,9 @@ describe Schablone::Routing::Rule do
     end
   end
 
-  describe "#append_uri_sub_rule, #uri" do
+  describe "#uri" do
     it "adds a URIRule as a sub-rule" do
-      rule.append_uri_sub_rule("http://example.com/foo/bar")
+      rule.uri("http://example.com/foo/bar")
       expect(rule.child_rules.first).to be_a URIRule
     end
 
@@ -165,9 +151,9 @@ describe Schablone::Routing::Rule do
     end
   end
 
-  describe "#append_host_sub_rule, #host" do
+  describe "#host" do
     it "adds a HostRule as a sub-rule" do
-      rule.append_host_sub_rule("example.com")
+      rule.host("example.com")
       expect(rule.child_rules.first).to be_a HostRule
     end
 
@@ -176,9 +162,9 @@ describe Schablone::Routing::Rule do
     end
   end
 
-  describe "#append_path_sub_rule, #path" do
+  describe "#path" do
     it "adds a PathRule as a sub-rule" do
-      rule.append_path_sub_rule("/foo/bar")
+      rule.path("/foo/bar")
       expect(rule.child_rules.first).to be_a PathRule
     end
 
@@ -187,9 +173,9 @@ describe Schablone::Routing::Rule do
     end
   end
 
-  describe "#append_query_sub_rule, #query" do
+  describe "#query" do
     it "adds a QueryRule as a sub-rule" do
-      rule.append_query_sub_rule(foo: "bar")
+      rule.query(foo: "bar")
       expect(rule.child_rules.first).to be_a QueryRule
     end
 
@@ -198,40 +184,40 @@ describe Schablone::Routing::Rule do
     end
   end
 
-  describe "#append_child_rule_from_options" do
+  describe "#build_child_rule_chain_from_options" do
     subject(:rule) do
       rule = Rule.new
-      rule.send(:append_child_rule_from_options, opts)
+      rule.send(:build_child_rule_chain_from_options, opts)
       rule
     end
 
-    context "with `:path` option present" do
-      let(:opts) { Hash[path: "/foo"] }
+    describe ":path option" do
+      let(:opts) { { path: "/foo" } }
 
-      it "adds a PathRule as a sub-rule" do
+      it "adds a PathRule" do
         expect(rule.child_rules.first).to be_a PathRule
       end
     end
 
-    context "with `:query` option present" do
-      let(:opts) { Hash[query: { bar: "qux" }] }
+    describe ":query option" do
+      let(:opts) { { query: { bar: "qux" } } }
 
-      it "adds a QueryRule as a sub-rule" do
+      it "adds a QueryRule" do
         expect(rule.child_rules.first).to be_a QueryRule
       end
     end
 
-    context "with `:host` option present" do
-      let(:opts) { Hash[host: "example.com"] }
+    describe ":host option" do
+      let(:opts) { { host: "example.com" } }
 
-      it "adds a HostRule as a sub-rule" do
+      it "adds a HostRule" do
         expect(rule.child_rules.first).to be_a HostRule
       end
     end
 
     context "with multiple options present" do
       let(:opts) do
-        Hash[host: "example.com", path: "/foo", query: { bar: "qux" }]
+        { host: "example.com", path: "/foo", query: { bar: "qux" } }
       end
 
       it "adds chained sub-rules" do

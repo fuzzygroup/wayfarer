@@ -8,9 +8,7 @@ module Schablone
         super(opts, &proc)
       end
 
-      private
-
-      def match(uri)
+      def match!(uri)
         uri == @uri
       end
     end

@@ -10,9 +10,7 @@ module Schablone
         super(opts, &proc)
       end
 
-      private
-
-      def match(uri)
+      def match!(uri)
         @pattern === uri.path
       end
     end
