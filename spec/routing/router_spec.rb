@@ -52,7 +52,6 @@ describe Schablone::Routing::Router do
         uri = URI("http://example.com/42")
         scraper, params = router.route(uri)
         expect(scraper).to be false
-        expect(params).to be nil
       end
     end
   end
