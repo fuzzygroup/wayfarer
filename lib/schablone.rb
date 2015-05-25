@@ -9,7 +9,6 @@ require_relative "schablone/routing/uri_rule"
 require_relative "schablone/routing/host_rule"
 require_relative "schablone/routing/path_rule"
 require_relative "schablone/routing/query_rule"
-require_relative "schablone/routing/route"
 require_relative "schablone/routing/router"
 
 # Extraction
@@ -43,21 +42,18 @@ module Schablone
   VERSION = "0.0.1-alpha.1"
 
   class << self
+    attr_writer :logger
+
     def configure(&proc)
       @config ||= Configuration.new
-
-      if block_given?
-        proc.arity >= 1 ? (yield @config) : @config.instance_eval(&proc)
-      else
-        @config
-      end
+      block_given? ? yield(@config) : @config
     end
 
     alias_method :config, :configure
 
     def logger
       @logger ||= Logger.new(STDOUT)
-      @logger.level = Schablone.config.log_level
+      @logger.level = config.log_level
       @logger
     end
 

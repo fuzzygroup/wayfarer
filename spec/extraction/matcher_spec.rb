@@ -10,18 +10,6 @@ describe Schablone::Extraction::Matcher do
 
   subject(:matcher) { Matcher.new(matcher_hash) }
 
-  describe "#initialize" do
-    let(:matcher_hash) { { css: "#foo" } }
-
-    it "sets `@type`" do
-      expect(matcher.type).to be :css
-    end
-
-    it "sets `@type`" do
-      expect(matcher.expression).to eq "#foo"
-    end
-  end
-
   describe "#match" do
     context "with CSS selector" do
       let(:matcher_hash) { { css: "#foo" } }
@@ -38,14 +26,6 @@ describe Schablone::Extraction::Matcher do
       it "returns the matched NodeSet" do
         matched_nodes = matcher.match(doc)
         expect(matched_nodes.count).to be 1
-      end
-    end
-
-    context "with unknown selector type" do
-      let(:matcher_hash) { { unknown: nil } }
-
-      it "raises a RuntimeError" do
-        expect { matcher.match(doc) }.to raise_error(RuntimeError)
       end
     end
   end

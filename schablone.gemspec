@@ -19,10 +19,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency "mustermann"
   s.add_dependency "mustermann-uri-template"
-  s.add_dependency "thread"
   s.add_dependency "nokogiri"
   s.add_dependency "selenium-webdriver"
-  s.add_dependency "hashie"
   s.add_dependency "rack"
   s.add_dependency "net-http-persistent"
   s.add_dependency "pismo"
@@ -31,11 +29,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
-  s.add_development_dependency "yard"
-  s.add_development_dependency "cucumber"
   s.add_development_dependency "sinatra"
   s.add_development_dependency "rubocop"
-  s.add_development_dependency "faker"
-  s.add_development_dependency "factory_girl"
-
 end

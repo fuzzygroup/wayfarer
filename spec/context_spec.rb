@@ -10,7 +10,7 @@ describe Schablone::Context do
   subject(:context) { Context.new(processor, navigator, adapter, page, params) }
 
   describe "::helpers" do
-    it "allows defining helper methods on the instances" do
+    it "allows defining helper methods" do
       expect {
         Context.helpers { def foobar; end }
       }.to change { context.methods.count }.by(1)
@@ -23,12 +23,6 @@ describe Schablone::Context do
       expect {
         Context.helpers(module_a, module_b)
       }.to change { context.methods.count }.by(2)
-    end
-  end
-
-  describe "#page" do
-    it "returns @page" do
-      expect(context.send(:page)).to be page
     end
   end
 

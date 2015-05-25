@@ -1,11 +1,12 @@
 require_relative "../lib/schablone"
 require "rethinkdb"
 
-Crawler = Schablone::Crawler.new do |result|
-  DATABASE = "dominic"
-  TABLE    = :zeit
+Crawler = Schablone::Crawler.new({}) do |result|
+  config do
+    
+  end
 
-  helpers RethinkDB::Shortcuts
+  uri "http://yelp.com/:id/"
 
   helpers do
     def conn
@@ -15,16 +16,16 @@ Crawler = Schablone::Crawler.new do |result|
     def venues
       css :venues
     end
+
+    def review_id
+      css review_id: ".review .id", :content!
+    end
   end
 
-  scrape path: "/foo/bar" do
+  scrape :foobar do
   end
 
-  scrape :page do
-    
-  end
-
-  router.draw(:page) { host "pizza.de" }
+  route.draw :foobar, host: "reddit.com"
 end
 
-Crawler.crawl("http://pizza.de/81479")
+result = Crawler.crawl("http://pizza.de/81479")

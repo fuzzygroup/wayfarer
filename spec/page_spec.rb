@@ -7,12 +7,8 @@ describe Schablone::Page do
     context "when Content-Type is application/json" do
       subject(:page) { fetch_page(test_app("/json/dummy.json")) }
 
-      it "returns a Hash" do
-        expect(page.parsed_document).to be_a Hash
-      end
-
-      it "returns a Hash that allows dot notation-access" do
-        expect(page.parsed_document.id).to be 1
+      it "returns an OpenStruct" do
+        expect(page.parsed_document).to be_an OpenStruct
       end
     end
 

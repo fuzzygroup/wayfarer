@@ -25,24 +25,6 @@ describe Schablone::Extraction::Scraper do
     html
   end
 
-  describe "#initialize" do
-    context "with Proc of arity 0 given" do
-      it "evaluates the Proc in its instance context" do
-        this = nil
-        Scraper.new { this = self }
-        expect(this).to be_a Scraper
-      end
-    end
-
-    context "with Proc of arity 1 given" do
-      it "stores the Proc as its `@evaluator`" do
-        proc = -> (_doc) {}
-        scraper = Scraper.new(&proc)
-        expect(scraper.evaluator).to be proc
-      end
-    end
-  end
-
   describe "#extract" do
     context "without `@evaluator` Proc present" do
       let(:scraper) do

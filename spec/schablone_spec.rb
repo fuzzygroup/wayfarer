@@ -5,7 +5,7 @@ describe Schablone do
     it("is present") { expect(defined? Schablone::VERSION).not_to be nil }
   end
 
-  describe "::configure, ::config" do
+  describe "::configure" do
     context "without Proc given" do
       it "returns the Configuration" do
         expect(Schablone.config).to be_a Schablone::Configuration

@@ -1,12 +1,12 @@
 module Schablone
   module Extraction
     module Evaluator
+      module_function
+
       RESERVED_ATTRIBUTES = [
         :content!,
         :html!
       ]
-
-      module_function
 
       def evaluate(nodes, *attrs)
         return "" if nodes.empty?
@@ -53,7 +53,7 @@ module Schablone
       def evaluate_reserved_attribute(element, attr)
         case attr
         when :content! then evaluate_content(element)
-        when :html! then element.to_s
+        when :html!    then element.to_s
         end
       end
 

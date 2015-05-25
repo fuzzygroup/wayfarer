@@ -12,16 +12,14 @@ module Schablone
         @target_attrs = target_attrs
         @evaluator = Evaluator
 
-        if block_given?
-          proc.arity == 1 ? (@evaluator = proc) : instance_eval(&proc)
-        end
+        instance_eval(&proc) if block_given?
       end
 
       def extract(nodes)
         matched_nodes = matcher.match(nodes)
 
         if extractables.empty?
-          extract = evaluate(matched_nodes, *@target_attrs)
+          extract = @evaluator.evaluate(matched_nodes, *@target_attrs)
         else
           extract = matched_nodes.map do |node|
             extractables.reduce({}) do |hash, extractable|
@@ -31,16 +29,6 @@ module Schablone
         end
 
         { key => extract }
-      end
-
-      private
-
-      def evaluate(matched_nodes, *target_attrs)
-        if @evaluator.is_a?(Proc)
-          @evaluator.call(matched_nodes)
-        else
-          @evaluator.evaluate(matched_nodes, *target_attrs)
-        end
       end
     end
   end

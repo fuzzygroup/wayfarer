@@ -6,11 +6,9 @@ module Schablone
 
     def initialize(router)
       @router = router
-
       @current_uris = Set.new([])
-      @staged_uris  = Set.new([])
-      @cached_uris  = URISet.new
-
+      @staged_uris = Set.new([])
+      @cached_uris = URISet.new
       @mutex = Mutex.new
     end
 
@@ -27,7 +25,7 @@ module Schablone
     end
 
     def current_uri_queue
-      current_uris.inject(Queue.new) { |queue, uri| queue << uri }
+      current_uris.reduce(Queue.new) { |queue, uri| queue << uri }
     end
 
     def stage(*uris)

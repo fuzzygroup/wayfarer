@@ -8,22 +8,6 @@ describe Schablone::Configuration do
     expect(config.foo).to be :foo
   end
 
-  it "has correct default values set" do
-    expect(config.http_adapter).to be :net_http
-    expect(config.verbose).to be false
-    expect(config.max_http_redirects).to be 3
-    expect(config.sanitize_node_content).to be true
-    expect(config.log_level).to be Logger::FATAL
-    expect(config.threads).to be 4
-    expect(config.http_adapter).to be :net_http
-    expect(config.selenium_argv).to eq [:firefox]
-  end
-
-  it "allows overriding default values" do
-    config.verbose = true
-    expect(config.verbose).to be true
-  end
-
   describe "#reset!" do
     it "resets keys and values to defaults" do
       config.verbose = true
@@ -34,7 +18,7 @@ describe Schablone::Configuration do
     it "unsets non-default keys" do
       config.foo = :foo
       config.reset!
-      expect(config.foo?).to be false
+      expect(config.foo).to be nil
     end
   end
 end

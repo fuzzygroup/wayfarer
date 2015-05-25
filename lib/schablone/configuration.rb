@@ -1,8 +1,16 @@
-require "hashie/extensions/method_access"
+require "ostruct"
 
 module Schablone
-  class Configuration < Hash
-    include Hashie::Extensions::MethodAccess
+  class Configuration < OpenStruct
+    DEFAULTS = {
+      http_adapter:          :net_http,
+      verbose:               false,
+      max_http_redirects:    3,
+      sanitize_node_content: true,
+      log_level:             Logger::FATAL,
+      threads:               4,
+      selenium_argv:         [:firefox]
+    }
 
     def initialize
       super
@@ -10,26 +18,8 @@ module Schablone
     end
 
     def reset!
-      replace(defaults)
-    end
-
-    private
-
-    def defaults
-      {
-        http_adapter:          :net_http,
-        verbose:               false,
-        max_http_redirects:    3,
-        sanitize_node_content: true,
-        log_level:             Logger::FATAL,
-        threads:               4,
-        selenium_argv:         [:firefox]
-      }
-    end
-
-    # override
-    def convert_key(key)
-      key.to_sym
+      each_pair { |key, _| delete_field(key) }
+      DEFAULTS.each { |key, val| self[key] = val }
     end
   end
 end

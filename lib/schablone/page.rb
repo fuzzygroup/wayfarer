@@ -2,6 +2,7 @@ require "uri"
 require "nokogiri"
 require "pismo"
 require "mime/types"
+require "ostruct"
 
 module Schablone
   class Page
@@ -23,9 +24,7 @@ module Schablone
 
       @parsed_document ||= case sub_type
       when "json"
-        Parsers::JSONParser.parse(@body).extend(
-          Hashie::Extensions::MethodReader
-        )
+        OpenStruct.new(Parsers::JSONParser.parse(@body))
       when "xml"
         Parsers::XMLParser.parse_xml(@body)
       else
