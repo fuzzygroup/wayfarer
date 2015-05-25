@@ -19,6 +19,7 @@ describe Schablone::Extraction::Extractable do
 
   describe "#group" do
     it "adds an ExtractableGroup" do
+      extractable.group(:foo)
       expect(extractable.extractables.first).to be_an ExtractableGroup
     end
   end
