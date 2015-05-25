@@ -28,7 +28,12 @@ class TestApp < Sinatra::Base
 
   get "/json/:file" do
     content_type "application/json"
-    send_file(static_file("json/#{params[:file]}"), type: :json)
+    send_file(static_file("json/#{params[:file]}"))
+  end
+
+  get "/xml/:file" do
+    content_type "application/xml"
+    send_file(static_file("xml/#{params[:file]}"))
   end
 
   private

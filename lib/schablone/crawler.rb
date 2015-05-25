@@ -34,7 +34,7 @@ module Schablone
       processor.run
 
       @locals.reduce(OpenStruct.new) do |ostruct, (key, threadsafe)|
-        ostruct.send(key, threadsafe.wrapped_object)
+        ostruct[key] = threadsafe.wrapped_object; ostruct
       end
     end
 
@@ -43,11 +43,8 @@ module Schablone
     end
 
     def router(&proc)
-      if block_given?
-        proc.arity >= 1 ? (yield @router) : @router.instance_eval(&proc)
-      else
-        @router
-      end
+      @router.instance_eval(&proc) if block_given?
+      @router
     end
 
     private

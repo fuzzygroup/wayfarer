@@ -14,7 +14,6 @@ module Schablone
 
     def perform
       until @uri_queue.empty?
-        Thread.exit if @processor.halted?
         (uri = @uri_queue.pop(true) rescue nil) ? scrape(uri) : next
       end
     end
@@ -22,6 +21,7 @@ module Schablone
     private
 
     def scrape(uri)
+      Thread.exit if @processor.halted?
       @processor.navigator.cache(uri)
 
       payload, params = @router.route(uri)

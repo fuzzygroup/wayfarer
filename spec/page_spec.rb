@@ -4,28 +4,26 @@ describe Schablone::Page do
   subject(:page) { fetch_page(test_app("/links/links.html")) }
 
   describe "#parsed_document" do
-    context "when Content-Type is application/json" do
+    context "when Content-Type is HTML" do
+      it "returns a Nokogiri::HTML::Document" do
+        expect(page.parsed_document).to be_a Nokogiri::HTML::Document
+      end
+    end
+
+    context "when Content-Type is XML" do
+      subject(:page) { fetch_page(test_app("/xml/dummy.xml")) }
+
+      it "returns a Nokogiri::XML::Document" do
+        expect(page.parsed_document).to be_a Nokogiri::XML::Document
+      end
+    end
+
+    context "when Content-Type is JSON" do
       subject(:page) { fetch_page(test_app("/json/dummy.json")) }
 
       it "returns an OpenStruct" do
         expect(page.parsed_document).to be_an OpenStruct
       end
-    end
-
-    context "when Content-Type is application/xml" do
-      subject(:page) { fetch_page(test_app("/json/dummy.json")) }
-
-      it "returns a Hash" do
-        expect(page.parsed_document).to be_a Hash
-      end
-
-      it "returns a Hash that allows dot notation-access" do
-        expect(page.parsed_document.id).to be 1
-      end
-    end
-
-    it "returns a parsed HTML document" do
-      expect(page.parsed_document).to be_a Nokogiri::HTML::Document
     end
   end
 
