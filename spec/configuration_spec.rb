@@ -10,9 +10,9 @@ describe Schablone::Configuration do
 
   describe "#reset!" do
     it "resets keys and values to defaults" do
-      config.verbose = true
+      config.max_http_redirects = 3
       config.reset!
-      expect(config.verbose).to be false
+      expect(config.max_http_redirects).to be 3
     end
 
     it "unsets non-default keys" do

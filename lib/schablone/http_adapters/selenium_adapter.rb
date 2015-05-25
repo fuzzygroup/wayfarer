@@ -4,9 +4,6 @@ require "selenium-webdriver"
 module Schablone
   module HTTPAdapters
     class SeleniumAdapter
-
-      class MalformedRedirectURI < StandardError; end
-
       def initialize
         @driver = Selenium::WebDriver.for(*Schablone.config.selenium_argv)
       end

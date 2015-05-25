@@ -33,16 +33,19 @@ module Schablone
       end
 
     rescue Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
-      Schablone.log.warn("Maximum number of HTTP redirects reached for #{uri}")
+      Schablone.log.info("Maximum number of HTTP redirects reached for #{uri}")
 
     rescue Schablone::HTTPAdapters::NetHTTPAdapter::MalformedRedirectURI
-      Schablone.log.warn("Encountered a malformed redirect URI for #{uri}")
+      Schablone.log.info("Got a malformed redirect URI for #{uri}")
+
+    rescue Timeout::Error
+      Schablone.log.info("HTTP adapter timed out while scraping #{uri}")
 
     rescue SocketError
-      Schablone.log.warn("DNS lookup failed for #{uri}")
+      Schablone.log.info("DNS lookup failed for #{uri}")
 
     rescue Errno::ETIMEDOUT
-      Schablone.log.warn("HTTP connection timed out for #{uri}")
+      Schablone.log.info("HTTP connection timed out for #{uri}")
 
     ensure
       @navigator.cache(uri)

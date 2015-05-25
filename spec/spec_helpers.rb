@@ -1,5 +1,4 @@
 require "schablone"
-require "factory_girl"
 
 include Schablone
 include Schablone::HTTPAdapters
@@ -12,7 +11,7 @@ module SpecHelpers
   end
 
   def fetch_page(uri)
-    NetHTTPAdapter.new.fetch(URI(uri))
+    NetHTTPAdapter.instance.fetch(URI(uri))
   end
 
   def queue(array)
@@ -30,5 +29,4 @@ end
 
 RSpec.configure do |config|
   config.include(SpecHelpers)
-  config.include(FactoryGirl::Syntax::Methods)
 end

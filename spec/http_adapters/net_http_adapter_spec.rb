@@ -1,7 +1,7 @@
 require "spec_helpers"
 
 describe Schablone::HTTPAdapters::NetHTTPAdapter do
-  subject(:adapter) { Schablone::HTTPAdapters::NetHTTPAdapter.new }
+  subject(:adapter) { Schablone::HTTPAdapters::NetHTTPAdapter.instance }
 
   describe "#fetch" do
     it "returns a Page" do

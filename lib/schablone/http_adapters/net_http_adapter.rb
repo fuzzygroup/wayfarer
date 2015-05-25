@@ -1,9 +1,11 @@
+require "singleton"
 require "net/http"
 require "net/http/persistent"
 
 module Schablone
   module HTTPAdapters
     class NetHTTPAdapter
+      include Singleton
 
       RECOGNIZED_URI_TYPES = [
         URI::HTTP,

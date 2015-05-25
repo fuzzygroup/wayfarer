@@ -63,7 +63,7 @@ describe Schablone::Processor do
   describe "#spawn_workers" do
     let(:queue) { Queue.new }
 
-    before { Schablone.config.threads = 2 }
+    before { Schablone.config.thread_count = 2 }
     after { Schablone.config.reset! }
 
     it "spawns the expected number of workers" do

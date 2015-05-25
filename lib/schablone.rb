@@ -30,6 +30,7 @@ require_relative "schablone/parsers/xml_parser"
 require_relative "schablone/parsers/json_parser"
 
 # Processing
+require_relative "schablone/threadsafe"
 require_relative "schablone/worker"
 require_relative "schablone/context"
 require_relative "schablone/page"
@@ -37,6 +38,14 @@ require_relative "schablone/uri_set"
 require_relative "schablone/navigator"
 require_relative "schablone/processor"
 require_relative "schablone/crawler"
+
+def Schablone(*argv, &proc)
+  Schablone::Crawler.new(*argv, &proc)
+end
+
+def Schablone!(*argv, &proc)
+  Schablone::Crawler.new(*argv, &proc).crawl(uri)
+end
 
 module Schablone
   VERSION = "0.0.1-alpha.1"

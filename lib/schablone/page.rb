@@ -1,8 +1,8 @@
 require "uri"
+require "ostruct"
+require "mime/types"
 require "nokogiri"
 require "pismo"
-require "mime/types"
-require "ostruct"
 
 module Schablone
   class Page
@@ -19,10 +19,12 @@ module Schablone
     end
 
     def parsed_document
+      return @parsed_document if @parsed_document
+
       content_type = @headers["content-type"].first
       sub_type = MIME::Types[content_type].first.sub_type
 
-      @parsed_document ||= case sub_type
+      @parsed_document = case sub_type
       when "json"
         OpenStruct.new(Parsers::JSONParser.parse(@body))
       when "xml"

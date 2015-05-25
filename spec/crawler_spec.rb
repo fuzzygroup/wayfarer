@@ -3,11 +3,17 @@ require "spec_helpers"
 describe Schablone::Crawler do
   let(:crawler) { Crawler.new }
 
-  describe "#scrape" do
-    it "registers a scraper" do
-      expect {
-        crawler.scrape(:foo, &Proc.new {})
-      }.to change { crawler.router.scrapers.count }.by(1)
+  describe "#let" do
+    it "creates threadsafe locals" do
+      crawler.let :foo, Object.new
+      expect(crawler.locals[:foo]).to be_a Threadsafe
+    end
+  end
+
+  describe "#let!" do
+    it "creates locals" do
+      crawler.let! :foo, obj = Object.new
+      expect(crawler.locals[:foo]).to be obj
     end
   end
 

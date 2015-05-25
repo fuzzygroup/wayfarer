@@ -3,13 +3,14 @@ require "ostruct"
 module Schablone
   class Configuration < OpenStruct
     DEFAULTS = {
+      thread_count:          6,
       http_adapter:          :net_http,
-      verbose:               false,
+      http_adapter_count:    6,
+      http_adapter_timeout:  5.0,
       max_http_redirects:    3,
+      selenium_argv:         [:firefox],
       sanitize_node_content: true,
-      log_level:             Logger::FATAL,
-      threads:               4,
-      selenium_argv:         [:firefox]
+      log_level:             Logger::FATAL
     }
 
     def initialize
