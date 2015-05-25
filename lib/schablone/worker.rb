@@ -3,6 +3,8 @@ module Schablone
     attr_reader :navigator
 
     def initialize(processor, uri_queue, router)
+      Thread.abort_on_exception = true
+
       @processor = processor
       @uri_queue = uri_queue
       @router    = router
@@ -12,8 +14,9 @@ module Schablone
 
     def perform
       until @uri_queue.empty?
+        Thread.exit if @processor.halted?
+
         if uri = @uri_queue.pop(true) rescue nil
-          puts "PROCESSING URI: #{uri}"
           scrape(uri)
         end
       end
@@ -22,14 +25,14 @@ module Schablone
     private
 
     def scrape(uri)
-      puts "CAHING URI: #{uri}"
       @processor.navigator.cache(uri)
-      puts "CACHED URIS: #{@processor.navigator.cached_uris}"
+
+      puts "PrOCESSOr STATUS: #{@processor.state}"
 
       payload, params = @router.route(uri)
       return unless payload && params
 
-      HTTPAdapters::AdapterPool.with do |adapter|
+      @processor.adapter_pool.with do |adapter|
         page = adapter.fetch(uri)
         indexer = Indexer.new(@processor, adapter, page, params)
         indexer.evaluate(&payload)

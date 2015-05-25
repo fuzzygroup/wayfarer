@@ -1,9 +1,11 @@
 require "thread"
+require "connection_pool"
 
 module Schablone
   class Processor
     attr_reader :router
     attr_reader :navigator
+    attr_reader :adapter_pool
     attr_reader :workers
 
     def initialize(router)
@@ -14,6 +16,13 @@ module Schablone
       @workers   = []
       @state     = :idle
       @mutex     = Mutex.new
+
+      @adapter_pool = ConnectionPool.new(size: 5, timeout: 5) do
+        case Schablone.config.http_adapter
+        when :net_http then NetHTTPAdapter.instance
+        when :selenium then SeleniumAdapter.new
+        end
+      end
     end
 
     def state
@@ -21,28 +30,22 @@ module Schablone
     end
 
     def run
-      puts "NOW RUNNING"
       return unless idle?
       self.state = :running
 
       until halted?
-        puts "RUNNING. Current state: #{self.state}"
-        puts "CURRENT URIS: #{@navigator.current_uris}"
         @workers = spawn_workers(@navigator.current_uri_queue)
         @workers.each(&:join)
         @workers.clear
         halt unless @navigator.cycle
       end
-
-      puts "RECEIVED HALT. CACHED URIS: #{@navigator.cached_uris}"
     end
 
     def halt
-      puts "NOW HALTING"
       return unless running?
       self.state = :halted
       @workers.each(&:kill)
-      #HTTPAdapters::AdapterPool.shutdown { |adapter| adapter.free }
+      @adapter_pool.shutdown { |adapter| adapter.free }
     end
 
     def idle?;    self.state == :idle; end

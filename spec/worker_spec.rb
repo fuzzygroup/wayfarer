@@ -6,7 +6,7 @@ describe Schablone::Worker do
   let(:uri_queue)  { Queue.new }
   subject(:worker) { Worker.new(processor, uri_queue, router) }
 
-  describe "#process" do
+  describe "#scrape" do
     this = nil
 
     it "allows accessing the current page" do
