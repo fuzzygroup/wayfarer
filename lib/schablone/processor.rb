@@ -34,7 +34,6 @@ module Schablone
     def halted?;  self.state == :halted; end
 
     def run
-      return unless idle?
       step until halted?
     end
 
