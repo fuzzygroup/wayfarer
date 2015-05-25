@@ -34,7 +34,7 @@ describe Schablone::Indexer do
   end
 
   describe "#halt" do
-    it "calls #halt on its @processor" do
+    it "halts the Processor" do
       indexer.instance_variable_set(:@processor, processor = spy())
       indexer.send(:halt)
       expect(processor).to have_received(:halt)
@@ -42,7 +42,7 @@ describe Schablone::Indexer do
   end
 
   describe "#evaluate" do
-    it "evaluates the Proc in its instance indexer" do
+    it "evaluates the Proc in its instance context" do
       this = nil
       indexer.evaluate { this = self }
       expect(this).to be indexer

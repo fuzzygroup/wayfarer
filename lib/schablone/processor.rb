@@ -29,13 +29,17 @@ module Schablone
       @mutex.synchronize { @state }
     end
 
+    def idle?;    self.state == :idle; end
+    def running?; self.state == :running; end
+    def halted?;  self.state == :halted; end
+
     def run
       return unless idle?
-      self.state = :running
       step until halted?
     end
 
     def step
+      self.state = :running
       @workers = spawn_workers(@navigator.current_uri_queue)
       @workers.each(&:join)
       @workers.clear
@@ -49,10 +53,6 @@ module Schablone
       @workers.clear
       @adapter_pool.shutdown { |adapter| adapter.free }
     end
-
-    def idle?;    self.state == :idle; end
-    def running?; self.state == :running; end
-    def halted?;  self.state == :halted; end
 
     private
 

@@ -4,6 +4,7 @@ Crawler = Schablone do
   scrape :page do
     puts page.title
     visit page.links
+    puts @processor.navigator.staged_uris
   end
 
   router.draw :page do
