@@ -1,13 +1,12 @@
 require "spec_helpers"
 
 describe Schablone::Indexer do
-  let(:processor)   { Object.new }
-  let(:page)        { fetch_page("http://example.com") }
   let(:router)      { Router.new }
-  let(:navigator)   { Navigator.new }
+  let(:processor)   { Processor.new(router) }
   let(:adapter)     { Object.new }
+  let(:page)        { fetch_page("http://example.com") }
   let(:params)      { {} }
-  subject(:indexer) { Indexer.new(processor, navigator, adapter, page, params) }
+  subject(:indexer) { Indexer.new(processor, adapter, page, params) }
 
   describe "::helpers" do
     it "allows defining helper methods" do
@@ -30,7 +29,7 @@ describe Schablone::Indexer do
     it "stages URIs" do
       expect {
         indexer.send(:visit, "http://google.com", "http://yahoo.com")
-      }.to change { navigator.staged_uris.count }.by(2)
+      }.to change { processor.navigator.staged_uris.count }.by(2)
     end
   end
 

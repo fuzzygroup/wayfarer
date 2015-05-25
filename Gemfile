@@ -4,6 +4,4 @@ gem "selenium-emulated_features",
   git: "https://github.com/bauerd/selenium-emulated_features",
   require: "selenium/emulated_features"
 
-gem "gexf"
-
 gemspec

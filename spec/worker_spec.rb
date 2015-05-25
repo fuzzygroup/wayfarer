@@ -1,14 +1,10 @@
 require "spec_helpers"
 
 describe Schablone::Worker do
-  let(:processor) { Object.new }
-  let(:navigator) { Navigator.new }
-  let(:uri_queue) { Queue.new }
-  let(:router)    { Router.new }
-
-  subject(:worker) do
-    Worker.new(processor, navigator, uri_queue, router)
-  end
+  let(:router)     { Router.new }
+  let(:processor)  { Processor.new(router) }
+  let(:uri_queue)  { Queue.new }
+  subject(:worker) { Worker.new(processor, uri_queue, router) }
 
   describe "#process" do
     this = nil
@@ -33,7 +29,14 @@ describe Schablone::Worker do
       router.register_scraper(:foo) { visit page.links }
       router.draw(:foo) { host "example.com" }
       worker.send(:scrape, URI("http://example.com"))
-      expect(navigator.staged_uris.count).to be 1
+      expect(processor.navigator.staged_uris.count).to be 1
+    end
+
+    it "caches scraped URIs" do
+      router.register_scraper(:foo) {}
+      router.draw(:foo) { host "example.com" }
+      worker.send(:scrape, URI("http://example.com"))
+      expect(processor.navigator.cached_uris).to eq [URI("http://example.com")]
     end
   end
 end

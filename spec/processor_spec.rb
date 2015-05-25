@@ -1,75 +1,26 @@
 require "spec_helpers"
 
 describe Schablone::Processor do
-  let(:entry_uri)     { URI("http://example.com") }
-  let(:scraper)       { Proc.new { emit(:success); visit page.links } }
+  let(:indexer)       { Proc.new {} }
   let(:router)        { Router.new }
-  subject(:processor) { Processor.new(entry_uri, router) }
+  subject(:processor) { Processor.new(router) }
 
-  before { router.register_scraper(:foo, &scraper) }
-
-  describe "#initialize" do
-    it "adds the entry URI as current" do
-      expect(processor.navigator.current_uris).to eq [entry_uri]
-    end
-
-    it "sets state to :idle" do
-      expect(processor.state).to be :idle
-    end
+  before do
+    router.register_scraper(:foo, &Proc.new {})
+    router.draw(:foo) { host "example.com" }
   end
 
   describe "#run" do
-    it "sets state to :halted" do
+    it "halts" do
       processor.run
-      expect(processor.state).to be :halted
-    end
-  end
-
-  describe "#step" do
-    it "clears its workers" do
-      processor.send(:step)
-      expect(processor.workers).to eq []
-    end
-  end
-
-  describe "#halt" do
-    context "when state is :running" do
-      before { processor.instance_variable_set(:@state, :running) }
-
-      it "throws :halt" do
-        expect {
-          processor.send(:halt)
-        }.to throw_symbol :halt
-      end
-
-      it "returns true" do
-        catch(:halt) { expect(processor.send(:halt)).to be true }
-      end
+      expect(processor.halted?).to be true
     end
 
-    context "when state is not :running" do
-      it "does not alter state" do
-        expect {
-          catch(:halt) { processor.send(:halt) }
-        }.not_to change { processor.state }
-      end
-
-      it "returns false" do
-        expect(processor.send(:halt)).to be false
-      end
-    end
-  end
-
-  describe "#spawn_workers" do
-    let(:queue) { Queue.new }
-
-    before { Schablone.config.thread_count = 2 }
-    after { Schablone.config.reset! }
-
-    it "spawns the expected number of workers" do
-      expect {
-        processor.send(:spawn_workers, queue)
-      }.to change { processor.workers.count }.by(2)
+    it "caches URIs" do
+      processor.navigator.stage(uri = URI("http://example.com"))
+      processor.navigator.cycle
+      processor.run
+      expect(processor.navigator.cached_uris).to eq [uri]
     end
   end
 end

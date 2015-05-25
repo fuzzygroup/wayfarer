@@ -14,10 +14,6 @@ module Schablone
 
     private
 
-    def evaluate
-      @val 
-    end
-
     def method_missing(*argv, &proc)
       @mutex.synchronize { @obj.send(*argv, &proc) }
     end

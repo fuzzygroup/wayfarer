@@ -28,7 +28,10 @@ module Schablone
     end
 
     def crawl(uri)
-      Processor.new(URI(uri), @router).run
+      processor = Processor.new(@router)
+      processor.navigator.stage(entry_uri)
+      processor.navigator.cycle
+      processor.run
 
       @locals.reduce(OpenStruct.new) do |ostruct, (key, threadsafe)|
         ostruct.send(key, threadsafe.wrapped_object)

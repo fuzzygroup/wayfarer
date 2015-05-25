@@ -2,9 +2,8 @@ module Schablone
   class Worker < Thread
     attr_reader :navigator
 
-    def initialize(processor, navigator, uri_queue, router)
+    def initialize(processor, uri_queue, router)
       @processor = processor
-      @navigator = navigator
       @uri_queue = uri_queue
       @router    = router
 
@@ -13,20 +12,27 @@ module Schablone
 
     def perform
       until @uri_queue.empty?
-        uri = @uri_queue.pop(true) rescue nil ? scrape(uri) : next
+        if uri = @uri_queue.pop(true) rescue nil
+          puts "PROCESSING URI: #{uri}"
+          scrape(uri)
+        end
       end
     end
 
     private
 
     def scrape(uri)
+      puts "CAHING URI: #{uri}"
+      @processor.navigator.cache(uri)
+      puts "CACHED URIS: #{@processor.navigator.cached_uris}"
+
       payload, params = @router.route(uri)
       return unless payload && params
 
       HTTPAdapters::AdapterPool.with do |adapter|
         page = adapter.fetch(uri)
-        context = Context.new(@processor, @navigator, adapter, page, params)
-        context.evaluate(&payload)
+        indexer = Indexer.new(@processor, adapter, page, params)
+        indexer.evaluate(&payload)
       end
 
     rescue Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
@@ -43,9 +49,6 @@ module Schablone
 
     rescue Errno::ETIMEDOUT
       Schablone.log.info("HTTP connection timed out for #{uri}")
-
-    ensure
-      @navigator.cache(uri)
     end
   end
 end

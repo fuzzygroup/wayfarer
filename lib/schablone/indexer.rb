@@ -2,9 +2,8 @@ require "thread"
 
 module Schablone
   class Indexer
-    def initialize(processor, navigator, adapter, page,  params)
+    def initialize(processor, adapter, page, params)
       @processor = processor
-      @navigator = navigator
       @adapter   = adapter
       @page      = page
       @params    = params
@@ -37,7 +36,7 @@ module Schablone
     end
 
     def visit(*uris)
-      @navigator.stage(*uris)
+      @processor.navigator.stage(*uris)
     end
   end
 end
