@@ -19,8 +19,8 @@ module Schablone
 
       @adapter_pool = ConnectionPool.new(size: 5, timeout: 5) do
         case Schablone.config.http_adapter
-        when :net_http then NetHTTPAdapter.instance
-        when :selenium then SeleniumAdapter.new
+        when :net_http then HTTPAdapters::NetHTTPAdapter.instance
+        when :selenium then HTTPAdapters::SeleniumAdapter.new
         end
       end
     end
@@ -32,19 +32,21 @@ module Schablone
     def run
       return unless idle?
       self.state = :running
+      step until halted?
+    end
 
-      until halted?
-        @workers = spawn_workers(@navigator.current_uri_queue)
-        @workers.each(&:join)
-        @workers.clear
-        halt unless @navigator.cycle
-      end
+    def step
+      @workers = spawn_workers(@navigator.current_uri_queue)
+      @workers.each(&:join)
+      @workers.clear
+      halt unless @navigator.cycle
     end
 
     def halt
       return unless running?
       self.state = :halted
       @workers.each(&:kill)
+      @workers.clear
       @adapter_pool.shutdown { |adapter| adapter.free }
     end
 

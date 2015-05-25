@@ -1,23 +1,15 @@
 require_relative "../lib/schablone"
 
 Crawler = Schablone do
-  let(:data) { Hash.new }
-
-  config do
-    
+  scrape :page do
+    puts page.title
+    visit page.links
   end
 
-  helpers do
-    def levenshtein_distance(str_a, str_b)
-    end
+  router.draw :page do
+    host "zeit.de"
   end
-
-  index :page do
-    
-  end
-
-  router.draw :page, path: "/foo/bar"
 end
 
-result = Crawler.crawl("http://google.com")
-result.data
+result = Crawler.crawl("http://zeit.de")
+

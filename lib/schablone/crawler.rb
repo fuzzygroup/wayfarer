@@ -29,7 +29,7 @@ module Schablone
 
     def crawl(uri)
       processor = Processor.new(@router)
-      processor.navigator.stage(entry_uri)
+      processor.navigator.stage(uri)
       processor.navigator.cycle
       processor.run
 
