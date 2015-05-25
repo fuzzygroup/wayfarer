@@ -2,7 +2,7 @@ require "spec_helpers"
 
 describe Schablone::Worker do
   let(:processor) { Object.new }
-  let(:navigator) { Navigator.new(router) }
+  let(:navigator) { Navigator.new }
   let(:uri_queue) { Queue.new }
   let(:router)    { Router.new }
 

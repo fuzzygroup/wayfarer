@@ -1,8 +1,7 @@
 require "spec_helpers"
 
 describe Schablone::Navigator do
-  let(:router) { Router.new }
-  subject(:navigator) { Navigator.new(router) }
+  subject(:navigator) { Navigator.new }
 
   describe "#stage" do
     let(:uri) { URI("http://example.com/foo#bar") }

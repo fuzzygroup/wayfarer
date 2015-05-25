@@ -8,7 +8,7 @@ module Schablone
 
     def initialize(entry_uri, router)
       @router    = router
-      @navigator = Navigator.new(router)
+      @navigator = Navigator.new
       @workers   = []
       @state     = :idle
       @mutex     = Mutex.new
@@ -37,6 +37,7 @@ module Schablone
     def halt
       return false unless self.state == :running
       @workers.each(&:kill)
+      HTTPAdapters::AdapterPool.shutdown { |adapter| adapter.free }
       throw(:halt)
     end
 

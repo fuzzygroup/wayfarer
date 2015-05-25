@@ -2,10 +2,7 @@ require "set"
 
 module Schablone
   class Navigator
-    attr_reader :router
-
-    def initialize(router)
-      @router = router
+    def initialize
       @current_uris = Set.new([])
       @staged_uris = Set.new([])
       @cached_uris = URISet.new

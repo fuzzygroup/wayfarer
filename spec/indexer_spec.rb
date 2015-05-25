@@ -1,19 +1,19 @@
 require "spec_helpers"
 
-describe Schablone::Context do
+describe Schablone::Indexer do
   let(:processor)   { Object.new }
   let(:page)        { fetch_page("http://example.com") }
   let(:router)      { Router.new }
-  let(:navigator)   { Navigator.new(router) }
+  let(:navigator)   { Navigator.new }
   let(:adapter)     { Object.new }
   let(:params)      { {} }
-  subject(:context) { Context.new(processor, navigator, adapter, page, params) }
+  subject(:indexer) { Indexer.new(processor, navigator, adapter, page, params) }
 
   describe "::helpers" do
     it "allows defining helper methods" do
       expect {
-        Context.helpers { def foobar; end }
-      }.to change { context.methods.count }.by(1)
+        Indexer.helpers { def foobar; end }
+      }.to change { indexer.methods.count }.by(1)
     end
 
     it "accepts Modules" do
@@ -21,32 +21,32 @@ describe Schablone::Context do
       module_b = Module.new { def beta; end }
 
       expect {
-        Context.helpers(module_a, module_b)
-      }.to change { context.methods.count }.by(2)
+        Indexer.helpers(module_a, module_b)
+      }.to change { indexer.methods.count }.by(2)
     end
   end
 
   describe "#visit" do
     it "stages URIs" do
       expect {
-        context.send(:visit, "http://google.com", "http://yahoo.com")
+        indexer.send(:visit, "http://google.com", "http://yahoo.com")
       }.to change { navigator.staged_uris.count }.by(2)
     end
   end
 
   describe "#halt" do
     it "calls #halt on its @processor" do
-      context.instance_variable_set(:@processor, processor = spy())
-      context.send(:halt)
+      indexer.instance_variable_set(:@processor, processor = spy())
+      indexer.send(:halt)
       expect(processor).to have_received(:halt)
     end
   end
 
   describe "#evaluate" do
-    it "evaluates the Proc in its instance context" do
+    it "evaluates the Proc in its instance indexer" do
       this = nil
-      context.evaluate { this = self }
-      expect(this).to be context
+      indexer.evaluate { this = self }
+      expect(this).to be indexer
     end
   end
 end

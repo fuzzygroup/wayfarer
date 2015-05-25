@@ -12,7 +12,7 @@ module Schablone
     end
 
     def helpers(*modules, &proc)
-      Context.helpers(*modules, &proc)
+      Indexer.helpers(*modules, &proc)
     end
 
     def let(key, val)

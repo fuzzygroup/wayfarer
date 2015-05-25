@@ -5,7 +5,7 @@ module Schablone
     DEFAULTS = {
       thread_count:          6,
       http_adapter:          :net_http,
-      http_adapter_count:    6,
+      connection_count:      6,
       http_adapter_timeout:  5.0,
       max_http_redirects:    3,
       selenium_argv:         [:firefox],

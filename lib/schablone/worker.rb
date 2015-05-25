@@ -13,10 +13,7 @@ module Schablone
 
     def perform
       until @uri_queue.empty?
-        if uri = @uri_queue.pop(true) rescue nil
-          Schablone.log.info("About to hit: #{uri}")
-          scrape(uri)
-        end
+        uri = @uri_queue.pop(true) rescue nil ? scrape(uri) : next
       end
     end
 

@@ -11,6 +11,12 @@ Crawler = Schablone do
     def levenshtein_distance(str_a, str_b)
     end
   end
+
+  index :page do
+    
+  end
+
+  router.draw :page, path: "/foo/bar"
 end
 
 result = Crawler.crawl("http://google.com")

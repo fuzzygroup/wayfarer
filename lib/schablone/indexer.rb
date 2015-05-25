@@ -1,7 +1,7 @@
 require "thread"
 
 module Schablone
-  class Context
+  class Indexer
     def initialize(processor, navigator, adapter, page,  params)
       @processor = processor
       @navigator = navigator
