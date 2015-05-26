@@ -2,6 +2,8 @@ require "thread"
 
 module Schablone
   class Indexer
+    attr_reader :adapter, :page, :params
+
     def initialize(processor, adapter, page, params)
       @processor = processor
       @adapter   = adapter
@@ -19,8 +21,6 @@ module Schablone
     end
 
     private
-
-    attr_reader :adapter, :page, :params
 
     def halt
       @processor.halt
