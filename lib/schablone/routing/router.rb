@@ -14,7 +14,8 @@ module Schablone
       def route(uri)
         @routes.each do |route|
           is_matching, params = route.rule =~ uri
-          return @payloads[route.sym], params if is_matching && params
+          payload = @payloads[route.sym]
+          return payload, params if is_matching && params && payload
         end
 
         false

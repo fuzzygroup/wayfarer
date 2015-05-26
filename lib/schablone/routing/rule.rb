@@ -42,7 +42,7 @@ module Schablone
       end
 
       def params(uri)
-        params!(uri) || {}
+        respond_to?(:pattern) ? pattern.params(uri.path) : {}
       end
 
       def uri(*argv, &proc)
@@ -73,10 +73,6 @@ module Schablone
 
       def match!(*)
         any?
-      end
-
-      def params!(uri)
-        pattern.params(uri.path) if respond_to?(:pattern)
       end
 
       def params_from_rule_chain(rule_chain, uri)
