@@ -8,11 +8,7 @@ Crawler = Schablone::Crawler.new do
     visit page.links
   end
 
-  router do
-    draw :page do
-      host "zeit.de"
-    end
-  end
+  router.draw :page, host: "zeit.de"
 end
 
 result = Crawler.crawl("http://zeit.de")

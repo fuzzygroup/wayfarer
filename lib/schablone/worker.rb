@@ -25,16 +25,11 @@ module Schablone
       @processor.navigator.cache(uri)
 
       payload, params = @router.route(uri)
-      
-      unless payload && params
-        #require "byebug"; byebug
-        return
-      end
+      return unless payload && params
 
       @processor.adapter_pool.with do |adapter|
         page = adapter.fetch(uri)
-        indexer = Indexer.new(@processor, adapter, page, params)
-        indexer.evaluate(&payload)
+        Indexer.new(@processor, @adapter, page, params).evaluate(payload)
       end
 
     rescue Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached

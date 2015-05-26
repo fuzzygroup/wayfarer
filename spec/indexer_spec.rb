@@ -44,7 +44,7 @@ describe Schablone::Indexer do
   describe "#evaluate" do
     it "evaluates the Proc in its instance context" do
       this = nil
-      indexer.evaluate { this = self }
+      indexer.evaluate Proc.new { this = self }
       expect(this).to be indexer
     end
   end

@@ -14,22 +14,13 @@ module Schablone
       class_eval(&proc) if block_given?
     end
 
-    def evaluate(&proc)
-      instance_eval(&proc)
+    def evaluate(payload)
+      instance_eval(&payload)
     end
 
     private
-    def params
-      @params
-    end
 
-    def page
-      @page
-    end
-
-    def adapter
-      @adapter
-    end
+    attr_reader :adapter, :page, :params
 
     def halt
       @processor.halt
