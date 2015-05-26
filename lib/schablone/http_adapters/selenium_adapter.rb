@@ -1,5 +1,5 @@
 require "selenium-webdriver"
-# require "selenium/emulated_features"
+require "selenium/emulated_features"
 
 module Schablone
   module HTTPAdapters

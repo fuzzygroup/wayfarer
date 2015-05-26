@@ -3,12 +3,16 @@ require_relative "../lib/schablone"
 Schablone.config.log_level = Logger::INFO
 
 Crawler = Schablone::Crawler.new do
-  index :page do
-    puts page.title
-    visit page.links
+  config do |config|
+    config.threads = 8
+    config.http_adapter = :selenium
   end
 
-  router.draw :page, host: "zeit.de"
+  index :page do
+    adapter.driver.save_screenshot "/Users/dom/Desktop/scrnshts/#{Time.now.to_i}"
+  end
+
+  router.draw :page, host: /wikipedia.org/
 end
 
-result = Crawler.crawl("http://zeit.de")
+result = Crawler.crawl("http://de.wikipedia.org/wiki/Spezial:Zuf%C3%A4llige_Seite")
