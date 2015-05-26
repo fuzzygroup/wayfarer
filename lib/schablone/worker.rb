@@ -3,8 +3,6 @@ module Schablone
     attr_reader :navigator
 
     def initialize(processor, uri_queue, router)
-      Thread.abort_on_exception = true
-
       @processor = processor
       @uri_queue = uri_queue
       @router    = router
@@ -29,7 +27,7 @@ module Schablone
 
       @processor.adapter_pool.with do |adapter|
         page = adapter.fetch(uri)
-        Indexer.new(@processor, @adapter, page, params).evaluate(payload)
+        Indexer.new(@processor, adapter, page, params).evaluate(payload)
       end
 
     rescue Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached

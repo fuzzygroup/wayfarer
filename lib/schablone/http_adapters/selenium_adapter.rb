@@ -4,6 +4,8 @@ require "selenium/emulated_features"
 module Schablone
   module HTTPAdapters
     class SeleniumAdapter
+      attr_reader :driver
+
       def initialize
         @driver = Selenium::WebDriver.for(*Schablone.config.selenium_argv)
       end

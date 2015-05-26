@@ -9,7 +9,8 @@ Crawler = Schablone::Crawler.new do
   end
 
   index :page do
-    adapter.driver.save_screenshot "/Users/dom/Desktop/scrnshts/#{Time.now.to_i}"
+    adapter.driver.save_screenshot "/Users/dom/Desktop/scrnshts/#{Time.now.to_i}.png"
+    visit page.links
   end
 
   router.draw :page, host: /wikipedia.org/

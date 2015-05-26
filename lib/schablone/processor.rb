@@ -35,10 +35,9 @@ module Schablone
 
     def run
       step until halted?
-    rescue => exception
+    rescue
       @adapter_pool.shutdown { |adapter| adapter.free }
-    ensure
-      raise(exception)
+      raise
     end
 
     def step
