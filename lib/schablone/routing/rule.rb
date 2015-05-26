@@ -3,11 +3,9 @@ module Schablone
     class Rule
       include Enumerable
 
-      attr_reader :path_offset
       attr_reader :child_rules
 
-      def initialize(opts = {}, path_offset = "", &proc)
-        @path_offset = path_offset
+      def initialize(opts = {}, &proc)
         @child_rules = []
 
         build_child_rule_chain_from_options(opts)
@@ -18,69 +16,71 @@ module Schablone
         child_rules.each(&proc)
       end
 
-      def match!(*)
-        any?
-      end
-
-      def match(uri)
+      def ===(uri)
         return false unless match!(uri)
-        none? || any? { |child_rule| child_rule.match(uri) }
-      end
-
-      def matching_rule_chain(uri, chain = [])
-        if match!(uri) && none?
-          chain << self
-        elsif matching_child = detect { |child_rule| child_rule.match(uri) }
-          matching_child.matching_rule_chain(uri, chain << self)
-        else
-          []
-        end
+        none? || any? { |child_rule| child_rule === (uri) }
       end
 
       def =~(uri)
         rule_chain = matching_rule_chain(uri)
 
         if rule_chain.any?
-          [true, params_from_rule_chain(rule_chain, uri)]
+          return true, params_from_rule_chain(rule_chain, uri)
         else
           false
         end
       end
 
-      alias_method :===, :match
+      def matching_rule_chain(uri, chain = [])
+        if match!(uri) && none?
+          chain << self
+        elsif matching_child = detect { |child_rule| child_rule === (uri) }
+          matching_child.matching_rule_chain(uri, chain << self)
+        else
+          []
+        end
+      end
 
       def params(uri)
-        respond_to?(:pattern) ? pattern.params(uri.path) : {}
+        params!(uri) || {}
       end
 
-      def params_from_rule_chain(rule_chain, uri)
-        rule_chain.inject({}) { |hash, rule| hash.merge(rule.params(uri)) }
+      def uri(*argv, &proc)
+        append_child_rule(URIRule.new(*argv, &proc))
       end
 
-      def uri(*argv)
-        append_child_rule(URIRule.new(*argv))
+      def host(*argv, &proc)
+        append_child_rule(HostRule.new(*argv, &proc))
       end
 
-      def host(*argv)
-        append_child_rule(HostRule.new(*argv))
+      def path(*argv, &proc)
+        append_child_rule(PathRule.new(*argv, &proc))
       end
 
-      def path(*argv)
-        append_child_rule(PathRule.new(*argv))
-      end
-
-      def query(*argv)
-        append_child_rule(QueryRule.new(*argv))
-      end
-
-      def append_child_rule(other)
-        @child_rules << other; other
+      def query(*argv, &proc)
+        append_child_rule(QueryRule.new(*argv, &proc))
       end
 
       private
 
       def build_child_rule_chain_from_options(opts)
         opts.inject(self) { |rule, (key, val)| rule.send(key, val) }
+      end
+
+      def append_child_rule(other)
+        @child_rules << other; other
+      end
+
+      def match!(*)
+        any?
+      end
+
+      def params!(uri)
+        pattern.params(uri.path) if respond_to?(:pattern)
+      end
+
+      def params_from_rule_chain(rule_chain, uri)
+        rule_chain.inject({}) { |hash, rule| hash.merge(rule.params(uri)) }
       end
     end
   end

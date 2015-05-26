@@ -3,16 +3,16 @@ require "spec_helpers"
 describe Schablone::Routing::Router do
   subject(:router) { Router.new }
 
-  describe "#register_scraper" do
+  describe "#register_payload" do
     it "registers a scraper" do
       expect {
-        router.register_scraper(:foo, &Proc.new {})
-      }.to change { router.scrapers.count }.by(1)
+        router.register_payload(:foo, &Proc.new {})
+      }.to change { router.payloads.count }.by(1)
     end
   end
 
   describe "#draw" do
-    it "appends a routes" do
+    it "appends a route" do
       expect { router.draw(:foo) }.to change { router.routes.count }.by(1)
     end
 
@@ -21,12 +21,17 @@ describe Schablone::Routing::Router do
       router.draw(:foo) { this = self }
       expect(this).to be_a Rule
     end
+
+    it "builds the expected Rule chain" do
+      router.draw(:foo, host: "example.com", path: "/foo")
+      expect(router.route(URI("http://example.com/foo"))).to be true
+    end
   end
 
   describe "#route" do
     context "with matching route" do
       it "returns the registered scraper and parameters" do
-        router.register_scraper(:foo, &(foo = Proc.new {}))
+        router.register_payload(:foo, &(foo = Proc.new {}))
         router.draw(:foo) { host "example.com", path: "/{barqux}" }
         uri = URI("http://example.com/42")
         scraper, params = router.route(uri)
@@ -37,7 +42,7 @@ describe Schablone::Routing::Router do
 
     context "without matching route" do
       it "returns false" do
-        router.register_scraper(:foo, &(foo = Proc.new {}))
+        router.register_payload(:foo, &(foo = Proc.new {}))
         router.draw(:foo) { host "example.com", path: "/{barqux}" }
         uri = URI("http://google.com")
         scraper, params = router.route(uri)

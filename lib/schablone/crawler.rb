@@ -23,8 +23,8 @@ module Schablone
       register_local(key, val)
     end
 
-    def scrape(sym, &proc)
-      @router.register_scraper(sym, &proc)
+    def index(sym, &proc)
+      @router.register_payload(sym, &proc)
     end
 
     def crawl(uri)

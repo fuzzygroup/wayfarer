@@ -19,12 +19,12 @@ module Schablone
         )
       end
 
-      def group(*argv)
-        extractables << ExtractableGroup.new(*argv)
+      def group(*argv, &proc)
+        extractables << ExtractableGroup.new(*argv, &proc)
       end
 
-      def scope(*argv)
-        extractables << Scoper.new(*argv)
+      def scope(*argv, &proc)
+        extractables << Scoper.new(*argv, &proc)
       end
     end
   end

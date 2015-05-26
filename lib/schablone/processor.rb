@@ -48,7 +48,7 @@ module Schablone
     def halt
       return unless running?
       self.state = :halted
-      @workers.each(&:kill)
+      @workers.each(&:exit)
       @workers.clear
       @adapter_pool.shutdown { |adapter| adapter.free }
     end

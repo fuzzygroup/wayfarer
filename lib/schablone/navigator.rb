@@ -22,7 +22,7 @@ module Schablone
     end
 
     def current_uri_queue
-      current_uris.reduce(Queue.new) { |queue, uri| queue << uri }
+      @current_uris.reduce(Queue.new) { |queue, uri| queue << uri }
     end
 
     def stage(*uris)
@@ -35,13 +35,9 @@ module Schablone
 
     def cycle
       filter_staged_uris
-
-      if @staged_uris.empty?
-        false
-      else
-        @current_uris, @staged_uris = @staged_uris, Set.new([])
-        true
-      end
+      return false if @staged_uris.empty?
+      @current_uris, @staged_uris = @staged_uris, Set.new([])
+      true
     end
 
     private

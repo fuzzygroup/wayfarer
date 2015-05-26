@@ -25,7 +25,11 @@ module Schablone
       @processor.navigator.cache(uri)
 
       payload, params = @router.route(uri)
-      return unless payload && params
+      
+      unless payload && params
+        #require "byebug"; byebug
+        return
+      end
 
       @processor.adapter_pool.with do |adapter|
         page = adapter.fetch(uri)

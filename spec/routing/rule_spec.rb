@@ -4,27 +4,29 @@ describe Schablone::Routing::Rule do
   subject(:rule) { Rule.new }
 
   describe "#initialize" do
-    it "evaluates the given Proc in its instance context" do
+    it "evaluates the Proc in its instance context" do
       this = nil
       rule = Rule.new { this = self }
       expect(this).to be rule
     end
 
-    it "sets no path offset" do
-      expect(rule.path_offset).to eq ""
-    end
+    it "builds the expected Rule chain from options" do
+      rule = Rule.new(host: "example.com", path: "/foo", query: { bar: 42 })
 
-    it "works" do
-      Rule.new do |rule|
-        rule.host("example.com").path("/foo/bar").query(a: "lel")
-      end
+      first  = rule.child_rules.first
+      second = first.child_rules.first
+      third  = second.child_rules.first
+
+      expect(first).to be_a HostRule
+      expect(second).to be_a PathRule
+      expect(third).to be_a QueryRule
     end
   end
 
   describe "#params" do
     let(:uri) { URI("http://example.com/foo/bar") }
 
-    context "when Rule responds to :pattern" do
+    context "when Rule responds to #pattern" do
       subject(:rule) { Rule.new.path("/{alpha}/{beta}") }
 
       it "returns the expected Hash" do
@@ -34,7 +36,7 @@ describe Schablone::Routing::Rule do
       end
     end
 
-    context "when Rule does not respond to :pattern" do
+    context "when Rule does not respond to #pattern" do
       subject(:rule) { Rule.new }
 
       it "returns an empty Hash" do
@@ -53,17 +55,17 @@ describe Schablone::Routing::Rule do
       let(:path_rule_b) { PathRule.new("/{gamma}/{delta}") }
 
       before do
-        host_rule_a.append_child_rule(path_rule_a)
-        host_rule_a.append_child_rule(path_rule_b)
+        host_rule_a.send(:append_child_rule, path_rule_a)
+        host_rule_a.send(:append_child_rule, path_rule_b)
 
-        host_rule_b.append_child_rule(path_rule_a)
-        host_rule_b.append_child_rule(path_rule_b)
+        host_rule_b.send(:append_child_rule, path_rule_a)
+        host_rule_b.send(:append_child_rule, path_rule_b)
       end
 
       subject(:rule) do
         rule = Rule.new
-        rule.append_child_rule(host_rule_a)
-        rule.append_child_rule(host_rule_b)
+        rule.send(:append_child_rule, host_rule_a)
+        rule.send(:append_child_rule, host_rule_b)
         rule
       end
 

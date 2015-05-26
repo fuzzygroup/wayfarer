@@ -2,28 +2,30 @@ module Schablone
   module Routing
     class Router
       attr_reader :routes
-      attr_reader :scrapers
+      attr_reader :payloads
+
+      Route = Struct.new(:sym, :rule)
 
       def initialize
         @routes   = []
-        @scrapers = Hash.new(false)
+        @payloads = Hash.new(false)
       end
 
       def route(uri)
-        @routes.each do |rule, sym|
-          is_matching, params = rule =~ uri
-          return @scrapers[sym], params if is_matching && params
+        @routes.each do |route|
+          is_matching, params = route.rule =~ uri
+          return @payloads[route.sym], params if is_matching && params
         end
 
         false
       end
 
-      def register_scraper(sym, &proc)
-        @scrapers[sym] = proc
+      def register_payload(sym, &proc)
+        @payloads[sym] = proc
       end
 
-      def draw(sym, *argv, &proc)
-        @routes << [Rule.new(argv, &proc), sym]
+      def draw(sym, rule_opts = {}, &proc)
+        @routes << Route.new(sym, Rule.new(rule_opts, &proc))
       end
     end
   end
