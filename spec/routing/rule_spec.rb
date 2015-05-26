@@ -102,7 +102,7 @@ describe Schablone::Routing::Rule do
       end
 
       it "returns the expected URI parameters" do
-        expect(rule.params_from_rule_chain(rule_chain, uri)).to eq({
+        expect(rule.send(:params_from_rule_chain, rule_chain, uri)).to eq({
           "alpha" => "foo", "beta" => "bar"
         })
       end
