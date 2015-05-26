@@ -9,8 +9,8 @@ Crawler = Schablone::Crawler.new do
   end
 
   router do
-    within host: "github.com", path: "/bauerd/repo" do
-      draw :
+    draw :page do
+      host "zeit.de"
     end
   end
 end
