@@ -11,15 +11,14 @@ describe Schablone::Routing::Rule do
     end
 
     it "builds the expected Rule chain from options" do
-      rule = Rule.new(host: "example.com", path: "/foo", query: { bar: 42 })
+      rule = Rule.new(host: "example.com", query: { bar: 42 })
 
       first  = rule.child_rules.first
       second = first.child_rules.first
       third  = second.child_rules.first
 
       expect(first).to be_a HostRule
-      expect(second).to be_a PathRule
-      expect(third).to be_a QueryRule
+      expect(second).to be_a QueryRule
     end
   end
 
@@ -35,8 +34,8 @@ describe Schablone::Routing::Rule do
     context "with matching Rule" do
       let(:host_rule_a) { HostRule.new("example.com") }
       let(:host_rule_b) { HostRule.new("google.com") }
-      let(:path_rule_a) { PathRule.new("/{alpha}/{beta}") }
-      let(:path_rule_b) { PathRule.new("/{gamma}/{delta}") }
+      let(:path_rule_a) { ParameterizedPathRule.new("/{alpha}/{beta}") }
+      let(:path_rule_b) { ParameterizedPathRule.new("/{gamma}/{delta}") }
 
       before do
         host_rule_a.send(:append_child_rule, path_rule_a)
@@ -149,13 +148,30 @@ describe Schablone::Routing::Rule do
   end
 
   describe "#path" do
-    it "adds a PathRule as a sub-rule" do
-      rule.path("/foo/bar")
-      expect(rule.child_rules.first).to be_a PathRule
+    context "when Mustermann is required" do
+      it "adds a ParameterizedPathRule as a sub-rule" do
+        rule.path("/foo/bar")
+        expect(rule.child_rules.first).to be_a ParameterizedPathRule
+      end
+
+      it "returns the added Parameterized" do
+        expect(rule.path("/foo/bar")).to be_a ParameterizedPathRule
+      end
     end
 
-    it "returns the added PathRule" do
-      expect(rule.path("/foo/bar")).to be_a PathRule
+    context "when Mustermann is not required" do
+      it "adds a PathRule as a sub-rule" do
+        hide_const Mustermann do
+          rule.path("/foo/bar")
+          expect(rule.child_rules.first).to be_a PathRule
+        end
+      end
+
+      it "returns the added PathRule" do
+        hide_const Mustermann do
+          expect(rule.path("/foo/bar")).to be_a PathRule
+        end
+      end
     end
   end
 
@@ -180,8 +196,8 @@ describe Schablone::Routing::Rule do
     describe ":path option" do
       let(:opts) { { path: "/foo" } }
 
-      it "adds a PathRule" do
-        expect(rule.child_rules.first).to be_a PathRule
+      it "adds a PathRule/Parameter" do
+        expect(rule.child_rules.first).to be_a ParameterizedPathRule
       end
     end
 
@@ -212,7 +228,7 @@ describe Schablone::Routing::Rule do
         third  = second.child_rules.first
 
         expect(first).to be_a HostRule
-        expect(second).to be_a PathRule
+        expect(second).to be_a ParameterizedPathRule
         expect(third).to be_a QueryRule
       end
     end

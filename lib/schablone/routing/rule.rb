@@ -58,7 +58,13 @@ module Schablone
       end
 
       def path(*argv, &proc)
-        append_child_rule(PathRule.new(*argv, &proc))
+        rule = if defined?(Mustermann)
+                 ParameterizedPathRule.new(*argv, &proc)
+               else
+                 PathRule.new(*argv, &proc)
+               end
+
+        append_child_rule(rule)
       end
 
       def query(*argv, &proc)

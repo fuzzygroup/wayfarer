@@ -8,6 +8,8 @@ module Schablone
         super(opts, &proc)
       end
 
+      private
+
       def match!(uri)
         CGI.parse(uri.query).none? { |field, vals| violates?(field, vals) }
       rescue NoMethodError

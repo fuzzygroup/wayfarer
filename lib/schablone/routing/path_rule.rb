@@ -4,21 +4,14 @@ module Schablone
       attr_reader :pattern
 
       def initialize(str, opts = {}, &proc)
-        @pattern = if defined?(Mustermann)
-          Mustermann.new(str, type: :template)
-        else
-          str
-        end
-
+        @pattern = str
         super(opts, &proc)
       end
 
-      def params(uri)
-        defined?(Mustermann) ? @pattern.params(uri.path.to_s) : super
-      end
+      private
 
       def match!(uri)
-        defined?(Mustermann) ? @pattern === uri.path : @pattern == uri.to_s
+        uri.path == @pattern
       end
     end
   end

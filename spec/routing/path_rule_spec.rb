@@ -4,18 +4,16 @@ describe Schablone::Routing::PathRule do
   subject(:rule) { PathRule.new("/foo/bar") }
 
   describe "#===" do
-    context "when Mustermann is required" do
-      context "with matching URI" do
-        let(:uri) { URI("http://example.com/foo/bar") }
+    context "with matching URI" do
+      let(:uri) { URI("http://example.com/foo/bar") }
 
-        it "returns true" do
-          expect(rule === uri).to be true
-        end
+      it "returns true" do
+        expect(rule === uri).to be true
       end
     end
 
     context "with mismatching URI" do
-      let(:uri) { URI("http://example.com/bar/qux") }
+      let(:uri) { URI("http://example.com/foo") }
 
       it "returns false" do
         expect(rule === uri).to be false
@@ -24,14 +22,9 @@ describe Schablone::Routing::PathRule do
   end
 
   describe "#params" do
-    context "when Mustermann is required" do
-      require "mustermann"
-
-      it "returns the expected parameters" do
-        rule = PathRule.new("/{alpha}/{beta}")
-        uri = URI("http://example.com/foo/bar")
-        expect(rule.params(uri)).to eq({ "alpha" => "foo", "beta" => "bar" })
-      end
+    it "returns no parameters" do
+      uri = URI("http://example.com/foo/bar")
+      expect(rule.params(uri)).to eq({})
     end
   end
 end

@@ -8,6 +8,7 @@ require_relative "schablone/routing/rule"
 require_relative "schablone/routing/uri_rule"
 require_relative "schablone/routing/host_rule"
 require_relative "schablone/routing/path_rule"
+require_relative "schablone/routing/parameterized_path_rule"
 require_relative "schablone/routing/query_rule"
 require_relative "schablone/routing/router"
 
