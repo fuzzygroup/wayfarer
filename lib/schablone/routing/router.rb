@@ -2,13 +2,15 @@ module Schablone
   module Routing
     class Router
       attr_reader :routes
+      attr_reader :blacklist
       attr_reader :payloads
 
       Route = Struct.new(:sym, :rule)
 
       def initialize
-        @routes   = []
-        @payloads = Hash.new(false)
+        @routes    = []
+        @blacklist = Rule.new
+        @payloads  = Hash.new(false)
       end
 
       def route(uri)
@@ -19,6 +21,10 @@ module Schablone
         end
 
         false
+      end
+
+      def forbid(*argv, &proc)
+        
       end
 
       def register_payload(sym, &proc)

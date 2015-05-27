@@ -16,6 +16,10 @@ module Schablone
         child_rules.each(&proc)
       end
 
+      def build_child_rule_chain_from_options(opts)
+        opts.inject(self) { |rule, (key, val)| rule.send(key, val) }
+      end
+
       def ===(uri)
         return false unless match!(uri)
         none? || any? { |child_rule| child_rule === (uri) }
@@ -62,10 +66,6 @@ module Schablone
       end
 
       private
-
-      def build_child_rule_chain_from_options(opts)
-        opts.inject(self) { |rule, (key, val)| rule.send(key, val) }
-      end
 
       def append_child_rule(other)
         @child_rules << other; other

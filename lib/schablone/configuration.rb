@@ -11,7 +11,9 @@ module Schablone
       selenium_argv:         [:firefox],
       sanitize_node_content: true,
       log_level:             Logger::FATAL,
-      mustermann_type:       :template
+      mustermann_type:       :template,
+      connection_count:      6,
+      thread_timeout:        8
     }
 
     def initialize

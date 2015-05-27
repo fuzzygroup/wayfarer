@@ -189,7 +189,7 @@ describe Schablone::Routing::Rule do
   describe "#build_child_rule_chain_from_options" do
     subject(:rule) do
       rule = Rule.new
-      rule.send(:build_child_rule_chain_from_options, opts)
+      rule.build_child_rule_chain_from_options(opts)
       rule
     end
 
