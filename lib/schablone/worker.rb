@@ -1,13 +1,14 @@
 require "thread"
 
 module Schablone
-  class Worker < Thread
+  class Worker
     attr_reader :navigator
 
     def initialize(processor, uris, router)
       @processor = processor
       @uri_queue = queue(uris)
       @router    = router
+
       super(self, &:perform)
     end
 
