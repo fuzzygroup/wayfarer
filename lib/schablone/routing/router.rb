@@ -23,8 +23,17 @@ module Schablone
         false
       end
 
-      def forbid(*argv, &proc)
-        
+      def forbid(opts = {}, &proc)
+        @blacklist.build_child_rule_chain_from_options(opts)
+        @blacklist.instance_eval(&proc) if block_given?
+      end
+
+      def forbids?(uri)
+        @blacklist === uri
+      end
+
+      def allows?(uri)
+        !forbids?(uri)
       end
 
       def register_payload(sym, &proc)

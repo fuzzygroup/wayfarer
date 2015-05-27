@@ -3,6 +3,19 @@ require "spec_helpers"
 describe Schablone::Routing::Router do
   subject(:router) { Router.new }
 
+  describe "#forbid" do
+    it "forbids URIs" do
+      router.forbid host: "example.com"
+      expect(router.forbids?(URI("http://example.com"))).to be true
+
+      router.forbid do
+        host "google.com"
+      end
+
+      expect(router.forbids?(URI("http://google.com"))).to be true
+    end
+  end
+
   describe "#register_payload" do
     it "registers a payload" do
       expect {
