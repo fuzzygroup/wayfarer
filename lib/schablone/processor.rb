@@ -42,7 +42,12 @@ module Schablone
 
     def step
       self.state = :running
-      @workers = spawn_workers(@navigator.current_uri_queue)
+
+      thread_count = Schablone.config.thread_count
+      slices(@navigator.current_uris, thread_count).each do |uris|
+        @workers << Worker.new(self, uris, @router)
+      end
+
       @workers.each(&:join)
       @workers.clear
       halt unless @navigator.cycle
@@ -62,10 +67,10 @@ module Schablone
       @mutex.synchronize { @state = sym }
     end
 
-    def spawn_workers(queue)
-      Schablone.config.thread_count.times.map do
-        Worker.new(self, queue, @router)
-      end
+    def slices(array, subset_count)
+      return [] if subset_count == 0
+      subset_size = (array.size / subset_count.to_f).ceil
+      array.each_slice(subset_size).to_a
     end
   end
 end

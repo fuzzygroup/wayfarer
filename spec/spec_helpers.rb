@@ -22,10 +22,6 @@ module SpecHelpers
     NetHTTPAdapter.instance.fetch(URI(uri))
   end
 
-  def queue(array)
-    array.inject(Queue.new) { |queue, elem| queue << elem }
-  end
-
   def html_fragment(html_str)
     Nokogiri::HTML.fragment(html_str)
   end

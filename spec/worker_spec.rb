@@ -3,8 +3,8 @@ require "spec_helpers"
 describe Schablone::Worker do
   let(:router)     { Router.new }
   let(:processor)  { Processor.new(router) }
-  let(:uri_queue)  { Queue.new }
-  subject(:worker) { Worker.new(processor, uri_queue, router) }
+  let(:uris)       { [] }
+  subject(:worker) { Worker.new(processor, uris, router) }
 
   describe "#scrape" do
     this = nil

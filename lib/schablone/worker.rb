@@ -1,12 +1,13 @@
+require "thread"
+
 module Schablone
   class Worker < Thread
     attr_reader :navigator
 
-    def initialize(processor, uri_queue, router)
+    def initialize(processor, uris, router)
       @processor = processor
-      @uri_queue = uri_queue
+      @uri_queue = queue(uris)
       @router    = router
-
       super(self, &:perform)
     end
 
@@ -44,6 +45,10 @@ module Schablone
 
     rescue Errno::ETIMEDOUT
       Schablone.log.info("HTTP connection timed out for #{uri}")
+    end
+
+    def queue(array)
+      array.reduce(Queue.new) { |queue, elem| queue << elem }
     end
   end
 end

@@ -52,4 +52,14 @@ describe Schablone::Processor do
       end
     end
   end
+
+  describe "#slices" do
+    it "works" do
+      input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+      output = processor.send(:slices, input, 3)
+      expect(output).to eq [
+        [1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11]
+      ]
+    end
+  end
 end
