@@ -1,10 +1,5 @@
 # Robber
-A versatile yet small web crawling/scraping framework
-
-Tested on:
-
-
-[__API documentation__](https://github.com/bauerd/schablone)
+A versatile yet small web crawling/scraping framework for MRI and JRuby
 
 ## Features
 * Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates JavaScript-enabled browsers with [Selenium](https://github.com/seleniumhq/selenium), e.g. [PhantomJS](http://phantomjs.org)

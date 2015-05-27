@@ -17,6 +17,16 @@ namespace :spec do
   RSpec::Core::RakeTask.new live: [:start_test_app] do |task|
     task.rspec_opts = ["--tag live"]
   end
+
+  desc "Run all JRuby examples"
+  RSpec::Core::RakeTask.new jruby: [:start_test_app] do |task|
+    task.rspec_opts = ["--tag ~mri --tag ~live --tty"]
+  end
+
+  desc "Run all MRI examples"
+  RSpec::Core::RakeTask.new mri: [:start_test_app] do |task|
+    task.rspec_opts = ["--tag ~mri --tag ~live"]
+  end
 end
 
 desc "Run all examples"
@@ -40,11 +50,6 @@ end
 # ==============================================================================
 # Plumbing
 # ==============================================================================
-desc %(List lines that contain "FIXME" or "TODO")
-task :todo do
-  sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec features | tr -s [:space:])
-end
-
 desc "Start a Ruby shell"
 task :shell do
   require_relative "lib/schablone"
@@ -61,6 +66,11 @@ task :shell do
     ARGV.clear
     IRB.start
   end
+end
+
+desc %(List lines that contain "FIXME" or "TODO")
+task :todo do
+  sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec features | tr -s [:space:])
 end
 
 # ==============================================================================
@@ -85,22 +95,6 @@ task :stop_test_app do
   @server_thread.kill
 end
 
-["spec:isolated", "spec:live"].each do |task|
+["spec:isolated", "spec:live", "spec:mri", "spec:jruby"].each do |task|
   Rake::Task[task].enhance { Rake::Task["stop_test_app"].invoke }
-end
-
-# ==============================================================================
-# Test dependencies
-# ==============================================================================
-namespace :deps do
-  directory "support/static/html40"
-
-  task fetch_html_spec: "support/static/html40" do
-    sh "wget -P support/static http://www.w3.org/TR/html401/html40.zip"
-    sh "unzip -o support/static/html40.zip -d support/static/html40"
-    sh "rm support/static/html40.zip"
-  end
-
-  desc "Fetch external test files"
-  task fetch: ["fetch_html_spec"]
 end

@@ -1,3 +1,4 @@
+require "thread"
 require "set"
 
 module Schablone
