@@ -46,7 +46,7 @@ module Schablone
       end
 
       def params(uri)
-        respond_to?(:pattern) ? pattern.params(uri.path) : {}
+        {}
       end
 
       def uri(*argv, &proc)

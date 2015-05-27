@@ -24,24 +24,8 @@ describe Schablone::Routing::Rule do
   end
 
   describe "#params" do
-    let(:uri) { URI("http://example.com/foo/bar") }
-
-    context "when Rule responds to #pattern" do
-      subject(:rule) { Rule.new.path("/{alpha}/{beta}") }
-
-      it "returns the expected Hash" do
-        expect(rule.params(uri)).to eq({
-          "alpha" => "foo", "beta" => "bar"
-        })
-      end
-    end
-
-    context "when Rule does not respond to #pattern" do
-      subject(:rule) { Rule.new }
-
-      it "returns an empty Hash" do
-        expect(rule.params(uri)).to eq({})
-      end
+    it "returns an empty Hash" do
+      expect(rule.params(URI("http://example.com"))).to eq({})
     end
   end
 

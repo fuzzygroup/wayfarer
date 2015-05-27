@@ -1,22 +1,24 @@
-require "mustermann" unless RUBY_PLATFORM == "java"
-
 module Schablone
   module Routing
     class PathRule < Rule
       attr_reader :pattern
 
-      def initialize(pattern_str, opts = {}, &proc)
-        if RUBY_PLATFORM != "java"
-          @pattern = Mustermann.new(pattern_str, type: :template)
+      def initialize(str, opts = {}, &proc)
+        @pattern = if defined?(Mustermann)
+          Mustermann.new(str, type: :template)
         else
-          @pattern = pattern_str
+          str
         end
 
         super(opts, &proc)
       end
 
+      def params(uri)
+        defined?(Mustermann) ? @pattern.params(uri.path.to_s) : super
+      end
+
       def match!(uri)
-        RUBY_PLATFORM != "java" ? @pattern === uri.path : @pattern == uri.to_s
+        defined?(Mustermann) ? @pattern === uri.path : @pattern == uri.to_s
       end
     end
   end
