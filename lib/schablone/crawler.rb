@@ -38,7 +38,7 @@ module Schablone
       processor.navigator.cycle
       processor.run
 
-      @locals.reduce(OpenStruct.new) do |ostruct, (key, threadsafe)|
+      @threadsafes.reduce(OpenStruct.new) do |ostruct, (key, threadsafe)|
         ostruct[key] = threadsafe.wrapped_object; ostruct
       end
     end

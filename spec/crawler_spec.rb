@@ -12,4 +12,11 @@ describe Schablone::Crawler do
       expect(crawler.threadsafes[:bar]).to be_a Threadsafe
     end
   end
+
+  describe "#crawl" do
+    it "returns an OpenStruct of Threadsafes" do
+      crawler.threadsafe(:foo) { 42 }
+      expect(crawler.crawl.foo).to be 42
+    end
+  end
 end
