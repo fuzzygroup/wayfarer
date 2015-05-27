@@ -17,7 +17,7 @@ module Schablone
       @state     = :idle
       @mutex     = Mutex.new
 
-      @adapter_pool = ConnectionPool.new(size: 5, timeout: 5) do
+      @adapter_pool = ConnectionPool.new(size: 16, timeout: 5) do
         case Schablone.config.http_adapter
         when :net_http then HTTPAdapters::NetHTTPAdapter.instance
         when :selenium then HTTPAdapters::SeleniumAdapter.new

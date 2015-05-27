@@ -10,7 +10,8 @@ module Schablone
       max_http_redirects:    3,
       selenium_argv:         [:firefox],
       sanitize_node_content: true,
-      log_level:             Logger::FATAL
+      log_level:             Logger::FATAL,
+      mustermann_type:       :template
     }
 
     def initialize

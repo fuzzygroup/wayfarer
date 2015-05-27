@@ -1,19 +1,26 @@
 require_relative "../lib/schablone"
 
-Schablone.config.log_level = Logger::INFO
-
 Crawler = Schablone::Crawler.new do
+  uri_template :foobar, ""
+
   config do |config|
-    config.threads = 8
-    config.http_adapter = :selenium
+    config.log_level     = Logger::INFO
+    config.threads       = 16
+    config.http_adapter  = :selenium
+    config.selenium_argv = [:phantomjs]
   end
 
   index :page do
-    adapter.driver.save_screenshot "/Users/dom/Desktop/scrnshts/#{Time.now.to_i}.png"
+    puts page.headers
     visit page.links
+    index :foobar
   end
 
-  router.draw :page, host: /wikipedia.org/
+  index :foobar do
+    puts "lel"
+  end
+
+  router.draw :page, host: /zeit.de/
 end
 
-result = Crawler.crawl("http://de.wikipedia.org/wiki/Spezial:Zuf%C3%A4llige_Seite")
+Crawler.crawl("http://zeit.de")

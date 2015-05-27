@@ -16,4 +16,16 @@ describe Schablone::Crawler do
       expect(crawler.locals[:foo]).to be obj
     end
   end
+
+  describe "#uri_template" do
+    it "registers an URI template" do
+      expect {
+        crawler.uri_template(:foo, "http://example.com")
+      }.to change { crawler.uri_templates.count }
+    end
+  end
+
+  describe "#method_missing" do
+    it "allows "
+  end
 end

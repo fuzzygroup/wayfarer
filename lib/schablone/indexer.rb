@@ -29,5 +29,9 @@ module Schablone
     def visit(*uris)
       @processor.navigator.stage(*uris)
     end
+
+    def index(sym)
+      evaluate(@processor.router.payloads[sym])
+    end
   end
 end
