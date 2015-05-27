@@ -1,8 +1,6 @@
 require_relative "../lib/schablone"
 
 Crawler = Schablone::Crawler.new do
-  uri_template :foobar, ""
-
   config do |config|
     config.log_level     = Logger::INFO
     config.threads       = 16
@@ -10,24 +8,14 @@ Crawler = Schablone::Crawler.new do
     config.selenium_argv = [:phantomjs]
   end
 
-  helpers do
-    
-  end
+  threadsafe :file, File.open("/tmp/foobar", "w")
 
-  index :culture do
-    params[:article]
-  end
-
-  catch_all do
+  index :foo do
+    file.puts page.uri
     visit page.links
   end
 
-  router.forbid do
-    path ""
-  end
-
-  router.draw :culture, host: "zeit.de", path: "/kultur/{article}"
-  router.draw :catch_all, host: "zeit.de"
+  router.draw :foo, host: /zeit.de/
 end
 
 Crawler.crawl("http://zeit.de")

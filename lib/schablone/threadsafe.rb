@@ -3,7 +3,8 @@ require "thread"
 module Schablone
   class Threadsafe
     def initialize(obj = nil, &proc)
-      @wrapped_object = obj || proc.call
+      @obj = obj || proc.call
+      @mutex = Mutex.new
     end
 
     def wrapped_object

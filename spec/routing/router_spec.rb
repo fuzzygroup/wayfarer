@@ -73,5 +73,14 @@ describe Schablone::Routing::Router do
         expect(payload).to be false
       end
     end
+
+    context "with forbidden URI" do
+      it "returns false" do
+        router.draw(:foo, host: "example.com")
+        #router.forbid.host("example.com")
+        payload, params = router.route(URI("http://example.com"))
+        expect(payload).to be false
+      end
+    end
   end
 end

@@ -3,11 +3,11 @@ require "ostruct"
 module Schablone
   class Crawler
     attr_reader :router
-    attr_reader :locals
+    attr_reader :threadsafes
     attr_reader :uri_templates
 
     def initialize(&proc)
-      @locals = {}
+      @threadsafes = {}
       @uri_templates = {}
       @router = Routing::Router.new
       instance_eval(&proc) if block_given?
@@ -23,12 +23,9 @@ module Schablone
       )
     end
 
-    def let(key, val)
-      register_local(key, Threadsafe.new(val))
-    end
-
-    def let!(key, val)
-      register_local(key, val)
+    def threadsafe(key, val = nil, &proc)
+      threadsafe = @threadsafes[key] = Threadsafe.new(val || proc.call)
+      helpers { define_method(key) { threadsafe } }
     end
 
     def index(sym, &proc)
@@ -56,17 +53,6 @@ module Schablone
     end
 
     private
-
-    def register_local(key, val)
-      @locals[key] = val
-      helpers { define_method(key) { @locals[key] } }
-    end
-
-    def method_missing(method, &proc)
-      if method =~ /^crawl_(\w+)$/
-        
-      end
-    end
 
     def respond_to_missing?(method, *)
       pismo_document.respond_to?(method) || super

@@ -26,6 +26,7 @@ module Schablone
       def forbid(opts = {}, &proc)
         @blacklist.build_child_rule_chain_from_options(opts)
         @blacklist.instance_eval(&proc) if block_given?
+        @blacklist
       end
 
       def forbids?(uri)
