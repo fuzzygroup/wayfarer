@@ -37,10 +37,6 @@ module Schablone
       processor.navigator.stage(uris)
       processor.navigator.cycle
       processor.run
-
-      @threadsafes.reduce(OpenStruct.new) do |ostruct, (key, threadsafe)|
-        ostruct[key] = threadsafe.wrapped_object; ostruct
-      end
     end
 
     def config(*argv, &proc)

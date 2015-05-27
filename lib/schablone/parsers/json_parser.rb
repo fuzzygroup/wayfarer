@@ -4,7 +4,7 @@ module Schablone
       module_function
 
       def parse(json_str)
-        if defined? Oj
+        if defined?(Oj)
           Oj.load(json_str)
         else
           require "json"

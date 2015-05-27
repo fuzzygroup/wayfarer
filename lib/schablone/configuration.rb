@@ -1,7 +1,5 @@
-require "ostruct"
-
 module Schablone
-  class Configuration < OpenStruct
+  class Configuration
     DEFAULTS = {
       thread_count:          6,
       http_adapter:          :net_http,
@@ -17,13 +15,26 @@ module Schablone
     }
 
     def initialize
-      super
+      @config = {}
       reset!
     end
 
     def reset!
-      each_pair { |key, _| delete_field(key) }
-      DEFAULTS.each { |key, val| self[key] = val }
+      @config.replace(DEFAULTS)
+    end
+
+    private
+
+    def method_missing(method, *args)
+      if method.to_s =~ /^\w+=$/
+        @config[method.to_s.chomp("=").to_sym] = args.first
+      else
+        @config[method]
+      end
+    end
+
+    def respond_to_missing?(method, private = false)
+      @config.key?(method) || super
     end
   end
 end

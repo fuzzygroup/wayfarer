@@ -2,7 +2,6 @@ require "uri"
 require "ostruct"
 require "mime/types"
 require "nokogiri"
-require "pismo"
 
 module Schablone
   class Page
@@ -34,8 +33,8 @@ module Schablone
       end
     end
 
-    def pismo_document
-      @pismo_document ||= instantiate_pismo_document
+    def pismo
+      @pismo_document ||= instantiate_pismo_document if defined?(Pismo)
     end
 
     def links(matcher_hash = { css: "a" })
@@ -65,14 +64,6 @@ module Schablone
 
     def expand_uri(path)
       URI.join(@uri, path)
-    end
-
-    def method_missing(*argv, &proc)
-      pismo_document.send(*argv, &proc)
-    end
-
-    def respond_to_missing?(method, *)
-      pismo_document.respond_to?(method) || super
     end
   end
 end

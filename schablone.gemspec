@@ -17,13 +17,10 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.executables   << "scrapespeare"
 
-  s.add_dependency "mustermann"
-  s.add_dependency "mustermann-uri-template"
   s.add_dependency "nokogiri"
   s.add_dependency "selenium-webdriver"
   s.add_dependency "rack"
   s.add_dependency "net-http-persistent"
-  s.add_dependency "pismo"
   s.add_dependency "mime-types"
   s.add_dependency "connection_pool"
 

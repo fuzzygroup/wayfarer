@@ -1,7 +1,5 @@
 require "rspec/core/rake_task"
-require "cucumber/rake/task"
 require "rubocop/rake_task"
-require "yard"
 require "rack"
 
 require_relative "support/test_app"
@@ -25,40 +23,11 @@ desc "Run all examples"
 task spec: ["spec:isolated", "spec:live"]
 
 # ==============================================================================
-# Cucumber
-# ==============================================================================
-namespace :features do
-  desc "Run environment-agnostic scenarios"
-  Cucumber::Rake::Task.new isolated: [:start_test_app] do |task|
-    task.cucumber_opts = ["--format progress"]
-  end
-end
-
-desc "Run all scenarios"
-task features: ["features:isolated"]
-
-# ==============================================================================
-# Benchmarks
-# ==============================================================================
-desc "Run benchmarks"
-task benchmark: ["start_test_app"] do
-  FileList.new("benchmarks/*_bm.rb").each do |file|
-    puts "=" * `tput cols`.to_i
-    ruby(file)
-  end
-end
-
-# ==============================================================================
 # RuboCop
 # ==============================================================================
 RuboCop::RakeTask.new do |task|
   task.formatters = ["simple"]
 end
-
-# ==============================================================================
-# YARD
-# ==============================================================================
-YARD::Rake::YardocTask.new :doc
 
 # ==============================================================================
 # RubyGems
@@ -116,7 +85,7 @@ task :stop_test_app do
   @server_thread.kill
 end
 
-["spec:isolated", "spec:live", "features", "benchmark"].each do |task|
+["spec:isolated", "spec:live"].each do |task|
   Rake::Task[task].enhance { Rake::Task["stop_test_app"].invoke }
 end
 
