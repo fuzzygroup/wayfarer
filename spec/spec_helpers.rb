@@ -1,4 +1,5 @@
-require "schablone"
+require "bundler"
+Bundler.require
 
 # Optional dependencies (MRI-only)
 unless RUBY_PLATFORM == "java"
