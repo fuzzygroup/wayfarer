@@ -1,7 +1,7 @@
 require "thread"
 
 module Schablone
-  class Worker
+  class Worker < Thread
     attr_reader :navigator
 
     def initialize(processor, uris, router)
