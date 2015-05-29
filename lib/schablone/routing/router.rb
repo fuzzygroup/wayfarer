@@ -16,6 +16,8 @@ module Schablone
       end
 
       def route(uri)
+        return false if forbids?(uri)
+
         @routes.each do |route|
           is_matching, params = route.rule =~ uri
           return route.method, params if is_matching && params

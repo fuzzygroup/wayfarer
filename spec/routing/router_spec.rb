@@ -56,8 +56,10 @@ describe Schablone::Routing::Router do
 
     context "with forbidden URI" do
       it "returns false" do
+        uri = URI("http://example.com")
+        router.draw :foo, host: "example.com"
         router.forbid.host("example.com")
-        expect(router.route(URI("http://example.com"))).to be false
+        expect(router.route(uri)).to be false
       end
     end
   end
