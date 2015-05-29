@@ -7,16 +7,15 @@ module Schablone
     include Celluloid
     include Celluloid::Notifications
 
-    def initialize(router)
+    def initialize
       subscribe("halt", :halt)
       Navigator.supervise_as(:navigator)
-      @router = router
       @worker_pool = Worker.pool
     end
 
-    def run
+    def run(task)
       Actor[:navigator].current_uris.each do |uri|
-        @worker_pool.scrape(uri, @router.clone)
+        @worker_pool.scrape(uri, task)
       end
 
       halt unless Actor[:navigator].cycle

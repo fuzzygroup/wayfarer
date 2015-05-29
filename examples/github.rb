@@ -2,15 +2,17 @@ require_relative "../lib/schablone"
 
 class MyTask < Schablone::Task
   def foobar
+    barfoo(123)
   end
 
   def something
   end
 
-  def barfoo
+  def barfoo(arg)
+    puts arg
   end
 
-  router.draw :foo, host: "example.com"
+  routes.draw :foobar, host "example.com"
 end
 
-MyTask.new.invoke
+MyTask.invoke

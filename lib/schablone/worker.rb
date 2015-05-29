@@ -6,11 +6,8 @@ module Schablone
 
     trap_exit :indexer_died
 
-    def scrape(uri, router)
+    def scrape(uri, task)
       Actor[:navigator].cache(uri)
-
-      payload, params = router.route(uri)
-      terminate unless payload && params
 
       HTTPAdapters::AdapterPool.with do |adapter|
         page = adapter.fetch(uri)
