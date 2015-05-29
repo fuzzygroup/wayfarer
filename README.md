@@ -6,9 +6,9 @@ A versatile web crawling/scraping framework for MRI and JRuby
 * Ensures non-circular, breadth-first and multithreaded traversal of page graphs
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Simplifies data extraction with an optional DSL based on CSS/XPath
-* Extracts meta-data with [Pismo](https://github.com/peterc/pismo) when needed
+* Extracts meta-data with [Pismo](https://github.com/peterc/pismo) if needed
 * Obeys `robots.txt` if you want it to
-* Ships with [RSpec](http://rspec.info/) matchers for testing crawling behaviour
+* Integreates seamlessly with Rails’ ActiveJob
 * Is agnostic about data storage
 
 ## Installation
@@ -135,11 +135,8 @@ end
 ### Using oj instead of `::JSON`
 oj provides better performance than the standard library’s `JSON` module. Due to it being a C extension, it is not listed as a dependency. In order to use oj, [install](https://github.com/ohler55/oj#installation) and `require "oj"`. It gets picked up automatically.
 
-```ruby
-require "oj"
+### Using Mustermann
+oj provides better performance than the standard library’s `JSON` module. Due to it being a C extension, it is not listed as a dependency. In order to use oj, [install](https://github.com/ohler55/oj#installation) and `require "oj"`. It gets picked up automatically.
 
-crawler = Schablone::Crawler.new # JSON now gets parsed with oj
-```
-
-## Caveats and shortcomings
-* PhantomJS is highly recommended when using Selenium. In contrast to other WebDrivers, it implements `#response_code` and `#response_headers`.
+### Using Pismo
+oj provides better performance than the standard library’s `JSON` module. Due to it being a C extension, it is not listed as a dependency. In order to use oj, [install](https://github.com/ohler55/oj#installation) and `require "oj"`. It gets picked up automatically.

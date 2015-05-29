@@ -3,21 +3,22 @@ module Schablone
     class Router
       attr_reader :routes
       attr_reader :blacklist
-      attr_reader :payloads
 
-      Route = Struct.new(:sym, :rule)
+      Route = Struct.new(:method, :rule)
 
       def initialize
         @routes    = []
         @blacklist = Rule.new
-        @payloads  = Hash.new(false)
+      end
+
+      def draw(method, rule_opts = {}, &proc)
+        @routes << Route.new(method, Rule.new(rule_opts, &proc))
       end
 
       def route(uri)
         @routes.each do |route|
           is_matching, params = route.rule =~ uri
-          payload = @payloads[route.sym]
-          return payload, params if is_matching && params && payload
+          return route.method, params if is_matching && params
         end
 
         false
@@ -35,14 +36,6 @@ module Schablone
 
       def allows?(uri)
         !forbids?(uri)
-      end
-
-      def register_payload(sym, &proc)
-        @payloads[sym] = proc
-      end
-
-      def draw(sym, rule_opts = {}, &proc)
-        @routes << Route.new(sym, Rule.new(rule_opts, &proc))
       end
     end
   end

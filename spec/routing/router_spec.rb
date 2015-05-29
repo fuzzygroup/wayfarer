@@ -16,14 +16,6 @@ describe Schablone::Routing::Router do
     end
   end
 
-  describe "#register_payload" do
-    it "registers a payload" do
-      expect {
-        router.register_payload(:foo, &Proc.new {})
-      }.to change { router.payloads.count }.by(1)
-    end
-  end
-
   describe "#draw" do
     it "appends a route" do
       expect { router.draw(:foo) }.to change { router.routes.count }.by(1)
@@ -36,7 +28,6 @@ describe Schablone::Routing::Router do
     end
 
     it "builds the expected Rule chain" do
-      router.register_payload(:foo) {}
       router.draw(:foo, host: "example.com", path: "/foo")
       expect(router.route(URI("http://example.com/foo"))).to be_truthy
     end
@@ -45,41 +36,28 @@ describe Schablone::Routing::Router do
   describe "#route" do
     context "with matching route" do
       it "returns the registered payload and parameters" do
-        router.register_payload(:foo, &(foo = Proc.new {}))
         router.draw(:foo) { host "example.com", path: "/{barqux}" }
         uri = URI("http://example.com/42")
-        payload, params = router.route(uri)
-        expect(payload).to be foo
+        method, params = router.route(uri)
+        expect(method).to be :foo
         expect(params).to eq({ "barqux" => "42" })
       end
     end
 
     context "without matching route" do
       it "returns false" do
-        router.register_payload(:foo, &(foo = Proc.new {}))
         router.draw(:foo) { host "example.com", path: "/{barqux}" }
         uri = URI("http://google.com")
-        payload, params = router.route(uri)
-        expect(payload).to be false
+        method, params = router.route(uri)
+        expect(method).to be false
         expect(params).to be nil
-      end
-    end
-
-    context "without registered payload" do
-      it "returns false" do
-        router.draw(:foo) { host "example.com", path: "/{barqux}" }
-        uri = URI("http://example.com/42")
-        payload, params = router.route(uri)
-        expect(payload).to be false
       end
     end
 
     context "with forbidden URI" do
       it "returns false" do
-        router.draw(:foo, host: "example.com")
-        #router.forbid.host("example.com")
-        payload, params = router.route(URI("http://example.com"))
-        expect(payload).to be false
+        router.forbid.host("example.com")
+        expect(router.route(URI("http://example.com"))).to be false
       end
     end
   end

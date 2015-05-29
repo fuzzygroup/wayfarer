@@ -2,41 +2,25 @@ require "spec_helpers"
 
 describe Schablone::Worker do
   let(:router)     { Router.new }
-  let(:processor)  { Processor.new(router) }
   let(:uris)       { [] }
-  subject(:worker) { Worker.new(processor, uris, router) }
+  let!(:processor) { Celluloid::Actor[:processor] = Processor.new(router) }
+  let!(:navigator) { Celluloid::Actor[:navigator] = Navigator.new }
+
+  subject(:worker) { Worker.new }
 
   describe "#scrape" do
-    this = nil
-
-    it "allows accessing the current page" do
-      router.register_payload(:foo) { this = page }
-      router.draw(:foo) { host("example.com") }
-      worker.send(:scrape, URI("http://example.com"))
-      expect(this).to be_a Page
+    it "caches URIs" do
+      uri = URI("http://example.com")
+      worker.scrape(uri, router)
+      expect(navigator.cached_uris.include?(uri)).to be true
     end
 
-    it "allows accessing the params" do
-      router.register_payload(:foo) { this = params }
-      router.draw(:foo) { path "/{foo}/{bar}" }
-      worker.send(:scrape, URI("http://example.com/alpha/beta"))
-      expect(this).to eq({
-        "foo" => "alpha", "bar" => "beta"
-      })
-    end
-
-    it "allows staging links" do
-      router.register_payload(:foo) { visit page.links }
-      router.draw(:foo) { host "example.com" }
-      worker.send(:scrape, URI("http://example.com"))
-      expect(processor.navigator.staged_uris.count).to be 1
-    end
-
-    it "caches scraped URIs" do
-      router.register_payload(:foo) {}
-      router.draw(:foo) { host "example.com" }
-      worker.send(:scrape, URI("http://example.com"))
-      expect(processor.navigator.cached_uris).to eq [URI("http://example.com")]
+    it "evaluates payloads" do
+      has_evaluated = false
+      router.register_payload(:foo) { has_evaluated = true }
+      router.draw(:foo, host: "example.com")
+      worker.scrape(URI("http://example.com"), router)
+      expect(has_evaluated).to be true
     end
   end
 end

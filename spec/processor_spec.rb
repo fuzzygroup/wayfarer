@@ -1,65 +1,23 @@
 require "spec_helpers"
 
 describe Schablone::Processor do
-  let(:indexer)       { Proc.new {} }
   let(:router)        { Router.new }
-  subject(:processor) { Processor.new(router) }
+  let!(:processor)    { Celluloid::Actor[:processor] = Processor.new(router) }
+  let!(:navigator)    { Celluloid::Actor[:navigator] = Navigator.new }
 
-  it "is idle initially" do
-    expect(processor).to be_idle
-  end
-
-  describe "#step" do
-    let(:uri) { URI("http://example.com") }
-
-    before do
-      processor.navigator.stage(uri)
-      processor.navigator.cycle
-    end
-
-    it "halts" do
+  describe "#run" do
+    it "halts without staged URIs" do
+      navigator.stage(URI("http://example.com"))
+      navigator.cycle
       processor.run
-      expect(processor).to be_halted
-    end
-
-    it "caches URIs" do
-      processor.step
-      expect(processor.navigator.cached_uris).to eq [uri]
-    end
-
-    it "stages URIs" do
-      router.register_payload(:foo, &Proc.new { visit("http://google.com") })
-      router.draw(:foo) { host "example.com" }
-      processor.step
-      expect(processor.navigator.current_uris).to eq [URI("http://google.com")]
-    end
-
-    context "with staged URIs" do
-      it "does not halt" do
-        router.register_payload(:foo, &Proc.new { visit("http://google.com") })
-        router.draw(:foo) { host "example.com" }
-        processor.step
-        expect(processor).not_to be_halted
-      end
-    end
-
-    context "without staged URIs" do
-      it "halts" do
-        router.register_payload(:foo, &Proc.new {})
-        router.draw(:foo) { host "example.com" }
-        processor.step
-        expect(processor.state).to be :halted
-      end
+      expect(navigator.cached_uris).to eq [URI("http://example.com")]
     end
   end
 
-  describe "#slices" do
-    it "works" do
-      input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-      output = processor.send(:slices, input, 3)
-      expect(output).to eq [
-        [1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11]
-      ]
+  describe "#halt" do
+    it "terminates the Processor" do
+      processor.halt
+      expect(processor).not_to be_alive
     end
   end
 end

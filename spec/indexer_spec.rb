@@ -1,12 +1,15 @@
 require "spec_helpers"
 
 describe Schablone::Indexer do
-  let(:router)      { Router.new }
-  let(:processor)   { Processor.new(router) }
-  let(:adapter)     { Object.new }
-  let(:page)        { fetch_page("http://example.com") }
-  let(:params)      { {} }
-  subject(:indexer) { Indexer.new(processor, adapter, page, params) }
+  let(:router)  { Router.new }
+  let(:adapter) { NetHTTPAdapter.instance }
+  let(:page)    { fetch_page(test_app("/hello_world")) }
+  let(:params)  { {} }
+
+  let!(:processor)    { Celluloid::Actor[:processor] = Processor.new(router) }
+  let!(:navigator)    { Celluloid::Actor[:navigator] = Navigator.new }
+
+  subject(:indexer) { Indexer.new(router, adapter, page, params) }
 
   describe "::helpers" do
     it "allows defining helper methods" do
@@ -29,23 +32,43 @@ describe Schablone::Indexer do
     it "stages URIs" do
       expect {
         indexer.send(:visit, "http://google.com", "http://yahoo.com")
-      }.to change { processor.navigator.staged_uris.count }.by(2)
+      }.to change { navigator.staged_uris.count }.by(2)
     end
   end
 
   describe "#halt" do
     it "halts the Processor" do
-      indexer.instance_variable_set(:@processor, processor = spy())
       indexer.send(:halt)
-      expect(processor).to have_received(:halt)
+      expect(processor).not_to be_alive
     end
   end
 
   describe "#evaluate" do
-    it "evaluates the Proc in its instance context" do
-      this = nil
-      indexer.evaluate Proc.new { this = self }
-      expect(this).to be indexer
+    it "allows calling #adapter, #page and #params" do
+      adapter = page = params = nil
+
+      payload = Proc.new do
+        adapter = self.adapter
+        page    = self.page
+        params  = self.params
+      end
+
+      indexer.evaluate(payload)
+
+      expect(adapter).to be_a NetHTTPAdapter
+      expect(page).to be_a Page
+      expect(params).to be_a Hash
+    end
+  end
+
+  describe "#index" do
+    it "evaluates payloads" do
+      call_times = 0
+      router.register_payload(:bar) { call_times += 1 }
+      router.register_payload(:qux) { call_times += 1 }
+
+      router.draw(:bar, host: "example.com")
+      
     end
   end
 end

@@ -1,6 +1,16 @@
+# Standard library
 require "logger"
 
-# Internals
+# Dependencies
+require "nokogiri"
+require "selenium-webdriver"
+require "net/http/persistent"
+require "mime-types"
+require "connection_pool"
+require "celluloid/autostart"
+require "parallel"
+
+# Plumbing
 require_relative "schablone/configuration"
 
 # Routing
@@ -24,13 +34,14 @@ require_relative "schablone/extraction/scoper"
 # HTTP adapters
 require_relative "schablone/http_adapters/net_http_adapter"
 require_relative "schablone/http_adapters/selenium_adapter"
+require_relative "schablone/http_adapters/adapter_pool"
 
 # Parsers
 require_relative "schablone/parsers/xml_parser"
 require_relative "schablone/parsers/json_parser"
 
 # Processing
-require_relative "schablone/threadsafe"
+require_relative "schablone/task"
 require_relative "schablone/worker"
 require_relative "schablone/indexer"
 require_relative "schablone/page"

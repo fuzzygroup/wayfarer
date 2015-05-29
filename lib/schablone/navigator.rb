@@ -3,23 +3,24 @@ require "set"
 
 module Schablone
   class Navigator
+    include Celluloid
+
     def initialize
       @current_uris = Set.new([])
       @staged_uris = Set.new([])
       @cached_uris = URISet.new
-      @mutex = Mutex.new
     end
 
     def current_uris
-      @mutex.synchronize { @current_uris.to_a }
+      @current_uris.to_a
     end
 
     def staged_uris
-      @mutex.synchronize { @staged_uris.to_a }
+      @staged_uris.to_a
     end
 
     def cached_uris
-      @mutex.synchronize { @cached_uris.to_a }
+      @cached_uris.to_a
     end
 
     def current_uri_queue
@@ -27,11 +28,11 @@ module Schablone
     end
 
     def stage(*uris)
-      @mutex.synchronize { @staged_uris |= uris.flatten.map { |uri| URI(uri) } }
+      @staged_uris |= uris.flatten.map { |uri| URI(uri) }
     end
 
     def cache(*uris)
-      @mutex.synchronize { @cached_uris |= uris.flatten.map { |uri| URI(uri) } }
+      @cached_uris |= uris.flatten.map { |uri| URI(uri) }
     end
 
     def cycle

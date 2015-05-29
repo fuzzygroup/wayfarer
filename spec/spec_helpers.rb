@@ -1,6 +1,10 @@
 require "bundler"
 Bundler.require
 
+require "celluloid/test"
+
+Celluloid.task_class = Celluloid::TaskThread
+
 # Optional dependencies (MRI-only)
 unless RUBY_PLATFORM == "java"
   require "oj"
@@ -39,4 +43,6 @@ end
 
 RSpec.configure do |config|
   config.include(SpecHelpers)
+  config.before { Celluloid.boot }
+  config.after { Celluloid.shutdown }
 end

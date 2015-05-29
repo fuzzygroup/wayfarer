@@ -21,8 +21,9 @@ Gem::Specification.new do |s|
   s.add_dependency "selenium-webdriver"
   s.add_dependency "net-http-persistent"
   s.add_dependency "mime-types"
-  s.add_dependency "connection_pool"
   s.add_dependency "celluloid"
+  s.add_dependency "parallel"
+  s.add_dependency "connection_pool"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
