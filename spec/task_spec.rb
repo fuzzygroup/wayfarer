@@ -4,8 +4,7 @@ describe Schablone::Task do
   let!(:processor) { Celluloid::Actor[:processor] = Processor.new }
   let!(:navigator) { Celluloid::Actor[:navigator] = Navigator.new }
   let(:adapter)    { NetHTTPAdapter.instance }
-
-  subject(:task) { Task.new }
+  subject(:task)   { Task.new }
 
   describe "::router" do
     it "works" do
@@ -18,7 +17,6 @@ describe Schablone::Task do
   describe "#invoke" do
     context "with matching route" do
       it "calls the expected instance method" do
-              fail "FUCK"
         task_class = Class.new(Task) do
           def foo; :ok; end
           router.draw(:foo, host: "example.com")
@@ -42,10 +40,7 @@ describe Schablone::Task do
   end
 
   describe "#halt" do
-    it "halts the Processor" do
-      task.send(:halt)
-      # expect(processor).not_to be_alive
-    end
+    pending "fuck."
   end
 
   describe "#visit" do

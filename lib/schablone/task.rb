@@ -1,6 +1,5 @@
 module Schablone
   class Task
-
     class << self
       def router
         @router ||= Routing::Router.new
@@ -10,6 +9,10 @@ module Schablone
 
       alias_method :route,  :router
       alias_method :routes, :router
+
+      def crawl(*uris)
+        Crawler.crawl(new, uris)
+      end
     end
 
     def invoke(uri)

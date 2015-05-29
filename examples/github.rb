@@ -1,18 +1,13 @@
 require_relative "../lib/schablone"
 
+Celluloid.task_class = Celluloid::TaskThread
+
 class MyTask < Schablone::Task
-  def foobar
-    barfoo(123)
+  def foo
+    puts "lel"
   end
 
-  def something
-  end
-
-  def barfoo(arg)
-    puts arg
-  end
-
-  routes.draw :foobar, host "example.com"
+  route.draw :foo, host: /zeit.de/
 end
 
-MyTask.invoke
+MyTask.crawl "http://zeit.de"

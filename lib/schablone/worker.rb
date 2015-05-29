@@ -5,7 +5,7 @@ module Schablone
     include Celluloid
 
     def scrape(uri, task)
-      Actor[:navigator].async.cache(uri)
+      Actor[:navigator].cache(uri)
       task.invoke(uri)
     end
   end

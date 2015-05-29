@@ -1,6 +1,4 @@
 require "thread"
-require "celluloid"
-require "connection_pool"
 
 module Schablone
   class Processor
@@ -8,30 +6,34 @@ module Schablone
     include Celluloid::Notifications
 
     trap_exit :worker_died
+    finalizer :terminate_pool
 
     def initialize
       subscribe("halt", :halt)
       Navigator.supervise_as(:navigator)
-      @worker_pool = Worker.pool
     end
 
     def run(task)
-      Actor[:navigator].current_uris.each do |uri|
-        @worker_pool.scrape(uri, task.clone)
+      Actor[:worker_pool] = Worker.pool
+
+      while Actor[:navigator].cycle
+        Actor[:navigator].current_uris.each do |uri|
+          Actor[:worker_pool].scrape(uri, task)
+        end
       end
 
-      halt unless Actor[:navigator].cycle
+      halt
     end
 
     def halt
+      puts "nothing left to do."
       # HTTPAdapters::AdapterPool.shutdown { |adapter| adapter.free }
-      terminate
     end
 
     private
 
-    def worker_died(worker, exception)
-      # TODO
+    def worker_died(worker, reason)
+      fail "#{worker.inspect} died because of #{reason.class}"
     end
   end
 end
