@@ -1,7 +1,7 @@
 require "spec_helpers"
 
 describe Schablone::Processor do
-  let(:task) { Class.new(Task) }
+  let(:task)          { Task.new }
   let!(:processor)    { Celluloid::Actor[:processor] = Processor.new }
   let!(:navigator)    { Celluloid::Actor[:navigator] = Navigator.new }
 

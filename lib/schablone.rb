@@ -43,7 +43,6 @@ require_relative "schablone/parsers/json_parser"
 # Processing
 require_relative "schablone/task"
 require_relative "schablone/worker"
-require_relative "schablone/indexer"
 require_relative "schablone/page"
 require_relative "schablone/uri_set"
 require_relative "schablone/navigator"

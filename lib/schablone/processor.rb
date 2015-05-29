@@ -7,6 +7,8 @@ module Schablone
     include Celluloid
     include Celluloid::Notifications
 
+    trap_exit :worker_died
+
     def initialize
       subscribe("halt", :halt)
       Navigator.supervise_as(:navigator)
@@ -15,7 +17,7 @@ module Schablone
 
     def run(task)
       Actor[:navigator].current_uris.each do |uri|
-        @worker_pool.scrape(uri, task)
+        @worker_pool.scrape(uri, task.clone)
       end
 
       halt unless Actor[:navigator].cycle
@@ -24,6 +26,12 @@ module Schablone
     def halt
       # HTTPAdapters::AdapterPool.shutdown { |adapter| adapter.free }
       terminate
+    end
+
+    private
+
+    def worker_died(worker, exception)
+      # TODO
     end
   end
 end

@@ -3,6 +3,7 @@ require "spec_helpers"
 describe Schablone::Task do
   let!(:processor) { Celluloid::Actor[:processor] = Processor.new }
   let!(:navigator) { Celluloid::Actor[:navigator] = Navigator.new }
+  let(:adapter)    { NetHTTPAdapter.instance }
 
   subject(:task) { Task.new }
 
@@ -17,6 +18,7 @@ describe Schablone::Task do
   describe "#invoke" do
     context "with matching route" do
       it "calls the expected instance method" do
+              fail "FUCK"
         task_class = Class.new(Task) do
           def foo; :ok; end
           router.draw(:foo, host: "example.com")
