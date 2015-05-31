@@ -11,14 +11,13 @@ module Schablone
       alias_method :routes, :router
 
       def crawl(*uris)
-        Crawler.crawl(new, uris)
+        Crawler.new.crawl(new, *uris)
       end
     end
 
     def invoke(uri)
       method, @params = self.class.router.route(uri)
-
-      return unless method && respond_to?(method)
+      return unless method
 
       HTTPAdapters::AdapterPool.with do |adapter|
         @adapter = adapter
@@ -34,7 +33,7 @@ module Schablone
     attr_reader :params
 
     def halt
-      Celluloid::Notifications.notifier.publish("halt")
+      Celluloid::Actor[:processor].halt
     end
 
     def visit(*uris)

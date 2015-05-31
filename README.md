@@ -8,14 +8,14 @@ A versatile web crawling/scraping framework for MRI and JRuby
 * Simplifies data extraction with an optional DSL based on CSS/XPath
 * Extracts meta-data with [Pismo](https://github.com/peterc/pismo) if needed
 * Obeys `robots.txt` if you want it to
-* Integreates seamlessly with Rails’ ActiveJob
+* Integrates seamlessly with Rails’ ActiveJob
 * Is agnostic about data storage
 
 ## Installation
 Install with Bundler by adding the following line to your `Gemfile`:
 
 ```
-gem schablone
+gem "schablone"
 ```
 Or install via RubyGems:
 
@@ -139,4 +139,3 @@ oj provides better performance than the standard library’s `JSON` module. Due 
 oj provides better performance than the standard library’s `JSON` module. Due to it being a C extension, it is not listed as a dependency. In order to use oj, [install](https://github.com/ohler55/oj#installation) and `require "oj"`. It gets picked up automatically.
 
 ### Using Pismo
-oj provides better performance than the standard library’s `JSON` module. Due to it being a C extension, it is not listed as a dependency. In order to use oj, [install](https://github.com/ohler55/oj#installation) and `require "oj"`. It gets picked up automatically.

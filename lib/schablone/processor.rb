@@ -3,37 +3,29 @@ require "thread"
 module Schablone
   class Processor
     include Celluloid
-    include Celluloid::Notifications
-
-    trap_exit :worker_died
-    finalizer :terminate_pool
+    include Celluloid::Logger
 
     def initialize
-      subscribe("halt", :halt)
-      Navigator.supervise_as(:navigator)
+      Actor[:navigator]   = Navigator.new_link
+      Actor[:worker_pool] = Worker.pool
     end
 
     def run(task)
-      Actor[:worker_pool] = Worker.pool
-
-      while Actor[:navigator].cycle
-        Actor[:navigator].current_uris.each do |uri|
-          Actor[:worker_pool].scrape(uri, task)
-        end
-      end
-
+      step(task) while Actor[:navigator].cycle
       halt
     end
 
     def halt
-      puts "nothing left to do."
-      # HTTPAdapters::AdapterPool.shutdown { |adapter| adapter.free }
+      info("Processor halts")
+      terminate
     end
 
     private
 
-    def worker_died(worker, reason)
-      fail "#{worker.inspect} died because of #{reason.class}"
+    def step(task)
+      Actor[:navigator].current_uris.each do |uri|
+        Actor[:worker_pool].scrape(uri, task)
+      end
     end
   end
 end
