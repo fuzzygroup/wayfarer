@@ -1,6 +1,7 @@
 module Schablone
   class Crawler
     include Celluloid
+    include Celluloid::Logger
 
     trap_exit :processor_halted
     finalizer :shutdown_adapter_pool
@@ -11,7 +12,8 @@ module Schablone
     end
 
     def processor_halted(worker, reason)
-      terminate
+      info("wat")
+      # terminate
     end
 
     private
