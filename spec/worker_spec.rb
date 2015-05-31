@@ -8,20 +8,21 @@ describe Schablone::Worker do
 
   describe "#scrape" do
     it "caches URIs" do
-      uri = URI("http://example.com")
+      uri = URI(test_app("/hello_world"))
       worker.scrape(uri, task)
       expect(navigator.cached_uris.include?(uri)).to be true
     end
 
-    it "stages URIs" do
+    it "allows staging URIs" do
       task_class = Class.new(Task) do
-        def foo; visit(URI("http://google.com")); end
-        route.draw(:foo, host: "google.com")
+        def foo; visit("http://example.com"); end
+        route.draw(:foo, path: "/hello_world")
       end
 
       task = task_class.new
-      worker.scrape(URI("http://google.com"), task)
-      expect(navigator.staged_uris.include?(URI("http://google.com"))).to be true
+      uri = test_app("/hello_world")
+      worker.scrape(uri, task)
+      expect(navigator.staged_uris.include?(URI("http://example.com"))).to be true
     end
   end
 end

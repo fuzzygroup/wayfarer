@@ -19,12 +19,12 @@ describe Schablone::Task do
       it "calls the expected instance method" do
         task_class = Class.new(Task) do
           def foo; :ok; end
-          router.draw(:foo, host: "example.com")
+          router.draw(:foo, path: "/hello_world")
         end
 
         task = task_class.new
 
-        uri = URI("http://example.com")
+        uri = test_app("/hello_world")
         expect(task.invoke(uri)).to be :ok
       end
     end

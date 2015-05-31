@@ -1,7 +1,7 @@
 module Schablone
   class Crawler
     include Celluloid
-    include-_Ö_
+
     trap_exit :processor_halted
     finalizer :shutdown_adapter_pool
 
