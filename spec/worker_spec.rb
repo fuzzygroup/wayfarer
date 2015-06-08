@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Schablone::Worker do
-  let(:task)       { Task.new }
   let!(:processor) { Celluloid::Actor[:processor] = Processor.new }
   let!(:navigator) { Celluloid::Actor[:navigator] = Navigator.new }
   subject(:worker) { Worker.new }
@@ -9,7 +8,7 @@ describe Schablone::Worker do
   describe "#scrape" do
     it "caches URIs" do
       uri = URI(test_app("/hello_world"))
-      worker.scrape(uri, task)
+      worker.scrape(uri, Task)
       expect(navigator.cached_uris.include?(uri)).to be true
     end
 
@@ -19,9 +18,8 @@ describe Schablone::Worker do
         route.draw(:foo, path: "/hello_world")
       end
 
-      task = task_class.new
       uri = test_app("/hello_world")
-      worker.scrape(uri, task)
+      worker.scrape(uri, task_class)
       expect(navigator.staged_uris.include?(URI("http://example.com"))).to be true
     end
   end

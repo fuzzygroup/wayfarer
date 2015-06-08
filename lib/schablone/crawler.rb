@@ -1,19 +1,16 @@
 module Schablone
   class Crawler
-    include Celluloid
-    include Celluloid::Logger
 
-    trap_exit :processor_halted
-    finalizer :shutdown_adapter_pool
+    def crawl(task_class, *uris)
+      Celluloid::Actor[:processor] = Processor.new
 
-    def crawl(task, *uris)
-      Celluloid::Actor[:processor] = Processor.new_link
       Celluloid::Actor[:navigator].stage(*uris)
-    end
+      Celluloid::Actor[:processor].run(task_class)
 
-    def processor_halted(worker, reason)
-      info("wat")
-      # terminate
+      Celluloid::Actor[:processor].terminate
+      Celluloid::Actor[:navigator].terminate
+
+      Celluloid.shutdown
     end
 
     private

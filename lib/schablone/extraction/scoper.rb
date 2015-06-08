@@ -7,7 +7,6 @@ module Schablone
 
       def initialize(matcher_hash, &proc)
         @matcher = Matcher.new(matcher_hash)
-
         instance_eval(&proc) if block_given?
       end
 

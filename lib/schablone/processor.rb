@@ -5,33 +5,31 @@ module Schablone
     include Celluloid
     include Celluloid::Logger
 
-    trap_exit :fuckme
-
     def initialize
       Actor[:navigator]   = Navigator.new_link
       Actor[:worker_pool] = Worker.pool
     end
 
-    def run(task)
-      step(task) while Actor[:navigator].cycle
+    def run(task_class)
+      step(task_class) while Actor[:navigator].cycle
       halt
     end
 
     def halt
       info("Processor halts")
-      terminate
+      #terminate
     end
 
     private
 
-    def step(task)
+    def step(task_class)
       Actor[:navigator].current_uris.each do |uri|
-        Actor[:worker_pool].scrape(uri, task)
+        uris = Actor[:worker_pool].future.scrape(uri, task_class)
+        puts "----"
+        puts uris.value.inspect
+        puts "----"
+        Actor[:navigator].stage(uris.value)
       end
-    end
-
-    def fuckme(actor, reason)
-      puts "#{actor.inspect} died cuz of #{reason.class}"
     end
   end
 end

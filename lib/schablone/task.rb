@@ -11,13 +11,13 @@ module Schablone
       alias_method :routes, :router
 
       def crawl(*uris)
-        Crawler.new.crawl(new, *uris)
+        Crawler.new.crawl(self, *uris)
       end
     end
 
     def invoke(uri)
       method, @params = self.class.router.route(uri)
-      return unless method
+      return [] unless method
 
       HTTPAdapters::AdapterPool.with do |adapter|
         @adapter = adapter
