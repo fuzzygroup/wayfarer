@@ -7,7 +7,7 @@ module Schablone
 
     def initialize
       Actor[:navigator]   = Navigator.new_link
-      Actor[:worker_pool] = Worker.pool
+      Actor[:worker_pool] = Worker.pool(size: 16)
     end
 
     def run(task_class)
@@ -23,12 +23,12 @@ module Schablone
     private
 
     def step(task_class)
-      Actor[:navigator].current_uris.each do |uri|
-        uris = Actor[:worker_pool].future.scrape(uri, task_class)
-        puts "----"
-        puts uris.value.inspect
-        puts "----"
-        Actor[:navigator].stage(uris.value)
+      uris = Actor[:navigator].current_uris.map do |uri|
+        Actor[:worker_pool].future.scrape(uri, task_class)
+      end
+
+      uris.each do |uri|
+        Actor[:navigator].stage(uri.value)
       end
     end
   end

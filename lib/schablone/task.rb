@@ -15,15 +15,14 @@ module Schablone
       end
     end
 
-    def invoke(uri)
+    def invoke(uri, adapter)
+      puts "INVOKED!"
       method, @params = self.class.router.route(uri)
       return [] unless method
 
-      HTTPAdapters::AdapterPool.with do |adapter|
-        @adapter = adapter
-        @page = adapter.fetch(uri)
-        public_send(method)
-      end
+      @adapter = adapter
+      @page = adapter.fetch(uri)
+      public_send(method)
     end
 
     private
