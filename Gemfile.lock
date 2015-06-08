@@ -47,7 +47,7 @@ GEM
     nokogiri (1.6.6.2-java)
     nokogumbo (1.4.1)
       nokogiri
-    oj (2.12.8)
+    oj (2.12.9)
     parser (2.2.2.5)
       ast (>= 1.1, < 3.0)
     pismo (0.7.4)

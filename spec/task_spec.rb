@@ -15,14 +15,14 @@ describe Schablone::Task do
         end
 
         uri = test_app("/hello_world")
-        expect(task_class.new.invoke(uri)).to be :ok
+        expect(task_class.new.invoke(uri, adapter)).to be :ok
       end
     end
 
     context "with mismatching route" do
       it "returns an empty Array" do
         uri = URI("http://example.com")
-        expect(Task.new.invoke(uri)).to eq []
+        expect(Task.new.invoke(uri, adapter)).to eq []
       end
     end
   end

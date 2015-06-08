@@ -5,6 +5,7 @@ module Schablone
     include Celluloid
 
     def scrape(uri, task_class)
+      puts "SPAWNED!"
       Actor[:navigator].async.cache(uri)
 
       HTTPAdapters::AdapterPool.with do |adapter|

@@ -4,7 +4,7 @@ Celluloid.task_class = Celluloid::TaskThread
 
 class MyTask < Schablone::Task
   def foo
-    puts "LEL: #{page.uri}"
+    puts "I'm here: #{page.uri}"
     page.links
   end
 

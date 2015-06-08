@@ -16,7 +16,6 @@ module Schablone
     end
 
     def invoke(uri, adapter)
-      puts "INVOKED!"
       method, @params = self.class.router.route(uri)
       return [] unless method
 
