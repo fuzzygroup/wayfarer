@@ -47,7 +47,7 @@ module Schablone
     attr_writer :logger
 
     def logger
-      @logger ||= Celluloid.logger
+      @logger || Celluloid.logger
     end
 
     def config(&proc)

@@ -23,15 +23,15 @@ module Schablone
     end
 
     def stage(*uris)
-      @staged_uris |= uris.flatten.map { |uri| URI(uri) }
+      @staged_uris |= uris.map { |uri| URI(uri) }
     end
 
     def cache(*uris)
-      @cached_uris |= uris.flatten.map { |uri| URI(uri) }
+      @cached_uris |= uris.map { |uri| URI(uri) }
     end
 
     def cycle
-      cache(current_uris)
+      cache(*current_uris)
       filter_cached_uris! unless Schablone.config.allow_circulation
       return false if @staged_uris.empty?
       @current_uris, @staged_uris = @staged_uris, Set.new([])

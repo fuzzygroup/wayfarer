@@ -1,19 +1,21 @@
+require "thread_safe"
 require_relative "../lib/schablone"
 
-class MyCrawler
-  include Scrapespeare::Crawler
-
+class MyCrawler < Schablone::Task
   @reviews = ThreadSafe::Array.new
 
-  draw host: /*/
-
+  draw host: /zeit.de/
   def index
+    @reviews << "HELLO!"
     puts "I'm here: #{page.uri}"
     page.links "a"
   end
 
   private
+
+  def review_title
+    doc.search("LEL")
+  end
 end
 
-MyTask.crawl "http://zeit.de"
-MyTask.reviews
+MyCrawler.crawl "http://zeit.de"

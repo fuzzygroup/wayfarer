@@ -48,8 +48,12 @@ module Schablone
     attr_reader :page
     attr_reader :params
 
+    def browser
+      adapter.driver
+    end
+
     def halt
-      Celluloid::Actor[:processor].halt
+      Celluloid::Notifications.notifier.publish("halt")
     end
 
     def visit(*uris)

@@ -1,16 +1,14 @@
 module Schablone
   class Crawler
 
-    def crawl(task_class, *uris)
+    def crawl(klass, *uris)
       Celluloid::Actor[:processor] = Processor.new
 
       Celluloid::Actor[:navigator].stage(*uris)
-      Celluloid::Actor[:processor].run(task_class)
+      Celluloid::Actor[:processor].async.run(klass)
 
-      Celluloid::Actor[:processor].terminate
-      Celluloid::Actor[:navigator].terminate
-
-      Celluloid.shutdown
+      Celluloid::Actor[:navigator].join
+      Celluloid::Actor[:processor].join
     end
 
     private

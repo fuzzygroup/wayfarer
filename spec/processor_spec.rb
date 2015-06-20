@@ -2,31 +2,37 @@ require "spec_helpers"
 
 describe Schablone::Processor do
   subject!(:processor) { Celluloid::Actor[:processor] = Processor.new }
-  let(:navigator)      { Celluloid::Actor[:navigator] }
 
-  describe "#step" do
-    it "caches URIs" do
-      uri = test_app("/hello_world")
-      navigator.stage(uri)
-      navigator.cycle
-      processor.send(:step, Task)
+  describe "#run" do
+    it "works" do
+      entry_uri = URI("http://localhost:9876/graph/index.html")
 
-      expect(navigator.cached_uris).to eq [uri]
-    end
+      klass = Class.new(Task) do
+        @uris = []
 
-    it "stages URIs" do
-      task_class = Class.new(Task) do
-        def foo; %w(http://example.com http://google.com); end
-        router.draw(:foo, path: "/hello_world")
+        draw host: "localhost"
+
+        def foobar
+          @uris << page.uri
+          page.links "a"
+        end
       end
 
-      navigator.stage(test_app("/hello_world"))
-      navigator.cycle
-      processor.send(:step, task_class)
+      processor.navigator.stage(*entry_uri)
+      processor.run(klass)
 
-      expect(navigator.staged_uris).to eq [
-        URI("http://example.com"), URI("http://google.com")
-      ]
+      expect(klass.uris).to eq %w(
+        http://localhost:9876/graph/index.html
+        http://localhost:9876/graph/details/a.html
+        http://localhost:9876/graph/details/b.html
+        http://localhost:9876/status_code/400
+        http://localhost:9876/status_code/403
+        http://localhost:9876/status_code/403
+        http://bro.ken
+        http://localhost:9876/redirect_loop
+      ).map { |uri| URI(uri) }
+
+      expect(klass.yetis_seen).to be 8
     end
   end
 end

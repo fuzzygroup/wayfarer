@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "mime-types"
   s.add_runtime_dependency "celluloid"
   s.add_runtime_dependency "connection_pool"
+  s.add_runtime_dependency "activesupport"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
