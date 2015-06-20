@@ -4,52 +4,40 @@ require "rack"
 
 require_relative "support/test_app"
 
-# ==============================================================================
-# RSpec
-# ==============================================================================
 namespace :spec do
   desc "Run environment-agnostic examples"
-  RSpec::Core::RakeTask.new isolated: [:start_test_app] do |task|
+  RSpec::Core::RakeTask.new isolated: [:test_app] do |task|
     task.rspec_opts = ["--tag ~live"]
   end
 
   desc "Run examples that require a live environment"
-  RSpec::Core::RakeTask.new live: [:start_test_app] do |task|
+  RSpec::Core::RakeTask.new live: [:test_app] do |task|
     task.rspec_opts = ["--tag live"]
   end
 
   desc "Run all JRuby examples"
-  RSpec::Core::RakeTask.new jruby: [:start_test_app] do |task|
+  RSpec::Core::RakeTask.new jruby: [:test_app] do |task|
     task.rspec_opts = ["--tag ~mri --tag ~live --tty"]
   end
 
   desc "Run all MRI examples"
-  RSpec::Core::RakeTask.new mri: [:start_test_app] do |task|
+  RSpec::Core::RakeTask.new mri: [:test_app] do |task|
     task.rspec_opts = ["--tag ~mri --tag ~live"]
   end
 end
 
 desc "Run all examples"
-task spec: ["spec:isolated", "spec:live"]
+RSpec::Core::RakeTask.new spec: :test_app
 
-# ==============================================================================
-# RuboCop
-# ==============================================================================
 RuboCop::RakeTask.new do |task|
   task.formatters = ["simple"]
 end
 
-# ==============================================================================
-# RubyGems
-# ==============================================================================
 desc "Build RubyGem"
 task :build do
   sh "gem build schablone.gemspec --verbose"
 end
 
-# ==============================================================================
-# Plumbing
-# ==============================================================================
 desc "Start a Ruby shell"
 task :shell do
   require_relative "lib/schablone"
@@ -73,9 +61,6 @@ task :todo do
   sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec features | tr -s [:space:])
 end
 
-# ==============================================================================
-# Test web app
-# ==============================================================================
 task :run_test_app do
   Rack::Handler::WEBrick.run(
     TestApp,
@@ -86,13 +71,23 @@ task :run_test_app do
   )
 end
 
-task :start_test_app do
-  @server_thread = Thread.new { Rake::Task["run_test_app"].execute }
-  sleep(0.5)
-end
+task :test_app do
+  mutex = Mutex.new
+  cvar  = ConditionVariable.new
 
-task :stop_test_app do
-  @server_thread.kill
+  @server_thread ||= Thread.new do
+    Rack::Handler::WEBrick.run(
+      TestApp,
+      Port: 9876,
+      BindAddress: "localhost",
+      Logger: WEBrick::Log.new("/dev/null"),
+      AccessLog: [],
+      :StartCallback => Proc.new { cvar.signal }
+    )
+  end
+
+  mutex.lock
+  cvar.wait(mutex)
 end
 
 ["spec:isolated", "spec:live", "spec:mri", "spec:jruby"].each do |task|
