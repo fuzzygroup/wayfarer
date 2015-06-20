@@ -5,8 +5,6 @@ module Schablone
     include Celluloid
 
     def scrape(uri, klass)
-      Actor[:navigator].cache(uri)
-
       HTTPAdapters::AdapterPool.with do |adapter|
         klass.new.invoke(uri, adapter)
       end

@@ -1,26 +1,22 @@
 require "spec_helpers"
 
 describe Schablone::Scraper do
-  let!(:processor)  { Celluloid::Actor[:processor] = Processor.new }
-  let!(:navigator)  { Celluloid::Actor[:navigator] = Navigator.new }
-  subject(:scraper) { Scraper.new }
-
   describe "#scrape" do
-    it "caches URIs" do
-      uri = URI(test_app("/hello_world"))
-      scraper.scrape(uri, Task)
-      expect(navigator.cached_uris.include?(uri)).to be true
-    end
+    it "instantiate an Indexer and invokes it" do
+      klass = Class.new do
+        class << self
+          attr_accessor :adapter
+        end
 
-    it "stages URIs" do
-      klass = Class.new(Task) do
-        def foo; visit("http://example.com"); end
-        route.draw(:foo, path: "/hello_world")
+        def invoke(*, adapter)
+          self.class.adapter = adapter
+          :return_value
+        end
       end
 
-      uri = test_app("/hello_world")
-      scraper.scrape(uri, klass)
-      expect(navigator.staged_uris).to include(URI("http://example.com"))
+      return_value = Scraper.new.scrape(nil, klass)
+      expect(return_value).to be :return_value
+      expect(klass.adapter).to be_a NetHTTPAdapter
     end
   end
 end
