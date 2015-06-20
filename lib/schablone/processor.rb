@@ -12,8 +12,8 @@ module Schablone
       )
     end
 
-    def run(task_class)
-      step(task_class) while Actor[:navigator].cycle
+    def run(klass)
+      step(klass) while Actor[:navigator].cycle
       halt
     end
 
@@ -24,9 +24,9 @@ module Schablone
 
     private
 
-    def step(task_class)
+    def step(klass)
       uris = Actor[:navigator].current_uris.map do |uri|
-        Actor[:scraper_pool].future.scrape(uri, task_class)
+        Actor[:scraper_pool].future.scrape(uri, klass)
       end
 
       uris.each do |uri|

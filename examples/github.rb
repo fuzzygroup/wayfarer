@@ -1,15 +1,19 @@
 require_relative "../lib/schablone"
 
-Celluloid.task_class = Celluloid::TaskThread
+class MyCrawler
+  include Scrapespeare::Crawler
 
-class MyTask < Schablone::Task
-  def foo
+  @reviews = ThreadSafe::Array.new
+
+  draw host: /*/
+
+  def index
     puts "I'm here: #{page.uri}"
-    page.links
+    page.links "a"
   end
 
-  router.draw :foo, host: /zeit.de/
+  private
 end
 
 MyTask.crawl "http://zeit.de"
-
+MyTask.reviews

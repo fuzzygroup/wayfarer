@@ -25,6 +25,19 @@ describe Schablone::Task do
     end
   end
 
+  describe "::draw" do
+    it "draws routes" do
+      klass = Class.new(Task) do
+        draw host: "example.com"
+        def example; :ok; end
+      end
+
+      task = klass.new
+
+      expect(klass.router.routes.any? { |(method, _)| method == :example })
+    end
+  end
+
   describe "#invoke" do
     context "with matching route" do
       it "calls the expected instance method" do

@@ -10,16 +10,25 @@ module Schablone
       alias_method :route,  :router
       alias_method :routes, :router
 
+      def draw(rule_opts = {}, &proc)
+        @head = [rule_opts, proc]
+      end
+
+      def method_added(method)
+        return unless @head
+        rule_opts, proc = @head
+        router.draw(method, rule_opts, &(proc || Proc.new {}))
+        @head = nil
+      end
+
       def crawl(*uris)
         Crawler.new.crawl(self, *uris)
       end
     end
 
     def initialize
-      self.class.instance_variables.each do |instance_var|
-        instance_variable_set(
-          instance_var, self.class.instance_variable_get(instance_var)
-        )
+      self.class.instance_variables.each do |sym|
+        instance_variable_set(sym, self.class.instance_variable_get(sym))
       end
     end
 

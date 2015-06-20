@@ -6,8 +6,8 @@ module Schablone
 
     def initialize
       @current_uris = Set.new([])
-      @staged_uris = Set.new([])
-      @cached_uris = URISet.new
+      @staged_uris  = Set.new([])
+      @cached_uris  = URISet.new
     end
 
     def current_uris
@@ -31,7 +31,8 @@ module Schablone
     end
 
     def cycle
-      filter_staged_uris! unless Schablone.config.allow_circulation
+      cache(current_uris)
+      filter_cached_uris! unless Schablone.config.allow_circulation
       return false if @staged_uris.empty?
       @current_uris, @staged_uris = @staged_uris, Set.new([])
       true
@@ -39,16 +40,8 @@ module Schablone
 
     private
 
-    def filter_staged_uris!
-      @staged_uris.delete_if { |uri| current?(uri) || cached?(uri) }
-    end
-
-    def current?(uri)
-      @current_uris.include?(uri)
-    end
-
-    def cached?(uri)
-      @cached_uris.include?(uri)
+    def filter_cached_uris!
+      @staged_uris.delete_if { |uri| @cached_uris.include?(uri) }
     end
   end
 end

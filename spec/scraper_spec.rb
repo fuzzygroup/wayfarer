@@ -13,13 +13,13 @@ describe Schablone::Scraper do
     end
 
     it "stages URIs" do
-      task_class = Class.new(Task) do
+      klass = Class.new(Task) do
         def foo; visit("http://example.com"); end
         route.draw(:foo, path: "/hello_world")
       end
 
       uri = test_app("/hello_world")
-      scraper.scrape(uri, task_class)
+      scraper.scrape(uri, klass)
       expect(navigator.staged_uris).to include(URI("http://example.com"))
     end
   end

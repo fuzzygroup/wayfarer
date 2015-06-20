@@ -33,60 +33,6 @@ describe Schablone::Navigator do
     end
   end
 
-  describe "#current?" do
-    let(:uri) { URI("http://example.com") }
-
-    context "with current URI" do
-      before { navigator.instance_variable_set(:@current_uris, [uri]) }
-
-      it "returns true" do
-        expect(navigator.send(:current?, uri)).to be true
-      end
-    end
-
-    context "with non-current URI" do
-      it "returns false" do
-        expect(navigator.send(:current?, uri)).to be false
-      end
-    end
-  end
-
-  describe "#cached?" do
-    let(:uri) { URI("http://example.com") }
-
-    context "with cached URI" do
-      before { navigator.send(:cache, uri) }
-
-      it "returns true" do
-        expect(navigator.send(:cached?, uri)).to be true
-      end
-    end
-
-    context "with non-cached URI" do
-      it "returns false" do
-        expect(navigator.send(:cached?, uri)).to be false
-      end
-    end
-  end
-
-  describe "#cached?" do
-    let(:uri) { URI("http://example.com") }
-
-    context "with cached URI" do
-      before { navigator.send(:cache, uri) }
-
-      it "returns true" do
-        expect(navigator.send(:cached?, uri)).to be true
-      end
-    end
-
-    context "with unprocessed URI" do
-      it "returns false" do
-        expect(navigator.send(:cached?, uri)).to be false
-      end
-    end
-  end
-
   describe "#cycle" do
     let(:uri) { URI("http://example.com") }
 
@@ -99,10 +45,17 @@ describe Schablone::Navigator do
       }.to change { navigator.current_uris.count }.by(1)
     end
 
+    it "caches URIs" do
+      navigator.stage(uri)
+      navigator.cycle
+      navigator.cycle
+      expect(navigator.cached_uris).to eq [uri]
+    end
+
     context "with staged URIs" do
       before { navigator.stage(uri) }
 
-      it "swaps @current_uris and @staged_uris" do
+      it "swaps current and staged URIs" do
         navigator.cycle
         expect(navigator.current_uris).to eq [uri]
         expect(navigator.staged_uris).to eq []
@@ -119,6 +72,15 @@ describe Schablone::Navigator do
       end
     end
 
+    it "does not set cached URIs as current" do
+      navigator.stage(uri)
+      navigator.cycle
+      navigator.stage(uri)
+      navigator.cycle
+
+      expect(navigator.current_uris).to be_empty
+    end
+
     context "when circulation is allowed" do
       before { Schablone.config.allow_circulation = true }
       after  { Schablone.config.reset! }
@@ -130,28 +92,6 @@ describe Schablone::Navigator do
           expect(navigator.current_uris).to eq [uri]
         end
       end
-    end
-  end
-
-  describe "#filter_staged_uris!" do
-    let(:uri) { URI("http://example.com") }
-
-    it "filters staged URIs included in @current_uris" do
-      navigator.instance_variable_set(:@current_uris, Set.new([uri]))
-      navigator.stage(uri)
-
-      expect {
-        navigator.send(:filter_staged_uris!)
-      }.to change { navigator.staged_uris.count }.by(-1)
-    end
-
-    it "filters URIs included in @cached_uris" do
-      navigator.cache(uri)
-      navigator.stage(uri)
-
-      expect {
-        navigator.send(:filter_staged_uris!)
-      }.to change { navigator.staged_uris.count }.by(-1)
     end
   end
 end
