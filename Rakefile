@@ -61,16 +61,6 @@ task :todo do
   sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec features | tr -s [:space:])
 end
 
-task :run_test_app do
-  Rack::Handler::WEBrick.run(
-    TestApp,
-    Port: 9876,
-    BindAddress: "localhost",
-    Logger: WEBrick::Log.new("/dev/null"),
-    AccessLog: []
-  )
-end
-
 task :test_app do
   mutex = Mutex.new
   cvar  = ConditionVariable.new
@@ -88,8 +78,4 @@ task :test_app do
 
   mutex.lock
   cvar.wait(mutex)
-end
-
-["spec:isolated", "spec:live", "spec:mri", "spec:jruby"].each do |task|
-  Rake::Task[task].enhance { Rake::Task["stop_test_app"].invoke }
 end
