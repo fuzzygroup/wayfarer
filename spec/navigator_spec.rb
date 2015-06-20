@@ -73,8 +73,7 @@ describe Schablone::Navigator do
     end
 
     it "does not set cached URIs as current" do
-      navigator.stage(uri)
-      navigator.cycle
+      navigator.cache(uri)
       navigator.stage(uri)
       navigator.cycle
 
