@@ -43,7 +43,7 @@ task :shell do
   require_relative "lib/schablone"
 
   include Schablone
-  include Schablone::Extraction
+  include Schablone::HTTPAdapters
   include Schablone::Routing
 
   begin

@@ -40,33 +40,20 @@ require_relative "schablone/navigator"
 require_relative "schablone/processor"
 require_relative "schablone/crawler"
 
-def Schablone(*argv, &proc)
-  Schablone::Crawler.new(*argv, &proc)
-end
-
-def Schablone!(*argv, &proc)
-  Schablone::Crawler.new(*argv, &proc).crawl(uri)
-end
-
 module Schablone
   VERSION = "0.0.1-alpha.1"
 
   class << self
     attr_writer :logger
 
-    def configure(&proc)
-      @config ||= Configuration.new
-      block_given? ? yield(@config) : @config
-    end
-
-    alias_method :config, :configure
-
     def logger
-      @logger ||= Logger.new(STDOUT)
-      @logger.level = config.log_level
-      @logger
+      @logger ||= Celluloid.logger
     end
 
-    alias_method :log, :logger
+    def config(&proc)
+      @config ||= Configuration.new
+      yield(@config) if block_given?
+      @config
+    end
   end
 end

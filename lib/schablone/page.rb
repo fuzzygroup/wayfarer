@@ -10,11 +10,11 @@ module Schablone
     attr_reader :body
     attr_reader :headers
 
-    def initialize(env = {})
-      @uri         = env[:uri]
-      @status_code = env[:status_code]
-      @body        = env[:body]
-      @headers     = env[:headers]
+    def initialize(opts = {})
+      @uri         = opts[:uri]
+      @status_code = opts[:status_code]
+      @body        = opts[:body]
+      @headers     = opts[:headers]
     end
 
     def doc
