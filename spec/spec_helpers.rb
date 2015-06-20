@@ -4,7 +4,6 @@ require "celluloid/test"
 
 include Schablone
 include Schablone::HTTPAdapters
-include Schablone::Extraction
 include Schablone::Routing
 
 Celluloid.task_class = Celluloid::TaskThread

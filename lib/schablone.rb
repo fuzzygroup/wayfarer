@@ -22,15 +22,6 @@ require_relative "schablone/routing/parameterized_path_rule"
 require_relative "schablone/routing/query_rule"
 require_relative "schablone/routing/router"
 
-# Extraction
-require_relative "schablone/extraction/extractable"
-require_relative "schablone/extraction/matcher"
-require_relative "schablone/extraction/evaluator"
-require_relative "schablone/extraction/scraper"
-require_relative "schablone/extraction/extractor"
-require_relative "schablone/extraction/extractable_group"
-require_relative "schablone/extraction/scoper"
-
 # HTTP adapters
 require_relative "schablone/http_adapters/net_http_adapter"
 require_relative "schablone/http_adapters/selenium_adapter"

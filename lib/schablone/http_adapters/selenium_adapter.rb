@@ -32,7 +32,6 @@ module Schablone
       def free
         @driver.quit
       end
-
     end
   end
 end
