@@ -1,7 +1,7 @@
 module Schablone
   class Configuration
     DEFAULTS = {
-      thread_count:          6,
+      scraper_pool_size:     6,
       http_adapter:          :net_http,
       connection_count:      6,
       http_adapter_timeout:  5.0,

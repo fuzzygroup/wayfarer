@@ -6,8 +6,10 @@ module Schablone
     include Celluloid::Logger
 
     def initialize
-      Actor[:navigator]   = Navigator.new_link
-      Actor[:worker_pool] = Worker.pool(size: 16)
+      Actor[:navigator]    = Navigator.new_link
+      Actor[:scraper_pool] = Scraper.pool(
+        size: Schablone.config.scraper_pool_size
+      )
     end
 
     def run(task_class)
@@ -24,7 +26,7 @@ module Schablone
 
     def step(task_class)
       uris = Actor[:navigator].current_uris.map do |uri|
-        Actor[:worker_pool].future.scrape(uri, task_class)
+        Actor[:scraper_pool].future.scrape(uri, task_class)
       end
 
       uris.each do |uri|
