@@ -29,6 +29,7 @@ module Schablone
 
       @adapter = adapter
       @page = adapter.fetch(uri)
+
       public_send(method)
     end
 

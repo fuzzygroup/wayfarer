@@ -53,11 +53,9 @@ describe Schablone::Page do
     end
   end
 
-  describe "#pismo" do
-    context "with Pismo required" do
-      it "returns a Pismo::Document" do
-        expect(page.send(:pismo)).to be_a Pismo::Document
-      end
+  describe "#pismo", mri: true do
+    it "returns a Pismo::Document" do
+      expect(page.send(:pismo)).to be_a Pismo::Document
     end
   end
 end

@@ -11,7 +11,8 @@ module Schablone
       log_level:             Logger::FATAL,
       mustermann_type:       :sinatra,
       connection_count:      6,
-      thread_timeout:        8
+      thread_timeout:        8,
+      allow_circulation:     false
     }
 
     def initialize

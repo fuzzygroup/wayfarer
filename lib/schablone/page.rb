@@ -24,13 +24,13 @@ module Schablone
       sub_type = MIME::Types[content_type].first.sub_type
 
       @doc = case sub_type
-      when "json"
-        OpenStruct.new(Parsers::JSONParser.parse(@body))
-      when "xml"
-        Parsers::XMLParser.parse_xml(@body)
-      else
-        Parsers::XMLParser.parse_html(@body)
-      end
+             when "json"
+               OpenStruct.new(Parsers::JSONParser.parse(@body))
+             when "xml"
+               Parsers::XMLParser.parse_xml(@body)
+             else
+               Parsers::XMLParser.parse_html(@body)
+             end
     end
 
     def pismo

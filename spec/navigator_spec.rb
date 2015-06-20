@@ -90,7 +90,7 @@ describe Schablone::Navigator do
   describe "#cycle" do
     let(:uri) { URI("http://example.com") }
 
-    it "does not set the same URI as current twice" do
+    it "does not stage the same URI twice" do
       navigator.stage(uri)
       navigator.stage(uri)
 
@@ -118,16 +118,22 @@ describe Schablone::Navigator do
         expect(navigator.cycle).to be false
       end
     end
-  end
 
-  describe "#current_uri_queue" do
-    it "returns a Queue of the expected size" do
-      navigator.instance_variable_set(:@current_uris, Set.new([1, 2, 3]))
-      expect(navigator.current_uri_queue.size).to be 3
+    context "when circulation is allowed" do
+      before { Schablone.config.allow_circulation = true }
+      after  { Schablone.config.reset! }
+
+      it "allows re-staging cached URIs" do
+        3.times do
+          navigator.stage(uri)
+          navigator.cycle
+          expect(navigator.current_uris).to eq [uri]
+        end
+      end
     end
   end
 
-  describe "#filter_staged_uris" do
+  describe "#filter_staged_uris!" do
     let(:uri) { URI("http://example.com") }
 
     it "filters staged URIs included in @current_uris" do
@@ -135,7 +141,7 @@ describe Schablone::Navigator do
       navigator.stage(uri)
 
       expect {
-        navigator.send(:filter_staged_uris)
+        navigator.send(:filter_staged_uris!)
       }.to change { navigator.staged_uris.count }.by(-1)
     end
 
@@ -144,7 +150,7 @@ describe Schablone::Navigator do
       navigator.stage(uri)
 
       expect {
-        navigator.send(:filter_staged_uris)
+        navigator.send(:filter_staged_uris!)
       }.to change { navigator.staged_uris.count }.by(-1)
     end
   end
