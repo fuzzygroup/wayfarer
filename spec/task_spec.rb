@@ -6,6 +6,25 @@ describe Schablone::Task do
   let(:adapter)    { NetHTTPAdapter.instance }
   subject(:task)   { Task.new }
 
+  describe "#initialize" do
+    it "points its instance variables to class instance variables" do
+      task_class = Class.new(Task) do
+        @yetis_seen = 0
+
+        def yeti!
+          @yetis_seen += 1
+        end
+      end
+
+      task = task_class.new
+      task.yeti!
+      task.yeti!
+      task.yeti!
+
+      expect(task.instance_variable_get(:@yetis_seen)).to be 3
+    end
+  end
+
   describe "#invoke" do
     context "with matching route" do
       it "calls the expected instance method" do

@@ -15,6 +15,15 @@ module Schablone
       end
     end
 
+    def initialize
+      self.class.instance_variables.each do |instance_var|
+        next if [:router, :params, :adapter, :page].include?(instance_var)
+        instance_variable_set(
+          instance_var, self.class.instance_variable_get(instance_var)
+        )
+      end
+    end
+
     def invoke(uri, adapter)
       method, @params = self.class.router.route(uri)
       return [] unless method

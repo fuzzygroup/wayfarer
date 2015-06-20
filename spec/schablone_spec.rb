@@ -7,9 +7,7 @@ describe Schablone do
 
   describe "::logger=" do
     it "allows modifying the logger" do
-      expect {
-        Schablone.logger = Object.new
-      }.to change { Schablone.logger }
+      expect { Schablone.logger = Object.new }.to change { Schablone.logger }
     end
   end
 
