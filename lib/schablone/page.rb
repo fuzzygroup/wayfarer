@@ -17,13 +17,13 @@ module Schablone
       @headers     = env[:headers]
     end
 
-    def parsed_document
-      return @parsed_document if @parsed_document
+    def doc
+      return @doc if @doc
 
       content_type = @headers["content-type"].first
       sub_type = MIME::Types[content_type].first.sub_type
 
-      @parsed_document = case sub_type
+      @doc = case sub_type
       when "json"
         OpenStruct.new(Parsers::JSONParser.parse(@body))
       when "xml"
@@ -34,21 +34,15 @@ module Schablone
     end
 
     def pismo
-      @pismo_document ||= instantiate_pismo_document if defined?(Pismo)
+      @pismo_doc ||= instantiate_pismo_document if defined?(Pismo)
     end
 
-    def links(matcher_hash = { css: "a" })
-      nodes = Extraction::Matcher.new(matcher_hash).match(parsed_document)
-
-      uris = nodes.map do |node|
-        begin
-          expand_uri(node.attr("href"))
-        rescue ArgumentError, URI::InvalidURIError
-          nil
-        end
+    def links(*argv)
+      links = doc.search(*argv).map do |node|
+        URI.join(@uri, node.attr("href")) rescue nil
       end
 
-      uris.uniq.find_all { |uri| uri.is_a? URI }
+      links.uniq.find_all { |link| link.is_a? URI }
     end
 
     private
@@ -58,12 +52,8 @@ module Schablone
       doc.instance_variable_set(:@options, {})
       doc.instance_variable_set(:@url, uri)
       doc.instance_variable_set(:@html, body)
-      doc.instance_variable_set(:@doc, parsed_document)
+      doc.instance_variable_set(:@doc, doc)
       doc
-    end
-
-    def expand_uri(path)
-      URI.join(@uri, path)
     end
   end
 end

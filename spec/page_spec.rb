@@ -3,10 +3,10 @@ require "spec_helpers"
 describe Schablone::Page do
   subject(:page) { fetch_page(test_app("/links/links.html")) }
 
-  describe "#parsed_document" do
+  describe "#doc" do
     context "when Content-Type is HTML" do
       it "returns a Nokogiri::HTML::Document" do
-        expect(page.parsed_document).to be_a Nokogiri::HTML::Document
+        expect(page.doc).to be_a Nokogiri::HTML::Document
       end
     end
 
@@ -14,7 +14,7 @@ describe Schablone::Page do
       subject(:page) { fetch_page(test_app("/xml/dummy.xml")) }
 
       it "returns a Nokogiri::XML::Document" do
-        expect(page.parsed_document).to be_a Nokogiri::XML::Document
+        expect(page.doc).to be_a Nokogiri::XML::Document
       end
     end
 
@@ -22,15 +22,15 @@ describe Schablone::Page do
       subject(:page) { fetch_page(test_app("/json/dummy.json")) }
 
       it "returns an OpenStruct" do
-        expect(page.parsed_document).to be_an OpenStruct
+        expect(page.doc).to be_an OpenStruct
       end
     end
   end
 
   describe "#links" do
-    context "without matcher hash" do
+    context "without path" do
       it "returns all links" do
-        expect(page.links.map(&:to_s)).to eq %w(
+        expect(page.links("a").map(&:to_s)).to eq %w(
           http://0.0.0.0:9876/foo
           http://0.0.0.0:9876/bar
           http://0.0.0.0:9876/baz
@@ -44,10 +44,10 @@ describe Schablone::Page do
       end
     end
 
-    context "with matcher hash" do
-      it "returns targeted links" do
-        expect(page.links(css: "ul li:first-child a").map(&:to_s)).to eq %w(
-          http://0.0.0.0:9876/foo
+    context "with paths" do
+      it "returns selected links" do
+        expect(page.links("ul li:nth-child(3) a").map(&:to_s)).to eq %w(
+          http://0.0.0.0:9876/baz
         )
       end
     end
