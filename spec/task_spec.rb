@@ -51,7 +51,7 @@ describe Schablone::Task do
       end
     end
 
-    context "with mismatching route" do
+    context "with mismatching routes" do
       it "returns an empty Array" do
         uri = URI("http://example.com")
         expect(Task.new.invoke(uri, adapter)).to eq []
