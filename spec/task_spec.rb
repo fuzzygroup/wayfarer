@@ -25,9 +25,21 @@ describe Schablone::Task do
     end
   end
 
+  describe "::config" do
+    it "works" do
+      task.class.instance_eval do
+        config do |c|
+          c.http_adapter = :selenium
+        end
+      end
+
+      expect(task.config.http_adapter).to be :selenium
+    end
+  end
+
   describe "::draw" do
     it "draws routes" do
-      klass = Class.new(Task) do
+      task.class.instance_eval do
         draw host: "example.com"
         def example; :ok; end
       end

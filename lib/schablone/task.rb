@@ -1,6 +1,12 @@
 module Schablone
   class Task
     class << self
+      def config(&proc)
+        @config ||= Schablone.config.dup
+        yield(@config) if block_given?
+        @config
+      end
+
       def router
         @router ||= Routing::Router.new
         @router.instance_eval(&proc) if block_given?
@@ -32,6 +38,10 @@ module Schablone
       end
     end
 
+    def config(&proc)
+      self.class.config(&proc)
+    end
+
     def invoke(uri, adapter)
       method, @params = self.class.router.route(uri)
       return [] unless method
@@ -58,6 +68,9 @@ module Schablone
 
     def visit(*uris)
       Celluloid::Actor[:navigator].async.stage(*uris)
+    end
+
+    def visit!(*uris)
     end
   end
 end

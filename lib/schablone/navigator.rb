@@ -7,7 +7,7 @@ module Schablone
     def initialize
       @current_uris = Set.new([])
       @staged_uris  = Set.new([])
-      @cached_uris  = URISet.new
+      @cached_uris  = NormalizedURISet.new
     end
 
     def current_uris
@@ -31,8 +31,11 @@ module Schablone
     end
 
     def cycle
-      cache(*current_uris)
-      filter_cached_uris! unless Schablone.config.allow_circulation
+      unless Schablone.config.allow_circulation
+        cache(*current_uris)
+        filter_cached_uris!
+      end
+
       return false if @staged_uris.empty?
       @current_uris, @staged_uris = @staged_uris, Set.new([])
       true

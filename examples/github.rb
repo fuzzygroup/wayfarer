@@ -5,6 +5,7 @@ class MyCrawler < Schablone::Task
   @reviews = ThreadSafe::Array.new
 
   draw host: /zeit.de/
+
   def index
     @reviews << "HELLO!"
     puts "I'm here: #{page.uri}"

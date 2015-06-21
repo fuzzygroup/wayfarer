@@ -1,11 +1,7 @@
 require "spec_helpers"
 
-describe Schablone::URISet do
-  subject(:uri_set) { URISet.new }
-
-  describe "#add" do
-    
-  end
+describe Schablone::NormalizedURISet do
+  subject(:uri_set) { NormalizedURISet.new }
 
   describe "#include?" do
     let(:uri) { URI("http://example.com") }
@@ -138,7 +134,7 @@ describe Schablone::URISet do
 
   describe "#method_missing" do
     let(:set) { spy }
-    subject(:uri_set) { URISet.new(spy) }
+    subject(:uri_set) { NormalizedURISet.new(spy) }
     before { uri_set.instance_variable_set(:@set, set) }
 
     it "proxies missing methods to its @set" do

@@ -1,5 +1,5 @@
 module Schablone
-  class URISet
+  class NormalizedURISet
     def initialize(enumerable = [])
       @set = Set.new(enumerable)
     end

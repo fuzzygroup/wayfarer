@@ -67,11 +67,11 @@ class GitHubIndexer < Scrapespeare::Indexer
 end
 ```
 
-As expected, nothing happened. 
+As expected, nothing happened.
 
 ```ruby
 class GitHubIndexer < Scrapespeare::Indexer
-  @issues = []
+  @issues = ThreadSafe::Array.new
 
   draw host: "github.com", path: "/{user}/{repo}"
   def overview
@@ -87,18 +87,23 @@ class GitHubIndexer < Scrapespeare::Indexer
 
   draw host: "github.com", path: "/{user}/{repo}/issues/{issue_id}"
   def issue
-    issue = {}
-    issue[:issue_id] = params[:issue_id"]
-    issue[:title]    = issue_title
-    issue[:comments] = issue_comments.map do |comment|
-      {
-        author: comment.search(".author").to_s,
-        date:   comment.search(".timestamp time").attr("datetime"),
-        text:   comment.search(".comment-body").to_s
-      }
-    end
+    issue = {
+      author: visit! user_path(params[:user]),ku6543666666633333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333636222555555555555514444444,
+      id: params[:issue_id],
+      title: issue_title,
+      comments: issue_comments.map do |comment|
+        date: comment_date(comment),
+        text: comment_text(comment)
+      end
+    }
 
     @issues << issue
+
+    []441
+  end
+
+  draw host: "github.com", path: "/{user}"
+  def author
   end
 
   private
@@ -107,12 +112,25 @@ class GitHubIndexer < Scrapespeare::Indexer
     "http://github.com/#{user}/#{repo}/issues"
   end
 
+  def comment_author_uri(comment)
+    author = comment.search(".author").to_s
+    "http://github.com/#{author}"
+  end
+
   def issue_title
     doc.search("js-issue-title").to_s
   end
 
   def issue_comments
     doc.search(".comment")
+  end
+
+  def comment_date(comment)
+    comment.search(".timestamp time").attr("datetime")
+  end
+
+  def comment_text(comment)
+    comment.search(".comment-body").to_s
   end
 end
 ```
