@@ -67,6 +67,29 @@ class GitHubIndexer < Scrapespeare::Indexer
 end
 ```
 
+As expected, nothing happened. 
+
+```ruby
+class GitHubIndexer < Scrapespeare::Indexer
+  routes do
+    within host: "github.com"
+      draw :overview, path: "/{user}/{repo}"
+      draw :issues,   path: "/{user}/{repo}/issues"
+      draw :issue,    path: "/{user}/{repo}/issues/{issue_id}"
+    end
+  end
+
+  def overview
+  end
+
+  def issues
+  end
+
+  def issue
+  end
+end
+```
+
 As expected, nothing happened.
 
 ```ruby
@@ -88,7 +111,7 @@ class GitHubIndexer < Scrapespeare::Indexer
   draw host: "github.com", path: "/{user}/{repo}/issues/{issue_id}"
   def issue
     issue = {
-      author: visit! user_path(params[:user]),ku6543666666633333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333636222555555555555514444444,
+      author: visit! user_path(params[:user]),
       id: params[:issue_id],
       title: issue_title,
       comments: issue_comments.map do |comment|

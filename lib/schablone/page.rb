@@ -45,6 +45,10 @@ module Schablone
       links.uniq.find_all { |link| link.is_a? URI }
     end
 
+    def links!(*argv)
+      links(*argv).first
+    end
+
     private
 
     def instantiate_pismo_document

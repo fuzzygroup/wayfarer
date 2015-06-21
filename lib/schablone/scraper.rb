@@ -1,4 +1,5 @@
 require "thread"
+require "pp"
 
 module Schablone
   class Scraper
@@ -12,8 +13,15 @@ module Schablone
       end
 
     rescue => error
-      error("Scraping #{uri} failed: #{error}")
-      []
+      raise(error) if Schablone.config.reraise_exceptions
+
+      error("Exception raised while scraping #{uri}: #{error.inspect}")
+
+      if Schablone.config.print_stacktraces
+        puts error.backtrace.join("\n")
+      end
+
+      return []
     end
   end
 end

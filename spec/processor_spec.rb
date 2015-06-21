@@ -18,7 +18,7 @@ describe Schablone::Processor do
         end
       end
 
-      processor.navigator.stage(*entry_uri)
+      Celluloid::Actor[:navigator].stage(*entry_uri)
       processor.run(klass)
 
       expect(klass.uris).to eq %w(

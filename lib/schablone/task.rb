@@ -20,22 +20,25 @@ module Schablone
         @head = [rule_opts, proc]
       end
 
+      def crawl(*uris)
+        Crawler.new.crawl(self, *uris)
+      end
+
+      private
+
       def method_added(method)
         return unless @head
         rule_opts, proc = @head
         router.draw(method, rule_opts, &(proc || Proc.new {}))
         @head = nil
       end
-
-      def crawl(*uris)
-        Crawler.new.crawl(self, *uris)
-      end
     end
 
+    attr_reader :staged_uris
+
     def initialize
-      self.class.instance_variables.each do |sym|
-        instance_variable_set(sym, self.class.instance_variable_get(sym))
-      end
+      @will_halt = false
+      @staged_uris = []
     end
 
     def config(&proc)
@@ -46,10 +49,14 @@ module Schablone
       method, @params = self.class.router.route(uri)
       return [] unless method
 
+      Celluloid.logger.info("Dispatching to `#{method}`: #{uri}")
+
       @adapter = adapter
       @page = adapter.fetch(uri)
 
       public_send(method)
+
+      @will_halt ? :halt : @staged_uris
     end
 
     private
@@ -62,15 +69,12 @@ module Schablone
       adapter.driver
     end
 
-    def halt
-      Celluloid::Notifications.notifier.publish("halt")
+    def halt!
+      @will_halt = true
     end
 
     def visit(*uris)
-      Celluloid::Actor[:navigator].async.stage(*uris)
-    end
-
-    def visit!(*uris)
+      @staged_uris += uris
     end
   end
 end

@@ -3,6 +3,7 @@ require "set"
 module Schablone
   class Navigator
     include Celluloid
+    include Celluloid::Logger
 
     def initialize
       @current_uris = Set.new([])
@@ -32,8 +33,9 @@ module Schablone
 
     def cycle
       unless Schablone.config.allow_circulation
+        info("Navigator cycles")
         cache(*current_uris)
-        filter_cached_uris!
+        filter_staged_uris!
       end
 
       return false if @staged_uris.empty?
@@ -43,7 +45,7 @@ module Schablone
 
     private
 
-    def filter_cached_uris!
+    def filter_staged_uris!
       @staged_uris.delete_if { |uri| @cached_uris.include?(uri) }
     end
   end

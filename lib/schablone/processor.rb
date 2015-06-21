@@ -4,47 +4,50 @@ module Schablone
   class Processor
     include Celluloid
     include Celluloid::Logger
-    include Celluloid::Notifications
+
+    # finalizer :shutdown_adapter_pool
 
     def initialize
-      subscribe("halt", :halt)
+      info("Processor spawning Navigator...")
+      Actor[:navigator] = Navigator.new_link
 
-      Actor[:navigator] = Navigator.new
-      @navigator = Actor[:navigator]
-
+      info("Processor spawning Scraper pool...")
       Actor[:scraper_pool] = Scraper.pool(
-        size: Schablone.config.scraper_pool_size
+        size: Schablone.config.scraper_thread_count
       )
     end
 
-    def navigator
-      Actor[:navigator].wrapped_object
-    end
-
     def run(klass)
-      step(klass) while navigator.cycle
-      halt
-    end
+      info("Processor runs")
 
-    def halt
-      info("Navigator is about to terminate.")
-      Actor[:navigator].terminate
+      catch(:halt) do
+        while Actor[:navigator].cycle
+          return_values = Actor[:navigator].current_uris.map do |uri|
+            Actor[:scraper_pool].future.scrape(uri, klass)
+          end
 
-      info("Scraper pool is about to terminate.")
-      Actor[:scraper_pool].terminate
+          return_values.each do |future|
+            val = future.value
+            if val == :halt
+              info("Scraper initiated halt")
+              throw(:halt)
+            else
+              Actor[:navigator].stage(*val)
+            end
+          end
+        end
 
-      info("Processor is about to terminate.")
-      terminate
+        info("Nothing left to do. Halting...")
+        throw(:halt)
+      end
+
+      info("Processor halted")
     end
 
     private
 
-    def step(klass)
-      uris = Actor[:navigator].current_uris.map do |uri|
-        Actor[:scraper_pool].future.scrape(uri, klass)
-      end
-
-      uris.each { |uri| Actor[:navigator].stage(*uri.value) }
+    def shutdown_adapter_pool
+      HTTPAdapters::AdapterPool.shutdown { |adapter| adapter.free }
     end
   end
 end

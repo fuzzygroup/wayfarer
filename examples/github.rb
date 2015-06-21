@@ -1,22 +1,37 @@
 require "thread_safe"
 require_relative "../lib/schablone"
+require "mustermann"
+
+Celluloid.task_class = Celluloid::TaskThread
+
+Schablone.config do |c|
+  c.scraper_pool_size = 64
+end
 
 class MyCrawler < Schablone::Task
-  @reviews = ThreadSafe::Array.new
+  draw host: "github.com", path: "/:user/:repo"
+  def repo
+    user = params["user"]
+    repo = params["repo"]
+    visit issues_uri(user, repo)
+  end
 
-  draw host: /zeit.de/
+  draw host: "github.com", path: "/:user/:repo/issues"
+  def issues
+    issue_links     = page.links ".issue-title-link"
+    pagination_link = page.links ".next_page"
+    visit issue_links, pagination_link
+  end
 
-  def index
-    @reviews << "HELLO!"
-    puts "I'm here: #{page.uri}"
-    page.links "a"
+  draw host: "github.com", path: "/:user/:repo/issues/:issue_id"
+  def issue
   end
 
   private
 
-  def review_title
-    doc.search("LEL")
+  def issues_uri(user, repo)
+    "https://github.com/#{user}/#{repo}/issues"
   end
 end
 
-MyCrawler.crawl "http://zeit.de"
+MyCrawler.crawl("http://github.com/rails/rails")
