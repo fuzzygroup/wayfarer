@@ -11,7 +11,6 @@ module Schablone
         indexer = klass.new
         indexer.invoke(uri, adapter)
       end
-
     rescue => error
       raise(error) if Schablone.config.reraise_exceptions
 

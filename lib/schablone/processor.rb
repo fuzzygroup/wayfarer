@@ -5,8 +5,6 @@ module Schablone
     include Celluloid
     include Celluloid::Logger
 
-    # finalizer :shutdown_adapter_pool
-
     def initialize
       info("Processor spawning Navigator...")
       Actor[:navigator] = Navigator.new_link
@@ -28,16 +26,11 @@ module Schablone
 
           return_values.each do |future|
             val = future.value
-            if val == :halt
-              info("Scraper initiated halt")
-              throw(:halt)
-            else
-              Actor[:navigator].stage(*val)
-            end
+            val == :halt ? throw(:halt) : Actor[:navigator].stage(*val)
           end
         end
 
-        info("Nothing left to do. Halting...")
+        info("No staged URIs left. Processor halts")
         throw(:halt)
       end
 

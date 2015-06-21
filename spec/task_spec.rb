@@ -22,10 +22,23 @@ describe Schablone::Task do
     it "draws routes" do
       Task.class_eval do
         draw host: "example.com"
-        def example; :ok; end
+        def example; end
       end
 
       expect(task.class.router.routes.any? { |(method, _)| method == :example })
+    end
+  end
+
+  describe "::let" do
+    it "assigns locals and makes them available to instances" do
+      Task.class_eval do
+        let(:foo) { 0 }
+        draw path: "/hello_world"
+        def example; foo += 1; end
+      end
+
+      uri = test_app("/hello_world")
+      expect(task.locals[:foo]).to be 1
     end
   end
 
@@ -68,8 +81,8 @@ describe Schablone::Task do
   describe "#visit" do
     it "stages URIs internally" do
       expect {
-        task.send(:visit, "http://google.com", "http://yahoo.com")
-      }.to change { task.staged_uris.count }.by(2)
+        task.send(:visit, "http://google.com")
+      }.to change { task.staged_uris.count }.by(1)
     end
   end
 end

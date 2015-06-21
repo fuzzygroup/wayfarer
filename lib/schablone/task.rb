@@ -1,6 +1,8 @@
 module Schablone
   class Task
     class << self
+      attr_reader :locals
+
       def config(&proc)
         @config ||= Schablone.config.dup
         yield(@config) if block_given?
@@ -18,6 +20,16 @@ module Schablone
 
       def draw(rule_opts = {}, &proc)
         @head = [rule_opts, proc]
+      end
+
+      def let(sym, &proc)
+        @locals ||= {}
+
+        @locals[sym] = proc.call
+
+        instance_eval do
+          define_method(sym) { @locals[sym] }
+        end
       end
 
       def crawl(*uris)
@@ -39,6 +51,14 @@ module Schablone
     def initialize
       @will_halt = false
       @staged_uris = []
+    end
+
+    def locals
+      self.class.locals
+    end
+
+    def will_halt?
+      @will_halt
     end
 
     def config(&proc)
@@ -73,7 +93,8 @@ module Schablone
       @will_halt = true
     end
 
-    def visit(*uris)
+    def visit(uris)
+      uris = *uris unless uris.respond_to?(:each)
       @staged_uris += uris
     end
   end
