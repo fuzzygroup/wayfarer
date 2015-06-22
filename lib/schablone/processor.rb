@@ -5,49 +5,72 @@ module Schablone
     include Celluloid
     include Celluloid::Logger
 
+    finalizer :shutdown_scraper_pool
+    finalizer :shutdown_adapter_pool
+
+    attr_reader :adapter_pool
+
     def initialize
+      @pool_size = Schablone.config.scraper_thread_count
+
+      instantiate_adapter_pool
+
       info("Processor spawning Navigator...")
       Actor[:navigator] = Navigator.new_link
 
       info("Processor spawning Scraper pool...")
-      Actor[:scraper_pool] = Scraper.pool(
-        size: Schablone.config.scraper_thread_count
-      )
+      Actor[:scraper_pool] = Scraper.pool(size: @pool_size)
     end
 
     def run(klass)
       info("Processor runs")
 
-      catch(:halt) do
-        while Actor[:navigator].cycle
-          return_values = Actor[:navigator].current_uris.map do |uri|
-            Actor[:scraper_pool].future.scrape(uri, klass)
-          end
+      while navigator.cycle
+        uri_count = navigator.current_uris.count
+        info("About to scrape #{uri_count} URI(s)")
 
-          return_values.each do |future|
-            val = future.value
-
-            if val == :halt
-              throw(:halt)
-            else
-              Actor[:navigator].stage(*val)
-            end
-          end
+        futures = navigator.current_uris.map do |uri|
+          scraper_pool.future.scrape(uri, klass)
         end
 
-        throw(:halt)
+        futures.each do |future|
+          case (val = future.value)
+          when Task::Mismatch
+          when Task::Halt  then break
+          when Task::Stage then navigator.stage(*val.uris)
+          end
+        end
       end
 
+      info("Processor ran successfully")
+    end
+
+    def shutdown_adapter_pool
+      @adapter_pool.shutdown { |adapter| adapter.free }
+    end
+
+    def shutdown_scraper_pool
       info("Shutting down scraper pool...")
       Actor[:scraper_pool].terminate
-
-      info("Processor halted")
     end
 
     private
 
-    def shutdown_adapter_pool
-      HTTPAdapters::AdapterPool.shutdown { |adapter| adapter.free }
+    def navigator
+      Actor[:navigator]
+    end
+
+    def scraper_pool
+      Actor[:scraper_pool]
+    end
+
+    def instantiate_adapter_pool
+      @adapter_pool = ConnectionPool.new(size: 16, timeout: 5) do
+        case Schablone.config.http_adapter
+        when :net_http then Schablone::HTTPAdapters::NetHTTPAdapter.instance
+        when :selenium then Schablone::HTTPAdapters::SeleniumAdapter.new
+        end
+      end
     end
   end
 end

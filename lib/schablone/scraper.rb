@@ -13,13 +13,8 @@ module Schablone
       end
     rescue => error
       raise(error) if Schablone.config.reraise_exceptions
-
       error("Exception raised while scraping #{uri}: #{error.inspect}")
-
-      if Schablone.config.print_stacktraces
-        puts error.backtrace.join("\n")
-      end
-
+      puts error.backtrace.join("\n") if Schablone.config.print_stacktraces
       return []
     end
   end

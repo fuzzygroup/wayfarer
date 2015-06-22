@@ -1,5 +1,9 @@
 module Schablone
   class Task
+    Mismatch = Class.new
+    Halt     = Struct.new(:halting_method)
+    Stage    = Struct.new(:uris)
+
     class << self
       attr_reader :locals
 
@@ -39,12 +43,12 @@ module Schablone
     attr_reader :staged_uris
 
     def initialize
-      @will_halt = false
+      @halts = false
       @staged_uris = []
     end
 
-    def will_halt?
-      @will_halt
+    def halts?
+      @halts
     end
 
     def config(&proc)
@@ -53,16 +57,20 @@ module Schablone
 
     def invoke(uri, adapter)
       method, @params = self.class.router.route(uri)
-      return [] unless method
 
-      Celluloid.logger.info("Dispatching to `#{method}`: #{uri}")
+      if method
+        Celluloid.logger.info("Dispatching to ##{method}: #{uri}")
+      else
+        Celluloid.logger.info("No route matched: #{uri}")
+        return Mismatch.new
+      end
 
       @adapter = adapter
       @page = adapter.fetch(uri)
 
       public_send(method)
 
-      @will_halt ? :halt : @staged_uris
+      @halts ? Halt.new(method) : Stage.new(@staged_uris)
     end
 
     private
@@ -70,6 +78,14 @@ module Schablone
     attr_reader :adapter
     attr_reader :page
     attr_reader :params
+
+    def doc
+      page.doc
+    end
+
+    def pismo
+      page.pismo
+    end
 
     def browser
       adapter.driver
@@ -80,8 +96,7 @@ module Schablone
     end
 
     def visit(uris)
-      uris = *uris unless uris.respond_to?(:each)
-      @staged_uris += uris
+      @staged_uris += uris.respond_to?(:each) ? uris : [uris]
     end
   end
 end
