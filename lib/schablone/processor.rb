@@ -1,4 +1,5 @@
 require "thread"
+require "connection_pool"
 
 module Schablone
   class Processor
@@ -36,8 +37,16 @@ module Schablone
         futures.each do |future|
           case (val = future.value)
           when Task::Mismatch
-          when Task::Halt  then break
-          when Task::Stage then navigator.stage(*val.uris)
+          when Task::Error
+            if Schablone.config.reraise_exceptions
+              raise(val.exception)
+            elsif Schablone.config.print_stacktraces
+              puts val.exception.inspect, val.exception.backtrace.join("\n")
+            end
+          when Task::Halt
+            break
+          when Task::Stage
+            navigator.stage(*val.uris)
           end
         end
       end

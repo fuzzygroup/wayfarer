@@ -1,3 +1,5 @@
+require "connection_pool"
+
 module Schablone
   module HTTPAdapters
     AdapterPool = ConnectionPool.new(size: 16, timeout: 5) do

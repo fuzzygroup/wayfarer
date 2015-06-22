@@ -6,7 +6,6 @@ require "nokogiri"
 require "selenium-webdriver"
 require "net/http/persistent"
 require "mime-types"
-require "connection_pool"
 require "celluloid"
 require "celluloid/autostart"
 

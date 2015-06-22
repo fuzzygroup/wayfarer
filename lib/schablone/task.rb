@@ -1,12 +1,11 @@
 module Schablone
   class Task
-    Mismatch = Class.new
-    Halt     = Struct.new(:halting_method)
+    Mismatch = Struct.new(:uri)
+    Halt     = Struct.new(:uri, :halting_method)
     Stage    = Struct.new(:uris)
+    Error    = Struct.new(:exception, :backtrace)
 
     class << self
-      attr_reader :locals
-
       def config(&proc)
         @config ||= Schablone.config.dup
         yield(@config) if block_given?
@@ -47,30 +46,20 @@ module Schablone
       @staged_uris = []
     end
 
-    def halts?
-      @halts
-    end
-
     def config(&proc)
       self.class.config(&proc)
     end
 
     def invoke(uri, adapter)
       method, @params = self.class.router.route(uri)
-
-      if method
-        Celluloid.logger.info("Dispatching to ##{method}: #{uri}")
-      else
-        Celluloid.logger.info("No route matched: #{uri}")
-        return Mismatch.new
-      end
+      return Mismatch.new(uri) unless method
 
       @adapter = adapter
       @page = adapter.fetch(uri)
 
       public_send(method)
 
-      @halts ? Halt.new(method) : Stage.new(@staged_uris)
+      @halts ? Halt.new(uri, method) : Stage.new(@staged_uris)
     end
 
     private
@@ -91,8 +80,8 @@ module Schablone
       adapter.driver
     end
 
-    def halt!
-      @will_halt = true
+    def halt
+      @halts = true
     end
 
     def visit(uris)

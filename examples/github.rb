@@ -1,11 +1,16 @@
 require_relative "../lib/schablone"
 
+Schablone.config do |config|
+  config.reraise_exceptions = false
+  config.print_stacktraces = true
+end
+
 class WikipediaTask < Schablone::Task
   draw host: /wikipedia.org/
   def wikipedia_page
     title = doc.search("title").inner_html
     puts "I'm here: #{title}"
-    visit page.links("a")
+    visit page.links "a"
   end
 end
 

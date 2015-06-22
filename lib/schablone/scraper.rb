@@ -12,10 +12,7 @@ module Schablone
         indexer.invoke(uri, adapter)
       end
     rescue => error
-      raise(error) if Schablone.config.reraise_exceptions
-      error("Exception raised while scraping #{uri}: #{error.inspect}")
-      puts error.backtrace.join("\n") if Schablone.config.print_stacktraces
-      return []
+      return Task::Error.new(error)
     end
   end
 end

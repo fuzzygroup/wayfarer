@@ -33,7 +33,6 @@ module Schablone
 
     def cycle
       unless Schablone.config.allow_circulation
-        info("Navigator cycles")
         cache(*current_uris)
         filter_staged_uris!
       end
