@@ -7,11 +7,11 @@ module Schablone
       # Whether to crash when encountering unhandled exceptions
       reraise_exceptions: false,
 
-      # Whether URIs may be visited twice.
+      # Whether URIs may be visited twice
       allow_circulation: false,
 
-      # Whether URIs should be normalized
-      normalize_uris: false,
+      # Whether trailing slashes and fragment identifiers should be ignored
+      normalize_uris: true,
 
       # How many scraper threads to spawn in parallel
       scraper_thread_count: 6,
@@ -27,6 +27,7 @@ module Schablone
 
       # How long a Scraper thread may hold an adapter/Selenium driver.
       # Scrapers that exceed his limit fail with an exception.
+      # Can be disabled by setting it to -1
       http_adapter_timeout: 5.0,
 
       # How many 3xx redirects to follow. Does not apply to Selenium drivers.
@@ -34,6 +35,9 @@ module Schablone
 
       # Argument vector for instantiating Selenium drivers
       selenium_argv: [:firefox],
+
+      # Size of browser windows
+      selenium_window_size: [1024, 768],
 
       # Which Mustermann pattern type to use when matching URI paths.
       mustermann_type: :sinatra

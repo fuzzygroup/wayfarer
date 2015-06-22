@@ -10,9 +10,8 @@ module Schablone
       Celluloid::Actor[:navigator].stage(*uris)
       Celluloid::Actor[:processor].run(klass)
 
-      [:navigator, :scraper_pool, :processor].each do |actor|
-        Celluloid::Actor[actor].terminate
-      end
+      Celluloid::Actor[:navigator].terminate
+      Celluloid::Actor[:processor].terminate
     end
   end
 end

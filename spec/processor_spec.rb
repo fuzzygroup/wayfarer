@@ -8,13 +8,9 @@ describe Schablone::Processor do
       entry_uri = URI("http://localhost:9876/graph/index.html")
 
       klass = Class.new(Task) do
-        @uris = []
-
         draw host: "localhost"
-
         def foobar
-          @uris << page.uri
-          page.links "a"
+          page.links("a")
         end
       end
 

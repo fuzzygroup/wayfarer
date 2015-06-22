@@ -3,15 +3,18 @@ module Schablone
     class PathRule < Rule
       attr_reader :pattern
 
-      def initialize(str, opts = {}, &proc)
-        @pattern = str
+      def initialize(str_or_regexp, opts = {}, &proc)
+        @pattern = str_or_regexp
         super(opts, &proc)
       end
 
       private
 
       def match!(uri)
-        uri.path == @pattern
+        case @pattern
+        when String then @pattern == uri.path
+        when Regexp then !!(@pattern =~ uri.path)
+        end
       end
     end
   end

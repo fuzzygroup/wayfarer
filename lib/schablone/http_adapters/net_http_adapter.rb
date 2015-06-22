@@ -22,9 +22,9 @@ module Schablone
 
       def fetch(uri, redirects_followed = 0)
         if not RECOGNIZED_URI_TYPES.include?(uri.class)
-          fail redirects_followed > 0 ? MalformedRedirectURI : MalformedURI
+          raise redirects_followed > 0 ? MalformedRedirectURI : MalformedURI
         elsif redirects_followed > Schablone.config.max_http_redirects
-          fail MaximumRedirectCountReached
+          raise MaximumRedirectCountReached
         end
 
         res = @conn.request(uri)

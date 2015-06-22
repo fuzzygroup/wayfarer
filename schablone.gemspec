@@ -17,14 +17,13 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.executables   << "schablone"
 
+  s.add_runtime_dependency "celluloid"
+  s.add_runtime_dependency "connection_pool"
   s.add_runtime_dependency "nokogiri"
   s.add_runtime_dependency "selenium-webdriver"
   s.add_runtime_dependency "selenium-emulated_features", "~> 2.0"
   s.add_runtime_dependency "net-http-persistent"
   s.add_runtime_dependency "mime-types"
-  # s.add_runtime_dependency "celluloid"
-  s.add_runtime_dependency "connection_pool"
-  s.add_runtime_dependency "activesupport"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"

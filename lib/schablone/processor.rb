@@ -26,13 +26,20 @@ module Schablone
 
           return_values.each do |future|
             val = future.value
-            val == :halt ? throw(:halt) : Actor[:navigator].stage(*val)
+
+            if val == :halt
+              throw(:halt)
+            else
+              Actor[:navigator].stage(*val)
+            end
           end
         end
 
-        info("No staged URIs left. Processor halts")
         throw(:halt)
       end
+
+      info("Shutting down scraper pool...")
+      Actor[:scraper_pool].terminate
 
       info("Processor halted")
     end

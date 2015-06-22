@@ -22,16 +22,6 @@ module Schablone
         @head = [rule_opts, proc]
       end
 
-      def let(sym, &proc)
-        @locals ||= {}
-
-        @locals[sym] = proc.call
-
-        instance_eval do
-          define_method(sym) { @locals[sym] }
-        end
-      end
-
       def crawl(*uris)
         Crawler.new.crawl(self, *uris)
       end
@@ -51,10 +41,6 @@ module Schablone
     def initialize
       @will_halt = false
       @staged_uris = []
-    end
-
-    def locals
-      self.class.locals
     end
 
     def will_halt?

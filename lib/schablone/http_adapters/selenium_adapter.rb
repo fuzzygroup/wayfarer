@@ -9,7 +9,7 @@ module Schablone
       def initialize
         @driver = Selenium::WebDriver.for(*Schablone.config.selenium_argv)
         @driver.manage.window.size = Selenium::WebDriver::Dimension.new(
-          1024, 768
+          *Schablone.config.selenium_window_size
         )
       end
 

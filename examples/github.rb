@@ -1,20 +1,22 @@
 require_relative "../lib/schablone"
 require "securerandom"
+require "concurrent"
+
+Celluloid.task_class = Celluloid::TaskThread
 
 Schablone.config do |c|
   c.scraper_pool_size = 3
-  c.http_adapter = :selenium
   c.allow_circulation = true
 end
 
 class MyCrawler < Schablone::Task
-  let(:reviews) { [] }
+  @@counter = Concurrent::AtomicFixnum.new(0)
 
   draw host: /.*/
   def website
-    filename = SecureRandom.uuid
-    browser.save_screenshot "/Users/dom/Desktop/screenshots/#{filename}.png"
+    halt! if @@counter.value == 5
     visit page.links("a").sample(4)
+    @@counter.increment
   end
 end
 

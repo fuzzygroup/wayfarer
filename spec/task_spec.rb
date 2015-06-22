@@ -29,19 +29,6 @@ describe Schablone::Task do
     end
   end
 
-  describe "::let" do
-    it "assigns locals and makes them available to instances" do
-      Task.class_eval do
-        let(:foo) { 0 }
-        draw path: "/hello_world"
-        def example; foo += 1; end
-      end
-
-      uri = test_app("/hello_world")
-      expect(task.locals[:foo]).to be 1
-    end
-  end
-
   describe "#invoke" do
     context "with matching route" do
       it "calls the expected instance method and returns staged URIs" do

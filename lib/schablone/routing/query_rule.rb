@@ -39,9 +39,6 @@ module Schablone
       def violates_integer?(int, vals)
         vals.none? { |val| int == Integer(val) }
       rescue ArgumentError
-        # `String#to_i` returns `0` if its receiver can not be converted to a
-        # valid number. Therefore `Kernel#Integer` is used, which throws an
-        # `ArgumentError` instead
         true
       end
 

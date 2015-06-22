@@ -17,7 +17,7 @@ module Schablone
       end
 
       def build_child_rule_chain_from_options(opts)
-        opts.inject(self) { |rule, (key, val)| rule.send(key, val) }
+        opts.reduce(self) { |rule, (key, val)| rule.send(key, val) }
       end
 
       def ===(uri)
@@ -29,7 +29,7 @@ module Schablone
         rule_chain = matching_rule_chain(uri)
 
         if rule_chain.any?
-          return true, params_from_rule_chain(rule_chain, uri)
+          [true, params_from_rule_chain(rule_chain, uri)]
         else
           false
         end
