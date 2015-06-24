@@ -1,7 +1,9 @@
+# require "active_support/core_ext/module/attribute_accessors.rb"
+
 module Schablone
   class Task
     Mismatch = Struct.new(:uri)
-    Halt     = Struct.new(:uri, :halting_method)
+    Halt     = Struct.new(:uri, :method)
     Stage    = Struct.new(:uris)
     Error    = Struct.new(:exception, :backtrace)
 
@@ -24,6 +26,23 @@ module Schablone
       def draw(rule_opts = {}, &proc)
         @head = [rule_opts, proc]
       end
+
+      def post_processors
+        @post_processors ||= []
+      end
+
+      def post_process(sym = nil, &proc)
+        post_processors << (proc || sym)
+      end
+
+      def post_process!
+        post_processors.each_with_index do |obj, i|
+          val = obj.respond_to?(:call) ? obj.call : send(obj)
+          return val if post_processors.count == i + 1
+        end
+      end
+
+      alias_method :post_processor, :post_process
 
       def crawl(*uris)
         Crawler.new.crawl(self, *uris)
@@ -54,12 +73,16 @@ module Schablone
       method, @params = self.class.router.route(uri)
       return Mismatch.new(uri) unless method
 
+      Celluloid.logger.info("[#{self}] Dispatched to ##{method}: #{uri}")
+
       @adapter = adapter
       @page = adapter.fetch(uri)
 
       public_send(method)
 
       @halts ? Halt.new(uri, method) : Stage.new(@staged_uris)
+    rescue => error
+      return Error.new(error)
     end
 
     private

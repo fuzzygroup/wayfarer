@@ -1,17 +1,34 @@
 require_relative "../lib/schablone"
-
-Schablone.config do |config|
-  config.reraise_exceptions = false
-  config.print_stacktraces = true
-end
+require "mustermann"
 
 class WikipediaTask < Schablone::Task
-  draw host: /wikipedia.org/
-  def wikipedia_page
-    title = doc.search("title").inner_html
-    puts "I'm here: #{title}"
+  config do |config|
+    config.scraper_thread_count = 12
+    config.reraise_exceptions = true
+    config.print_stacktraces = true
+    config.http_adapter = :selenium
+    config.selenium_argv = :phantomjs
+  end
+
+  routes do
+    within host: "pizza.de" do
+      draw :index, path: "/:zipcode"
+      draw :detail, path: "/:zipcode", query: { lgs: "36294" }
+    end
+  end
+
+  post_process :collect
+
+  def self.collect
+  end
+
+  def index
+    foo = yield page.links "a.important"
     visit page.links "a"
+  end
+
+  def detail
   end
 end
 
-WikipediaTask.crawl "http://wikipedia.org"
+puts WikipediaTask.crawl "http://http://pizza.de/70173"

@@ -9,6 +9,8 @@ module Schablone
       @current_uris = Set.new([])
       @staged_uris  = Set.new([])
       @cached_uris  = NormalizedURISet.new
+
+      info("[#{self}] Navigator spawned")
     end
 
     def current_uris

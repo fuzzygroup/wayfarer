@@ -20,6 +20,13 @@ module Schablone
     def doc
       return @doc if @doc
 
+      # If no Content-Type field is present, assume HTML
+      # TODO Test case
+      unless @headers["content-type"]
+        return Parsers::XMLParser.parse_html(@body)
+      end
+
+      # TODO Maybe get rid of the mime gem?
       content_type = @headers["content-type"].first
       sub_type = MIME::Types[content_type].first.sub_type
 
@@ -34,7 +41,7 @@ module Schablone
     end
 
     def pismo
-      @pismo_doc ||= instantiate_pismo_document if defined?(Pismo)
+      @pismo_doc ||= instantiate_pismo_document
     end
 
     def links(*argv)

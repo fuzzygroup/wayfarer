@@ -3,15 +3,24 @@ module Schablone
     include Celluloid::Logger
 
     def crawl(klass, *uris)
-      info("Running Scrapespeare #{Schablone::VERSION}")
-      info("Crawler spawning Processor...")
+      info("[#{self}] Scrapespeare #{Schablone::VERSION}")
+      info("[#{self}] Spawning Processor")
       Celluloid::Actor[:processor] = Processor.new
 
+      info("[#{self}] Staging URIs")
       Celluloid::Actor[:navigator].stage(*uris)
-      Celluloid::Actor[:processor].run(klass)
 
+      info("[#{self}] Running Processor")
+      return_val = Celluloid::Actor[:processor].run(klass)
+
+      info("[#{self}] Terminating Navigator")
       Celluloid::Actor[:navigator].terminate
+
+      info("[#{self}] Terminating Processor")
       Celluloid::Actor[:processor].terminate
+
+      info("[#{self}] Done")
+      return_val
     end
   end
 end

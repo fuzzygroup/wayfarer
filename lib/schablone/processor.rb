@@ -12,46 +12,56 @@ module Schablone
     attr_reader :adapter_pool
 
     def initialize
+      Schablone.log.info("[#{self}] Processor spawned")
+
       @pool_size = Schablone.config.scraper_thread_count
 
+      Schablone.log.info("[#{self}] Instantiating HTTP adapter pool")
       instantiate_adapter_pool
 
-      info("Processor spawning Navigator...")
+      Schablone.log.info("[#{self}] Spawning Navigator")
       Actor[:navigator] = Navigator.new_link
 
-      info("Processor spawning Scraper pool...")
+      Schablone.log.info("[#{self}] Spawning Scraper pool")
       Actor[:scraper_pool] = Scraper.pool(size: @pool_size)
     end
 
     def run(klass)
-      info("Processor runs")
+      catch(:halt) do
+        while navigator.cycle
+          info("[#{self}] Navigator cycled")
 
-      while navigator.cycle
-        uri_count = navigator.current_uris.count
-        info("About to scrape #{uri_count} URI(s)")
+          futures = navigator.current_uris.map do |uri|
+            scraper_pool.future.scrape(uri, klass)
+          end
 
-        futures = navigator.current_uris.map do |uri|
-          scraper_pool.future.scrape(uri, klass)
-        end
-
-        futures.each do |future|
-          case (val = future.value)
-          when Task::Mismatch
-          when Task::Error
-            if Schablone.config.reraise_exceptions
-              raise(val.exception)
-            elsif Schablone.config.print_stacktraces
-              puts val.exception.inspect, val.exception.backtrace.join("\n")
+          futures.each do |future|
+            case (val = future.value)
+            when Task::Mismatch
+              Schablone.log.info("[#{self}] No route for URI: #{val.uri}")
+            when Task::Error
+              if Schablone.config.reraise_exceptions
+                raise(val.exception)
+              elsif Schablone.config.print_stacktraces
+                puts val.exception.inspect, val.exception.backtrace.join("\n")
+              end
+            when Task::Halt
+              Schablone.log.info("[#{self}] Halt initiated by ##{val.method}")
+              throw(:halt)
+            when Task::Stage
+              navigator.async.stage(*val.uris)
             end
-          when Task::Halt
-            break
-          when Task::Stage
-            navigator.stage(*val.uris)
           end
         end
+
+        throw(:halt)
       end
 
-      info("Processor ran successfully")
+      Schablone.log.info("[#{self}] Terminating Scraper pool")
+      scraper_pool.terminate
+
+      Schablone.log.info("[#{self}] Calling post-processors")
+      klass.post_process!
     end
 
     def shutdown_adapter_pool
@@ -59,7 +69,7 @@ module Schablone
     end
 
     def shutdown_scraper_pool
-      info("Shutting down scraper pool...")
+      Schablone.log.info("Shutting down scraper pool...")
       Actor[:scraper_pool].terminate
     end
 

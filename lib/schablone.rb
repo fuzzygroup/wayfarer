@@ -40,7 +40,7 @@ require_relative "schablone/processor"
 require_relative "schablone/crawler"
 
 module Schablone
-  VERSION = "0.0.1-alpha.1"
+  VERSION = "0.0.1"
 
   class << self
     attr_writer :logger
@@ -48,6 +48,8 @@ module Schablone
     def logger
       @logger || Celluloid.logger
     end
+
+    alias_method :log, :logger
 
     def config(&proc)
       @config ||= Configuration.new

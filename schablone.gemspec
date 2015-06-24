@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.executables   << "schablone"
 
+  s.add_runtime_dependency "activesupport"
   s.add_runtime_dependency "celluloid"
   s.add_runtime_dependency "connection_pool"
   s.add_runtime_dependency "nokogiri"
