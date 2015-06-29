@@ -6,29 +6,27 @@ class WikipediaTask < Schablone::Task
     config.scraper_thread_count = 12
     config.reraise_exceptions = true
     config.print_stacktraces = true
-    config.http_adapter = :selenium
-    config.selenium_argv = :phantomjs
   end
 
   routes do
-    within host: "pizza.de" do
-      draw :index, path: "/:zipcode"
-      draw :detail, path: "/:zipcode", query: { lgs: "36294" }
-    end
+    draw :index,   host: /pizza.de/
+    draw :example, host: "example.com"
   end
 
   post_process :collect
 
   def self.collect
+    puts "IM SO RUNNING."
   end
 
   def index
-    foo = yield page.links "a.important"
+    return halt
     visit page.links "a"
   end
 
-  def detail
+  def example
+    "foobarz"
   end
 end
 
-puts WikipediaTask.crawl "http://http://pizza.de/70173"
+puts WikipediaTask.crawl "http://pizza.de/70173"

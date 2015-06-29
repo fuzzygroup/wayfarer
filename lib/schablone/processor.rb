@@ -7,65 +7,45 @@ module Schablone
     include Celluloid::Logger
 
     finalizer :shutdown_scraper_pool
-    finalizer :shutdown_adapter_pool
 
     attr_reader :adapter_pool
 
+    class ProcessorGroup < Celluloid::SupervisionGroup
+      supervise Navigator,
+        as: :navigator
+
+      pool Scraper,
+        as: :scraper_pool,
+        size: 6
+    end
+
     def initialize
-      Schablone.log.info("[#{self}] Processor spawned")
+      @halted = false
 
-      @pool_size = Schablone.config.scraper_thread_count
+      Schablone.log.info("[#{self}] Spawning Navigator and Scraper pool")
+      ProcessorGroup.run!
+    end
 
-      Schablone.log.info("[#{self}] Instantiating HTTP adapter pool")
-      instantiate_adapter_pool
-
-      Schablone.log.info("[#{self}] Spawning Navigator")
-      Actor[:navigator] = Navigator.new_link
-
-      Schablone.log.info("[#{self}] Spawning Scraper pool")
-      Actor[:scraper_pool] = Scraper.pool(size: @pool_size)
+    def halted?
+      @halted
     end
 
     def run(klass)
-      catch(:halt) do
-        while navigator.cycle
-          info("[#{self}] Navigator cycled")
-
-          futures = navigator.current_uris.map do |uri|
-            scraper_pool.future.scrape(uri, klass)
-          end
-
-          futures.each do |future|
-            case (val = future.value)
-            when Task::Mismatch
-              Schablone.log.info("[#{self}] No route for URI: #{val.uri}")
-            when Task::Error
-              if Schablone.config.reraise_exceptions
-                raise(val.exception)
-              elsif Schablone.config.print_stacktraces
-                puts val.exception.inspect, val.exception.backtrace.join("\n")
-              end
-            when Task::Halt
-              Schablone.log.info("[#{self}] Halt initiated by ##{val.method}")
-              throw(:halt)
-            when Task::Stage
-              navigator.async.stage(*val.uris)
-            end
-          end
+      while navigator.cycle
+        futures = navigator.current_uris.map do |uri|
+          scraper_pool.future.scrape(uri, klass)
         end
 
-        throw(:halt)
+        futures.each { |future| handle_future(future) }
       end
+
+      @halted = true
 
       Schablone.log.info("[#{self}] Terminating Scraper pool")
       scraper_pool.terminate
 
       Schablone.log.info("[#{self}] Calling post-processors")
       klass.post_process!
-    end
-
-    def shutdown_adapter_pool
-      @adapter_pool.shutdown { |adapter| adapter.free }
     end
 
     def shutdown_scraper_pool
@@ -75,21 +55,43 @@ module Schablone
 
     private
 
+    def handle_future(future)
+      return if @halted
+
+      case (val = future.value)
+      when Task::Mismatch then handle_mismatch(val)
+      when Task::Error    then handle_error(val)
+      when Task::Halt     then handle_halt(val)
+      when Task::Stage    then handle_stage(val)
+      end
+    end
+
+    def handle_mismatch(val)
+      Schablone.log.info("[#{self}] No route for URI: #{val.uri}")
+    end
+
+    def handle_error(val)
+      if Schablone.config.reraise_exceptions
+        raise(val.exception)
+      elsif Schablone.config.print_stacktraces
+        puts val.exception.inspect, val.exception.backtrace.join("\n")
+      end
+    end
+
+    def handle_halt(val)
+      @halted = true
+    end
+
+    def handle_stage(val)
+      navigator.async.stage(*val.uris)
+    end
+
     def navigator
       Actor[:navigator]
     end
 
     def scraper_pool
       Actor[:scraper_pool]
-    end
-
-    def instantiate_adapter_pool
-      @adapter_pool = ConnectionPool.new(size: 16, timeout: 5) do
-        case Schablone.config.http_adapter
-        when :net_http then Schablone::HTTPAdapters::NetHTTPAdapter.instance
-        when :selenium then Schablone::HTTPAdapters::SeleniumAdapter.new
-        end
-      end
     end
   end
 end
