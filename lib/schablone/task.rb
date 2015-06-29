@@ -73,7 +73,7 @@ module Schablone
       method, @params = self.class.router.route(uri)
       return Mismatch.new(uri) unless method
 
-      Celluloid.logger.info("[#{self}] Dispatched to ##{method}: #{uri}")
+      # Schablone.log.debug("[#{self}] Dispatched to ##{method}: #{uri}")
 
       @adapter = adapter
       @page = adapter.fetch(uri)

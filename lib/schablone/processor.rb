@@ -7,6 +7,7 @@ module Schablone
     include Celluloid::Logger
 
     finalizer :shutdown_scraper_pool
+    finalizer :free_adapter_pool
 
     attr_reader :adapter_pool
 
@@ -21,8 +22,9 @@ module Schablone
 
     def initialize
       @halted = false
+      @adapter_pool = AdapterPool.new
 
-      Schablone.log.info("[#{self}] Spawning Navigator and Scraper pool")
+      Schablone.log.debug("[#{self}] Spawning Navigator and Scraper pool")
       ProcessorGroup.run!
     end
 
@@ -33,7 +35,7 @@ module Schablone
     def run(klass)
       while navigator.cycle
         futures = navigator.current_uris.map do |uri|
-          scraper_pool.future.scrape(uri, klass)
+          scraper_pool.future.scrape(uri, klass, @adapter_pool)
         end
 
         futures.each { |future| handle_future(future) }
@@ -41,15 +43,20 @@ module Schablone
 
       @halted = true
 
-      Schablone.log.info("[#{self}] Terminating Scraper pool")
+      Schablone.log.debug("[#{self}] Terminating Scraper pool")
       scraper_pool.terminate
 
-      Schablone.log.info("[#{self}] Calling post-processors")
+      Schablone.log.debug("[#{self}] Calling post-processors")
       klass.post_process!
     end
 
     def shutdown_scraper_pool
-      Schablone.log.info("Shutting down scraper pool...")
+      Schablone.log.debug("[#{self}] Shutting down scraper pool")
+      Actor[:scraper_pool].terminate
+    end
+
+    def free_adapter_pool
+      Schablone.log.debug("[#{self}] Freeing HTTP adapters")
       Actor[:scraper_pool].terminate
     end
 
@@ -67,7 +74,7 @@ module Schablone
     end
 
     def handle_mismatch(val)
-      Schablone.log.info("[#{self}] No route for URI: #{val.uri}")
+      Schablone.log.debug("[#{self}] No route for URI: #{val.uri}")
     end
 
     def handle_error(val)

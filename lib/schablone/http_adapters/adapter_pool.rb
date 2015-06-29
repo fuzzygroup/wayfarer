@@ -26,10 +26,12 @@ module Schablone
       end
 
       def method_missing(method, *argv, &proc)
-        @pool.send(method, *argv, &proc) unless method == :shutdown
+        super if method == :shutdown
+        @pool.send(method, *argv, &proc)
       end
 
       def respond_to_missing?(method, private = false)
+        return false if method == :shutdown
         @pool.respond_to?(method) || super
       end
     end

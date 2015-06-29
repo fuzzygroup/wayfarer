@@ -7,8 +7,10 @@ describe Schablone::Task do
   describe "::config" do
     it "works" do
       task.class.instance_eval do
-        config do |c|
-          c.http_adapter = :selenium
+        class_eval do
+          config do |c|
+            c.http_adapter = :selenium
+          end
         end
       end
 
@@ -18,9 +20,11 @@ describe Schablone::Task do
 
   describe "::draw" do
     it "draws routes" do
-      task.class.class_eval do
-        draw host: "example.com"
-        def example; end
+      task.class.instance_eval do
+        class_eval do
+          draw host: "example.com"
+          def example; end
+        end
       end
 
       expect(task.class.router.routes.any? { |(method, _)| method == :example })
@@ -30,8 +34,10 @@ describe Schablone::Task do
   describe "::post_process" do
     it "registers post-processors" do
       task.class.instance_eval do
-        post_process :foo
-        post_process :bar
+        class_eval do
+          post_process :foo
+          post_process :bar
+        end
       end
 
       expect(task.class.post_processors.count).to be 2
@@ -41,18 +47,20 @@ describe Schablone::Task do
   describe "::post_process!" do
     it "runs all post-processors in FIFO order" do
       task.class.instance_eval do
-        post_process :foo
-        post_process :bar
-        post_process do
-          @qux = 42
+        class_eval do
+          post_process :foo
+          post_process :bar
+          post_process do
+            @qux = 42
+          end
+          post_process :baz
+
+          private
+
+          def self.foo; :foo; end
+          def self.bar; :bar; end
+          def self.baz; @qux + 24; end
         end
-        post_process :baz
-
-        private
-
-        def self.foo; :foo; end
-        def self.bar; :bar; end
-        def self.baz; @qux + 24; end
       end
 
       expect(task.class.post_process!).to be 66
@@ -62,9 +70,11 @@ describe Schablone::Task do
   describe "#invoke" do
     context "with matching route" do
       it "returns a Stage" do
-        task.class.class_eval do
-          draw path: "/hello_world"
-          def foo; visit("http://example.com"); end
+        task.class.instance_eval do
+          class_eval do
+            draw path: "/hello_world"
+            def foo; visit("http://example.com"); end
+          end
         end
 
         uri = test_app("/hello_world")
@@ -76,12 +86,13 @@ describe Schablone::Task do
 
     context "with mismatching routes" do
       it "returns a Mismatch" do
-        task.class.class_eval do
-          route.draw :bar, path: "/hello_world"
-          def foo; end
+        task.class.instance_eval do
+          class_eval do
+            route.draw :foobar, path: "/foobar"
+          end
         end
 
-        uri = test_app("/hello_world")
+        uri = test_app("/hello_worlssd")
         returned = task.invoke(uri, adapter)
         expect(returned).to be_a Task::Mismatch
         expect(returned.uri).to be uri
