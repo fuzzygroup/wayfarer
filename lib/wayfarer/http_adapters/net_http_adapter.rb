@@ -21,10 +21,10 @@ module Wayfarer
       end
 
       def fetch(uri, redirects_followed = 0)
-        if not RECOGNIZED_URI_TYPES.include?(uri.class)
-          raise redirects_followed > 0 ? MalformedRedirectURI : MalformedURI
+        if !RECOGNIZED_URI_TYPES.include?(uri.class)
+          fail redirects_followed > 0 ? MalformedRedirectURI : MalformedURI
         elsif redirects_followed > Wayfarer.config.max_http_redirects
-          raise MaximumRedirectCountReached
+          fail MaximumRedirectCountReached
         end
 
         res = @conn.request(uri)

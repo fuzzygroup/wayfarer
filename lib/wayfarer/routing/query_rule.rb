@@ -14,7 +14,7 @@ module Wayfarer
         CGI.parse(uri.query).none? { |field, vals| violates?(field, vals) }
       rescue NoMethodError
         # `CGI::parse` throws a NoMethodError if `uri.query` is an empty string
-        # TODO Test case
+        # TODO: Test case
       end
 
       def violates?(field, vals)

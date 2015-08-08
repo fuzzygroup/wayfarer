@@ -4,7 +4,7 @@ describe Wayfarer::Routing::QueryRule do
   subject(:rule) { QueryRule.new(constraints) }
 
   describe "String constraints" do
-    let(:constraints) { Hash[arg: "foo"]  }
+    let(:constraints) { Hash[arg: "foo"] }
 
     context "with matching query field value" do
       let(:uri) { URI("http://example.com?arg=foo") }
@@ -24,7 +24,7 @@ describe Wayfarer::Routing::QueryRule do
   end
 
   describe "Integer constraints" do
-    let(:constraints) { Hash[arg: 0]  }
+    let(:constraints) { Hash[arg: 0] }
 
     context "with matching query field value" do
       let(:uri) { URI("http://example.com?arg=0") }
@@ -52,7 +52,7 @@ describe Wayfarer::Routing::QueryRule do
   end
 
   describe "RegExp constraints" do
-    let(:constraints) { Hash[arg: /foo/]  }
+    let(:constraints) { Hash[arg: /foo/] }
 
     context "with matching query field value" do
       let(:uri) { URI("http://example.com?arg=foo") }
@@ -72,7 +72,7 @@ describe Wayfarer::Routing::QueryRule do
   end
 
   describe "Range constraints" do
-    let(:constraints) { Hash[arg: 1..10]  }
+    let(:constraints) { Hash[arg: 1..10] }
 
     context "with matching query field value" do
       let(:uri) { URI("http://example.com?arg=5") }

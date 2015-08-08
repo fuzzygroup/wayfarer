@@ -73,7 +73,7 @@ task :test_app do
       BindAddress: "localhost",
       Logger: WEBrick::Log.new("/dev/null"),
       AccessLog: [],
-      :StartCallback => Proc.new { cvar.signal }
+      StartCallback: proc { cvar.signal }
     )
   end
 

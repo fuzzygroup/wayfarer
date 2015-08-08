@@ -57,9 +57,15 @@ describe Wayfarer::Job do
 
           private
 
-          def self.foo; :foo; end
-          def self.bar; :bar; end
-          def self.baz; @qux + 24; end
+          def self.foo
+            :foo
+          end
+          def self.bar
+            :bar
+          end
+          def self.baz
+            @qux + 24
+          end
         end
       end
 
@@ -73,7 +79,9 @@ describe Wayfarer::Job do
         job.class.instance_eval do
           class_eval do
             draw path: "/hello_world"
-            def foo; visit("http://example.com"); end
+            def foo
+              visit("http://example.com")
+            end
           end
         end
 
@@ -103,7 +111,9 @@ describe Wayfarer::Job do
       it "returns an Error" do
         job.class.class_eval do
           draw path: "/hello_world"
-          def foo; fail; end
+          def foo
+            fail
+          end
         end
 
         uri = test_app("/hello_world")
@@ -131,9 +141,9 @@ describe Wayfarer::Job do
 
   describe "#visit" do
     it "stages URIs internally" do
-      expect {
+      expect do
         job.send(:visit, "http://google.com")
-      }.to change { job.staged_uris.count }.by(1)
+      end.to change { job.staged_uris.count }.by(1)
     end
   end
 end

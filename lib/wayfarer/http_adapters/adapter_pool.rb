@@ -13,7 +13,7 @@ module Wayfarer
       end
 
       def free
-        @pool.shutdown { |adapter| adapter.free }
+        @pool.shutdown(&:free)
       end
 
       private

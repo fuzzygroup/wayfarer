@@ -19,7 +19,7 @@ module Wayfarer
 
     alias_method :log, :logger
 
-    def config(&proc)
+    def config(&_proc)
       @config ||= Configuration.new
       yield(@config) if block_given?
       @config

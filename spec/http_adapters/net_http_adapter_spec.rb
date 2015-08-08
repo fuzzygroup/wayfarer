@@ -36,10 +36,10 @@ describe Wayfarer::HTTPAdapters::NetHTTPAdapter do
 
     context "with malformed URI" do
       it "raises a MalformedURI" do
-        expect {
+        expect do
           uri = URI("hptt://bro.ken")
           page = adapter.fetch(uri)
-        }.to raise_error(
+        end.to raise_error(
           Wayfarer::HTTPAdapters::NetHTTPAdapter::MalformedURI
         )
       end
@@ -58,10 +58,10 @@ describe Wayfarer::HTTPAdapters::NetHTTPAdapter do
         after  { Wayfarer.config.reset! }
 
         it "raises a MaximumRedirectCountReached" do
-          expect {
+          expect do
             uri = URI("http://0.0.0.0:9876/redirect?times=6")
             page = adapter.fetch(uri)
-          }.to raise_error(
+          end.to raise_error(
             Wayfarer::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
           )
         end
@@ -69,10 +69,10 @@ describe Wayfarer::HTTPAdapters::NetHTTPAdapter do
 
       context "when redirection URI is malformed" do
         it "raises a MalformedRedirectURI" do
-          expect {
+          expect do
             uri = test_app("/malformed_redirect")
             page = adapter.fetch(uri)
-          }.to raise_error(
+          end.to raise_error(
             Wayfarer::HTTPAdapters::NetHTTPAdapter::MalformedRedirectURI
           )
         end

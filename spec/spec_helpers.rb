@@ -1,4 +1,4 @@
-require "bundler" and Bundler.require
+require("bundler") && Bundler.require
 require "celluloid/test"
 
 include Wayfarer

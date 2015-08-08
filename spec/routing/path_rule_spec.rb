@@ -1,7 +1,6 @@
 require "spec_helpers"
 
 describe Wayfarer::Routing::PathRule do
-
   describe "#===" do
     describe "String matching" do
       subject(:rule) { PathRule.new("/foo/bar") }

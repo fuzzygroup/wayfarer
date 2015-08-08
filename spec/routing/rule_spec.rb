@@ -85,9 +85,7 @@ describe Wayfarer::Routing::Rule do
       end
 
       it "returns the expected URI parameters" do
-        expect(rule.send(:params_from_rule_chain, rule_chain, uri)).to eq({
-          "alpha" => "foo", "beta" => "bar"
-        })
+        expect(rule.send(:params_from_rule_chain, rule_chain, uri)).to eq("alpha" => "foo", "beta" => "bar")
       end
     end
   end
@@ -108,7 +106,7 @@ describe Wayfarer::Routing::Rule do
 
       it "returns the URI parameters" do
         _, params = rule =~ uri
-        expect(params).to eq({ "alpha" => "foo", "beta" => "bar" })
+        expect(params).to eq("alpha" => "foo", "beta" => "bar")
       end
     end
 

@@ -40,7 +40,7 @@ describe Wayfarer::Routing::Router do
         uri = URI("http://example.com/42")
         method, params = router.route(uri)
         expect(method).to be :foo
-        expect(params).to eq({ "barqux" => "42" })
+        expect(params).to eq("barqux" => "42")
       end
     end
 

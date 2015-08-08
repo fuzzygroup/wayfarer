@@ -1,5 +1,5 @@
 module Wayfarer
-  # FIXME Handle exceptions with Celluloid's traps
+  # FIXME: Handle exceptions with Celluloid's traps
   class Processor
     include Celluloid
     include Celluloid::Logger
@@ -62,13 +62,13 @@ module Wayfarer
 
     def handle_error(val)
       if Wayfarer.config.reraise_exceptions
-        raise(val.exception)
+        fail(val.exception)
       elsif Wayfarer.config.print_stacktraces
         puts val.exception.inspect, val.exception.backtrace.join("\n")
       end
     end
 
-    def handle_halt(val)
+    def handle_halt(_val)
       @halted = true
     end
 

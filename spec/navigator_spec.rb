@@ -7,29 +7,29 @@ describe Wayfarer::Navigator do
     let(:uri) { URI("http://example.com/foo#bar") }
 
     it "stages URIs" do
-      expect {
+      expect do
         navigator.stage("http://example.com")
-      }.to change { navigator.staged_uris.count }.by(1)
+      end.to change { navigator.staged_uris.count }.by(1)
     end
 
     it "stages multiple URIs" do
-      expect {
+      expect do
         navigator.stage("http://example.com", "http://google.com")
-      }.to change { navigator.staged_uris.count }.by(2)
+      end.to change { navigator.staged_uris.count }.by(2)
     end
   end
 
   describe "#cache" do
     it "caches a URI" do
-      expect {
+      expect do
         navigator.cache("http://example.com")
-      }.to change { navigator.cached_uris.count }.by(1)
+      end.to change { navigator.cached_uris.count }.by(1)
     end
 
     it "caches multiple URIs" do
-      expect {
+      expect do
         navigator.cache("http://example.com", "http://google.com")
-      }.to change { navigator.cached_uris.count }.by(2)
+      end.to change { navigator.cached_uris.count }.by(2)
     end
   end
 
@@ -40,9 +40,9 @@ describe Wayfarer::Navigator do
       navigator.stage(uri)
       navigator.stage(uri)
 
-      expect {
+      expect do
         navigator.cycle
-      }.to change { navigator.current_uris.count }.by(1)
+      end.to change { navigator.current_uris.count }.by(1)
     end
 
     it "caches URIs" do

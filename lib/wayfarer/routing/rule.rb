@@ -45,7 +45,7 @@ module Wayfarer
         end
       end
 
-      def params(uri)
+      def params(_uri)
         {}
       end
 
