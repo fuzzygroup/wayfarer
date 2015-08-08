@@ -15,20 +15,20 @@ unless RUBY_PLATFORM == "java"
 end
 
 module SpecHelpers
-  def test_app(str)
-    URI("http://0.0.0.0:9876#{str}")
+  def test_app(path)
+    URI("http://0.0.0.0:9876#{path}")
   end
 
-  def fetch_page(str)
-    NetHTTPAdapter.instance.fetch(URI(str))
+  def fetch_page(uri)
+    NetHTTPAdapter.instance.fetch(URI(uri))
   end
 
-  def html_fragment(str)
-    Nokogiri::HTML.fragment(str)
+  def html_fragment(html)
+    Nokogiri::HTML.fragment(html)
   end
 
-  def node_set(str)
-    html_fragment(str).css("*")
+  def node_set(html)
+    html_fragment(html).css("*")
   end
 
   def hide_const(const)
@@ -41,6 +41,7 @@ end
 
 RSpec.configure do |config|
   config.include(SpecHelpers)
+
   config.before { Celluloid.boot }
   config.after  { Celluloid.shutdown }
 end
