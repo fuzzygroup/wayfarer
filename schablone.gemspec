@@ -15,7 +15,6 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {spec,features}/*`.split("\n")
 
   s.require_paths = ["lib"]
-  s.executables   << "schablone"
 
   s.add_runtime_dependency "activesupport"
   s.add_runtime_dependency "celluloid"
