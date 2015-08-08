@@ -6,7 +6,7 @@ describe Wayfarer::Navigator do
   describe "#stage" do
     let(:uri) { URI("http://example.com/foo#bar") }
 
-    it "stages a URI" do
+    it "stages URIs" do
       expect {
         navigator.stage("http://example.com")
       }.to change { navigator.staged_uris.count }.by(1)
