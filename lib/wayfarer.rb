@@ -1,7 +1,5 @@
-# Standard library
 require "logger"
 
-# Dependencies
 require "nokogiri"
 require "selenium-webdriver"
 require "net/http/persistent"
@@ -11,6 +9,15 @@ require "celluloid/autostart"
 
 # Plumbing
 require_relative "wayfarer/configuration"
+
+# Processing
+require_relative "wayfarer/task"
+require_relative "wayfarer/scraper"
+require_relative "wayfarer/page"
+require_relative "wayfarer/normalized_uri_set"
+require_relative "wayfarer/navigator"
+require_relative "wayfarer/processor"
+require_relative "wayfarer/crawler"
 
 # Routing
 require_relative "wayfarer/routing/rule"
@@ -30,17 +37,8 @@ require_relative "wayfarer/http_adapters/adapter_pool"
 require_relative "wayfarer/parsers/xml_parser"
 require_relative "wayfarer/parsers/json_parser"
 
-# Processing
-require_relative "wayfarer/task"
-require_relative "wayfarer/scraper"
-require_relative "wayfarer/page"
-require_relative "wayfarer/normalized_uri_set"
-require_relative "wayfarer/navigator"
-require_relative "wayfarer/processor"
-require_relative "wayfarer/crawler"
-
 module Wayfarer
-  VERSION = "0.0.1"
+  VERSION = "0.0.0"
 
   class << self
     attr_writer :logger
