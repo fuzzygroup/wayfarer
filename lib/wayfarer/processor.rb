@@ -1,6 +1,3 @@
-require "thread"
-require "connection_pool"
-
 module Wayfarer
   class Processor
     include Celluloid

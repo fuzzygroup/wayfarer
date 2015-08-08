@@ -9,13 +9,13 @@ describe Wayfarer::NormalizedURISet do
     context "with uri_setd URI" do
       before { uri_set << uri }
 
-      it "returns `true`" do
+      it "returns true" do
         expect(uri_set).to include uri
       end
     end
 
     context "with non-uri_setd URI" do
-      it "returns `false`" do
+      it "returns false" do
         expect(uri_set).not_to include uri
       end
     end
@@ -144,13 +144,13 @@ describe Wayfarer::NormalizedURISet do
   end
 
   describe "#respond_to?" do
-    context "with method recognized by @set" do
+    context "with method responded to by @set" do
       it "returns true" do
         expect(uri_set).to respond_to(:difference)
       end
     end
 
-    context "with method not recognized by @set" do
+    context "with method not responded to by @set" do
       it "returns false" do
         expect(uri_set).not_to respond_to(:foobar)
       end

@@ -10,11 +10,11 @@ module Wayfarer
     attr_reader :body
     attr_reader :headers
 
-    def initialize(opts = {})
-      @uri         = opts[:uri]
-      @status_code = opts[:status_code]
-      @body        = opts[:body]
-      @headers     = opts[:headers]
+    def initialize(attrs = {})
+      @uri         = attrs[:uri]
+      @status_code = attrs[:status_code]
+      @body        = attrs[:body]
+      @headers     = attrs[:headers]
     end
 
     def doc
@@ -26,10 +26,10 @@ module Wayfarer
         return Parsers::XMLParser.parse_html(@body)
       end
 
-      # TODO Maybe get rid of the mime gem?
       content_type = @headers["content-type"].first
       sub_type = MIME::Types[content_type].first.sub_type
 
+      # TODO Test cases
       @doc = case sub_type
              when "json"
                OpenStruct.new(Parsers::JSONParser.parse(@body))
@@ -52,6 +52,7 @@ module Wayfarer
       links.uniq.find_all { |link| link.is_a? URI }
     end
 
+    # TODO Test cases
     def links!(*argv)
       links(*argv).first
     end

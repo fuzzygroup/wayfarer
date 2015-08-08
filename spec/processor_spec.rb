@@ -3,9 +3,5 @@ require "spec_helpers"
 describe Wayfarer::Processor do
   subject!(:processor) { Celluloid::Actor[:processor] = Processor.new }
 
-  describe "#handle_future" do
-    it "returns if #halted? returns true" do
-      
-    end
-  end
+  # FIXME TODO No tests at all so far
 end
