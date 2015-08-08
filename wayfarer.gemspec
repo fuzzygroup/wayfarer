@@ -4,8 +4,8 @@ Gem::Specification.new do |s|
   s.license       = "MIT"
 
   s.homepage      = "http://github.com/bauerd/wayfarer"
-  s.description   = "A web scraping library"
-  s.summary       = "Wayfarer is a web scraping library"
+  s.description   = "A web crawling/scraping framework"
+  s.summary       = "A versatile web crawling/scraping framework for MRI and JRuby"
 
   s.date          = "2014-11-12"
   s.authors       = ["Dominic Bauer"]
