@@ -5,35 +5,35 @@ require "rack"
 require_relative "support/test_app"
 
 namespace :spec do
-  desc "Run environment-agnostic examples"
+  desc "Run only environment-agnostic tests"
   RSpec::Core::RakeTask.new isolated: [:test_app] do |task|
     task.rspec_opts = ["--tag ~live"]
   end
 
-  desc "Run examples that require a live environment"
+  desc "Run only tests that require a live environment"
   RSpec::Core::RakeTask.new live: [:test_app] do |task|
     task.rspec_opts = ["--tag live"]
   end
 
-  desc "Run all JRuby examples"
+  desc "Run only JRuby tests"
   RSpec::Core::RakeTask.new jruby: [:test_app] do |task|
     task.rspec_opts = ["--tag ~mri --tag ~live --tty"]
   end
 
-  desc "Run all MRI examples"
+  desc "Run only MRI tests"
   RSpec::Core::RakeTask.new mri: [:test_app] do |task|
     task.rspec_opts = ["--tag ~mri --tag ~live"]
   end
 end
 
-desc "Run all examples"
+desc "Run all testss"
 RSpec::Core::RakeTask.new spec: :test_app
 
 RuboCop::RakeTask.new do |task|
   task.formatters = ["simple"]
 end
 
-desc "Build RubyGem"
+desc "Build the RubyGem"
 task :build do
   sh "gem build schablone.gemspec --verbose"
 end
@@ -61,6 +61,7 @@ task :todo do
   sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec features | tr -s [:space:])
 end
 
+# Private
 task :test_app do
   mutex = Mutex.new
   cvar  = ConditionVariable.new
