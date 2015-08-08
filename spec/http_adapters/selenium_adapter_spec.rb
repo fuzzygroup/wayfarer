@@ -1,7 +1,7 @@
 require "spec_helpers"
 
-describe Schablone::HTTPAdapters::SeleniumAdapter, live: true do
-  subject(:adapter) { Schablone::HTTPAdapters::SeleniumAdapter.new }
+describe Wayfarer::HTTPAdapters::SeleniumAdapter, live: true do
+  subject(:adapter) { Wayfarer::HTTPAdapters::SeleniumAdapter.new }
   after { adapter.free }
 
   describe "#fetch" do

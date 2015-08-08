@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Routing::HostRule do
+describe Wayfarer::Routing::HostRule do
   subject(:rule) { HostRule.new(str_or_regexp) }
 
   describe "#===" do

@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Routing::Rule do
+describe Wayfarer::Routing::Rule do
   subject(:rule) { Rule.new }
 
   describe "#initialize" do

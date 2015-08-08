@@ -1,4 +1,4 @@
-module Schablone
+module Wayfarer
   module Routing
     class HostRule < Rule
       def initialize(str_or_regexp, opts = {}, &proc)

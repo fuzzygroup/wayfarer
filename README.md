@@ -25,7 +25,7 @@ Or install via RubyGems:
 
 ## Usage example
 ```
-crawler = Schablone::Crawler.new do
+crawler = Wayfarer::Crawler.new do
   scrape :index do
     visit page.links
   end
@@ -42,13 +42,13 @@ For more, see [`examples/`](http://google.com) or read [`GETTING_STARTED.md`](ht
 Options can be set as follows:
 
 ```ruby
-Schablone.config.key = value
+Wayfarer.config.key = value
 
-Schablone.config do
+Wayfarer.config do
   key = value
 end
 
-Schablone::Crawler.new do
+Wayfarer::Crawler.new do
   config.key = value
   config { |c| c.key = value }
   config { key = value }
@@ -66,7 +66,7 @@ end
 
 	Number of threads to spawn.
 	* Recognized values: Strings
-	* Default value: `"Schablone"`
+	* Default value: `"Wayfarer"`
 
 * __`http_adapter`__
 
@@ -85,14 +85,14 @@ end
 	Minimum level of log messages to print.
 	* Recognized values: [See documentation](http://ruby-doc.org/stdlib-2.1.0/libdoc/logger/rdoc/Logger.html)
 	* Default value: `Logger::WARN`
-	* Note: You can bring your own logger with `Schablone::logger=`
+	* Note: You can bring your own logger with `Wayfarer::logger=`
 
 * __`sanitize_node_content`__
 
 	Whether to trim leading/trailing whitespace and control characters from inner HTML/XML.
 	* Recognized values: Booleans
 	* Default value: `true`
-	* Note: Only applies when using `Schablone::Extraction`.
+	* Note: Only applies when using `Wayfarer::Extraction`.
 
 * __`ignore_fragment_identifiers`__
 

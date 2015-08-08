@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Routing::ParameterizedPathRule, mri: true do
+describe Wayfarer::Routing::ParameterizedPathRule, mri: true do
   subject(:rule) { ParameterizedPathRule.new("/{alpha}/{beta}") }
 
   describe "#===" do

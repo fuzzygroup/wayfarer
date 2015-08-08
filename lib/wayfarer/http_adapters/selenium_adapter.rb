@@ -1,15 +1,15 @@
 require "selenium-webdriver"
 require "selenium/emulated_features"
 
-module Schablone
+module Wayfarer
   module HTTPAdapters
     class SeleniumAdapter
       attr_reader :driver
 
       def initialize
-        @driver = Selenium::WebDriver.for(*Schablone.config.selenium_argv)
+        @driver = Selenium::WebDriver.for(*Wayfarer.config.selenium_argv)
         @driver.manage.window.size = Selenium::WebDriver::Dimension.new(
-          *Schablone.config.selenium_window_size
+          *Wayfarer.config.selenium_window_size
         )
       end
 

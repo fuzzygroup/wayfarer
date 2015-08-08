@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Scraper do
+describe Wayfarer::Scraper do
   let(:adapter_pool) { AdapterPool.new }
 
   describe "#scrape" do

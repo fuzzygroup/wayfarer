@@ -1,4 +1,4 @@
-module Schablone
+module Wayfarer
   module Parsers
     module JSONParser
       module_function

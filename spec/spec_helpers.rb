@@ -1,9 +1,9 @@
 require "bundler" and Bundler.require
 require "celluloid/test"
 
-include Schablone
-include Schablone::HTTPAdapters
-include Schablone::Routing
+include Wayfarer
+include Wayfarer::HTTPAdapters
+include Wayfarer::Routing
 
 Celluloid.task_class = Celluloid::TaskThread
 

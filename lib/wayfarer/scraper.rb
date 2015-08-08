@@ -1,7 +1,7 @@
 require "thread"
 require "pp"
 
-module Schablone
+module Wayfarer
   class Scraper
     include Celluloid
     include Celluloid::Logger

@@ -1,4 +1,4 @@
-module Schablone
+module Wayfarer
   module Routing
     class Router
       attr_reader :routes

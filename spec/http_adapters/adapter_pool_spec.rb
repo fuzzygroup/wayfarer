@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::HTTPAdapters::AdapterPool do
+describe Wayfarer::HTTPAdapters::AdapterPool do
   subject(:adapter_pool) { AdapterPool.new }
 
   describe "#with" do
@@ -13,8 +13,8 @@ describe Schablone::HTTPAdapters::AdapterPool do
     end
 
     context "when using Selenium", live: true do
-      before { Schablone.config.http_adapter = :selenium }
-      after  { Schablone.config.http_adapter = :selenium }
+      before { Wayfarer.config.http_adapter = :selenium }
+      after  { Wayfarer.config.http_adapter = :selenium }
 
       it "yields a SeleniumAdapter" do
         adapter_pool.with do |adapter|

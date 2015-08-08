@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Routing::Router do
+describe Wayfarer::Routing::Router do
   subject(:router) { Router.new }
 
   describe "#forbid" do

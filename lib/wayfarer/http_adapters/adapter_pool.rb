@@ -1,11 +1,11 @@
 require "connection_pool"
 
-module Schablone
+module Wayfarer
   module HTTPAdapters
     class AdapterPool
       def initialize
-        size    = Schablone.config.pool_size
-        timeout = Schablone.config.adapter_timeout || 10
+        size    = Wayfarer.config.pool_size
+        timeout = Wayfarer.config.adapter_timeout || 10
 
         @pool = ConnectionPool.new(
           size: size, timeout: timeout, &method(:instantiate_adapter)
@@ -19,7 +19,7 @@ module Schablone
       private
 
       def instantiate_adapter
-        case Schablone.config.http_adapter
+        case Wayfarer.config.http_adapter
         when :net_http then HTTPAdapters::NetHTTPAdapter.instance
         when :selenium then HTTPAdapters::SeleniumAdapter.new
         end

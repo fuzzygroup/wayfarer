@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Navigator do
+describe Wayfarer::Navigator do
   subject(:navigator) { Navigator.new }
 
   describe "#stage" do
@@ -81,8 +81,8 @@ describe Schablone::Navigator do
     end
 
     context "when circulation is allowed" do
-      before { Schablone.config.allow_circulation = true }
-      after  { Schablone.config.reset! }
+      before { Wayfarer.config.allow_circulation = true }
+      after  { Wayfarer.config.reset! }
 
       it "allows re-staging cached URIs" do
         3.times do

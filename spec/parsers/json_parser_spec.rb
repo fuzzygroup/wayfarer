@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Parsers::JSONParser do
+describe Wayfarer::Parsers::JSONParser do
   subject(:parser) { Parsers::JSONParser }
 
   describe ".parse" do

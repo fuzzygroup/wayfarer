@@ -1,18 +1,18 @@
 Gem::Specification.new do |s|
-  s.name          = "schablone"
+  s.name          = "wayfarer"
   s.version       = "0.0.0"
   s.license       = "MIT"
 
-  s.homepage      = "http://github.com/bauerd/scrapespeare"
+  s.homepage      = "http://github.com/bauerd/wayfarer"
   s.description   = "A web scraping library"
-  s.summary       = "Schablone is a web scraping library"
+  s.summary       = "Wayfarer is a web scraping library"
 
   s.date          = "2014-11-12"
   s.authors       = ["Dominic Bauer"]
   s.email         = "bauerdominic@gmail.com"
 
   s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {spec,features}/*`.split("\n")
+  s.test_files    = `git ls-files -- {spec}/*`.split("\n")
 
   s.require_paths = ["lib"]
 

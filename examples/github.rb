@@ -1,7 +1,7 @@
 require_relative "../lib/schablone"
 require "mustermann"
 
-class WikipediaTask < Schablone::Task
+class WikipediaTask < Wayfarer::Task
   config do |config|
     config.scraper_thread_count = 12
     config.reraise_exceptions = true

@@ -1,7 +1,7 @@
 require "thread"
 require "connection_pool"
 
-module Schablone
+module Wayfarer
   class Processor
     include Celluloid
     include Celluloid::Logger
@@ -24,7 +24,7 @@ module Schablone
       @halted = false
       @adapter_pool = AdapterPool.new
 
-      Schablone.log.debug("[#{self}] Spawning Navigator and Scraper pool")
+      Wayfarer.log.debug("[#{self}] Spawning Navigator and Scraper pool")
       ProcessorGroup.run!
     end
 
@@ -43,20 +43,20 @@ module Schablone
 
       @halted = true
 
-      Schablone.log.debug("[#{self}] Terminating Scraper pool")
+      Wayfarer.log.debug("[#{self}] Terminating Scraper pool")
       scraper_pool.terminate
 
-      Schablone.log.debug("[#{self}] Calling post-processors")
+      Wayfarer.log.debug("[#{self}] Calling post-processors")
       klass.post_process!
     end
 
     def shutdown_scraper_pool
-      Schablone.log.debug("[#{self}] Shutting down scraper pool")
+      Wayfarer.log.debug("[#{self}] Shutting down scraper pool")
       Actor[:scraper_pool].terminate
     end
 
     def free_adapter_pool
-      Schablone.log.debug("[#{self}] Freeing HTTP adapters")
+      Wayfarer.log.debug("[#{self}] Freeing HTTP adapters")
       Actor[:scraper_pool].terminate
     end
 
@@ -74,13 +74,13 @@ module Schablone
     end
 
     def handle_mismatch(val)
-      Schablone.log.debug("[#{self}] No route for URI: #{val.uri}")
+      Wayfarer.log.debug("[#{self}] No route for URI: #{val.uri}")
     end
 
     def handle_error(val)
-      if Schablone.config.reraise_exceptions
+      if Wayfarer.config.reraise_exceptions
         raise(val.exception)
-      elsif Schablone.config.print_stacktraces
+      elsif Wayfarer.config.print_stacktraces
         puts val.exception.inspect, val.exception.backtrace.join("\n")
       end
     end

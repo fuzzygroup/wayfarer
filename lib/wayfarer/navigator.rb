@@ -1,6 +1,6 @@
 require "set"
 
-module Schablone
+module Wayfarer
   class Navigator
     include Celluloid
     include Celluloid::Logger
@@ -34,7 +34,7 @@ module Schablone
     end
 
     def cycle
-      unless Schablone.config.allow_circulation
+      unless Wayfarer.config.allow_circulation
         cache(*current_uris)
         filter_staged_uris!
       end

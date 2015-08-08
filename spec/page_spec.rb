@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Page do
+describe Wayfarer::Page do
   subject(:page) { fetch_page(test_app("/links/links.html")) }
 
   describe "#doc" do

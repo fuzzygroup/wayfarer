@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Routing::PathRule do
+describe Wayfarer::Routing::PathRule do
 
   describe "#===" do
     describe "String matching" do

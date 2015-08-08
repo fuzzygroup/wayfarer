@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Routing::URIRule do
+describe Wayfarer::Routing::URIRule do
   subject(:rule) { URIRule.new("http://example.com/foo/bar") }
 
   describe "#===" do

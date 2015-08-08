@@ -42,9 +42,9 @@ desc "Start a Ruby shell"
 task :shell do
   require_relative "lib/schablone"
 
-  include Schablone
-  include Schablone::HTTPAdapters
-  include Schablone::Routing
+  include Wayfarer
+  include Wayfarer::HTTPAdapters
+  include Wayfarer::Routing
 
   begin
     require "pry"

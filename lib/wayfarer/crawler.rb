@@ -1,9 +1,9 @@
-module Schablone
+module Wayfarer
   class Crawler
     include Celluloid::Logger
 
     def crawl(klass, *uris)
-      info("[#{self}] Scrapespeare #{Schablone::VERSION}")
+      info("[#{self}] Scrapespeare #{Wayfarer::VERSION}")
       info("[#{self}] Spawning Processor")
       Celluloid::Actor[:processor] = Processor.new
 

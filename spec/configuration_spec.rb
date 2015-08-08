@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Configuration do
+describe Wayfarer::Configuration do
   let(:config) { subject.class.new }
 
   it "allows setting keys and values" do

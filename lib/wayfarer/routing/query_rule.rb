@@ -1,6 +1,6 @@
 require "cgi"
 
-module Schablone
+module Wayfarer
   module Routing
     class QueryRule < Rule
       def initialize(field_constraints, opts = {}, &proc)

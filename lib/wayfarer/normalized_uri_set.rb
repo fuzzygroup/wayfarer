@@ -1,4 +1,4 @@
-module Schablone
+module Wayfarer
   class NormalizedURISet
     def initialize(enumerable = [])
       @set = Set.new(enumerable)

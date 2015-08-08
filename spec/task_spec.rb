@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Task do
+describe Wayfarer::Task do
   let(:adapter)  { NetHTTPAdapter.instance }
   subject(:task) { Task.new }
 

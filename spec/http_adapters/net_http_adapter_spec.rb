@@ -1,7 +1,7 @@
 require "spec_helpers"
 
-describe Schablone::HTTPAdapters::NetHTTPAdapter do
-  subject(:adapter) { Schablone::HTTPAdapters::NetHTTPAdapter.instance }
+describe Wayfarer::HTTPAdapters::NetHTTPAdapter do
+  subject(:adapter) { Wayfarer::HTTPAdapters::NetHTTPAdapter.instance }
 
   describe "#fetch" do
     it "returns a Page" do
@@ -40,7 +40,7 @@ describe Schablone::HTTPAdapters::NetHTTPAdapter do
           uri = URI("hptt://bro.ken")
           page = adapter.fetch(uri)
         }.to raise_error(
-          Schablone::HTTPAdapters::NetHTTPAdapter::MalformedURI
+          Wayfarer::HTTPAdapters::NetHTTPAdapter::MalformedURI
         )
       end
     end
@@ -54,15 +54,15 @@ describe Schablone::HTTPAdapters::NetHTTPAdapter do
       end
 
       context "when maximum number of redirects reached" do
-        before { Schablone.config.max_http_redirects = 5 }
-        after  { Schablone.config.reset! }
+        before { Wayfarer.config.max_http_redirects = 5 }
+        after  { Wayfarer.config.reset! }
 
         it "raises a MaximumRedirectCountReached" do
           expect {
             uri = URI("http://0.0.0.0:9876/redirect?times=6")
             page = adapter.fetch(uri)
           }.to raise_error(
-            Schablone::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
+            Wayfarer::HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
           )
         end
       end
@@ -73,7 +73,7 @@ describe Schablone::HTTPAdapters::NetHTTPAdapter do
             uri = test_app("/malformed_redirect")
             page = adapter.fetch(uri)
           }.to raise_error(
-            Schablone::HTTPAdapters::NetHTTPAdapter::MalformedRedirectURI
+            Wayfarer::HTTPAdapters::NetHTTPAdapter::MalformedRedirectURI
           )
         end
       end

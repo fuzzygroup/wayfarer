@@ -1,6 +1,6 @@
 require "uri"
 
-module Schablone
+module Wayfarer
   module Routing
     class URIRule < Rule
       def initialize(uri_str, opts = {}, &proc)

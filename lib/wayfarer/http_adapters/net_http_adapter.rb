@@ -2,7 +2,7 @@ require "singleton"
 require "net/http"
 require "net/http/persistent"
 
-module Schablone
+module Wayfarer
   module HTTPAdapters
     class NetHTTPAdapter
       include Singleton
@@ -23,7 +23,7 @@ module Schablone
       def fetch(uri, redirects_followed = 0)
         if not RECOGNIZED_URI_TYPES.include?(uri.class)
           raise redirects_followed > 0 ? MalformedRedirectURI : MalformedURI
-        elsif redirects_followed > Schablone.config.max_http_redirects
+        elsif redirects_followed > Wayfarer.config.max_http_redirects
           raise MaximumRedirectCountReached
         end
 

@@ -1,6 +1,6 @@
 # require "active_support/core_ext/module/attribute_accessors.rb"
 
-module Schablone
+module Wayfarer
   class Task
     Mismatch = Struct.new(:uri)
     Halt     = Struct.new(:uri, :method)
@@ -9,7 +9,7 @@ module Schablone
 
     class << self
       def config(&proc)
-        @config ||= Schablone.config.dup
+        @config ||= Wayfarer.config.dup
         yield(@config) if block_given?
         @config
       end
@@ -73,7 +73,7 @@ module Schablone
       method, @params = self.class.router.route(uri)
       return Mismatch.new(uri) unless method
 
-      # Schablone.log.debug("[#{self}] Dispatched to ##{method}: #{uri}")
+      # Wayfarer.log.debug("[#{self}] Dispatched to ##{method}: #{uri}")
 
       @adapter = adapter
       @page = adapter.fetch(uri)

@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::NormalizedURISet do
+describe Wayfarer::NormalizedURISet do
   subject(:uri_set) { NormalizedURISet.new }
 
   describe "#include?" do

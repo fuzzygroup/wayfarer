@@ -1,11 +1,11 @@
-module Schablone
+module Wayfarer
   module Routing
     class ParameterizedPathRule < Rule
       attr_reader :pattern
 
       def initialize(str, opts = {}, &proc)
         @pattern = Mustermann.new(
-          str, type: Schablone.config.mustermann_type
+          str, type: Wayfarer.config.mustermann_type
         )
         super(opts, &proc)
       end

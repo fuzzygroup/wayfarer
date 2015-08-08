@@ -1,4 +1,4 @@
-module Schablone
+module Wayfarer
   class Configuration
     DEFAULTS = {
       # Whether to print full stacktraces.

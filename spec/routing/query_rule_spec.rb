@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Routing::QueryRule do
+describe Wayfarer::Routing::QueryRule do
   subject(:rule) { QueryRule.new(constraints) }
 
   describe "String constraints" do

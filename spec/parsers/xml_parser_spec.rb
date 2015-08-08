@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-describe Schablone::Parsers::XMLParser do
+describe Wayfarer::Parsers::XMLParser do
   subject(:parser) { Parsers::XMLParser }
 
   describe ".parse_html" do

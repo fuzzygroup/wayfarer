@@ -3,7 +3,7 @@ require "ostruct"
 require "mime/types"
 require "nokogiri"
 
-module Schablone
+module Wayfarer
   class Page
     attr_reader :uri
     attr_reader :status_code
