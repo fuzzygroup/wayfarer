@@ -35,7 +35,7 @@ end
 
 desc "Build the RubyGem"
 task :build do
-  sh "gem build schablone.gemspec --verbose"
+  sh "gem build wayfarer.gemspec --verbose"
 end
 
 desc "Start a Ruby shell"
