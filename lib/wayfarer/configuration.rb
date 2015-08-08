@@ -1,10 +1,10 @@
 module Wayfarer
   class Configuration
     DEFAULTS = {
-      # Whether to print full stacktraces.
+      # Whether to print full stacktraces
       print_stacktraces: false,
 
-      # Whether to crash when encountering unhandled exceptions
+      # Whether to crash when encountering unhandled exceptions in actors
       reraise_exceptions: false,
 
       # Whether URIs may be visited twice
@@ -13,33 +13,30 @@ module Wayfarer
       # Whether trailing slashes and fragment identifiers should be ignored
       normalize_uris: true,
 
-      # How many scraper threads to spawn in parallel
+      # How many scraper actors to spawn in parallel
       scraper_thread_count: 6,
 
       # How many HTTP connections/Selenium drivers to use
-      # Note: Should be >= scraper_thread_count
+      # Should be >= scraper_thread_count
       connection_count: 6,
 
-      # Which HTTP adapter to use. Supported:
-      # * :net_http
-      # * :selenium
+      # Which HTTP adapter to use. Supported are :net_http and :selenium
       http_adapter: :net_http,
 
       # How long a Scraper thread may hold an adapter/Selenium driver.
       # Scrapers that exceed his limit fail with an exception.
-      # Can be disabled by setting it to -1
       http_adapter_timeout: 5.0,
 
-      # How many 3xx redirects to follow. Does not apply to Selenium drivers.
+      # How many 3xx redirects to follow. Does not apply to Selenium drivers
       max_http_redirects: 3,
 
       # Argument vector for instantiating Selenium drivers
       selenium_argv: [:firefox],
 
-      # Size of browser windows
+      # Size of browser windows (screenshots)
       selenium_window_size: [1024, 768],
 
-      # Which Mustermann pattern type to use when matching URI paths.
+      # Which Mustermann pattern type to use when matching URI paths
       mustermann_type: :sinatra
     }
 
