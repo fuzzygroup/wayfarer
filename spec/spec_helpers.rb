@@ -1,5 +1,4 @@
-require "bundler"
-Bundler.require
+require "bundler" and Bundler.require
 require "celluloid/test"
 
 include Schablone
