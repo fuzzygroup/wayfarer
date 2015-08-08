@@ -13,19 +13,16 @@ module Wayfarer
       # Whether trailing slashes and fragment identifiers should be ignored
       normalize_uris: true,
 
-      # How many scraper actors to spawn in parallel
-      scraper_thread_count: 6,
-
       # How many HTTP connections/Selenium drivers to use
       # Should be >= scraper_thread_count
-      connection_count: 6,
+      connection_count: 4,
 
       # Which HTTP adapter to use. Supported are :net_http and :selenium
       http_adapter: :net_http,
 
       # How long a Scraper thread may hold an adapter/Selenium driver.
       # Scrapers that exceed his limit fail with an exception.
-      http_adapter_timeout: 5.0,
+      connection_timeout: 5.0,
 
       # How many 3xx redirects to follow. Does not apply to Selenium drivers
       max_http_redirects: 3,
@@ -34,7 +31,7 @@ module Wayfarer
       selenium_argv: [:firefox],
 
       # Size of browser windows (screenshots)
-      selenium_window_size: [1024, 768],
+      window_size: [1024, 768],
 
       # Which Mustermann pattern type to use when matching URI paths
       mustermann_type: :sinatra

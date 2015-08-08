@@ -1,7 +1,7 @@
 # require "active_support/core_ext/module/attribute_accessors.rb"
 
 module Wayfarer
-  class Task
+  class Job
     Mismatch = Struct.new(:uri)
     Halt     = Struct.new(:uri, :method)
     Stage    = Struct.new(:uris)
@@ -73,7 +73,7 @@ module Wayfarer
       method, @params = self.class.router.route(uri)
       return Mismatch.new(uri) unless method
 
-      # Wayfarer.log.debug("[#{self}] Dispatched to ##{method}: #{uri}")
+      Wayfarer.log.debug("[#{self}] Dispatched to ##{method}: #{uri}")
 
       @adapter = adapter
       @page = adapter.fetch(uri)

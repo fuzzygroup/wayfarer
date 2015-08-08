@@ -1,25 +1,21 @@
 module Wayfarer
+  # FIXME Handle exceptions with Celluloid's traps
   class Processor
     include Celluloid
     include Celluloid::Logger
 
     finalizer :shutdown_scraper_pool
-    finalizer :free_adapter_pool
 
     attr_reader :adapter_pool
 
     class ProcessorGroup < Celluloid::SupervisionGroup
-      supervise Navigator,
-        as: :navigator
-
-      pool Scraper,
-        as: :scraper_pool,
-        size: 6
+      supervise Navigator, as: :navigator
+      pool Scraper, as: :scraper_pool, size: Wayfarer.config.connection_count
     end
 
     def initialize
       @halted = false
-      @adapter_pool = AdapterPool.new
+      @adapter_pool = HTTPAdapters::AdapterPool.new
 
       Wayfarer.log.debug("[#{self}] Spawning Navigator and Scraper pool")
       ProcessorGroup.run!
@@ -47,26 +43,16 @@ module Wayfarer
       klass.post_process!
     end
 
-    def shutdown_scraper_pool
-      Wayfarer.log.debug("[#{self}] Shutting down scraper pool")
-      Actor[:scraper_pool].terminate
-    end
-
-    def free_adapter_pool
-      Wayfarer.log.debug("[#{self}] Freeing HTTP adapters")
-      Actor[:scraper_pool].terminate
-    end
-
     private
 
     def handle_future(future)
       return if @halted
 
       case (val = future.value)
-      when Task::Mismatch then handle_mismatch(val)
-      when Task::Error    then handle_error(val)
-      when Task::Halt     then handle_halt(val)
-      when Task::Stage    then handle_stage(val)
+      when Job::Mismatch then handle_mismatch(val)
+      when Job::Error    then handle_error(val)
+      when Job::Halt     then handle_halt(val)
+      when Job::Stage    then handle_stage(val)
       end
     end
 

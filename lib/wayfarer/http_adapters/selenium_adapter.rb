@@ -9,7 +9,7 @@ module Wayfarer
       def initialize
         @driver = Selenium::WebDriver.for(*Wayfarer.config.selenium_argv)
         @driver.manage.window.size = Selenium::WebDriver::Dimension.new(
-          *Wayfarer.config.selenium_window_size
+          *Wayfarer.config.window_size
         )
       end
 

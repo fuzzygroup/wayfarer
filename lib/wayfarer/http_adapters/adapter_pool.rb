@@ -4,8 +4,8 @@ module Wayfarer
   module HTTPAdapters
     class AdapterPool
       def initialize
-        size    = Wayfarer.config.pool_size
-        timeout = Wayfarer.config.adapter_timeout || 10
+        size    = Wayfarer.config.connection_count
+        timeout = Wayfarer.config.connection_timeout
 
         @pool = ConnectionPool.new(
           size: size, timeout: timeout, &method(:instantiate_adapter)

@@ -1,5 +1,7 @@
 require "spec_helpers"
 
 describe Wayfarer::Crawler do
-  let(:crawler) { Crawler.new }
+  subject(:crawler) { Crawler.new }
+
+  # FIXME TODO No tests at all so far
 end
