@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency "activesupport"
-  s.add_runtime_dependency "celluloid"
+  s.add_runtime_dependency "celluloid", "~> 0.17"
   s.add_runtime_dependency "connection_pool"
   s.add_runtime_dependency "nokogiri"
   s.add_runtime_dependency "selenium-webdriver"
