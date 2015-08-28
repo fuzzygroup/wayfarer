@@ -159,14 +159,14 @@ describe Wayfarer::Routing::Rule do
 
     context "when Mustermann is not required" do
       it "adds a PathRule as a sub-rule" do
-        hide_const Mustermann do
+        hide_const(Mustermann) do
           rule.path("/foo/bar")
           expect(rule.child_rules.first).to be_a PathRule
         end
       end
 
       it "returns the added PathRule" do
-        hide_const Mustermann do
+        hide_const(Mustermann) do
           expect(rule.path("/foo/bar")).to be_a PathRule
         end
       end
