@@ -26,8 +26,8 @@ namespace :spec do
   end
 end
 
-desc "Run all testss"
-RSpec::Core::RakeTask.new spec: :test_app
+desc "Run all tests"
+RSpec::Core::RakeTask.new(spec: :test_app)
 
 RuboCop::RakeTask.new do |task|
   task.formatters = ["simple"]
@@ -58,7 +58,7 @@ end
 
 desc %(List lines that contain "FIXME" or "TODO")
 task :todo do
-  sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec features | tr -s [:space:])
+  sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec | tr -s [:space:])
 end
 
 # Private

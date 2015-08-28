@@ -1,5 +1,3 @@
-# require "active_support/core_ext/module/attribute_accessors.rb"
-
 module Wayfarer
   class Job
     Mismatch = Struct.new(:uri)

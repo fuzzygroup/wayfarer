@@ -5,7 +5,7 @@ require "selenium-webdriver"
 require "net/http/persistent"
 require "mime-types"
 require "celluloid"
-require "celluloid/autostart"
+require "celluloid/current"
 
 module Wayfarer
   VERSION = "0.0.0"
