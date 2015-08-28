@@ -30,13 +30,6 @@ module SpecHelpers
   def node_set(html)
     html_fragment(html).css("*")
   end
-
-  def hide_const(const)
-    sym = const.to_s.to_sym
-    cache = Object.send(:remove_const, sym)
-    yield
-    Object.const_set(sym, cache)
-  end
 end
 
 RSpec.configure do |config|
