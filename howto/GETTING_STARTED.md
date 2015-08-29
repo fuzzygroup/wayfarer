@@ -71,22 +71,22 @@ D, [...] DEBUG -- : [#<DummyJob:...>] Dispatched to #overview: https://github.co
 rails/rails · GitHub
 ```
 
-Looks reasonable. wayfarer does not attempt to do magic on top of Nokogiri. When it comes to extracting specific data from pages, you’re on your own.
+Looks reasonable. Wayfarer does not attempt to do magic on top of Nokogiri. When it comes to extracting specific data from pages, you’re on your own.
 
-Rails’ issues are located at `https://github.com/rails/rails/issues`. We need a new route and a new instance method. By calling `#visit` and passing in an arbitrary number of URIs, we can _stage_ URIs for processing. Note that just because a URI gets staged does not mean it will be fetched—a matching route is required for every URI.
+Rails’ issues are listed and located at `https://github.com/rails/rails/issues`. We need a new route and a new instance method. By calling `#visit` and passing in an arbitrary number of URIs, we can _stage_ URIs for processing. Note that just because a URI gets staged does not mean it will be fetched—a matching route is required for every URI.
 
 ```ruby
 class DummyJob < Wayfarer::Job
   routes do
-    draw :overview, uri: "https://github.com/rails/rails"
-    draw :issues,   uri: "https://github.com/rails/rails/issues"
+    draw :overview,      uri: "https://github.com/rails/rails"
+    draw :issue_listing, uri: "https://github.com/rails/rails/issues"
   end
 
   def overview
     visit "https://github.com/rails/rails/issues"
   end
 
-  def issues
+  def issue_listing
     puts "Rails got some issues."
   end
 end
@@ -102,9 +102,7 @@ D, [...] DEBUG -- : [#<DummyJob:...>] Dispatched to #issues: https://github.com/
 Rails got some issues.
 ```
 
-What we have so far works fine for the Rails repository, but not for any others, because the URIs are hardcoded. Instead of using a _URI rule_, we switch over to a _host_ and _path_ rule.
-
-
+What we have so far works fine for the Rails repository, but not for others, because the URIs are hardcoded. Instead of using a _URI rule_, we switch over to a _host_ and _path_ rule. We’ll also quiet the logger.
 
 ```ruby
 require "wayfarer"
@@ -112,15 +110,15 @@ require "mustermann"
 
 class DummyJob < Wayfarer::Job
   routes do
-    draw :overview, host: "github.com", path: ":user/:repo"
-    draw :issues,   host: "github.com", path: ":user/:repo/issues"
+    draw :overview,      host: "github.com", path: "/:user/:repo"
+    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
   end
 
   def overview
     visit "https://github.com/rails/rails/issues"
   end
 
-  def issues
+  def issue_listing
     puts "Rails got some issues."
   end
 end
@@ -128,29 +126,29 @@ end
 DummyJob.crawl("https://github.com/rails/rails")
 ```
 
-And instead of `#visit`ing the hardcoded issues URI, we introduce a helper method that returns the URI:
+Note that in order to match dynamic path segments, we have to `require "mustermann"`. This is because mustermann does not run on JRuby. Static path rules will work fine without mustermann, though.
+
+We still have to get rid of the hardcoded issue listing URI. We do so by introducing a private helper method, `#issue_listing_uri`. It returns the URI to the issue listing by calling `page#links` and passing a CSS selector that targets our desired `<a>` tag:
 
 ```ruby
-require "wayfarer"
-require "mustermann"
-
 class DummyJob < Wayfarer::Job
   routes do
-    draw :overview, host: "github.com", path: ":user/:repo"
-    draw :issues,   host: "github.com", path: ":user/:repo/issues"
+    draw :overview,      host: "github.com", path: "/:user/:repo"
+    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
   end
 
   def overview
-    visit "https://github.com/rails/rails/issues"
+    visit issue_listing_uri
   end
 
-  def issues
+  def issue_listing
     puts "Rails got some issues."
   end
 
   private
 
-  def issues_uri
+  def issue_listing_uri
+    page.links ".sunken-menu-group:first-child li:nth-child(2) a"
   end
 end
 
@@ -158,3 +156,124 @@ DummyJob.crawl("https://github.com/rails/rails")
 ```
 
 URIs never get dispatched to private instance methods.
+
+Next up: Visiting the individual issue pages, e.g. `https://github.com/rails/rails/issues/21424`. Again, we need a route, an instance method, and a helper method that returns all desired URIs of an issue listing:
+
+```ruby
+class DummyJob < Wayfarer::Job
+  routes do
+    draw :overview,      host: "github.com", path: "/:user/:repo"
+    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
+    draw :issue,         host: "github.com", path: "/:user/:repo/issues/:issue_id"
+  end
+
+  def overview
+    visit issue_listing_uri
+  end
+
+  def issue_listing
+    visit issue_uris
+  end
+
+  def issue
+    puts "Now that's an issue!"
+  end
+
+  private
+
+  def issue_listing_uri
+    page.links ".sunken-menu-group:first-child li:nth-child(2) a"
+  end
+
+  def issue_uris
+    page.links ".issue-title-link"
+  end
+end
+
+DummyJob.crawl("https://github.com/rails/rails")
+```
+
+By the way, when using mustermann’s path segment matching, you have access to a `params` hash:
+
+```ruby
+class DummyJob < Wayfarer::Job
+  routes do
+    draw :overview,      host: "github.com", path: "/:user/:repo"
+    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
+    draw :issue,         host: "github.com", path: "/:user/:repo/issues/:issue_id"
+  end
+
+  def overview
+    visit issue_listing_uri
+  end
+
+  def issue_listing
+    visit issue_uris
+  end
+
+  def issue
+    puts "I'm issue No. #{params['issue_id']}"
+  end
+
+  private
+
+  def issue_listing_uri
+    page.links ".sunken-menu-group:first-child li:nth-child(2) a"
+  end
+
+  def issue_uris
+    page.links ".issue-title-link"
+  end
+end
+
+DummyJob.crawl("https://github.com/rails/rails")
+```
+
+What’s left is paginating through all issue listings. Nothing new here:
+
+```ruby
+class DummyJob < Wayfarer::Job
+  routes do
+    draw :overview,      host: "github.com", path: "/:user/:repo"
+    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
+    draw :issue,         host: "github.com", path: "/:user/:repo/issues/:issue_id"
+  end
+
+  def overview
+    visit issue_listing_uri
+  end
+
+  def issue_listing
+    visit issue_uris
+    visit next_issue_listing_uri
+  end
+
+  def issue
+    puts "I'm issue No. #{params['issue_id']}"
+  end
+
+  private
+
+  def issue_listing_uri
+    page.links ".sunken-menu-group:first-child li:nth-child(2) a"
+  end
+
+  def issue_uris
+    page.links ".issue-title-link"
+  end
+
+  def next_issue_listing_uri
+    page.links ".next_page"
+  end
+end
+
+DummyJob.crawl("https://github.com/rails/rails")
+```
+
+If you want to, you can quiet the logger:
+
+```ruby
+Wayfarer.logger.level = 1
+```
+
+… and that’s it: You now have a reusable class that will print all issues for any GitHub repository.
