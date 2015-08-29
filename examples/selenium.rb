@@ -8,6 +8,7 @@ class DummyJob < Wayfarer::Job
 
   draw uri: "https://example.com"
   def example
+    browser.execute_script("console.log('Hello from wayfarer!')")
     browser.save_screenshot("/tmp/screenshot.png")
   end
 end

@@ -22,6 +22,9 @@ Or install via RubyGems:
 
 ## What does it look like?
 ```ruby
+require "wayfarer"
+require "mustermann"
+
 class DummyJob < Wayfarer::Job
   routes do
     draw :overview,      host: "github.com", path: "/:user/:repo"
