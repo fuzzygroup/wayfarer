@@ -66,7 +66,7 @@ DummyJob.crawl("https://github.com/rails/rails")
 
 Output:
 
-```ruby
+```
 D, [...] DEBUG -- : [#<DummyJob:...>] Dispatched to #overview: https://github.com/rails/rails
 rails/rails · GitHub
 ```
@@ -96,13 +96,13 @@ DummyJob.crawl("https://github.com/rails/rails")
 
 Output:
 
-```ruby
+```
 D, [...] DEBUG -- : [#<DummyJob:...>] Dispatched to #overview: https://github.com/rails/rails
 D, [...] DEBUG -- : [#<DummyJob:...>] Dispatched to #issues: https://github.com/rails/rails/issues
 Rails got some issues.
 ```
 
-What we have so far works fine for the Rails repository, but not for others, because the URIs are hardcoded. Instead of using a _URI rule_, we switch over to a _host_ and _path_ rule. We’ll also quiet the logger.
+What we have so far works fine for the Rails repository, but not for others, because the URIs are hardcoded. Instead of using a _URI rule_, we switch over to a _host_ and _path_ rule.
 
 ```ruby
 require "wayfarer"

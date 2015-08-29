@@ -21,7 +21,7 @@ Or install via RubyGems:
 ```
 
 ## Howto
-* [Getting started]()
+* [Getting started](howto/GETTING_STARTED.md)
 * [Configuration]()
 * [Routing]()
 * [Using Selenium]()
