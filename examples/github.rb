@@ -9,10 +9,8 @@ class MyJob < Wayfarer::Job
     config.print_stacktraces = true
   end
 
-  # Routes map URIs described by patterns to instance methods
   router.draw :article, host: /wikipedia/
 
-  # Post-processors run in the order of definition in class context. The last's post-processor's return value is returned
   post_process :collect
 
   def self.collect

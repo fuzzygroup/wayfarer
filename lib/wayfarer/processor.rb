@@ -1,12 +1,8 @@
 module Wayfarer
-  # FIXME: Handle exceptions with Celluloid's traps
+  # TODO: Handle exceptions with Celluloid's traps
   class Processor
     include Celluloid
     include Celluloid::Logger
-
-    finalizer :shutdown_scraper_pool
-
-    attr_reader :adapter_pool
 
     class ProcessorGroup < Celluloid::SupervisionGroup
       supervise Navigator, as: :navigator

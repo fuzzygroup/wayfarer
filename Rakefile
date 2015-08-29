@@ -40,7 +40,7 @@ end
 
 desc "Start a Ruby shell"
 task :shell do
-  require_relative "lib/schablone"
+  require_relative "lib/wayfarer"
 
   include Wayfarer
   include Wayfarer::HTTPAdapters
@@ -61,7 +61,6 @@ task :todo do
   sh %(grep -rn "\\(FIXME\\|TODO\\)" lib spec | tr -s [:space:])
 end
 
-# Private
 task :test_app do
   mutex = Mutex.new
   cvar  = ConditionVariable.new
