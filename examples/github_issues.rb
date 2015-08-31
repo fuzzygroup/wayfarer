@@ -1,14 +1,14 @@
 require_relative "../lib/wayfarer"
 require "mustermann"
 
+Wayfarer.logger.level = 1
+
 class DummyJob < Wayfarer::Job
   routes do
     draw :overview,      host: "github.com", path: "/:user/:repo"
     draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
     draw :issue,         host: "github.com", path: "/:user/:repo/issues/:issue_id"
   end
-
-  Wayfarer.logger.level = 1
 
   def overview
     visit issue_listing_uri
@@ -20,7 +20,9 @@ class DummyJob < Wayfarer::Job
   end
 
   def issue
-    puts "I'm issue No. #{params['issue_id']}"
+    id = params["issue_id"]
+    title = doc.css(".js-issue-title").text
+    puts "#{id}: #{title}"
   end
 
   private

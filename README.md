@@ -1,4 +1,4 @@
-# wayfarer
+# Wayfarer
 A versatile web crawling/scraping DSL for MRI and JRuby
 
 ## Features
@@ -20,7 +20,9 @@ Or install via RubyGems:
 % gem install wayfarer
 ```
 
-## What does it look like?
+## What it looks like
+The following snippet traverses all open issues of an arbitrary GitHub repository and prints their IDs and titles:
+
 ```ruby
 require "wayfarer"
 require "mustermann"
@@ -31,8 +33,6 @@ class DummyJob < Wayfarer::Job
     draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
     draw :issue,         host: "github.com", path: "/:user/:repo/issues/:issue_id"
   end
-
-  Wayfarer.logger.level = 1
 
   def overview
     visit issue_listing_uri
@@ -67,10 +67,13 @@ DummyJob.crawl("https://github.com/rails/rails")
 
 ## Howto
 * [Getting started](howto/GETTING_STARTED.md)
-* [Configuration]()
-* [Routing]()
+* [Routing](howto/ROUTING.md)
+* [Halting](howto/HALTING.md)
+* [Internals](howto/INTERNALS.md)
+* [Thread safety](howto/THREAD_SAFETY.md)
+* [Configuration](howto/CONFIGURATION.md)
 * [Using Selenium](howto/SELENIUM.md)
 * [Extracting metadata with Pismo]()
 
 ## Running the tests
-Please see `rake -T`.
+See `% rake -T`.
