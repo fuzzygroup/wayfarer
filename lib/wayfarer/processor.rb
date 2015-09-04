@@ -8,9 +8,7 @@ module Wayfarer
       @adapter_pool = HTTPAdapters::AdapterPool.new
 
       Wayfarer.log.debug("[#{self}] Spawning Navigator and Scraper pool")
-
-      supervise Navigator, as: :navigator
-      pool Scraper, as: :scraper_pool, size: Wayfarer.config.connection_count
+      container.run!
     end
 
     def halted?
@@ -36,6 +34,17 @@ module Wayfarer
     end
 
     private
+
+    def container
+      Class.new(Celluloid::Supervision::Container) do
+        supervise type: Navigator,
+                  as: :navigator
+
+        pool Scraper,
+             as: :scraper_pool,
+             size: Wayfarer.config.connection_count
+      end
+    end
 
     def handle_future(future)
       return if @halted
