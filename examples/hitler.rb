@@ -1,4 +1,4 @@
-require_relative "../lib/wayfarer"
+require "wayfarer"
 require "mustermann"
 
 class DummyJob < Wayfarer::Job
