@@ -1,5 +1,5 @@
 # Error handling
-By default, all exceptions raised within Job classes are swallowed and only their stacktraces are printed. You can change this behaviour with two Boolean configuration keys (see [Configuration]()):
+By default, all exceptions raised within Job classes are swallowed and only their stacktraces are printed to stderr. You can change this behaviour with two Boolean configuration keys (see [Configuration]()):
 
 1. `print_stacktraces`: Whether to print stacktraces.
 2. `reraise_exceptions`: Whether to crash when encountering unhandled exceptions.

@@ -65,8 +65,7 @@ module Wayfarer
       if Wayfarer.config.reraise_exceptions
         fail(val.exception)
       elsif Wayfarer.config.print_stacktraces
-        # TODO Print to stderr
-        puts val.exception.inspect, val.exception.backtrace.join("\n")
+        STDERR.puts val.exception.inspect, val.exception.backtrace.join("\n")
       end
     end
 
