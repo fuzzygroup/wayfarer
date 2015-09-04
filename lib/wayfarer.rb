@@ -24,6 +24,9 @@ module Wayfarer
   end
 end
 
+# Don't print debug messages by default
+Wayfarer.log.level = 1
+
 # Plumbing
 require_relative "wayfarer/configuration"
 
