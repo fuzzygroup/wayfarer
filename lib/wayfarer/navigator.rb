@@ -1,17 +1,11 @@
 require "set"
 
-# TODO: Switch from an Actor to a traditional Ruby class as a Navigator is never accessed by more than one thread
 module Wayfarer
   class Navigator
-    include Celluloid
-    include Celluloid::Internals::Logger
-
     def initialize
       @current_uris = Set.new([])
       @staged_uris  = Set.new([])
       @cached_uris  = URISet.new
-
-      debug("[#{self}] Navigator spawned")
     end
 
     def current_uris

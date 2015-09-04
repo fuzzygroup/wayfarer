@@ -3,9 +3,14 @@ module Wayfarer
     include Celluloid
     include Celluloid::Internals::Logger
 
+    task_class Task::Threaded
+
+    attr_reader :navigator
+
     def initialize
       @halted = false
       @adapter_pool = HTTPAdapters::AdapterPool.new
+      @navigator = Navigator.new
 
       Wayfarer.log.debug("[#{self}] Spawning Navigator and Scraper pool")
       container.run!
@@ -76,10 +81,6 @@ module Wayfarer
 
     def handle_stage(val)
       navigator.async.stage(*val.uris)
-    end
-
-    def navigator
-      Actor[:navigator]
     end
 
     def scraper_pool

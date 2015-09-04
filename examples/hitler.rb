@@ -2,9 +2,10 @@ require "wayfarer"
 require "mustermann"
 
 class DummyJob < Wayfarer::Job
+  config.connection_count = 16
+
   routes do
     draw :article, host: "en.wikipedia.org", path: "/wiki/:article"
-    forbid path: "*.png", path: "*.jpg"
   end
 
   def article

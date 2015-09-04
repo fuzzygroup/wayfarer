@@ -5,6 +5,8 @@ module Wayfarer
     include Celluloid
     include Celluloid::Internals::Logger
 
+    task_class Task::Threaded
+
     def initialize
       debug("[#{self}] Scraper spawned")
     end
