@@ -5,7 +5,7 @@ include Wayfarer
 include Wayfarer::HTTPAdapters
 include Wayfarer::Routing
 
-Celluloid.task_class = Celluloid::TaskThread
+Celluloid.task_class = Celluloid::Task::Threaded
 
 # Optional MRI-only dependencies
 unless RUBY_PLATFORM == "java"

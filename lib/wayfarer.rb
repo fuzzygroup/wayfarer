@@ -1,7 +1,5 @@
 require "logger"
 require "uri"
-
-require "celluloid"
 require "celluloid/current"
 
 module Wayfarer

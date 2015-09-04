@@ -1,6 +1,6 @@
 module Wayfarer
   class Crawler
-    include Celluloid::Logger
+    include Celluloid::Internals::Logger
 
     def crawl(klass, *uris)
       Wayfarer.log.debug("[#{self}] Hello from Wayfarer #{Wayfarer::VERSION}")

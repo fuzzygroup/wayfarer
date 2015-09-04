@@ -3,7 +3,7 @@ require "thread"
 module Wayfarer
   class Scraper
     include Celluloid
-    include Celluloid::Logger
+    include Celluloid::Internals::Logger
 
     def initialize
       debug("[#{self}] Scraper spawned")

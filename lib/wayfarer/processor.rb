@@ -1,19 +1,16 @@
 module Wayfarer
   class Processor
     include Celluloid
-    include Celluloid::Logger
-
-    class ProcessorGroup < Celluloid::SupervisionGroup
-      supervise Navigator, as: :navigator
-      pool Scraper, as: :scraper_pool, size: Wayfarer.config.connection_count
-    end
+    include Celluloid::Internals::Logger
 
     def initialize
       @halted = false
       @adapter_pool = HTTPAdapters::AdapterPool.new
 
       Wayfarer.log.debug("[#{self}] Spawning Navigator and Scraper pool")
-      ProcessorGroup.run!
+
+      supervise Navigator, as: :navigator
+      pool Scraper, as: :scraper_pool, size: Wayfarer.config.connection_count
     end
 
     def halted?

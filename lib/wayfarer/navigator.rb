@@ -4,7 +4,7 @@ require "set"
 module Wayfarer
   class Navigator
     include Celluloid
-    include Celluloid::Logger
+    include Celluloid::Internals::Logger
 
     def initialize
       @current_uris = Set.new([])
