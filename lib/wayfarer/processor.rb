@@ -64,6 +64,7 @@ module Wayfarer
       end
     end
 
+    # TODO Print something useful
     def handle_halt(_val)
       @halted = true
     end

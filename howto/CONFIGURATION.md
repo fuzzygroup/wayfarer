@@ -1,20 +1,43 @@
 # Configuration
-Currently, configuration can only bet set globally, i.e. changing a value effects all 
+Currently, configuration can only bet set globally, i.e. changing a value affects all Job classes. This is shitty and thus subject to change.
+
+## Setting values
+The following three snippets have the same effect:
+
+```ruby
+Wayfarer.config.key = :value
+```
+
+```ruby
+class DummyJob < Wayfarer::Job
+  config.key = :value
+end
+```
+
+```ruby
+class DummyJob < Wayfarer::Job
+  config do |c|
+    c.key = :value
+  end
+end
+```
 
 ## Recognized keys
-See [lib/wayfarer/configuration.rb]().
-
 ### `print_stacktraces`
 * Default: `true`
 * Recognized values: Booleans
 
-Whether to print stacktraces.
+Whether to print stacktraces. See [Error handling](ERROR_HANDLING.md).
+
+--
 
 ### `reraise_exceptions`
 * Default: `false`
 * Recognized values: Booleans
 
-Whether to crash when encountering unhandled exceptions.
+Whether to crash when encountering unhandled exceptions. See [Error handling](ERROR_HANDLING.md).
+
+--
 
 ### `allow_circulation`
 * Default: `false`
@@ -24,27 +47,37 @@ Whether URIs may be visited twice.
 
 __NOTE:__ Allowing circulation can cause your Jobs to not terminate.
 
+--
+
 ### `normalize_uris`
 * Default: `true`
 * Recognized values: Booleans
 
 Whether trailing slashes and fragment identifiers should be considered insignificant when comparing URIs, e.g. `https://example.com`, `https://example.com/` and `https://example.com#anchor` are considered equal.
 
+--
+
 ### `connection_count`
 * Default: `4`
 * Recognized values: Integers
 
-How many concurrent HTTP connections/Selenium drivers to use.
+How many threads and HTTP adapters to use.
+
+--
 
 ### `http_adapter`
 * Default: `:net_http`
 * Recognized values: `:net_http`, `:selenium`
 
-Which HTTP adapter to use.
+Which HTTP adapter to use. See [Using Selenium](SELENIUM.md).
+
+--
 
 ### `connection_timeout`
 * Default: `5.0`
 * Recognized values: Floats
+
+--
 
 ### `max_http_redirects`
 * Default: `3`
@@ -54,11 +87,15 @@ How many 3xx redirects to follow.
 
 __NOTE:__ Has no effect when using Selenium.
 
+--
+
 ### `selenium_argv`
 * Default: `[:firefox]`
 * Recognized values: [See documentation]()
 
-Argument vector for instantiating Selenium drivers.
+Argument vector for instantiating Selenium drivers. See [Using Selenium](SELENIUM.md).
+
+--
 
 ### `window_size`
 * Default: `[1024, 768]`
@@ -66,10 +103,12 @@ Argument vector for instantiating Selenium drivers.
 
 Dimensions of browser windows.
 
-__NOTE:__ Only applies to Selenium drivers.
+__NOTE:__ Only applies to Selenium drivers. See [Using Selenium](SELENIUM.md).
+
+--
 
 ### `mustermann_type`
 * Default: `:sinatra`
 * Recognized values: [See documentation]()
 
-Which Mustermann pattern type to use when matching URI paths.
+Which Mustermann pattern type to use when matching URI paths. See [Routing](ROUTING.md).

@@ -27,7 +27,7 @@ module Wayfarer
 
       def method_missing(method, *argv, &proc)
         super if method == :shutdown
-        @pool.send(method, *argv, &proc)
+        @pool.public_send(method, *argv, &proc)
       end
 
       def respond_to_missing?(method, private = false)

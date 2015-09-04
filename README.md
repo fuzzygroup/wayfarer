@@ -78,6 +78,7 @@ More contrived examples:
 * [Using Selenium](howto/SELENIUM.md)
 * [Error handling](howto/ERROR_HANDLING.md)
 * [Thread safety](howto/THREAD_SAFETY.md)
+* [Adapter timeouts](howto/ADAPTER_TIMEOUTS.md)
 * [Optional MRI-only features](howto/MRI_FEATURES.md)
 
 ## Testing
