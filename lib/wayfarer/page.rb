@@ -50,7 +50,7 @@ module Wayfarer
         URI.join(@uri, node.attr("href")) rescue nil
       end
 
-      links.uniq.find_all { |link| link.is_a? URI }
+      links.uniq.find_all { |link| link.is_a?(URI) }
     end
 
     private

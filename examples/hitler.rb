@@ -1,11 +1,11 @@
-require "wayfarer"
-require "mustermann"
+require_relative "../lib/wayfarer"
+# require "mustermann"
 
 class DummyJob < Wayfarer::Job
   config.connection_count = 16
 
   routes do
-    draw :article, host: "en.wikipedia.org", path: "/wiki/:article"
+    draw :article, host: "en.wikipedia.org"
   end
 
   def article

@@ -9,13 +9,10 @@ module Wayfarer
       Celluloid::Actor[:processor] = Processor.new
 
       Wayfarer.log.debug("[#{self}] Staging initial URIs")
-      Celluloid::Actor[:navigator].stage(*uris)
+      Celluloid::Actor[:processor].navigator.stage(*uris)
 
       Wayfarer.log.debug("[#{self}] Running Processor")
       return_val = Celluloid::Actor[:processor].run(klass)
-
-      Wayfarer.log.debug("[#{self}] Terminating Navigator")
-      Celluloid::Actor[:navigator].terminate
 
       Wayfarer.log.debug("[#{self}] Terminating Processor")
       Celluloid::Actor[:processor].terminate

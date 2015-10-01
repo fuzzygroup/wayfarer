@@ -42,9 +42,6 @@ module Wayfarer
 
     def container
       Class.new(Celluloid::Supervision::Container) do
-        supervise type: Navigator,
-                  as: :navigator
-
         pool Scraper,
              as: :scraper_pool,
              size: Wayfarer.config.connection_count
@@ -80,7 +77,7 @@ module Wayfarer
     end
 
     def handle_stage(val)
-      navigator.async.stage(*val.uris)
+      navigator.stage(*val.uris)
     end
 
     def scraper_pool

@@ -6,13 +6,13 @@ module Wayfarer
     Error    = Struct.new(:exception, :backtrace)
 
     class << self
-      def config(&_proc)
+      def config
         @config ||= Wayfarer.config.dup
         yield(@config) if block_given?
         @config
       end
 
-      def router
+      def router(&proc)
         @router ||= Routing::Router.new
         @router.instance_eval(&proc) if block_given?
         @router
@@ -48,7 +48,7 @@ module Wayfarer
 
       private
 
-      def method_added(method)
+      def method_added(method, &proc)
         return unless @head
         rule_opts, proc = @head
         router.draw(method, rule_opts, &(proc || proc {}))

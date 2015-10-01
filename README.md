@@ -72,6 +72,7 @@ More contrived examples:
 
 ## Howto
 * [Getting started](howto/GETTING_STARTED.md)
+* [Page objects](howto/PAGE_OBJECTS.md)
 * [Routing](howto/ROUTING.md)
 * [Halting](howto/HALTING.md)
 * [Configuration](howto/CONFIGURATION.md)
