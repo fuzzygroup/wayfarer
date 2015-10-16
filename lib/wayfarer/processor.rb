@@ -22,11 +22,9 @@ module Wayfarer
 
     def run(klass)
       while navigator.cycle
-        futures = navigator.current_uris.map do |uri|
-          scraper_pool.future.scrape(uri, klass, @adapter_pool)
-        end
-
-        futures.each { |future| handle_future(future) }
+        navigator.current_uris.each.lazy
+          .map { |uri| scraper_pool.future.scrape(uri, klass, @adapter_pool) }
+          .each { |future| handle_future(future) }
       end
 
       @halted = true
