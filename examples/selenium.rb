@@ -1,4 +1,4 @@
-require "wayfarer"
+require_relative "../lib/wayfarer"
 
 class DummyJob < Wayfarer::Job
   config do |c|
