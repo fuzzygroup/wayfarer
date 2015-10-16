@@ -3,6 +3,8 @@ module Wayfarer
     include Celluloid
     include Celluloid::Internals::Logger
 
+    task_class Task::Threaded
+
     attr_reader :navigator
 
     def initialize
@@ -23,15 +25,13 @@ module Wayfarer
         uris = navigator.current_uris
 
         uris.each_slice(Wayfarer.config.connection_count).each do |uris|
-          break if uris.none?
+          break if halted?
 
           futures = uris.map do |uri|
             scraper_pool.future.scrape(uri, klass, @adapter_pool)
           end
 
           futures.each { |f| handle_future(f) }
-
-          break if halted?
         end
       end
 

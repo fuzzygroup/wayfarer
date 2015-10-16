@@ -40,6 +40,9 @@ module Wayfarer
           body: res.body,
           headers: res.to_hash
         )
+
+      rescue SocketError
+        fail MalformedURI
       end
 
       def free
