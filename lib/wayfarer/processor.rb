@@ -3,8 +3,6 @@ module Wayfarer
     include Celluloid
     include Celluloid::Internals::Logger
 
-    task_class Task::Threaded
-
     attr_reader :navigator
 
     def initialize
