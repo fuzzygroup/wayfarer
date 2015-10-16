@@ -20,9 +20,19 @@ module Wayfarer
 
     def run(klass)
       while navigator.cycle
-        navigator.current_uris.each.lazy
-          .map { |uri| scraper_pool.future.scrape(uri, klass, @adapter_pool) }
-          .each { |future| handle_future(future) }
+        uris = navigator.current_uris
+
+        uris.each_slice(Wayfarer.config.connection_count).each do |uris|
+          break if uris.none?
+
+          futures = uris.map do |uri|
+            scraper_pool.future.scrape(uri, klass, @adapter_pool)
+          end
+
+          futures.each { |f| handle_future(f) }
+
+          break if halted?
+        end
       end
 
       @halted = true
@@ -39,8 +49,8 @@ module Wayfarer
     def container
       Class.new(Celluloid::Supervision::Container) do
         pool Scraper,
-             as: :scraper_pool,
-             size: Wayfarer.config.connection_count
+               as: :scraper_pool,
+               size: Wayfarer.config.connection_count
       end
     end
 
@@ -68,7 +78,7 @@ module Wayfarer
     end
 
     # TODO Print something useful
-    def handle_halt(_val)
+    def handle_halt(*)
       @halted = true
     end
 
