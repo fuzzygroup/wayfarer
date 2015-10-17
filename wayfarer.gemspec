@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
 
   s.homepage      = "http://github.com/bauerd/wayfarer"
   s.description   = "A web crawling/scraping framework"
-  s.summary       = "A versatile web crawling/scraping framework for MRI and JRuby"
+  s.summary       = s.description
 
   s.date          = "2014-11-12"
   s.authors       = ["Dominic Bauer"]
@@ -23,6 +23,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "selenium-emulated_features", "~> 2.0"
   s.add_runtime_dependency "net-http-persistent",        "~> 2.9"
   s.add_runtime_dependency "mime-types",                 "~> 2.6"
+  s.add_runtime_dependency "pismo",                      "~> 0.7"
+  s.add_runtime_dependency "mustermann",                 "~> 0.4"
 
   s.add_development_dependency "rake",    "~> 10.4"
   s.add_development_dependency "rspec",   "~> 3.3"
