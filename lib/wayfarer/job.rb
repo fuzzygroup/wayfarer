@@ -86,6 +86,7 @@ module Wayfarer
       return Error.new(error)
     end
 
+    # ActiveJob
     def perform(*argv)
       self.class.crawl(*argv)
     end
