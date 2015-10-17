@@ -1,18 +1,13 @@
 require("bundler") && Bundler.require
 require "celluloid/test"
 
+require "oj"
+
 include Wayfarer
 include Wayfarer::HTTPAdapters
 include Wayfarer::Routing
 
 Celluloid.task_class = Celluloid::Task::Threaded
-
-# Optional MRI-only dependencies
-unless RUBY_PLATFORM == "java"
-  require "oj"
-  require "pismo"
-  require "mustermann"
-end
 
 module SpecHelpers
   def test_app(path)
@@ -29,13 +24,6 @@ module SpecHelpers
 
   def node_set(html)
     html_fragment(html).css("*")
-  end
-
-  def hide_const(const)
-    sym = const.to_s.to_sym
-    cache = Object.send(:remove_const, sym)
-    yield
-    Object.const_set(sym, cache)
   end
 end
 

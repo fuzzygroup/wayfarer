@@ -1,20 +1,25 @@
+require "mustermann"
+
 module Wayfarer
   module Routing
     class PathRule < Rule
       attr_reader :pattern
 
-      def initialize(str_or_regexp, opts = {}, &proc)
-        @pattern = str_or_regexp
+      def initialize(str, opts = {}, &proc)
+        @pattern = Mustermann.new(
+          str, type: Wayfarer.config.mustermann_type
+        )
         super(opts, &proc)
+      end
+
+      def params(uri)
+        @pattern.params(uri.path.to_s)
       end
 
       private
 
       def match!(uri)
-        case @pattern
-        when String then @pattern == uri.path
-        when Regexp then !!(@pattern =~ uri.path)
-        end
+        @pattern === uri.path
       end
     end
   end

@@ -10,7 +10,6 @@ require_relative "wayfarer/routing/rule"
 require_relative "wayfarer/routing/uri_rule"
 require_relative "wayfarer/routing/host_rule"
 require_relative "wayfarer/routing/path_rule"
-require_relative "wayfarer/routing/parameterized_path_rule"
 require_relative "wayfarer/routing/query_rule"
 require_relative "wayfarer/routing/router"
 

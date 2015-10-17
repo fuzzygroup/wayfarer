@@ -27,50 +27,6 @@ describe Wayfarer::Job do
     end
   end
 
-  describe "::post_process" do
-    it "registers post-processors" do
-      job.class.instance_eval do
-        class_eval do
-          post_process :foo
-          post_process :bar
-        end
-      end
-
-      expect(job.class.post_processors.count).to be 2
-    end
-  end
-
-  describe "::post_process!" do
-    it "runs all post-processors in FIFO order" do
-      job.class.instance_eval do
-        class_eval do
-          post_process :foo
-          post_process :bar
-          post_process do
-            @qux = 42
-          end
-          post_process :baz
-
-          private
-
-          def self.foo
-            :foo
-          end
-
-          def self.bar
-            :bar
-          end
-
-          def self.baz
-            @qux + 24
-          end
-        end
-      end
-
-      expect(job.class.post_process!).to be 66
-    end
-  end
-
   describe "#invoke" do
     context "with matching route" do
       it "returns a Stage" do

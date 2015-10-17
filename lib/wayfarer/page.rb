@@ -1,6 +1,7 @@
 require "ostruct"
 require "mime/types"
 require "mime-types"
+require "pismo"
 
 module Wayfarer
   class Page

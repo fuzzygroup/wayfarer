@@ -58,13 +58,7 @@ module Wayfarer
       end
 
       def path(*argv, &proc)
-        rule = if defined?(Mustermann)
-                 ParameterizedPathRule.new(*argv, &proc)
-               else
-                 PathRule.new(*argv, &proc)
-               end
-
-        append_child_rule(rule)
+        append_child_rule(PathRule.new(*argv, &proc))
       end
 
       def query(*argv, &proc)

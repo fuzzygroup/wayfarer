@@ -27,23 +27,6 @@ module Wayfarer
         @head = [rule_opts, proc]
       end
 
-      def post_processors
-        @post_processors ||= []
-      end
-
-      def post_process(sym = nil, &proc)
-        post_processors << (proc || sym)
-      end
-
-      def post_process!
-        post_processors.each_with_index do |obj, i|
-          val = obj.respond_to?(:call) ? obj.call : send(obj)
-          return val if post_processors.count == i + 1
-        end
-      end
-
-      alias_method :post_processor, :post_process
-
       def crawl(*uris)
         Crawler.new.crawl(self, *uris)
       end

@@ -34,9 +34,8 @@ describe Wayfarer::Routing::Rule do
     context "with matching Rule" do
       let(:host_rule_a) { HostRule.new("example.com") }
       let(:host_rule_b) { HostRule.new("google.com") }
-      # TODO: Fix this
-      let(:path_rule_a) { ParameterizedPathRule.new("/{alpha}/{beta}") }
-      let(:path_rule_b) { ParameterizedPathRule.new("/{gamma}/{delta}") }
+      let(:path_rule_a) { PathRule.new("/{alpha}/{beta}") }
+      let(:path_rule_b) { PathRule.new("/{gamma}/{delta}") }
 
       before do
         host_rule_a.send(:append_child_rule, path_rule_a)
@@ -147,30 +146,13 @@ describe Wayfarer::Routing::Rule do
   end
 
   describe "#path" do
-    context "when Mustermann is required" do
-      it "adds a ParameterizedPathRule as a sub-rule" do
-        rule.path("/foo/bar")
-        expect(rule.child_rules.first).to be_a ParameterizedPathRule
-      end
-
-      it "returns the added Parameterized" do
-        expect(rule.path("/foo/bar")).to be_a ParameterizedPathRule
-      end
+    it "adds a PathRule as a sub-rule" do
+      rule.path("/foo/bar")
+      expect(rule.child_rules.first).to be_a PathRule
     end
 
-    context "when Mustermann is not required" do
-      it "adds a PathRule as a sub-rule" do
-        hide_const(Mustermann) do
-          rule.path("/foo/bar")
-          expect(rule.child_rules.first).to be_a PathRule
-        end
-      end
-
-      it "returns the added PathRule" do
-        hide_const(Mustermann) do
-          expect(rule.path("/foo/bar")).to be_a PathRule
-        end
-      end
+    it "returns the added PathRule" do
+      expect(rule.path("/foo/bar")).to be_a PathRule
     end
   end
 
@@ -195,8 +177,8 @@ describe Wayfarer::Routing::Rule do
     describe ":path option" do
       let(:opts) { { path: "/foo" } }
 
-      it "adds a PathRule/Parameter" do
-        expect(rule.child_rules.first).to be_a ParameterizedPathRule
+      it "adds a PathRule" do
+        expect(rule.child_rules.first).to be_a PathRule
       end
     end
 
@@ -227,7 +209,7 @@ describe Wayfarer::Routing::Rule do
         third  = second.child_rules.first
 
         expect(first).to be_a HostRule
-        expect(second).to be_a ParameterizedPathRule
+        expect(second).to be_a PathRule
         expect(third).to be_a QueryRule
       end
     end
