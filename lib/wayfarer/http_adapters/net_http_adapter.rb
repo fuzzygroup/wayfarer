@@ -42,7 +42,7 @@ module Wayfarer
         )
 
       rescue SocketError
-        fail MalformedURI
+        raise MalformedURI
       end
 
       def free

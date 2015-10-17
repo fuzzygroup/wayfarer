@@ -1,6 +1,6 @@
 require "spec_helpers"
 
-# TODO Use shared examples for HTTP adapters
+# TODO: Use shared examples for HTTP adapters
 describe Wayfarer::HTTPAdapters::SeleniumAdapter, selenium: true do
   subject(:adapter) { Wayfarer::HTTPAdapters::SeleniumAdapter.new }
   after { adapter.free }

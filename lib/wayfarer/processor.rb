@@ -52,8 +52,8 @@ module Wayfarer
     def container
       Class.new(Celluloid::Supervision::Container) do
         pool Scraper,
-               as: :scraper_pool,
-               size: Wayfarer.config.connection_count
+             as: :scraper_pool,
+             size: Wayfarer.config.connection_count
       end
     end
 
@@ -80,7 +80,7 @@ module Wayfarer
       end
     end
 
-    # TODO Print something useful
+    # TODO: Print something useful
     def handle_halt(*)
       @halted = true
     end

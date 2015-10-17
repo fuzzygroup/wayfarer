@@ -56,9 +56,11 @@ describe Wayfarer::Job do
           def self.foo
             :foo
           end
+
           def self.bar
             :bar
           end
+
           def self.baz
             @qux + 24
           end
