@@ -40,9 +40,6 @@ module Wayfarer
       Wayfarer.log.debug("[#{self}] Terminating Scraper pool")
       scraper_pool.terminate
 
-      Wayfarer.log.debug("[#{self}] Calling post-processors")
-      klass.post_process!
-
       Wayfarer.log.debug("[#{self}] Freeing adapter pool")
       @adapter_pool.free
     end

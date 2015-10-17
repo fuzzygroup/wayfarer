@@ -1,6 +1,5 @@
 # require "wayfarer"
 require_relative "../lib/wayfarer"
-require "mustermann"
 
 class DummyJob < Wayfarer::Job
   routes do
