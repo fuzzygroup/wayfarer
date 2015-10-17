@@ -1,5 +1,7 @@
+require "active_job"
+
 module Wayfarer
-  class Job
+  class Job < ActiveJob::Base
     Mismatch = Struct.new(:uri)
     Halt     = Struct.new(:uri, :method)
     Stage    = Struct.new(:uris)
@@ -58,7 +60,8 @@ module Wayfarer
 
     attr_reader :staged_uris
 
-    def initialize
+    def initialize(*argv)
+      super(*argv)
       @halts = false
       @staged_uris = []
     end
@@ -81,6 +84,10 @@ module Wayfarer
       @halts ? Halt.new(uri, method) : Stage.new(@staged_uris)
     rescue => error
       return Error.new(error)
+    end
+
+    def perform(*argv)
+      self.class.crawl(*argv)
     end
 
     private

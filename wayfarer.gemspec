@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "mime-types",                 "~> 2.6"
   s.add_runtime_dependency "pismo",                      "~> 0.7"
   s.add_runtime_dependency "mustermann",                 "~> 0.4"
+  s.add_runtime_dependency "activejob",                  "~> 4.2"
 
   s.add_development_dependency "rake",    "~> 10.4"
   s.add_development_dependency "rspec",   "~> 3.3"

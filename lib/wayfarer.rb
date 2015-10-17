@@ -2,29 +2,6 @@ require "logger"
 require "uri"
 require "celluloid/current"
 
-module Wayfarer
-  VERSION = "0.0.0"
-
-  class << self
-    attr_writer :logger
-
-    def logger
-      @logger || Celluloid.logger
-    end
-
-    alias_method :log, :logger
-
-    def config
-      @config ||= Configuration.new
-      yield(@config) if block_given?
-      @config
-    end
-  end
-end
-
-# Don't print debug messages by default
-Wayfarer.log.level = 1
-
 # Plumbing
 require_relative "wayfarer/configuration"
 
@@ -54,3 +31,26 @@ require_relative "wayfarer/uri_set"
 require_relative "wayfarer/navigator"
 require_relative "wayfarer/processor"
 require_relative "wayfarer/crawler"
+
+module Wayfarer
+  VERSION = "0.0.0"
+
+  class << self
+    attr_writer :logger
+
+    def logger
+      @logger || Celluloid.logger || Logger.new(STDOUT)
+    end
+
+    alias_method :log, :logger
+
+    def config
+      @config ||= Configuration.new
+      yield(@config) if block_given?
+      @config
+    end
+  end
+end
+
+# Don't print debug messages by default
+Wayfarer.log.level = 1
