@@ -1,13 +1,9 @@
 require_relative "../lib/wayfarer"
-# require "mustermann"
 
 class DummyJob < Wayfarer::Job
   config.connection_count = 16
 
-  routes do
-    draw :article, host: "en.wikipedia.org"
-  end
-
+  draw host: "en.wikipedia.org"
   def article
     if page.body =~ /Hitler/
       puts "Found the dictator at #{page.uri}"

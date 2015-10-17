@@ -137,6 +137,7 @@ GEM
       hitimes
     tool (0.2.3)
     websocket (1.2.2)
+    yard (0.8.7.6)
 
 PLATFORMS
   java
@@ -148,6 +149,7 @@ DEPENDENCIES
   rubocop (~> 0.34)
   sinatra (~> 1.4)
   wayfarer!
+  yard (~> 0.8)
 
 BUNDLED WITH
    1.10.2
