@@ -1,5 +1,5 @@
-# Using Selenium
-Wayfarer supports Selenium drivers. You can execute JavaScript, take screenshots, interact with the page, and so on. For an exhaustive list, see [the official API documentation](http://www.rubydoc.info/gems/selenium-webdriver/0.0.28/Selenium/WebDriver/Driver).
+# Using Capybara
+When using Selenium, Wayfarer supports Selenium drivers. You can execute JavaScript, take screenshots, interact with the page, and so on. For an exhaustive list, see [the official API documentation](http://www.rubydoc.info/gems/selenium-webdriver/0.0.28/Selenium/WebDriver/Driver).
 
 See [examples/selenium.rb](../examples/selenium.rb).
 ## Setup

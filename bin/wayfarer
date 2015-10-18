@@ -2,7 +2,8 @@
 
 require "logger"
 require "pathname"
-require "date"
+require "time"
+
 require "active_support/inflector"
 require "thor"
 
@@ -10,7 +11,7 @@ module Wayfarer
   class CLI < Thor
     class_option :log_level, type: :string, default: "info"
 
-    option :progress, type: :boolean, default: true, alias: :p
+    option :progress, type: :boolean, default: true
     desc "exec FILE URI",
          "Runs the job defined in FILE starting with URI"
     def exec(file, uri)
@@ -90,7 +91,7 @@ module Wayfarer
     end
 
     def differing_seconds_from_string(str)
-      if date = Date.parse(str) rescue nil
+      if date = Time.parse(str) rescue nil
         date.to_time - Time.now
       else
         require "chronic"

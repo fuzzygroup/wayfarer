@@ -45,7 +45,7 @@ Whether to crash when encountering unhandled exceptions. See [Error handling](ER
 
 Whether URIs may be visited twice.
 
-__NOTE:__ Allowing circulation can cause your Jobs to not terminate.
+__NOTE:__ Allowing circulation might cause your jobs to not terminate.
 
 --
 

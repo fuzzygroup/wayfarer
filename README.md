@@ -6,7 +6,7 @@ Versatile web crawling with Ruby
 ## Features
 * Ensures non-circular, breadth-first and multithreaded traversal of page graphs
 * Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates browsers with [Selenium](https://github.com/seleniumhq/selenium)
-* Hands out [Capybara](https://github.com/jnicklas/capybara) sessions if you want it to
+* Optionally simplifies page interaction with [Capybara](https://github.com/jnicklas/capybara)’s DSL when using Selenium
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Can extract metadata with [Pismo](https://github.com/peterc/pismo)
 * Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s job API so you can use your favorite job queue
@@ -15,6 +15,7 @@ Versatile web crawling with Ruby
 
 __Shortcomings:__
 
+* Does not care about `robots.txt`
 * Does not cache responses
 * Does not talk to proxies
 * Does not run on JRuby
@@ -90,6 +91,7 @@ More contrived examples:
 * [Halting](howto/HALTING.md)
 * [Configuration](howto/CONFIGURATION.md)
 * [Using Selenium](howto/SELENIUM.md)
+* [Using Capybara](howto/CAPYBARA.md)
 * [Error handling](howto/ERROR_HANDLING.md)
 * [Thread safety](howto/THREAD_SAFETY.md)
 * [Adapter timeouts](howto/ADAPTER_TIMEOUTS.md)
