@@ -9,32 +9,24 @@ module Wayfarer
     end
 
     def javascripts(*rules)
+      query("script", "src", *rules)
     end
+
+    alias_method :scripts, :javascripts
 
     def images(*rules)
-    end
-
-    def videos(*rules)
+      query("img", "src", *rules)
     end
 
     private
 
     def query(selector, attr, *rules)
-      nodes = if rules.any?
-                doc.search(*rules).css(selector)
-              else
-                doc.css(selector)
-              end
+      nodes = rules.any? ? doc.search(*rules).css(selector) : doc.css(selector)
 
-      uris = nodes.map do |node|
-        begin
-          URI.join(uri, node.attr(attr))
-        rescue
-          nil
-        end
-      end
-
-      uris.uniq.find_all { |uri| uri.is_a?(URI) }
+      nodes
+        .map { |node| URI.join(uri, node.attr(attr)) rescue nil }
+        .find_all { |uri| uri.is_a?(URI) }
+        .uniq
     end
   end
 end
