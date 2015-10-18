@@ -7,7 +7,7 @@ module Wayfarer
       attr_accessor :level
 
       def initialize
-        self.level = Wayfarer.logger.level
+        @level = Wayfarer.logger.level
         Wayfarer.logger = self
 
         @bar = ::ProgressBar.create
@@ -42,31 +42,31 @@ module Wayfarer
       alias_method :log, :add
 
       def unknown(str)
-        @bar.log(str) if @level >= Logger::UNKNOWN
+        @bar.log("[UNKNOWN] #{str}") if @level <= Logger::UNKNOWN
       end
 
       def debug(str)
-        @bar.log(str) if @level >= Logger::DEBUG
+        @bar.log("[DEBUG] #{str}") if @level <= Logger::DEBUG
       end
 
       def error(str)
-        @bar.log(str) if @level >= Logger::ERROR
+        @bar.log("[ERROR] #{str}") if @level <= Logger::ERROR
       end
 
       def fatal(str)
-        @bar.log(str) if @level >= Logger::FATAL
+        @bar.log("[FATAL] #{str}") if @level <= Logger::FATAL
       end
 
       def info(str)
-        @bar.log(str) if @level >= Logger::INFO
+        @bar.log("[INFO] #{str}") if @level <= Logger::INFO
       end
 
       def warn(str)
-        @bar.log(str) if @level >= Logger::WARN
+        @bar.log("[WARN] #{str}") if @level <= Logger::WARN
       end
 
       def debug(str)
-        @bar.log(str) if @level >= Logger::DEBUG
+        @bar.log("[DEBUG] #{str}") if @level <= Logger::DEBUG
       end
 
       private
