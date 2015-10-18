@@ -1,6 +1,6 @@
 require_relative "../lib/wayfarer"
 
-class DummyJob < Wayfarer::Job
+class FindHitler < Wayfarer::Job
   config.connection_count = 16
 
   draw host: "en.wikipedia.org"
@@ -15,4 +15,4 @@ class DummyJob < Wayfarer::Job
   end
 end
 
-DummyJob.crawl("https://en.wikipedia.org/wiki/Special:Random")
+# DummyJob.crawl("https://en.wikipedia.org/wiki/Special:Random")
