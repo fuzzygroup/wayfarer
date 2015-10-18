@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "thor",                       "~> 0.19"
   s.add_runtime_dependency "activesupport",              "~> 4.2"
   s.add_runtime_dependency "capybara",                   "~> 2.5"
+  s.add_runtime_dependency "chronic",                    "~> 0.10"
 
   s.add_development_dependency "oj",      "~> 2.12"
   s.add_development_dependency "rake",    "~> 10.4"

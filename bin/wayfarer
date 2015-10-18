@@ -2,6 +2,7 @@
 
 require "logger"
 require "pathname"
+require "date"
 require "active_support/inflector"
 require "thor"
 
@@ -30,6 +31,7 @@ module Wayfarer
     end
 
     option :queue_adapter, type: :string, default: "inline"
+    option :wait, type: :string
     desc "enqueue FILE URI",
          "Run the job defined in FILE starting with URI"
     def enqueue(file, uri)
@@ -39,7 +41,14 @@ module Wayfarer
 
       ActiveJob::Base.queue_adapter = options[:queue_adapter].to_sym
 
-      load_class_from_file(file).perform_later(uri)
+      if wait = options[:wait]
+        delayed_seconds = differing_seconds_from_string(wait)
+        load_class_from_file(file)
+          .set(wait: delayed_seconds)
+          .perform_later(uri)
+      else
+        load_class_from_file(file).perform_later(uri)
+      end
     end
 
     desc "route FILE URI",
@@ -77,6 +86,15 @@ module Wayfarer
       when "fatal"   then Logger::FATAL
       when "info"    then Logger::INFO
       when "warn"    then Logger::WARN
+      end
+    end
+
+    def differing_seconds_from_string(str)
+      if date = Date.parse(str) rescue nil
+        date.to_time - Time.now
+      else
+        require "chronic"
+        Chronic.parse(str) - Time.now
       end
     end
 

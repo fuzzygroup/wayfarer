@@ -1,4 +1,4 @@
-require "wayfarer"
+require "../lib/wayfarer"
 
 class FindHitler < Wayfarer::Job
   config.connection_count = 8
