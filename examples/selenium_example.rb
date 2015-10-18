@@ -6,12 +6,12 @@ class SeleniumExample < Wayfarer::Job
     c.selenium_argv = [:firefox]
   end
 
-  draw uri: "https://example.com"
+  draw uri: "https://google.com"
   def example
     driver.execute_script("console.log('Hello from wayfarer!')")
     driver.save_screenshot("/tmp/screenshot.png")
 
-    browser.click_link "More information..."
+    browser.click_link "Auf gut Glück!"
   end
 end
 
