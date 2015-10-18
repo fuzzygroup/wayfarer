@@ -8,10 +8,12 @@ module Wayfarer
       query("link[rel='stylesheet']", "href", *rules)
     end
 
+    # TODO Tests
     def javascripts(*rules)
       query("script", "src", *rules)
     end
 
+    # TODO Tests
     alias_method :scripts, :javascripts
 
     def images(*rules)
