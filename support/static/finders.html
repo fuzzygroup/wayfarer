@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Things</title>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/a.css" id="stylesheet-a">
+    <link rel="stylesheet" href="b.css" id="stylesheet-b">
+    <link rel="stylesheet" href="http://google.com/c.css" id="stylesheet-c">
+
+    <!-- Duplicate stylesheets -->
+    <link rel="stylesheet" href="/a.css">
+    <link rel="stylesheet" href="b.css">
+    <link rel="stylesheet" href="http://google.com/c.css">
+  </head>
+
+  <body>
+    <ul>
+      <li><a href="/foo">Foo</a></li>
+      <li><a href="/bar">Bar</a></li>
+      <li><a href="/baz">Baz</a></li>
+
+      <li><a href="foo">Foo</a></li>
+      <li><a href="bar">Bar</a></li>
+      <li><a href="baz">Baz</a></li>
+
+      <!-- Duplicates -->
+      <li><a href="foo">Foo</a></li>
+      <li><a href="bar">Bar</a></li>
+      <li><a href="baz">Baz</a></li>
+
+      <!-- Absolute links -->
+      <li><a href="http://google.com">Foobar</a></li>
+      <li><a href="http://yahoo.com">Yahoo</a></li>
+      <li><a href="http://aol.com">AOL</a></li>
+    </ul>
+  </body>
+</html>

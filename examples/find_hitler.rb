@@ -9,7 +9,7 @@ class FindHitler < Wayfarer::Job
       log "Found the dictator at #{page.uri}"
       halt
     else
-      visit page.links("a")
+      visit page.links
       log "No trace of Hitler at #{page.uri}"
     end
   end

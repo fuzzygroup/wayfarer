@@ -1,15 +1,40 @@
 module Wayfarer
   module Finders
-    def links(*argv)
-      links = doc.search(*argv).map do |node|
+    def links(*rules)
+      query("a", "href", *rules)
+    end
+
+    def stylesheets(*rules)
+      query("link[rel='stylesheet']", "href", *rules)
+    end
+
+    def javascripts(*rules)
+    end
+
+    def images(*rules)
+    end
+
+    def videos(*rules)
+    end
+
+    private
+
+    def query(selector, attr, *rules)
+      nodes = if rules.any?
+                doc.search(*rules).css(selector)
+              else
+                doc.css(selector)
+              end
+
+      uris = nodes.map do |node|
         begin
-          URI.join(@uri, node.attr("href"))
+          URI.join(uri, node.attr(attr))
         rescue
           nil
         end
       end
 
-      links.uniq.find_all { |link| link.is_a?(URI) }
+      uris.uniq.find_all { |uri| uri.is_a?(URI) }
     end
   end
 end
