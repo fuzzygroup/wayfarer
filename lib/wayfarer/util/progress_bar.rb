@@ -74,7 +74,7 @@ module Wayfarer
       def options
         {
           title: "Cycle progress",
-          format: "%t: (%c/%C URIs) |%B|"
+          format: "%t: (%c/%C URIs) <%B>"
         }
       end
 
