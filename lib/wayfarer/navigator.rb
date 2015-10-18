@@ -2,6 +2,8 @@ require "set"
 
 module Wayfarer
   class Navigator
+    include Celluloid
+
     def initialize
       @current_uris = Set.new([])
       @staged_uris  = Set.new([])

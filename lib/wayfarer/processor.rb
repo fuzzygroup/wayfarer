@@ -26,22 +26,18 @@ module Wayfarer
 
     def run(klass)
       while navigator.cycle
-        uris = navigator.current_uris
-
         changed
-        notify_observers(:new_cycle, uris)
+        notify_observers(:new_cycle, navigator.current_uris.count)
 
-        uris.each_slice(Wayfarer.config.connection_count).each do |uris|
-          break if halted?
+        futures = navigator.current_uris.map do |uri|
+          scraper_pool.future.scrape(uri, klass, @adapter_pool)
+        end
 
-          futures = uris.map do |uri|
-            scraper_pool.future.scrape(uri, klass, @adapter_pool)
-          end
-
-          futures.each { |f| handle_future(f) }
+        futures.each do |future|
+          handle_future(future)
 
           changed
-          notify_observers(:processed_uris, uris.count)
+          notify_observers(:processed_uri)
         end
       end
 
@@ -93,7 +89,7 @@ module Wayfarer
     end
 
     def handle_stage(val)
-      navigator.stage(*val.uris)
+      navigator.async.stage(*val.uris)
     end
 
     def scraper_pool

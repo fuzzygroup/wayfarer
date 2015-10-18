@@ -10,7 +10,7 @@ module Wayfarer
       def update(type, *argv)
         case type
         when :new_cycle      then handle_new_cycle(*argv)
-        when :processed_uris then handle_processed_uris(*argv)
+        when :processed_uri  then handle_processed_uri(*argv)
         end
       end
 
@@ -25,7 +25,6 @@ module Wayfarer
       alias_method :warn,  :log
 
       def debug(str)
-        
       end
 
       private
@@ -37,17 +36,16 @@ module Wayfarer
         }
       end
 
-      def handle_new_cycle(current_uris)
+      def handle_new_cycle(uri_count)
         @bar.finish
 
-        opts = options.merge(total: current_uris.count)
+        opts = options.merge(total: uri_count)
 
         @bar = ::ProgressBar.create(opts)
       end
 
-      def handle_processed_uris(uris)
-        @bar.log("PROCESSED #{uris} URIS")
-        @bar.progress += uris
+      def handle_processed_uri
+        @bar.increment
       end
     end
   end
