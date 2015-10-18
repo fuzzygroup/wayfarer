@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
 
   s.require_paths = ["lib"]
 
+  s.executables << "wayfarer"
+
   s.add_runtime_dependency "celluloid",                  "~> 0.17"
   s.add_runtime_dependency "connection_pool",            "~> 2.2"
   s.add_runtime_dependency "nokogiri",                   "~> 1.6"
