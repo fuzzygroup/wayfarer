@@ -1,13 +1,24 @@
 # Wayfarer
 Versatile web crawling with Ruby
 
+[__API documentation__]()
+
 ## Features
 * Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates browsers with [Selenium](https://github.com/seleniumhq/selenium)
 * Ensures non-circular, breadth-first and multithreaded traversal of page graphs
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Can extract metadata with [Pismo](https://github.com/peterc/pismo)
-* Integrates with ActiveJob so you can use your favorite job queue
+* Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s job API so you can use your favorite job queue
+* Ships with a small but useful CLI
 * Is agnostic about data storage
+
+__Shortcomings:__
+
+* Does not cache responses
+* Does not talk to proxies
+* Does not run on JRuby
+
+… and probably never will.
 
 ## Installation
 Install with Bundler by adding the following line to your `Gemfile`:

@@ -1,30 +1,55 @@
 #!/usr/bin/env ruby
 
+require "logger"
 require "pathname"
 require "active_support/inflector"
 require "thor"
-require "ruby-progressbar"
 
 module Wayfarer
   class CLI < Thor
-    desc "exec FILE_NAME", "Run FILE_NAME starting with URI"
-    def exec(file_name, uri)
+    class_option :log_level, type: :string, default: "info"
+
+    option :progress, type: :boolean, default: true
+    desc "exec FILE URI",
+         "Runs the job defined in FILE starting with URI"
+    def exec(file, uri)
       require_relative "../lib/wayfarer"
 
-      klass = load_class_from_file(file_name)
+      Wayfarer.log.level = log_level_from_string(options[:log_level])
 
-      bar = Wayfarer::Util::ProgressBar.new
+      klass = load_class_from_file(file)
 
       crawler = Wayfarer::Crawler.new
-      crawler.processor.add_observer(bar)
+
+      if options[:progress]
+        bar = Wayfarer::Util::ProgressBar.new
+        crawler.processor.add_observer(bar)
+      end
+
       crawler.crawl(klass, uri)
     end
 
-    desc "route", "Display the matching route in FILE_NAME for URI"
-    def route(file_name, uri)
+    option :queue_adapter, type: :string, default: "inline"
+    desc "enqueue FILE URI",
+         "Run the job defined in FILE starting with URI"
+    def enqueue(file, uri)
       require_relative "../lib/wayfarer"
 
-      klass = load_class_from_file(file_name)
+      Wayfarer.log.level = log_level_from_string(options[:log_level])
+
+      ActiveJob::Base.queue_adapter = options[:queue_adapter].to_sym
+
+      load_class_from_file(file).perform_later
+    end
+
+    desc "route FILE URI",
+         "Load the job defined in FILE and output the first matching route for URI"
+    def route(file, uri)
+      require_relative "../lib/wayfarer"
+
+      Wayfarer.log.level = log_level_from_string(options[:log_level])
+
+      klass = load_class_from_file(file)
 
       method, params = klass.router.route(URI(uri))
 
@@ -35,19 +60,28 @@ module Wayfarer
       end
     end
 
-    desc "enqueue", "Display the matching route in FILE_NAME for URI"
-    def enqueue(file_name, uri, queue_adapter = :inline)
+    desc "version", "Print the version"
+    def version
       require_relative "../lib/wayfarer"
 
-      ActiveJob::Base.queue_adapter = queue_adapter
-
-      load_class_from_file(file_name).perform_later
+      puts Wayfarer::VERSION
     end
 
     private
 
-    def load_class_from_file(file_path)
-      path = File.join(Dir.pwd, file_path.chomp(".rb"))
+    def log_level_from_string(str)
+      case str.downcase
+      when "unknown" then Logger::UNKNOWN
+      when "debug"   then Logger::DEBUG
+      when "error"   then Logger::ERROR
+      when "fatal"   then Logger::FATAL
+      when "info"    then Logger::INFO
+      when "warn"    then Logger::WARN
+      end
+    end
+
+    def load_class_from_file(file)
+      path = File.join(Dir.pwd, file.chomp(".rb"))
       base_name = Pathname.new(path).basename.to_s
 
       require path
