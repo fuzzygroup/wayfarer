@@ -92,8 +92,27 @@ module Wayfarer
       page.pismo
     end
 
-    def browser
+    def driver
       adapter.driver
+    end
+
+    def browser
+      @browser ||= instantiate_capybara_driver
+    end
+
+    def instantiate_capybara_driver
+      require "capybara"
+
+      Capybara.run_server = false
+      Capybara.current_driver = :selenium
+
+      capybara_driver = Capybara::Selenium::Driver.new(nil)
+      capybara_driver.instance_variable_set(:@browser, driver)
+
+      session = Capybara::Session.new(:selenium, nil)
+      session.instance_variable_set(:@driver, capybara_driver)
+
+      session
     end
 
     def halt
