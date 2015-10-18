@@ -39,7 +39,7 @@ module Wayfarer
 
       ActiveJob::Base.queue_adapter = options[:queue_adapter].to_sym
 
-      load_class_from_file(file).perform_later
+      load_class_from_file(file).perform_later(uri)
     end
 
     desc "route FILE URI",

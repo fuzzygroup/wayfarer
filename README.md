@@ -4,12 +4,13 @@ Versatile web crawling with Ruby
 [__API documentation__]()
 
 ## Features
-* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates browsers with [Selenium](https://github.com/seleniumhq/selenium)
 * Ensures non-circular, breadth-first and multithreaded traversal of page graphs
+* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates browsers with [Selenium](https://github.com/seleniumhq/selenium)
+* Hands out [Capybara](https://github.com/jnicklas/capybara) sessions if you want it to
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Can extract metadata with [Pismo](https://github.com/peterc/pismo)
 * Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s job API so you can use your favorite job queue
-* Ships with a small but useful CLI
+* Has a small but useful CLI (no, really) 
 * Is agnostic about data storage
 
 __Shortcomings:__
@@ -109,3 +110,4 @@ rake test:selenium  # Run only Selenium tests
 ```
 
 Selenium tests are run locally with [PhantomJS]().
+ƒ
