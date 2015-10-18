@@ -25,6 +25,7 @@ require_relative "wayfarer/parsers/json_parser"
 # Processing
 require_relative "wayfarer/job"
 require_relative "wayfarer/scraper"
+require_relative "wayfarer/finders"
 require_relative "wayfarer/page"
 require_relative "wayfarer/uri_set"
 require_relative "wayfarer/navigator"

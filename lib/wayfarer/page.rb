@@ -5,6 +5,8 @@ require "pismo"
 
 module Wayfarer
   class Page
+    include Finders
+
     attr_reader :uri
     attr_reader :status_code
     attr_reader :body
@@ -43,19 +45,6 @@ module Wayfarer
 
     def pismo
       @pismo_doc ||= instantiate_pismo_document
-    end
-
-    # TODO: Add more helpers, refactor them into a module
-    def links(*argv)
-      links = doc.search(*argv).map do |node|
-        begin
-          URI.join(@uri, node.attr("href"))
-        rescue
-          nil
-        end
-      end
-
-      links.uniq.find_all { |link| link.is_a?(URI) }
     end
 
     private

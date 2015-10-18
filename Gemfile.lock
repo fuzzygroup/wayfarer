@@ -6,6 +6,7 @@ PATH
       activesupport (~> 4.2)
       capybara (~> 2.5)
       celluloid (~> 0.17)
+      chronic (~> 0.10)
       connection_pool (~> 2.2)
       mime-types (~> 2.6)
       mustermann (~> 0.4)
