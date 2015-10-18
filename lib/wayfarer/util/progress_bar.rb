@@ -1,9 +1,15 @@
+require "logger"
 require "ruby-progressbar"
 
 module Wayfarer
   module Util
     class ProgressBar
+      attr_accessor :level
+
       def initialize
+        self.level = Wayfarer.logger.level
+        Wayfarer.logger = self
+
         @bar = ::ProgressBar.create
       end
 
@@ -14,17 +20,53 @@ module Wayfarer
         end
       end
 
-      def log(*argv)
-        #@bar.log(*argv)
+      def add(severity, message = nil, progname = nil, &proc)
+        msg = if message
+                message
+              elsif proc
+                proc.call
+              else
+                progname
+              end
+
+        case severity
+        when Logger::UNKNOWN then unknown(msg)
+        when Logger::DEBUG   then debug(msg)
+        when Logger::ERROR   then error(msg)
+        when Logger::FATAL   then fatal(msg)
+        when Logger::INFO    then info(msg)
+        when Logger::WARN    then warn(msg)
+        end
       end
 
-      alias_method :debug, :log
-      alias_method :error, :log
-      alias_method :fatal, :log
-      alias_method :info,  :log
-      alias_method :warn,  :log
+      alias_method :log, :add
+
+      def unknown(str)
+        @bar.log(str) if @level >= Logger::UNKNOWN
+      end
 
       def debug(str)
+        @bar.log(str) if @level >= Logger::DEBUG
+      end
+
+      def error(str)
+        @bar.log(str) if @level >= Logger::ERROR
+      end
+
+      def fatal(str)
+        @bar.log(str) if @level >= Logger::FATAL
+      end
+
+      def info(str)
+        @bar.log(str) if @level >= Logger::INFO
+      end
+
+      def warn(str)
+        @bar.log(str) if @level >= Logger::WARN
+      end
+
+      def debug(str)
+        @bar.log(str) if @level >= Logger::DEBUG
       end
 
       private

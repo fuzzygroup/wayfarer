@@ -14,7 +14,6 @@ module Wayfarer
       klass = load_class_from_file(file_name)
 
       bar = Wayfarer::Util::ProgressBar.new
-      Wayfarer.logger = bar
 
       crawler = Wayfarer::Crawler.new
       crawler.processor.add_observer(bar)
