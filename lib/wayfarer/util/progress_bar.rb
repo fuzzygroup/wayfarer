@@ -40,47 +40,19 @@ module Wayfarer
       alias_method :log, :add
 
       LEVELS = {
-        Logger::UNKNOWN => "unknown",
-        Logger::DEBUG   => "debug",
-        Logger::ERROR   => "error",
-        Logger::FATAL   => "fatal",
-        Logger::INFO    => "info",
-        Logger::WARN    => "warn"
+        Logger::UNKNOWN => :unknown,
+        Logger::DEBUG   => :debug,
+        Logger::ERROR   => :error,
+        Logger::FATAL   => :fatal,
+        Logger::INFO    => :info,
+        Logger::WARN    => :warn
       }
 
-      def unknown(str)
-        if @level <= Logger::UNKNOWN
-          @bar ? @bar.log("[UNKNOWN] #{str}") : puts(str)
-        end
-      end
-
-      def debug(str)
-        if @level <= Logger::DEBUG
-          @bar ? @bar.log("[DEBUG] #{str}") : puts(str)
-        end
-      end
-
-      def error(str)
-        if @level <= Logger::ERROR
-          @bar ? @bar.log("[ERROR] #{str}") : puts(str)
-        end
-      end
-
-      def fatal(str)
-        if @level <= Logger::FATAL
-          @bar ? @bar.log("[FATAL] #{str}") : puts(str)
-        end
-      end
-
-      def info(str)
-        if @level <= Logger::INFO
-          @bar ? @bar.log("[INFO] #{str}") : puts(str)
-        end
-      end
-
-      def warn(str)
-        if @level <= Logger::WARN
-          @bar ? @bar.log("[WARN] #{str}") : puts(str)
+      LEVELS.each do |level, sym|
+        define_method(sym) do |message|
+          if @level <= level
+            @bar ? @bar.log("[sym.to_s.upcase] #{message}") : puts(message)
+          end
         end
       end
 
