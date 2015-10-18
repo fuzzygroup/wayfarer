@@ -91,8 +91,10 @@ module Wayfarer
     end
 
     def differing_seconds_from_string(str)
-      if date = Time.parse(str) rescue nil
-        date.to_time - Time.now
+      if secs = Integer(secs) rescue nil
+        secs
+      if time = Time.parse(str) rescue nil
+        time - Time.now
       else
         require "chronic"
         Chronic.parse(str) - Time.now
