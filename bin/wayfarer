@@ -9,7 +9,7 @@ module Wayfarer
   class CLI < Thor
     class_option :log_level, type: :string, default: "info"
 
-    option :progress, type: :boolean, default: true
+    option :progress, type: :boolean, default: true, alias: :p
     desc "exec FILE URI",
          "Runs the job defined in FILE starting with URI"
     def exec(file, uri)
