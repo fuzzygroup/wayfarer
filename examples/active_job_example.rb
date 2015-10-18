@@ -4,8 +4,6 @@ require_relative "../lib/wayfarer"
 # 1. Run Redis: `redis-server`
 # 2. Run Sidekiq: `sidekiq -r ./examples/activejob.rb`
 
-ActiveJob::Base.queue_adapter = :sidekiq
-
 class ActiveJobExample < Wayfarer::Job
   config.connection_count = 16
 

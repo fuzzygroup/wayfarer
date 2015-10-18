@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-require_relative "../lib/wayfarer"
-
 require "pathname"
 require "active_support/inflector"
 require "thor"
@@ -11,6 +9,8 @@ module Wayfarer
   class CLI < Thor
     desc "exec FILE_NAME", "Run FILE_NAME starting with URI"
     def exec(file_name, uri)
+      require_relative "../lib/wayfarer"
+
       klass = load_class_from_file(file_name)
 
       bar = Wayfarer::Util::ProgressBar.new
@@ -22,6 +22,8 @@ module Wayfarer
 
     desc "route", "Display the matching route in FILE_NAME for URI"
     def route(file_name, uri)
+      require_relative "../lib/wayfarer"
+
       klass = load_class_from_file(file_name)
 
       method, params = klass.router.route(URI(uri))
@@ -34,7 +36,11 @@ module Wayfarer
     end
 
     desc "enqueue", "Display the matching route in FILE_NAME for URI"
-    def enqueue(file_name, uri)
+    def enqueue(file_name, uri, queue_adapter = :inline)
+      require_relative "../lib/wayfarer"
+
+      ActiveJob::Base.queue_adapter = queue_adapter
+
       load_class_from_file(file_name).perform_later
     end
 
