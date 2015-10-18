@@ -9,7 +9,7 @@ require "ruby-progressbar"
 
 module Wayfarer
   class CLI < Thor
-    desc "exec", "an example task"
+    desc "exec FILE_NAME", "Run FILE_NAME starting with URI"
     def exec(file_name, uri)
       klass = load_class_from_file(file_name)
 
@@ -20,7 +20,7 @@ module Wayfarer
       crawler.crawl(klass, uri)
     end
 
-    desc "route", "an example task"
+    desc "route", "Display the matching route in FILE_NAME for URI"
     def route(file_name, uri)
       klass = load_class_from_file(file_name)
 
@@ -31,6 +31,11 @@ module Wayfarer
       else
         puts "No matching route."
       end
+    end
+
+    desc "enqueue", "Display the matching route in FILE_NAME for URI"
+    def enqueue(file_name, uri)
+      load_class_from_file(file_name).perform_later
     end
 
     private

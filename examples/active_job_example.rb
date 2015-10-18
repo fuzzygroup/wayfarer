@@ -6,7 +6,7 @@ require_relative "../lib/wayfarer"
 
 ActiveJob::Base.queue_adapter = :sidekiq
 
-class DummyJob < Wayfarer::Job
+class ActiveJobExample < Wayfarer::Job
   config.connection_count = 16
 
   draw host: "en.wikipedia.org"
