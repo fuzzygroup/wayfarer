@@ -10,7 +10,7 @@ Versatile web crawling with Ruby
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Can extract metadata with [Pismo](https://github.com/peterc/pismo)
 * Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s job API so you can use your favorite job queue
-* Has a small but useful CLI (no, really) 
+* Ships with a small but useful CLI (no, really) 
 * Is agnostic about data storage
 
 __Shortcomings:__
