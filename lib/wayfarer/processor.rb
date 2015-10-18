@@ -1,5 +1,9 @@
+require "observer"
+
 module Wayfarer
   class Processor
+    include Observable
+
     include Celluloid
     include Celluloid::Internals::Logger
 
@@ -24,6 +28,9 @@ module Wayfarer
       while navigator.cycle
         uris = navigator.current_uris
 
+        changed
+        notify_observers(:new_cycle, uris)
+
         uris.each_slice(Wayfarer.config.connection_count).each do |uris|
           break if halted?
 
@@ -32,6 +39,9 @@ module Wayfarer
           end
 
           futures.each { |f| handle_future(f) }
+
+          changed
+          notify_observers(:processed_uris, uris.count)
         end
       end
 

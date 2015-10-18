@@ -5,6 +5,7 @@ require_relative "../lib/wayfarer"
 require "pathname"
 require "active_support/inflector"
 require "thor"
+require "ruby-progressbar"
 
 module Wayfarer
   class CLI < Thor
@@ -12,7 +13,11 @@ module Wayfarer
     def exec(file_name, uri)
       klass = load_class_from_file(file_name)
 
+      bar = Wayfarer::Util::ProgressBar.new
+      Wayfarer.logger = bar
+
       crawler = Wayfarer::Crawler.new
+      crawler.processor.add_observer(bar)
       crawler.crawl(klass, uri)
     end
 

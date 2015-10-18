@@ -5,14 +5,14 @@ class FindHitler < Wayfarer::Job
 
   draw host: "en.wikipedia.org"
   def article
-    if page.body =~ /Hitler/
-      puts "Found the dictator at #{page.uri}"
+    if page.body =~ /Hitasdfsadfler/
+      log "Found the dictator at #{page.uri}"
       halt
     else
       visit page.links("a")
-      puts "No trace of Hitler at #{page.uri}"
+      log "No trace of Hitler at #{page.uri}"
     end
   end
 end
 
-# DummyJob.crawl("https://en.wikipedia.org/wiki/Special:Random")
+# FindHitler.crawl("https://en.wikipedia.org/wiki/Special:Random")

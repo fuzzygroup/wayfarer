@@ -80,6 +80,10 @@ module Wayfarer
     attr_reader :page
     attr_reader :params
 
+    def log(*argv)
+      Wayfarer.log.info(*argv)
+    end
+
     def doc
       page.doc
     end
