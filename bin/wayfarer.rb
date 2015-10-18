@@ -1,15 +1,32 @@
 #!/usr/bin/env ruby
 
+require_relative "../lib/wayfarer"
+
 require "pathname"
 require "active_support/inflector"
 require "thor"
-# require_relative "../lib/wayfarer"
 
 module Wayfarer
   class CLI < Thor
     desc "exec", "an example task"
     def exec(file_name, uri)
-      puts load_class_from_file(file_name)
+      klass = load_class_from_file(file_name)
+
+      crawler = Wayfarer::Crawler.new
+      crawler.crawl(klass, uri)
+    end
+
+    desc "route", "an example task"
+    def route(file_name, uri)
+      klass = load_class_from_file(file_name)
+
+      method, params = klass.router.route(URI(uri))
+
+      if method
+        puts "Dispatching to :#{method} with parameters: #{params}"
+      else
+        puts "No matching route."
+      end
     end
 
     private
