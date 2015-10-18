@@ -21,9 +21,7 @@ module Wayfarer
     private
 
     def query(selector, attr, *rules)
-      nodes = rules.any? ? doc.search(*rules).css(selector) : doc.css(selector)
-
-      nodes
+      (rules.any? ? doc.search(*rules).css(selector) : doc.css(selector))
         .map { |node| URI.join(uri, node.attr(attr)) rescue nil }
         .find_all { |uri| uri.is_a?(URI) }
         .uniq
