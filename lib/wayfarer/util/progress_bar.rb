@@ -9,8 +9,6 @@ module Wayfarer
       def initialize
         @level = Wayfarer.logger.level
         Wayfarer.logger = self
-
-        @bar = ::ProgressBar.create
       end
 
       def update(type, *argv)
@@ -41,32 +39,49 @@ module Wayfarer
 
       alias_method :log, :add
 
+      LEVELS = {
+        Logger::UNKNOWN => "unknown",
+        Logger::DEBUG   => "debug",
+        Logger::ERROR   => "error",
+        Logger::FATAL   => "fatal",
+        Logger::INFO    => "info",
+        Logger::WARN    => "warn"
+      }
+
       def unknown(str)
-        @bar.log("[UNKNOWN] #{str}") if @level <= Logger::UNKNOWN
+        if @level <= Logger::UNKNOWN
+          @bar ? @bar.log("[UNKNOWN] #{str}") : puts(str)
+        end
       end
 
       def debug(str)
-        @bar.log("[DEBUG] #{str}") if @level <= Logger::DEBUG
+        if @level <= Logger::DEBUG
+          @bar ? @bar.log("[DEBUG] #{str}") : puts(str)
+        end
       end
 
       def error(str)
-        @bar.log("[ERROR] #{str}") if @level <= Logger::ERROR
+        if @level <= Logger::ERROR
+          @bar ? @bar.log("[ERROR] #{str}") : puts(str)
+        end
       end
 
       def fatal(str)
-        @bar.log("[FATAL] #{str}") if @level <= Logger::FATAL
+        if @level <= Logger::FATAL
+          @bar ? @bar.log("[FATAL] #{str}") : puts(str)
+        end
       end
 
       def info(str)
-        @bar.log("[INFO] #{str}") if @level <= Logger::INFO
+        if @level <= Logger::INFO
+          @bar ? @bar.log("[INFO] #{str}") : puts(str)
+        end
       end
 
       def warn(str)
-        @bar.log("[WARN] #{str}") if @level <= Logger::WARN
-      end
-
-      def debug(str)
-        @bar.log("[DEBUG] #{str}") if @level <= Logger::DEBUG
+        if @level <= Logger::WARN
+          @bar ? @bar.log("[WARN] #{str}") : puts(str)
+        end
       end
 
       private
@@ -79,7 +94,7 @@ module Wayfarer
       end
 
       def handle_new_cycle(uri_count)
-        @bar.finish
+        @bar.finish if @bar
 
         opts = options.merge(total: uri_count)
 
