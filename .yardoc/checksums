@@ -8,7 +8,7 @@ lib/wayfarer/scraper.rb a9531d3bf2d9a93582e42eb7d983fe1d8347b29b
 lib/wayfarer/navigator.rb f6d8d966ec00f375a551a597bea4e91dac54df0d
 lib/wayfarer/processor.rb 4c06c773b6bd2499680fa1bd68181c38a6519d79
 lib/wayfarer/routing/rule.rb 8400984b13b0c77da5af55d384485b4212c9efec
-lib/wayfarer/configuration.rb 10d64d344c18349c00072b96802de93f8bef4af0
+lib/wayfarer/configuration.rb 0a320e4189386007cbb70e9869a94eb06c1d070b
 lib/wayfarer/routing/router.rb afff10da7ff0432d4651980d8608881863905de2
 lib/wayfarer/routing/uri_rule.rb e4dd51144be96e0443e21692a322b4f91586d6b2
 lib/wayfarer/routing/host_rule.rb 449779e319ec0b41e5e63ea824d7c99dff51011f
@@ -17,6 +17,6 @@ lib/wayfarer/util/progress_bar.rb bf280235132514f21f503a42bb5873bcc60a90ed
 lib/wayfarer/parsers/xml_parser.rb 435b1a5049863ba64582d6bb33e756bb9ef515b7
 lib/wayfarer/routing/query_rule.rb 5e7107fb7f468712313c2890b8411dd6c48eeb8a
 lib/wayfarer/parsers/json_parser.rb eadf6276e4364b47fa12f55d0883239b1c7c4c52
-lib/wayfarer/http_adapters/adapter_pool.rb 0dea304fec18a344024eb326394568c2a136cb6f
+lib/wayfarer/http_adapters/adapter_pool.rb 070df17d161a058ad827e62aad76a206dd9fe7c6
 lib/wayfarer/http_adapters/selenium_adapter.rb 7e5a709eb50aaad8628e9fc564af904f9b7d826b
 lib/wayfarer/http_adapters/net_http_adapter.rb 0ee3cebfc362ad4b29b0421f163e2f0b94eed3c1

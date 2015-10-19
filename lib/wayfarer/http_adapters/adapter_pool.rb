@@ -2,6 +2,7 @@ require "connection_pool"
 
 module Wayfarer
   module HTTPAdapters
+    # A connection pool that hands out HTTP adapters
     class AdapterPool
       def initialize
         size    = Wayfarer.config.connection_count
@@ -12,6 +13,7 @@ module Wayfarer
         )
       end
 
+      # Shuts down all HTTP adapters
       def free
         @pool.shutdown(&:free)
       end

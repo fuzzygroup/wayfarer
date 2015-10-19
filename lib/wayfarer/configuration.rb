@@ -2,13 +2,13 @@
 module Wayfarer
   class Configuration
     DEFAULTS = {
-      # Whether to print full stacktraces
+      # Print full stacktraces?
       print_stacktraces: true,
 
-      # Whether to crash when encountering unhandled exceptions
+      # Crash when encountering unhandled exceptions?
       reraise_exceptions: false,
 
-      # Whether URIs may be visited twice
+      # Allow processing URIs multiple times?
       allow_circulation: false,
 
       # Whether trailing slashes and fragment identifiers should be considered insignificant when comparing URIs
@@ -20,7 +20,7 @@ module Wayfarer
       # Which HTTP adapter to use. Supported are :net_http and :selenium
       http_adapter: :net_http,
 
-      # How long a Scraper thread may hold an adapter/Selenium driver.
+      # How long a Scraper thread may hold an adapter.
       # Scrapers that exceed his limit fail with an exception.
       connection_timeout: 5.0,
 
