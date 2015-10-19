@@ -3,10 +3,10 @@ lib/wayfarer/job.rb 2dfb58cd48942070ea6496fff1e7dd8f27072a89
 lib/wayfarer/page.rb 31c8c97ad3eb5dca359e166a3004e5b00c1e21bf
 lib/wayfarer/finders.rb 20d3e908cd92873bf7883022e8b81eca53aecaa1
 lib/wayfarer/crawler.rb 15f88ccc245b68b06dc2348ef66ccb70f582d07a
-lib/wayfarer/uri_set.rb a52ced074d9a2768ac0559b12afe2b5e23dd9b90
+lib/wayfarer/uri_set.rb 9a79d6efbe97245ea51a74aa1ff29193ab8d75d4
 lib/wayfarer/scraper.rb af56abf3913b5630c48d96c61b8edc205ebc8012
 lib/wayfarer/navigator.rb 0645234ad25ed86c840ce827187a984d1e422b34
-lib/wayfarer/processor.rb 5cc83631c2a90099f9fe963dc4c329ba2215cc78
+lib/wayfarer/processor.rb 95c910431ea8f5f811607d585e15469bbfea4c46
 lib/wayfarer/routing/rule.rb 8400984b13b0c77da5af55d384485b4212c9efec
 lib/wayfarer/configuration.rb c18dd01194d6f0605396f2bcdde6e5427a479ffc
 lib/wayfarer/routing/router.rb afff10da7ff0432d4651980d8608881863905de2

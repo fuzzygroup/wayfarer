@@ -1,7 +1,10 @@
+--output-dir docs
 --markup markdown
+
 -
-docs/ACTIVE_JOB.md
-docs/ADAPTER_TIMEOUTS.md
-docs/CAPYBARA.md
-docs/CLI.md
-docs/CONFIGURATION.md
+
+guides/ACTIVE_JOB.md
+guides/ADAPTER_TIMEOUTS.md
+guides/CAPYBARA.md
+guides/CLI.md
+guides/CONFIGURATION.md

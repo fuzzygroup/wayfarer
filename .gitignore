@@ -2,3 +2,6 @@
 Gemfile.lock
 *.gem
 build/
+
+docs/*
+!docs/guides
