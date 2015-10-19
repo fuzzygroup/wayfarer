@@ -4,12 +4,24 @@ require "mime-types"
 require "pismo"
 
 module Wayfarer
+  # A representation of fetched pages
   class Page
     include Finders
 
+    # @!attribute [r] uri
+    # @return [URI] the URI of the page
     attr_reader :uri
+
+    # @!attribute [r] status_code
+    # @return [Fixnum] the response status code
     attr_reader :status_code
+
+    # @!attribute [r] body
+    # @return [String] the response body
     attr_reader :body
+
+    # @!attribute [r] headers
+    # @return [Hash] the response headers
     attr_reader :headers
 
     def initialize(attrs = {})
@@ -19,6 +31,10 @@ module Wayfarer
       @headers     = attrs[:headers]
     end
 
+    # Returns a parsed representation of the fetched document depending on the Content-Type field.
+    # @return [OpenStruct] if the Content-Type field's sub-type is "json".
+    # @return [Nokogiri::XML::Document] if the Content-Type field's sub-type is "xml".
+    # @return [Nokogiri::HTML::Document] otherwise.
     def doc
       return @doc if @doc
 
@@ -43,6 +59,9 @@ module Wayfarer
              end
     end
 
+    # Returns a Pismo document.
+    # @note Only works when {#doc} returns a `Nokogiri::HTML::Document`.
+    # @return [Pismo::Document]
     def pismo
       @pismo_doc ||= instantiate_pismo_document
     end

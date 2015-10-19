@@ -1,6 +1,6 @@
 lib/wayfarer.rb f1a92ede3b3785299cf726cae3444deacfed2940
 lib/wayfarer/job.rb 2dfb58cd48942070ea6496fff1e7dd8f27072a89
-lib/wayfarer/page.rb 1f5bf78630210aae7a5a7ed6c57d21b2b90d9504
+lib/wayfarer/page.rb df21222635e8199dbaa65830d665fa3fb5f74c0c
 lib/wayfarer/finders.rb ee88ab99d7818fb3fc060f230ab5647e4dcfd14c
 lib/wayfarer/crawler.rb 20120842aa9ee9673369bc524d55b9a0336ad024
 lib/wayfarer/uri_set.rb a52ced074d9a2768ac0559b12afe2b5e23dd9b90
