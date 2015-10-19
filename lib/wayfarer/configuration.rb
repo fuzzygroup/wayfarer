@@ -1,4 +1,4 @@
-# TODO: OpenStructs break on JRuby?
+# TODO Switch back to an OpenStruct
 module Wayfarer
   class Configuration
     DEFAULTS = {
