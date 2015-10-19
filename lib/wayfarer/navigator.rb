@@ -30,11 +30,13 @@ module Wayfarer
     end
 
     # Stages URIs for processing in the next cycle
+    # @param [*Array<URI>, *Array<String>] *uris the URIs to stage.
     def stage(*uris)
       @staged_uris |= uris.map { |uri| URI(uri) }
     end
 
     # Caches URIs so they don't get processed again
+    # @param [*Array<URI>, *Array<String>] *uris the URIs to cache.
     def cache(*uris)
       @cached_uris |= uris.map { |uri| URI(uri) }
     end
