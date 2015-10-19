@@ -9,19 +9,19 @@ module Wayfarer
     include Finders
 
     # @!attribute [r] uri
-    # @return [URI] the URI of the page
+    # @return [URI] the URI of the page.
     attr_reader :uri
 
     # @!attribute [r] status_code
-    # @return [Fixnum] the response status code
+    # @return [Fixnum] the response status code.
     attr_reader :status_code
 
     # @!attribute [r] body
-    # @return [String] the response body
+    # @return [String] the response body.
     attr_reader :body
 
     # @!attribute [r] headers
-    # @return [Hash] the response headers
+    # @return [Hash] the response headers.
     attr_reader :headers
 
     def initialize(attrs = {})

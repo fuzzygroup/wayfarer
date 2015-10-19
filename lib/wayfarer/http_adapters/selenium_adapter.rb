@@ -3,7 +3,10 @@ require "selenium/emulated_features"
 
 module Wayfarer
   module HTTPAdapters
+    # An adapter for Selenium WebDrivers
     class SeleniumAdapter
+      # @!attribute [r] driver
+      # @return [URI] the Selenium WebDriver.
       attr_reader :driver
 
       def initialize
@@ -13,6 +16,8 @@ module Wayfarer
         )
       end
 
+      # Fetches a page.
+      # @return [Page]
       def fetch(uri)
         @driver.navigate.to(uri)
 
@@ -29,6 +34,7 @@ module Wayfarer
         )
       end
 
+      # Quits the browser.
       def free
         @driver.quit
       end
