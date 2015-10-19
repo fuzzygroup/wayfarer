@@ -19,4 +19,4 @@ lib/wayfarer/routing/query_rule.rb 5e7107fb7f468712313c2890b8411dd6c48eeb8a
 lib/wayfarer/parsers/json_parser.rb eadf6276e4364b47fa12f55d0883239b1c7c4c52
 lib/wayfarer/http_adapters/adapter_pool.rb 070df17d161a058ad827e62aad76a206dd9fe7c6
 lib/wayfarer/http_adapters/selenium_adapter.rb 7e5a709eb50aaad8628e9fc564af904f9b7d826b
-lib/wayfarer/http_adapters/net_http_adapter.rb 0ee3cebfc362ad4b29b0421f163e2f0b94eed3c1
+lib/wayfarer/http_adapters/net_http_adapter.rb a23ddae607ef664f0d171039a53371b0f6e6d4e7

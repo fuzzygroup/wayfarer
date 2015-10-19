@@ -4,9 +4,11 @@ require "net/http/persistent"
 
 module Wayfarer
   module HTTPAdapters
+    # A singleton adapter for net-http-persistent
     class NetHTTPAdapter
       include Singleton
 
+      # Supported sub-classes of the Ruby URI library
       RECOGNIZED_URI_TYPES = [
         URI::HTTP,
         URI::HTTPS
@@ -20,6 +22,11 @@ module Wayfarer
         @conn = Net::HTTP::Persistent.new("schablone")
       end
 
+      # Fetches a page.
+      # @return [Page]
+      # @raise [MalformedURI] if the URI is not supported.
+      # @raise [MalformedRedirectURI] if a redirection URI is not supported.
+      # @raise [MaximumRedirectCountReached] if too many redirections are encountered.
       def fetch(uri, redirects_followed = 0)
         if !RECOGNIZED_URI_TYPES.include?(uri.class)
           fail redirects_followed > 0 ? MalformedRedirectURI : MalformedURI
@@ -45,6 +52,7 @@ module Wayfarer
         raise MalformedURI
       end
 
+      # Shuts down all connections.
       def free
         @conn.shutdown
       end
