@@ -1,4 +1,6 @@
 module Wayfarer
+  # A set that considers trailing slashes and fragment identifiers of URIs as insignifcant
+  # TODO Documentation
   class URISet
     def initialize(enumerable = [])
       @set = Set.new(enumerable)

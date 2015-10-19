@@ -1,14 +1,17 @@
 require "observer"
 
 module Wayfarer
+  # Runs jobs
   class Processor
     include Observable
 
     include Celluloid
-    include Celluloid::Internals::Logger
 
     task_class Task::Threaded
 
+    # TODO
+    # @!attribute [r] navigator
+    # @return [Celluloid::Proxy::Cell]
     attr_reader :navigator
 
     def initialize
@@ -20,10 +23,14 @@ module Wayfarer
       container.run!
     end
 
+    # Whether processing is finished.
+    # @return [true, false]
     def halted?
       @halted
     end
 
+    # Runs a job
+    # @param [Job] klass the job to run.
     def run(klass)
       while navigator.cycle
         changed
