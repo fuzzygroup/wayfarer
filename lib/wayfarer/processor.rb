@@ -61,7 +61,7 @@ module Wayfarer
     end
 
     def handle_future(future)
-      return if @halted
+      return if halted?
 
       case (val = future.value)
       when Job::Mismatch then handle_mismatch(val)

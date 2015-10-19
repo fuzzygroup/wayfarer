@@ -1,6 +1,7 @@
 require "set"
 
 module Wayfarer
+  # A naive frontier implementation
   class Navigator
     include Celluloid
 
@@ -10,26 +11,35 @@ module Wayfarer
       @cached_uris  = URISet.new
     end
 
+    # Returns the URIs to be scraped in the current cycle
+    # @return [Array<URI>]
     def current_uris
       @current_uris.to_a
     end
 
+    # Returns the staged URIs
+    # @return [Array<URI>]
     def staged_uris
       @staged_uris.to_a
     end
 
+    # Returns all cached URIs
+    # @return [Array<URI>]
     def cached_uris
       @cached_uris.to_a
     end
 
+    # Stages URIs for processing in the next cycle
     def stage(*uris)
       @staged_uris |= uris.map { |uri| URI(uri) }
     end
 
+    # Caches URIs so they don't get processed again
     def cache(*uris)
       @cached_uris |= uris.map { |uri| URI(uri) }
     end
 
+    # Caches current URIs and sets staged URIs as current.
     def cycle
       unless Wayfarer.config.allow_circulation
         cache(*current_uris)

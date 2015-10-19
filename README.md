@@ -85,17 +85,17 @@ More contrived examples:
 * [Executing JavaScript and taking screenshots with Selenium](howto/GETTING_STARTED.md)
 
 ## Howto
-* [Getting started](howto/GETTING_STARTED.md)
-* [Page objects](howto/PAGE_OBJECTS.md)
-* [Routing](howto/ROUTING.md)
-* [Halting](howto/HALTING.md)
-* [Configuration](howto/CONFIGURATION.md)
-* [Using Selenium](howto/SELENIUM.md)
-* [Using Capybara](howto/CAPYBARA.md)
-* [Error handling](howto/ERROR_HANDLING.md)
-* [Thread safety](howto/THREAD_SAFETY.md)
-* [Adapter timeouts](howto/ADAPTER_TIMEOUTS.md)
-* [Optional MRI-only features](howto/MRI_FEATURES.md)
+* [Getting started](docs/GETTING_STARTED.md)
+* [Page objects](docs/PAGE_OBJECTS.md)
+* [Routing](docs/ROUTING.md)
+* [Halting](docs/HALTING.md)
+* [Configuration](docs/CONFIGURATION.md)
+* [Using Selenium](docs/SELENIUM.md)
+* [Using Capybara](docs/CAPYBARA.md)
+* [Error handling](docs/ERROR_HANDLING.md)
+* [Thread safety](docs/THREAD_SAFETY.md)
+* [Adapter timeouts](docs/ADAPTER_TIMEOUTS.md)
+* [Optional MRI-only features](docs/MRI_FEATURES.md)
 
 ## Testing
 Tests are run on:

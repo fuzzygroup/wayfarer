@@ -1,2 +1,6 @@
-docs/ACTIVE_JOB
-docs/
+-
+docs/ACTIVE_JOB.md
+docs/ADAPTER_TIMEOUTS.md
+docs/CAPYBARA.md
+docs/CLI.md
+docs/CONFIGURATION.md

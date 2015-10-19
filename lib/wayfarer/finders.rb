@@ -13,9 +13,9 @@ module Wayfarer
       query("script", "src", *rules)
     end
 
-    # TODO Tests
     alias_method :scripts, :javascripts
 
+    # TODO Tests
     def images(*rules)
       query("img", "src", *rules)
     end

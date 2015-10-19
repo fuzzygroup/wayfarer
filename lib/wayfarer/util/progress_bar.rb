@@ -2,7 +2,7 @@ require "logger"
 require "ruby-progressbar"
 
 module Wayfarer
-  module Util
+  module Utils
     class ProgressBar
       attr_accessor :level
 
