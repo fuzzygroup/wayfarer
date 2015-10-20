@@ -9,10 +9,6 @@ module Wayfarer
 
     task_class Task::Threaded
 
-    # @!attribute [r] uuid
-    # @return [URI] Returns the configuration's UUID.
-    attr_reader :uuid
-
     def initialize(config)
       @config = config
       @uuid = config.uuid
@@ -40,6 +36,7 @@ module Wayfarer
       @halted
     end
 
+    # Sets a halt flag and frees the frontier.
     def halt!
       @halted = true
       frontier.free
