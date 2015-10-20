@@ -6,6 +6,7 @@ require "oj"
 include Wayfarer
 include Wayfarer::HTTPAdapters
 include Wayfarer::Routing
+include Wayfarer::Frontiers
 
 Celluloid.task_class = Celluloid::Task::Threaded
 

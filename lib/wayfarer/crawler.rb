@@ -13,7 +13,7 @@ module Wayfarer
     # @param [*Array<URI>, *Array<String>] *uris the URIs to stage for the first cycle.
     def crawl(klass, *uris)
       Wayfarer.log.debug("[#{self}] Staging initial URIs")
-      navigator.stage(*uris)
+      frontier.stage(*uris)
 
       Wayfarer.log.debug("[#{self}] Running Processor")
       processor.run(klass)
@@ -32,8 +32,8 @@ module Wayfarer
 
     # Returns the spawned {Processor}’s {Navigator}
     # @return [Navigator]
-    def navigator
-      processor.navigator
+    def frontier
+      processor.frontier
     end
   end
 end

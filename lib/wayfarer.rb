@@ -22,13 +22,15 @@ require_relative "wayfarer/http_adapters/adapter_pool"
 require_relative "wayfarer/parsers/xml_parser"
 require_relative "wayfarer/parsers/json_parser"
 
+# Frontiers
+require_relative "wayfarer/frontiers/memory_frontier"
+
 # Processing
 require_relative "wayfarer/job"
 require_relative "wayfarer/scraper"
 require_relative "wayfarer/finders"
 require_relative "wayfarer/page"
 require_relative "wayfarer/uri_set"
-require_relative "wayfarer/navigator"
 require_relative "wayfarer/processor"
 require_relative "wayfarer/crawler"
 

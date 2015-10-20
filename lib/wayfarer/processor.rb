@@ -9,18 +9,19 @@ module Wayfarer
 
     task_class Task::Threaded
 
-    # TODO
-    # @!attribute [r] navigator
-    # @return [Celluloid::Proxy::Cell]
-    attr_reader :navigator
-
     def initialize
       @halted = false
       @adapter_pool = HTTPAdapters::AdapterPool.new
-      @navigator = Navigator.new
+      Celluloid::Actor[:frontier] = MemoryFrontier.new
 
-      Wayfarer.log.debug("[#{self}] Spawning Navigator and Scraper pool")
+      Wayfarer.log.debug("[#{self}] Spawning MemoryFrontier and Scraper pool")
       container.run!
+    end
+
+    # Returns the frontier.
+    # @return [Celluloid::Proxy::Cell]
+    def frontier
+      Celluloid::Actor[:frontier]
     end
 
     # Whether processing is finished.
