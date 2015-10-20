@@ -1,5 +1,5 @@
 # Shared tests
-Dir["./spec/support/**/*.rb"].sort.each { |file| require file }
+Dir["./spec/shared/**/*.rb"].sort.each { |file| require file }
 
 require("bundler") && Bundler.require
 require "celluloid/test"

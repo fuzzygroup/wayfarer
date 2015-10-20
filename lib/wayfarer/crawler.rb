@@ -1,3 +1,5 @@
+require "securerandom"
+
 module Wayfarer
   # Entry-point for initiating a new crawl
   class Crawler
@@ -22,6 +24,12 @@ module Wayfarer
       processor.terminate
 
       Wayfarer.log.debug("[#{self}] Done")
+    end
+
+    # Returns a UUID.
+    # @return [String]
+    def uuid
+      SecureRandom.uuid
     end
 
     # Returns the spawned {Processor}
