@@ -24,6 +24,7 @@ require_relative "wayfarer/parsers/json_parser"
 
 # Frontiers
 require_relative "wayfarer/frontiers/memory_frontier"
+require_relative "wayfarer/frontiers/redis_frontier"
 
 # Processing
 require_relative "wayfarer/job"
