@@ -12,7 +12,7 @@ module Wayfarer
     def initialize(config)
       @config = config
       @halted = false
-      @adapter_pool = HTTPAdapters::AdapterPool.new
+      @adapter_pool = HTTPAdapters::AdapterPool.new(config)
 
       Wayfarer.log.debug("[#{self}] Spawning scraper pool")
       container.run!
@@ -99,13 +99,12 @@ module Wayfarer
       end
     end
 
-    # TODO: Print something useful
     def handle_halt(*)
       @halted = true
     end
 
     def handle_stage(val)
-      navigator.async.stage(*val.uris)
+      frontier.async.stage(*val.uris)
     end
 
     def scraper_pool

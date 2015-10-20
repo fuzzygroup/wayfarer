@@ -7,10 +7,12 @@ module Wayfarer
     # @param [Job] klass the job to run.
     # @param [*Array<URI>, *Array<String>] *uris the URIs to stage for the first cycle.
     def crawl(klass, *uris)
+      config = klass.config
+
       Wayfarer.log.debug("[#{self}] Hello from Wayfarer #{Wayfarer::VERSION}")
 
       Wayfarer.log.debug("[#{self}] Spawning Processor")
-      Celluloid::Actor[:processor] = Processor.new
+      Celluloid::Actor[:processor] = Processor.new(config)
 
       Wayfarer.log.debug("[#{self}] Staging initial URIs")
       frontier.stage(*uris)

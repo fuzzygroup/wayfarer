@@ -1,7 +1,7 @@
 require "spec_helpers"
 
 describe Wayfarer::Scraper do
-  let(:adapter_pool) { AdapterPool.new }
+  let(:adapter_pool) { AdapterPool.new(Wayfarer.config) }
 
   describe "#scrape" do
     it "instantiates a job and invokes it" do

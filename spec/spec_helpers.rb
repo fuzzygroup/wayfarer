@@ -34,8 +34,14 @@ end
 RSpec.configure do |config|
   config.include(SpecHelpers)
 
-  config.before { Celluloid.boot }
-  config.after  { Celluloid.shutdown }
+  config.before do
+    Wayfarer.config.reset!
+    Wayfarer.config.selenium_argv = [:phantomjs]
 
-  config.before { Wayfarer.config.selenium_argv = [:phantomjs] }
+    Celluloid.boot
+  end
+
+  config.after do
+    Celluloid.shutdown
+  end
 end

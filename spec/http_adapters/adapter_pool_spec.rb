@@ -1,7 +1,7 @@
 require "spec_helpers"
 
 describe Wayfarer::HTTPAdapters::AdapterPool do
-  subject(:adapter_pool) { AdapterPool.new }
+  subject(:adapter_pool) { AdapterPool.new(Wayfarer.config) }
 
   describe "#with" do
     after { adapter_pool.free }
@@ -15,8 +15,9 @@ describe Wayfarer::HTTPAdapters::AdapterPool do
     end
 
     context "when using Selenium", selenium: true do
-      before { Wayfarer.config.http_adapter = :selenium }
-      after  { Wayfarer.config.reset! }
+      subject(:adapter_pool) do
+        AdapterPool.new(Configuration.new(http_adapter: :selenium))
+      end
 
       it "yields a SeleniumAdapter" do
         adapter_pool.with do |adapter|
