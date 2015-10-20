@@ -1,6 +1,8 @@
 RSpec.shared_examples "Frontier" do |klass|
   subject(:frontier) { klass.new }
 
+  after { frontier.free }
+
   describe "#stage" do
     let(:uri) { URI("http://example.com/foo#bar") }
 

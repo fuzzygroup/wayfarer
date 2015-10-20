@@ -54,6 +54,10 @@ module Wayfarer
         true
       end
 
+      def free
+        @current_uris = @staged_uris = @cached_uris = nil
+      end
+
       private
 
       def filter_staged_uris!
