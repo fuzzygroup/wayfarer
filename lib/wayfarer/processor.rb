@@ -49,7 +49,7 @@ module Wayfarer
         notify_observers(:new_cycle, frontier.current_uris.count)
 
         futures = frontier.current_uris.map do |uri|
-          scraper_pool.future.scrape(uri, klass, @adapter_pool)
+          worker_pool.future.work(uri, klass, @adapter_pool)
         end
 
         futures.each do |future|
@@ -112,7 +112,7 @@ module Wayfarer
       frontier.async.stage(*val.uris)
     end
 
-    def scraper_pool
+    def worker_pool
       Actor[:worker_pool]
     end
   end

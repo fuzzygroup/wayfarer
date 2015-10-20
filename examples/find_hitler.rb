@@ -3,7 +3,6 @@ require_relative "../lib/wayfarer"
 class FindHitler < Wayfarer::Job
   Wayfarer.log.level = Logger::DEBUG
   config.connection_count = 8
-  config.frontier = :redis
 
   draw host: "en.wikipedia.org"
   def article
@@ -17,4 +16,4 @@ class FindHitler < Wayfarer::Job
   end
 end
 
-# FindHitler.crawl("https://en.wikipedia.org/wiki/Special:Random")
+FindHitler.crawl("https://en.wikipedia.org/wiki/Special:Random")
