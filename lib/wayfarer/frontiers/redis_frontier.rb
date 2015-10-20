@@ -31,10 +31,7 @@ module Wayfarer
 
       def cycle
         unless Wayfarer.config.allow_circulation
-          # Cache current URIs
           @conn.sunionstore("cached_uris", "cached_uris", "current_uris")
-
-          # Filter already cached URIs
           @conn.sdiffstore("staged_uris", "staged_uris", "cached_uris")
         end
 
