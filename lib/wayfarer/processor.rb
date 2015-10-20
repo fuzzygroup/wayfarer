@@ -13,7 +13,6 @@ module Wayfarer
       @config = config
       @halted = false
       @adapter_pool = HTTPAdapters::AdapterPool.new
-      Celluloid::Actor[:frontier] = MemoryFrontier.new
 
       Wayfarer.log.debug("[#{self}] Spawning MemoryFrontier and Scraper pool")
       container.run!
@@ -32,6 +31,10 @@ module Wayfarer
     # @return [true, false]
     def halted?
       @halted
+    end
+
+    def halt!
+      @halted = true
     end
 
     # Runs a job

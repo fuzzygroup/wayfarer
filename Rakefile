@@ -7,7 +7,7 @@ require_relative "support/test_app"
 namespace :test do
   desc "Run only environment-agnostic tests"
   RSpec::Core::RakeTask.new isolated: [:test_app] do |task|
-    task.rspec_opts = ["--tag ~selenium"]
+    task.rspec_opts = ["--tag ~selenium ~redis"]
   end
 
   desc "Run only Selenium tests"
@@ -15,14 +15,9 @@ namespace :test do
     task.rspec_opts = ["--tag selenium"]
   end
 
-  desc "Run only JRuby tests"
-  RSpec::Core::RakeTask.new jruby: [:test_app] do |task|
-    task.rspec_opts = ["--tag ~mri --tag ~selenium"]
-  end
-
-  desc "Run only MRI tests"
-  RSpec::Core::RakeTask.new mri: [:test_app] do |task|
-    task.rspec_opts = ["--tag ~mri --tag ~selenium"]
+  desc "Run only Redis tests"
+  RSpec::Core::RakeTask.new redis: [:test_app] do |task|
+    task.rspec_opts = ["--tag redis"]
   end
 end
 
