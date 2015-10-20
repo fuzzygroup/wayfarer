@@ -9,7 +9,7 @@ module Wayfarer
 
     task_class Task::Threaded
 
-    def initialize(config = Wayfarer.config)
+    def initialize(config)
       @config = config
       @halted = false
       @adapter_pool = HTTPAdapters::AdapterPool.new
@@ -22,7 +22,10 @@ module Wayfarer
     # Returns the frontier.
     # @return [Celluloid::Proxy::Cell]
     def frontier
-      Celluloid::Actor[:frontier]
+      Celluloid::Actor[:frontier] = case @config.frontier
+                                    when :memory then MemoryFrontier.new
+                                    when :redis  then RedisFrontier.new
+                                    end
     end
 
     # Whether processing is finished.
@@ -60,10 +63,6 @@ module Wayfarer
     end
 
     private
-
-    def frontier
-      
-    end
 
     def container
       Class.new(Celluloid::Supervision::Container) do
