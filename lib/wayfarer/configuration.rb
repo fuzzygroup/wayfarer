@@ -1,6 +1,5 @@
 require "ostruct"
 
-# TODO Switch back to an OpenStruct
 module Wayfarer
   class Configuration < OpenStruct
     DEFAULTS = {
