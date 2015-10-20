@@ -45,7 +45,7 @@ module Wayfarer
 
       # Caches current URIs and sets staged URIs as current.
       def cycle
-        unless Wayfarer.config.allow_circulation
+        unless @config.allow_circulation
           cache(*current_uris)
           filter_staged_uris!
         end

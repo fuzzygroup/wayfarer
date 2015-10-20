@@ -31,7 +31,7 @@ module Wayfarer
       end
 
       def cycle
-        unless Wayfarer.config.allow_circulation
+        unless @config.allow_circulation
           @conn.sunionstore("cached_uris", "cached_uris", "current_uris")
           @conn.sdiffstore("staged_uris", "staged_uris", "cached_uris")
         end

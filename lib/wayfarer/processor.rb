@@ -24,7 +24,7 @@ module Wayfarer
     end
 
     # Returns the frontier.
-    # @return [Celluloid::Proxy::Cell]
+    # @return [MemoryFrontier, RedisFrontier]
     def frontier
       Celluloid::Actor[:frontier] ||= case @config.frontier
                                       when :memory

@@ -81,8 +81,9 @@ RSpec.shared_examples "Frontier" do |klass|
     end
 
     context "when circulation is allowed" do
-      before { Wayfarer.config.allow_circulation = true }
-      after  { Wayfarer.config.reset! }
+      subject(:frontier) do
+        klass.new(Configuration.new(allow_circulation: true))
+      end
 
       it "sets cached URIs as current" do
         3.times do
