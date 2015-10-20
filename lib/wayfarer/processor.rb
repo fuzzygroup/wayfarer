@@ -42,7 +42,7 @@ module Wayfarer
       frontier.free
     end
 
-    # Runs a job
+    # Runs a job.
     # @param [Job] klass the job to run.
     def run(klass)
       while frontier.cycle
