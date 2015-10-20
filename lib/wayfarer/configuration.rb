@@ -44,8 +44,8 @@ module Wayfarer
       mustermann_type: :sinatra
     }
 
-    def initialize
-      super(DEFAULTS)
+    def initialize(overrides = {})
+      super(DEFAULTS.merge(overrides))
     end
 
     def reset!

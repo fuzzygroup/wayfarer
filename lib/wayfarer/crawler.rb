@@ -3,17 +3,15 @@ require "securerandom"
 module Wayfarer
   # Entry-point for initiating a new crawl
   class Crawler
-    def initialize
-      Wayfarer.log.debug("[#{self}] Hello from Wayfarer #{Wayfarer::VERSION}")
-
-      Wayfarer.log.debug("[#{self}] Spawning Processor")
-      Celluloid::Actor[:processor] = Processor.new
-    end
-
     # Stages URIs for the first cycle and runs a {Processor}
     # @param [Job] klass the job to run.
     # @param [*Array<URI>, *Array<String>] *uris the URIs to stage for the first cycle.
     def crawl(klass, *uris)
+      Wayfarer.log.debug("[#{self}] Hello from Wayfarer #{Wayfarer::VERSION}")
+
+      Wayfarer.log.debug("[#{self}] Spawning Processor")
+      Celluloid::Actor[:processor] = Processor.new
+
       Wayfarer.log.debug("[#{self}] Staging initial URIs")
       frontier.stage(*uris)
 

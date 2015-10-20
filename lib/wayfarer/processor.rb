@@ -9,7 +9,8 @@ module Wayfarer
 
     task_class Task::Threaded
 
-    def initialize
+    def initialize(config = Wayfarer.config)
+      @config = config
       @halted = false
       @adapter_pool = HTTPAdapters::AdapterPool.new
       Celluloid::Actor[:frontier] = MemoryFrontier.new
@@ -59,6 +60,10 @@ module Wayfarer
     end
 
     private
+
+    def frontier
+      
+    end
 
     def container
       Class.new(Celluloid::Supervision::Container) do
