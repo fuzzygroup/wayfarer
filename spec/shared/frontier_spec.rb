@@ -1,5 +1,7 @@
+require "securerandom"
+
 RSpec.shared_examples "Frontier" do |klass|
-  subject(:frontier) { klass.new(Wayfarer.config) }
+  subject(:frontier) { klass.new(Configuration.new(uuid: SecureRandom.uuid)) }
 
   after { frontier.free }
 

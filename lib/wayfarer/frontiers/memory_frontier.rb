@@ -2,6 +2,7 @@ require "set"
 
 module Wayfarer
   module Frontiers
+    # TODO Store strings instead of URI objects
     # A naive in-memory frontier
     class MemoryFrontier
       include Celluloid
@@ -32,13 +33,13 @@ module Wayfarer
       end
 
       # Stages URIs for processing in the next cycle.
-      # @param [*Array<URI>, *Array<String>] *uris the URIs to stage.
+      # @param [*Array<URI>, *Array<String>] *uris
       def stage(*uris)
         @staged_uris |= uris.map { |uri| URI(uri) }
       end
 
       # Caches URIs so they don't get processed again.
-      # @param [*Array<URI>, *Array<String>] *uris the URIs to cache.
+      # @param [*Array<URI>, *Array<String>] *uris
       def cache(*uris)
         @cached_uris |= uris.map { |uri| URI(uri) }
       end
