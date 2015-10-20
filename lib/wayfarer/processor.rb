@@ -14,17 +14,17 @@ module Wayfarer
       @halted = false
       @adapter_pool = HTTPAdapters::AdapterPool.new
 
-      Wayfarer.log.debug("[#{self}] Spawning MemoryFrontier and Scraper pool")
+      Wayfarer.log.debug("[#{self}] Spawning scraper pool")
       container.run!
     end
 
     # Returns the frontier.
     # @return [Celluloid::Proxy::Cell]
     def frontier
-      Celluloid::Actor[:frontier] = case @config.frontier
-                                    when :memory then MemoryFrontier.new
-                                    when :redis  then RedisFrontier.new
-                                    end
+      Celluloid::Actor[:frontier] ||= case @config.frontier
+                                      when :memory then MemoryFrontier.new
+                                      when :redis  then RedisFrontier.new
+                                      end
     end
 
     # Whether processing is finished.
@@ -35,6 +35,7 @@ module Wayfarer
 
     def halt!
       @halted = true
+      frontier.free
     end
 
     # Runs a job

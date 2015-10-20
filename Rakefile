@@ -7,7 +7,7 @@ require_relative "support/test_app"
 namespace :test do
   desc "Run only environment-agnostic tests"
   RSpec::Core::RakeTask.new isolated: [:test_app] do |task|
-    task.rspec_opts = ["--tag ~selenium ~redis"]
+    task.rspec_opts = ["--tag ~selenium --tag ~redis"]
   end
 
   desc "Run only Selenium tests"
