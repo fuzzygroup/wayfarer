@@ -28,7 +28,7 @@ require_relative "wayfarer/frontiers/redis_frontier"
 
 # Processing
 require_relative "wayfarer/job"
-require_relative "wayfarer/scraper"
+require_relative "wayfarer/worker"
 require_relative "wayfarer/finders"
 require_relative "wayfarer/page"
 require_relative "wayfarer/uri_set"

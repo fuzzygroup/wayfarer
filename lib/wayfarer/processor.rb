@@ -63,8 +63,8 @@ module Wayfarer
 
       @halted = true
 
-      Wayfarer.log.debug("[#{self}] Terminating Scraper pool")
-      scraper_pool.terminate
+      Wayfarer.log.debug("[#{self}] Terminating workers")
+      worker_pool.terminate
 
       Wayfarer.log.debug("[#{self}] Freeing adapter pool")
       @adapter_pool.free
@@ -76,8 +76,8 @@ module Wayfarer
       config = @config
 
       Class.new(Celluloid::Supervision::Container) do
-        pool Scraper,
-             as: :scraper_pool,
+        pool Worker,
+             as: :worker_pool,
              size: config.connection_count
       end
     end
@@ -114,7 +114,7 @@ module Wayfarer
     end
 
     def scraper_pool
-      Actor[:scraper_pool]
+      Actor[:worker_pool]
     end
   end
 end

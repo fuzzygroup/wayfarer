@@ -1,9 +1,9 @@
 require "spec_helpers"
 
-describe Wayfarer::Scraper do
+describe Wayfarer::Worker do
   let(:adapter_pool) { AdapterPool.new(Wayfarer.config) }
 
-  describe "#scrape" do
+  describe "#work" do
     it "instantiates a job and invokes it" do
       klass = Class.new do
         class << self
@@ -12,13 +12,13 @@ describe Wayfarer::Scraper do
 
         def invoke(*, adapter)
           self.class.adapter = adapter
-          :return_value
+          :foo
         end
       end
 
-      return_value = Scraper.new.scrape(nil, klass, adapter_pool)
+      return_value = Worker.new.work(nil, klass, adapter_pool)
 
-      expect(return_value).to be :return_value
+      expect(return_value).to be :foo
       expect(klass.adapter).to be_a NetHTTPAdapter
     end
   end
