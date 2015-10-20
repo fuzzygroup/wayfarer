@@ -1,5 +1,5 @@
 RSpec.shared_examples "Frontier" do |klass|
-  subject(:frontier) { klass.new }
+  subject(:frontier) { klass.new(Wayfarer.config) }
 
   after { frontier.free }
 

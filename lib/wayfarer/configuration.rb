@@ -52,9 +52,5 @@ module Wayfarer
     def reset!
       DEFAULTS.each { |key, val| self[key] = val }
     end
-
-    def uuid
-      @uuid ||= SecureRandom.uuid
-    end
   end
 end

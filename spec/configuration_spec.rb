@@ -22,10 +22,4 @@ describe Wayfarer::Configuration do
       expect(config.max_http_redirects).to be 3
     end
   end
-
-  describe "#uuid" do
-    it "returns a string" do
-      expect(config.uuid).not_to be_empty
-    end
-  end
 end

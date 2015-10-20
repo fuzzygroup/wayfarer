@@ -5,7 +5,8 @@ module Wayfarer
     class RedisFrontier
       include Celluloid
 
-      def initialize
+      def initialize(config)
+        @config = config
         @conn = Redis.new(*Wayfarer.config.redis_argv)
       end
 

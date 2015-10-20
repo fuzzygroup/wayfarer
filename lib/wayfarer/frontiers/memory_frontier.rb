@@ -6,7 +6,8 @@ module Wayfarer
     class MemoryFrontier
       include Celluloid
 
-      def initialize
+      def initialize(config)
+        @config = config
         @current_uris = Set.new([])
         @staged_uris  = Set.new([])
         @cached_uris  = URISet.new

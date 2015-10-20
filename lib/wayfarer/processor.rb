@@ -9,8 +9,13 @@ module Wayfarer
 
     task_class Task::Threaded
 
+    # @!attribute [r] uuid
+    # @return [URI] Returns the configuration's UUID.
+    attr_reader :uuid
+
     def initialize(config)
       @config = config
+      @uuid = config.uuid
       @halted = false
       @adapter_pool = HTTPAdapters::AdapterPool.new(config)
 
@@ -22,8 +27,10 @@ module Wayfarer
     # @return [Celluloid::Proxy::Cell]
     def frontier
       Celluloid::Actor[:frontier] ||= case @config.frontier
-                                      when :memory then MemoryFrontier.new
-                                      when :redis  then RedisFrontier.new
+                                      when :memory
+                                        MemoryFrontier.new(@config)
+                                      when :redis
+                                        RedisFrontier.new(@config)
                                       end
     end
 
@@ -69,10 +76,12 @@ module Wayfarer
     private
 
     def container
+      config = @config
+
       Class.new(Celluloid::Supervision::Container) do
         pool Scraper,
              as: :scraper_pool,
-             size: Wayfarer.config.connection_count
+             size: config.connection_count
       end
     end
 

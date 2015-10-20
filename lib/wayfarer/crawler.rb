@@ -8,6 +8,7 @@ module Wayfarer
     # @param [*Array<URI>, *Array<String>] *uris the URIs to stage for the first cycle.
     def crawl(klass, *uris)
       config = klass.config
+      config.uuid = SecureRandom.uuid
 
       Wayfarer.log.debug("[#{self}] Hello from Wayfarer #{Wayfarer::VERSION}")
 
@@ -24,12 +25,6 @@ module Wayfarer
       processor.terminate
 
       Wayfarer.log.debug("[#{self}] Done")
-    end
-
-    # Returns a UUID.
-    # @return [String]
-    def uuid
-      SecureRandom.uuid
     end
 
     # Returns the spawned {Processor}
