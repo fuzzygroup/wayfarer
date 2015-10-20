@@ -9,7 +9,8 @@ Versatile web crawling with Ruby
 * Optionally simplifies page interaction with [Capybara](https://github.com/jnicklas/capybara)’s DSL when using Selenium
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Can extract metadata with [Pismo](https://github.com/peterc/pismo)
-* Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s job API so you can use your favorite job queue
+* Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s API so you can use your favorite job queue
+* Handles URIs internally with an in-memory or [Redis]() frontier
 * Leaves data extraction and storage up to you
 
 __Shortcomings:__

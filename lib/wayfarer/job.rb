@@ -119,7 +119,7 @@ module Wayfarer
       @halts = true
     end
 
-    def visit(uris)
+    def stage(uris)
       @staged_uris += uris.respond_to?(:each) ? uris : [uris]
     end
   end

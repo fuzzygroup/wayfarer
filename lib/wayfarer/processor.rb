@@ -28,9 +28,9 @@ module Wayfarer
     def frontier
       Celluloid::Actor[:frontier] ||= case @config.frontier
                                       when :memory
-                                        MemoryFrontier.new(@config)
+                                        Frontiers::MemoryFrontier.new(@config)
                                       when :redis
-                                        RedisFrontier.new(@config)
+                                        Frontiers::RedisFrontier.new(@config)
                                       end
     end
 
@@ -48,11 +48,11 @@ module Wayfarer
     # Runs a job
     # @param [Job] klass the job to run.
     def run(klass)
-      while navigator.cycle
+      while frontier.cycle
         changed
-        notify_observers(:new_cycle, navigator.current_uris.count)
+        notify_observers(:new_cycle, frontier.current_uris.count)
 
-        futures = navigator.current_uris.map do |uri|
+        futures = frontier.current_uris.map do |uri|
           scraper_pool.future.scrape(uri, klass, @adapter_pool)
         end
 

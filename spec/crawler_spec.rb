@@ -1,7 +1,13 @@
 require "spec_helpers"
 
 describe Wayfarer::Crawler do
-  subject(:crawler) { Crawler.new }
+  let(:config) { Configuration.new() }
 
-  # TODO: Tests
+  subject(:crawler) { Crawler.new(Wayfarer.config) }
+
+  describe "#processor" do
+    it "initializes and registers a Processor" do
+      
+    end
+  end
 end

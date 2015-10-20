@@ -119,10 +119,10 @@ describe Wayfarer::Job do
     end
   end
 
-  describe "#visit" do
-    it "stages URIs internally" do
+  describe "#stage" do
+    it "stages URIs" do
       expect do
-        job.send(:visit, "http://google.com")
+        job.send(:stage, "http://google.com")
       end.to change { job.staged_uris.count }.by(1)
     end
   end

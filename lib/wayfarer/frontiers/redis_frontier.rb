@@ -7,7 +7,7 @@ module Wayfarer
 
       def initialize(config)
         @config = config
-        @conn = Redis.new(*Wayfarer.config.redis_argv)
+        @conn = Redis.new(*@config.redis_argv)
       end
 
       def current_uris
@@ -47,12 +47,6 @@ module Wayfarer
         @conn.del("cached_uris")
 
         @conn.disconnect!
-      end
-
-      private
-
-      def filter_staged_uris!
-        @staged_uris.delete_if { |uri| @cached_uris.include?(uri) }
       end
     end
   end

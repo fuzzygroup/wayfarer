@@ -13,36 +13,37 @@ module Wayfarer
         @cached_uris  = URISet.new
       end
 
-      # Returns the URIs to be scraped in the current cycle
+      # Returns the URIs to be scraped in the current cycle.
       # @return [Array<URI>]
       def current_uris
         @current_uris.to_a
       end
 
-      # Returns the staged URIs
+      # Returns the staged URIs.
       # @return [Array<URI>]
       def staged_uris
         @staged_uris.to_a
       end
 
-      # Returns all cached URIs
+      # Returns all cached URIs.
       # @return [Array<URI>]
       def cached_uris
         @cached_uris.to_a
       end
 
-      # Stages URIs for processing in the next cycle
+      # Stages URIs for processing in the next cycle.
       # @param [*Array<URI>, *Array<String>] *uris the URIs to stage.
       def stage(*uris)
         @staged_uris |= uris.map { |uri| URI(uri) }
       end
 
-      # Caches URIs so they don't get processed again
+      # Caches URIs so they don't get processed again.
       # @param [*Array<URI>, *Array<String>] *uris the URIs to cache.
       def cache(*uris)
         @cached_uris |= uris.map { |uri| URI(uri) }
       end
 
+      # TODO Documentation
       # Caches current URIs and sets staged URIs as current.
       def cycle
         unless @config.allow_circulation
@@ -55,6 +56,7 @@ module Wayfarer
         true
       end
 
+      # Frees up memory.
       def free
         @current_uris = @staged_uris = @cached_uris = nil
       end

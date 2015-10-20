@@ -36,7 +36,7 @@ module Wayfarer
       selenium_argv: [:firefox],
 
       # Argument vector for instantiating a Redis connection
-      redis_argv: [],
+      redis_argv: [host: "localhost", port: 6379],
 
       # Size of browser windows
       window_size: [1024, 768],
