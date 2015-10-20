@@ -3,8 +3,7 @@ require "observer"
 module Wayfarer
   # Runs jobs
   class Processor
-    include Observable
-
+    include Observable # TODO Not thread-safe ...
     include Celluloid
 
     task_class Task::Threaded
