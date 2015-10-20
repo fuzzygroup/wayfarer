@@ -10,8 +10,7 @@ Versatile web crawling with Ruby
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Can extract metadata with [Pismo](https://github.com/peterc/pismo)
 * Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s job API so you can use your favorite job queue
-* Ships with a small but useful CLI (no, really) 
-* Is agnostic about data storage
+* Leaves data extraction and storage up to you
 
 __Shortcomings:__
 
@@ -75,9 +74,19 @@ class DummyJob < Wayfarer::Job
     page.links ".next_page"
   end
 end
-
-DummyJob.crawl("https://github.com/rails/rails")
 ```
+
+Now run your job:
+
+```
+% wayfarer exec dummy_job
+```
+Or enqueue it:
+
+```
+% wayfarer enqueue dummy_job --queue_adapter=sidekiq
+```
+
 
 More contrived examples:
 
@@ -112,4 +121,3 @@ rake test:selenium  # Run only Selenium tests
 ```
 
 Selenium tests are run locally with [PhantomJS]().
-ƒ
