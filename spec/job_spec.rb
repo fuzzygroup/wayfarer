@@ -5,12 +5,20 @@ describe Wayfarer::Job do
   subject(:job) { Job.new }
 
   describe "::config" do
-    it "works" do
+    it "allows manipulating the configuration" do
       job.class.config do |c|
         c.http_adapter = :selenium
       end
 
       expect(job.config.http_adapter).to be :selenium
+    end
+
+    it "does not manipulate the global configuration" do
+      job.class.config do |c|
+        c.http_adapter = :selenium
+      end
+
+      expect(Wayfarer.config.http_adapter).to be :net_http
     end
   end
 

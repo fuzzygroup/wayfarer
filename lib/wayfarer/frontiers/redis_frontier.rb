@@ -6,7 +6,7 @@ module Wayfarer
       include Celluloid
 
       def initialize
-        @conn = Redis.new
+        @conn = Redis.new(*Wayfarer.config.redis_argv)
       end
 
       def current_uris

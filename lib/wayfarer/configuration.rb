@@ -1,6 +1,8 @@
+require "ostruct"
+
 # TODO Switch back to an OpenStruct
 module Wayfarer
-  class Configuration
+  class Configuration < OpenStruct
     DEFAULTS = {
       # Print full stacktraces?
       print_stacktraces: true,
@@ -20,6 +22,9 @@ module Wayfarer
       # Which HTTP adapter to use. Supported are :net_http and :selenium
       http_adapter: :net_http,
 
+      # Which frontier to use. Supported are :memory and :redis
+      frontier: :memory,
+
       # How long a Scraper thread may hold an adapter.
       # Scrapers that exceed his limit fail with an exception.
       connection_timeout: 5.0,
@@ -30,6 +35,9 @@ module Wayfarer
       # Argument vector for instantiating Selenium drivers
       selenium_argv: [:firefox],
 
+      # Argument vector for instantiating a Redis connection
+      redis_argv: [],
+
       # Size of browser windows
       window_size: [1024, 768],
 
@@ -38,27 +46,11 @@ module Wayfarer
     }
 
     def initialize
-      @config = {}
-      reset!
+      super(DEFAULTS)
     end
 
     def reset!
-      @config.replace(DEFAULTS)
-    end
-
-    private
-
-    def method_missing(method, *args)
-      if method.to_s =~ /^\w+=$/
-        @config[method.to_s.chomp("=").to_sym] = args.first
-      else
-        @config[method]
-      end
-    end
-
-    # TODO: Does not include writers
-    def respond_to_missing?(method, private = false)
-      @config.key?(method) || super
+      DEFAULTS.each { |key, val| self[key] = val }
     end
   end
 end

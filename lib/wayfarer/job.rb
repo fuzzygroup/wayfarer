@@ -9,7 +9,7 @@ module Wayfarer
 
     class << self
       def config
-        @config ||= Wayfarer.config.dup
+        @config ||= Wayfarer.config.clone
         yield(@config) if block_given?
         @config
       end

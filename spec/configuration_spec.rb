@@ -14,11 +14,5 @@ describe Wayfarer::Configuration do
       config.reset!
       expect(config.max_http_redirects).to be 3
     end
-
-    it "unsets non-default keys" do
-      config.foo = :foo
-      config.reset!
-      expect(config.foo).to be nil
-    end
   end
 end
