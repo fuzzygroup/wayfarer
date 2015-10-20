@@ -10,15 +10,15 @@ module Wayfarer
       end
 
       def current_uris
-        @conn.smembers("current_uris")
+        @conn.smembers("current_uris").map { |str| URI(str) }
       end
 
       def staged_uris
-        @conn.smembers("staged_uris")
+        @conn.smembers("staged_uris").map { |str| URI(str) }
       end
 
       def cached_uris
-        @conn.smembers("cached_uris")
+        @conn.smembers("cached_uris").map { |str| URI(str) }
       end
 
       def stage(*uris)
