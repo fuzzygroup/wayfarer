@@ -42,7 +42,7 @@ describe Wayfarer::Job do
           class_eval do
             draw path: "/hello_world"
             def foo
-              visit("http://example.com")
+              stage("http://example.com")
             end
           end
         end
@@ -91,7 +91,7 @@ describe Wayfarer::Job do
       job.class.class_eval do
         draw path: "/hello_world"
         def foo
-          visit("http://example.com")
+          stage("http://example.com")
           halt
         end
       end
