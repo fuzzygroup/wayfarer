@@ -5,8 +5,10 @@ module Wayfarer
     # A connection pool that hands out HTTP adapters
     class AdapterPool
       def initialize(config)
-        size    = config.connection_count
-        timeout = config.connection_timeout
+        @config = config
+
+        size    = @config.connection_count
+        timeout = @config.connection_timeout
 
         @pool = ConnectionPool.new(
           size: size, timeout: timeout, &method(:instantiate_adapter)
@@ -21,7 +23,7 @@ module Wayfarer
       private
 
       def instantiate_adapter
-        case Wayfarer.config.http_adapter
+        case @config.http_adapter
         when :net_http then HTTPAdapters::NetHTTPAdapter.instance
         when :selenium then HTTPAdapters::SeleniumAdapter.new
         end
