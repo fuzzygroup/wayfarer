@@ -10,7 +10,7 @@ Versatile web crawling with Ruby
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Can extract metadata with [Pismo](https://github.com/peterc/pismo)
 * Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s API so you can use your favorite job queue
-* Handles URIs internally with an in-memory or [Redis]() frontier
+* Stores URIs internally with an in-memory or [Redis]() frontier
 * Leaves data extraction and storage up to you
 
 __Shortcomings:__
@@ -102,6 +102,7 @@ More contrived examples:
 * [Configuration](docs/CONFIGURATION.md)
 * [Using Selenium](docs/SELENIUM.md)
 * [Using Capybara](docs/CAPYBARA.md)
+* [Using the Redis frontier](docs/REDIS_FRONTIER.md)
 * [Error handling](docs/ERROR_HANDLING.md)
 * [Thread safety](docs/THREAD_SAFETY.md)
 * [Adapter timeouts](docs/ADAPTER_TIMEOUTS.md)
@@ -115,10 +116,9 @@ Tests are run on:
 
 ```
 rake test           # Run all tests
-rake test:isolated  # Run only environment-agnostic tests
-rake test:jruby     # Run only JRuby tests
-rake test:mri       # Run only MRI tests
+rake test:isolated  # Run only environment-agnostic tests (no Selenium or Redis tests)
 rake test:selenium  # Run only Selenium tests
+rake test:redis     # Run only Redis tests
 ```
 
 Selenium tests are run locally with [PhantomJS]().

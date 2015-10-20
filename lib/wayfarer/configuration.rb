@@ -26,7 +26,7 @@ module Wayfarer
       frontier: :memory,
 
       # How long a Scraper thread may hold an adapter.
-      # Scrapers that exceed his limit fail with an exception.
+      # Scrapers that exceed this limit fail with an exception.
       connection_timeout: 5.0,
 
       # How many 3xx redirects to follow. Has no effect when using Selenium
