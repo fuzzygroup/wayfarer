@@ -53,6 +53,7 @@ task :shell do
   include Wayfarer
   include Wayfarer::HTTPAdapters
   include Wayfarer::Routing
+  include Wayfarer::Frontiers
 
   begin
     require "pry"
