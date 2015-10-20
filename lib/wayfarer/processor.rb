@@ -92,9 +92,9 @@ module Wayfarer
     end
 
     def handle_error(val)
-      if Wayfarer.config.reraise_exceptions
+      if @config.reraise_exceptions
         fail(val.exception)
-      elsif Wayfarer.config.print_stacktraces
+      elsif @config.print_stacktraces
         STDERR.puts val.exception.inspect, val.exception.backtrace.join("\n")
       end
     end
