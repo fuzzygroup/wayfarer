@@ -6,6 +6,8 @@ module Wayfarer
     class RedisFrontier
       include Celluloid
 
+      task_class Task::Threaded
+
       def initialize(config)
         @config = config
         @conn = Redis.new(*@config.redis_argv)

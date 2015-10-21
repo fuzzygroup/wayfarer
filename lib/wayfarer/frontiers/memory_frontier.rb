@@ -7,6 +7,8 @@ module Wayfarer
     class MemoryFrontier
       include Celluloid
 
+      task_class Task::Threaded
+
       def initialize(config)
         @config = config
         @current_uris = Set.new([])

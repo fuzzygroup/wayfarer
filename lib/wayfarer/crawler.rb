@@ -3,8 +3,6 @@ require "securerandom"
 module Wayfarer
   # Entry-point for initiating a new crawl
   class Crawler
-    attr_accessor :uuid
-
     # Stages URIs for the first cycle and runs a {Processor}
     # @param [Job] klass the job to run.
     # @param [*Array<URI>, *Array<String>] *uris the URIs to stage for the first cycle.
@@ -15,7 +13,7 @@ module Wayfarer
 
       Wayfarer.log.debug("[#{self}] Hello from Wayfarer #{Wayfarer::VERSION}")
       Wayfarer.log.debug(
-        "[#{self}] Running job #{job_klass} #{config.uuid}"
+        "[#{self}] Running job #{job_klass.class} #{config.uuid}"
       )
 
       config.each_pair do |key, val|

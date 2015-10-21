@@ -1,18 +1,17 @@
 require_relative "../lib/wayfarer"
 
 class FindHitler < Wayfarer::Job
-  Wayfarer.log.level = Logger::DEBUG
-  config.connection_count = 8
+  # Wayfarer.log.level = Logger::DEBUG
+  config.connection_count = 16
 
   let(:pages) { [] }
 
   before_crawl do
-    require "pry"
-    binding.pry
+    puts pages.count
   end
 
   after_crawl do
-    
+    puts "I crawled #{pages.count} pages!"
   end
 
   draw host: "en.wikipedia.org"
@@ -21,11 +20,11 @@ class FindHitler < Wayfarer::Job
     puts pages.count
 
     if page.body =~ /Hitler/
-      #log "Found the dictator at #{page.uri}"
+      log "Found the dictator at #{page.uri}"
       halt
     else
       stage page.links
-      #log "No trace of Hitler at #{page.uri}"
+      log "No trace of Hitler at #{page.uri}"
     end
   end
 end
