@@ -1,4 +1,6 @@
 # Wayfarer
+[![Build Status](https://travis-ci.org/bauerd/wayfarer.svg)](https://travis-ci.org/bauerd/wayfarer)
+
 Versatile web crawling with Ruby
 
 [__API documentation__]()
