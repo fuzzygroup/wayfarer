@@ -4,6 +4,8 @@ require "rack"
 
 require_relative "support/test_app"
 
+task default: ["test"]
+
 namespace :test do
   desc "Run only environment-agnostic tests"
   RSpec::Core::RakeTask.new isolated: [:test_app] do |task|

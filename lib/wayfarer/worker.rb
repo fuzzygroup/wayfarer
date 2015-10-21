@@ -1,6 +1,3 @@
-require "pry"
-require "thread"
-
 module Wayfarer
   # Fetches a page from a URI and instantiates a job
   class Worker

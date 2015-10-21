@@ -21,6 +21,11 @@ __Shortcomings:__
 
 … and probably never will.
 
+## FAQ
+Question: Is it production-ready?
+
+Answer: __NO__.
+
 ## Installation
 Install with Bundler by adding the following line to your `Gemfile`:
 
@@ -37,8 +42,6 @@ Or install via RubyGems:
 Almost everything there is to know about Wayfarer is included in the following lines:
 
 ```ruby
-require "wayfarer"
-
 require "wayfarer"
 
 class WikipediaJob < Wayfarer::Job
@@ -71,7 +74,7 @@ class WikipediaJob < Wayfarer::Job
   after_perform { |job| }
 
   def article
-    params["slug"] # URI segment matching
+    params["slug"] # URI path segment matching
 
     driver  # A Selenium WebDriver
     browser # A Capybara session that wraps the Selenium WebDriver
