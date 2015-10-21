@@ -2,6 +2,8 @@ require "active_job"
 
 module Wayfarer
   class Job < ActiveJob::Base
+    include Locals
+
     Mismatch = Struct.new(:uri)
     Halt     = Struct.new(:uri, :method)
     Stage    = Struct.new(:uris)
