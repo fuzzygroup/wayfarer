@@ -33,10 +33,12 @@ Or install via RubyGems:
 % gem install wayfarer
 ```
 
-## Examples
+## What it looks like
 Almost everything there is to know about Wayfarer is included in the following lines:
 
 ```ruby
+require "wayfarer"
+
 require "wayfarer"
 
 class WikipediaJob < Wayfarer::Job
@@ -51,7 +53,22 @@ class WikipediaJob < Wayfarer::Job
     draw :article, host: "en.wikipedia.org", path: "/wiki/:slug"
   end
 
-  
+  # Locals survive from page to page
+  # Arrays and Hashes are replaced with thread-safe versions behind the scenes
+  let(:list) { [] }
+  let(:dict) { {} }
+
+  # Callback that runs before any pages have been processed
+  before_crawl :do_something
+
+  # Callback that runs after all pages have been processed
+  # You have access to locals in all callbacks
+  after_crawl do
+    list # => []
+  end
+
+  # ActiveJob callbacks will fire as expected
+  after_perform { |job| }
 
   def article
     params["slug"] # URI segment matching
@@ -74,7 +91,7 @@ class WikipediaJob < Wayfarer::Job
     page.images
 
     # Stage all linked URIs. Every URI that matches a route gets processed
-    # No URI will ever get processed twice (by default)!
+    # No URI will ever get processed twice (by default)
     stage page.links
 
     # Disregard all staged URIs and stop processing
@@ -100,10 +117,7 @@ You can run or enqueue jobs from the command line, too:
 ```
 
 
-More contrived examples:
-
-* [Finding Hitler on Wikipedia](howto/GETTING_STARTED.md)
-* [Executing JavaScript and taking screenshots with Selenium](howto/GETTING_STARTED.md)
+See [examples/](examples/) and [docs/](docs/) for details.
 
 ## Howto
 * [Getting started](guides/GETTING_STARTED.md)
@@ -120,11 +134,6 @@ More contrived examples:
 * [Optional MRI-only features](guides/MRI_FEATURES.md)
 
 ## Testing
-Tests are run on:
-
-* MRI 2.1.2p95
-* JRuby 1.7.9
-
 ```
 rake test           # Run all tests
 rake test:isolated  # Run only environment-agnostic tests (no Selenium or Redis tests)
@@ -133,3 +142,4 @@ rake test:redis     # Run only Redis tests
 ```
 
 Selenium tests are run locally with [PhantomJS]().
+In order to run Redis tests, you need `redis-server` listening on the default port 6379.
