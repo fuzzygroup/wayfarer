@@ -1,15 +1,16 @@
-# Shared tests
-Dir["./spec/shared/**/*.rb"].sort.each { |file| require file }
+require_relative "../lib/wayfarer"
 
 require("bundler") && Bundler.require
 require "celluloid/test"
-
 require "oj"
 
 include Wayfarer
 include Wayfarer::HTTPAdapters
 include Wayfarer::Routing
 include Wayfarer::Frontiers
+
+# Shared tests
+Dir["./spec/shared/**/*.rb"].sort.each { |file| require file }
 
 Celluloid.task_class = Celluloid::Task::Threaded
 
