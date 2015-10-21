@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "chronic",                    "~> 0.10"
   s.add_runtime_dependency "redis",                      "~> 3.2"
   s.add_runtime_dependency "pry"
+  s.add_runtime_dependency "thread_safe",                "~> 0.3"
 
   s.add_development_dependency "oj",      "~> 2.12"
   s.add_development_dependency "rake",    "~> 10.4"
