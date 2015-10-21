@@ -22,12 +22,12 @@ class DummyJob < Wayfarer::Job
 end
 ```
 
-## Recognized keys
+## Recognized keys and values
 ### `print_stacktraces`
 * Default: `true`
 * Recognized values: Booleans
 
-Whether to print stacktraces. See [Error handling](ERROR_HANDLING.md).
+Whether to print stacktraces when encounterting unhandled exceptions. See [Error handling](ERROR_HANDLING.md).
 
 --
 
@@ -49,11 +49,11 @@ __NOTE:__ Allowing circulation might cause your jobs to not terminate.
 
 --
 
-### `normalize_uris`
-* Default: `true`
-* Recognized values: Booleans
+### `frontier`
+* Default: `:memory`
+* Recognized values: `:memory`, `:redis`
 
-Whether trailing slashes and fragment identifiers should be considered insignificant when comparing URIs, e.g. `https://example.com`, `https://example.com/` and `https://example.com#anchor` are considered equal.
+Which frontier to use.
 
 --
 
@@ -97,13 +97,19 @@ Argument vector for instantiating Selenium drivers. See [Using Selenium](SELENIU
 
 --
 
+### `redis_argv`
+* Default: `[host: "localhost", port: 6379]`
+* Recognized values: [See documentation]()
+
+Argument vector for instantiating Redis connections. See [Using the Redis frontier](SELENIUM.md).
+
+--
+
 ### `window_size`
 * Default: `[1024, 768]`
 * Recognized values: `[Integer, Integer]`
 
 Dimensions of browser windows.
-
-__NOTE:__ Only applies to Selenium drivers. See [Using Selenium](SELENIUM.md).
 
 --
 

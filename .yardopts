@@ -3,8 +3,8 @@
 
 -
 
-guides/ACTIVE_JOB.md
-guides/ADAPTER_TIMEOUTS.md
-guides/CAPYBARA.md
-guides/CLI.md
-guides/CONFIGURATION.md
+./howto/ACTIVEJOB.md
+./howto/ADAPTER_TIMEOUTS.md
+./howto/CAPYBARA.md
+./howto/CLI.md
+./howto/CONFIGURATION.md

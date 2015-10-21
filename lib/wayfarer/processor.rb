@@ -3,7 +3,7 @@ require "observer"
 module Wayfarer
   # Runs jobs
   class Processor
-    include Observable # TODO Not thread-safe ...
+    include Observable
     include Celluloid
 
     task_class Task::Threaded
@@ -29,7 +29,7 @@ module Wayfarer
                                       end
     end
 
-    # Whether processing is finished.
+    # Whether processing is done.
     # @return [true, false]
     def halted?
       @halted

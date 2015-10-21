@@ -13,9 +13,6 @@ module Wayfarer
       # Allow processing URIs multiple times?
       allow_circulation: false,
 
-      # Whether trailing slashes and fragment identifiers should be considered insignificant when comparing URIs
-      normalize_uris: true,
-
       # How many HTTP connections/Selenium drivers to use
       connection_count: 4,
 

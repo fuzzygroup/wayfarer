@@ -15,5 +15,3 @@ class FindHitler < Wayfarer::Job
     end
   end
 end
-
-FindHitler.crawl("https://en.wikipedia.org/wiki/Special:Random")

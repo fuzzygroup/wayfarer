@@ -4,13 +4,12 @@ Versatile web crawling with Ruby
 [__API documentation__]()
 
 ## Features
-* Ensures non-circular, breadth-first and multithreaded traversal of page graphs
-* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates browsers with [Selenium](https://github.com/seleniumhq/selenium)
-* Optionally simplifies page interaction with [Capybara](https://github.com/jnicklas/capybara)’s DSL when using Selenium
+* Non-circular, breadth-first and multithreaded traversal of page graphs
+* Fires HTTP requests via [net-http-persistent](https://github.com/drbrain/net-http-persistent) or automates browsers with [Selenium](https://github.com/seleniumhq/selenium) and [Capybara](https://github.com/jnicklas/capybara)’s DSL
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Can extract metadata with [Pismo](https://github.com/peterc/pismo)
 * Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s API so you can use your favorite job queue
-* Stores URIs internally with an in-memory or [Redis]() frontier
+* Keeps track of URIs internally with an in-memory or [Redis]() frontier
 * Leaves data extraction and storage up to you
 
 __Shortcomings:__
@@ -35,57 +34,67 @@ Or install via RubyGems:
 ```
 
 ## Examples
-The following snippet traverses all open issues of an arbitrary GitHub repository and prints their IDs and titles:
+Almost everything there is to know about Wayfarer is included in the following lines:
 
 ```ruby
 require "wayfarer"
-require "mustermann"
 
-class DummyJob < Wayfarer::Job
+class WikipediaJob < Wayfarer::Job
+  config do |c|
+    # Use 4 Firefox processes
+    c.http_adapter = :selenium
+    c.connection_count = 8
+  end
+
+  # Routes map URIs to instance methods
   routes do
-    draw :overview,      host: "github.com", path: "/:user/:repo"
-    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
-    draw :issue,         host: "github.com", path: "/:user/:repo/issues/:issue_id"
+    draw :article, host: "en.wikipedia.org", path: "/wiki/:slug"
   end
 
-  def overview
-    visit issue_listing_uri
-  end
+  def article
+    params["slug"] # URI segment matching
 
-  def issue_listing
-    visit issue_uris
-    visit next_issue_listing_uri
-  end
+    driver  # A Selenium WebDriver
+    browser # A Capybara session that wraps the Selenium WebDriver
 
-  def issue
-    puts "I'm issue No. #{params['issue_id']}"
-  end
+    page.uri
+    page.body
+    page.status_code
+    page.headers
 
-  private
+    page.doc   # A Nokogiri document
+    page.pismo # A Pismo document
 
-  def issue_listing_uri
-    page.links ".sunken-menu-group:first-child li:nth-child(2) a"
-  end
+    page.links # All links
+    page.links ".some-selector" # Targeted links
+    page.stylesheets
+    page.javascripts
+    page.images
 
-  def issue_uris
-    page.links ".issue-title-link"
-  end
+    # Stage all linked URIs. Every URI that matches a route gets processed
+    # No URI will ever get processed twice (by default)!
+    stage page.links
 
-  def next_issue_listing_uri
-    page.links ".next_page"
+    # Disregard all staged URIs and stop processing
+    halt
   end
 end
+
+# Run the job now:
+WikipediaJob.crawl("https://en.wikipedia.org/wiki/Special:Random")
+
+# ... or enqueue it:
+WikipediaJob.perform_later("https://en.wikipedia.org/wiki/Special:Random")
 ```
 
-Now run your job:
+You can run or enqueue jobs from the command line, too:
 
 ```
-% wayfarer exec dummy_job
+% wayfarer exec wikipedia_job https://en.wikipedia.org/wiki/Special:Random
 ```
-Or enqueue it:
 
 ```
-% wayfarer enqueue dummy_job --queue_adapter=sidekiq
+% wayfarer enqueue wikipedia_job https://en.wikipedia.org/wiki/Special:Random --queue_adapter=sidekiq
 ```
 
 
@@ -95,18 +104,18 @@ More contrived examples:
 * [Executing JavaScript and taking screenshots with Selenium](howto/GETTING_STARTED.md)
 
 ## Howto
-* [Getting started](docs/GETTING_STARTED.md)
-* [Page objects](docs/PAGE_OBJECTS.md)
-* [Routing](docs/ROUTING.md)
-* [Halting](docs/HALTING.md)
-* [Configuration](docs/CONFIGURATION.md)
-* [Using Selenium](docs/SELENIUM.md)
-* [Using Capybara](docs/CAPYBARA.md)
-* [Using the Redis frontier](docs/REDIS_FRONTIER.md)
-* [Error handling](docs/ERROR_HANDLING.md)
-* [Thread safety](docs/THREAD_SAFETY.md)
-* [Adapter timeouts](docs/ADAPTER_TIMEOUTS.md)
-* [Optional MRI-only features](docs/MRI_FEATURES.md)
+* [Getting started](guides/GETTING_STARTED.md)
+* [Page objects](guides/PAGE_OBJECTS.md)
+* [Routing](guides/ROUTING.md)
+* [Halting](guides/HALTING.md)
+* [Configuration](guides/CONFIGURATION.md)
+* [Using Selenium](guides/SELENIUM.md)
+* [Using Capybara](guides/CAPYBARA.md)
+* [Using the Redis frontier](guides/REDIS_FRONTIER.md)
+* [Error handling](guides/ERROR_HANDLING.md)
+* [Thread safety](guides/THREAD_SAFETY.md)
+* [Adapter timeouts](guides/ADAPTER_TIMEOUTS.md)
+* [Optional MRI-only features](guides/MRI_FEATURES.md)
 
 ## Testing
 Tests are run on:
