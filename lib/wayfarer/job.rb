@@ -8,8 +8,6 @@ module Wayfarer
     Error    = Struct.new(:exception, :backtrace)
 
     class << self
-      attr_accessor :locals
-
       def config
         @config ||= Wayfarer.config.clone
         yield(@config) if block_given?

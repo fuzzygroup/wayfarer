@@ -4,6 +4,7 @@ require "celluloid/current"
 
 # Plumbing
 require_relative "wayfarer/configuration"
+require_relative "wayfarer/locals"
 
 # Routing
 require_relative "wayfarer/routing/rule"
