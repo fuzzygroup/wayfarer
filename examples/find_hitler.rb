@@ -6,6 +6,15 @@ class FindHitler < Wayfarer::Job
 
   let(:pages) { [] }
 
+  before_crawl do
+    require "pry"
+    binding.pry
+  end
+
+  after_crawl do
+    
+  end
+
   draw host: "en.wikipedia.org"
   def article
     pages << "lel"

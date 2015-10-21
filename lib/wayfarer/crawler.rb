@@ -28,8 +28,11 @@ module Wayfarer
       frontier.stage(*uris)
 
       Wayfarer.log.debug("[#{self}] Running Processor")
-      # Create a new sub-class so each job has its own locals
+      job_klass = klass.clone
+
+      job_klass.run_hook(:before_crawl)
       processor.run(klass.clone)
+      job_klass.run_hook(:after_crawl)
 
       Wayfarer.log.debug("[#{self}] Terminating Processor")
       processor.terminate

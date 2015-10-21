@@ -1,8 +1,12 @@
+require "hooks"
 require "active_job"
 
 module Wayfarer
   class Job < ActiveJob::Base
+    include Hooks
     include Locals
+
+    define_hooks :before_crawl, :after_crawl
 
     Mismatch = Struct.new(:uri)
     Halt     = Struct.new(:uri, :method)
