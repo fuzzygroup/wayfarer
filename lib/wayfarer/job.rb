@@ -10,6 +10,10 @@ module Wayfarer
     Error    = Struct.new(:exception, :backtrace)
 
     class << self
+      def prepare
+        []
+      end
+
       def config
         @config ||= Wayfarer.config.clone
         yield(@config) if block_given?

@@ -51,6 +51,8 @@ class WikipediaJob < Wayfarer::Job
     draw :article, host: "en.wikipedia.org", path: "/wiki/:slug"
   end
 
+  
+
   def article
     params["slug"] # URI segment matching
 
@@ -66,7 +68,7 @@ class WikipediaJob < Wayfarer::Job
     page.pismo # A Pismo document
 
     page.links # All links
-    page.links ".some-selector" # Targeted links
+    page.links ".some-selector", ".another-selector" # Targeted links
     page.stylesheets
     page.javascripts
     page.images

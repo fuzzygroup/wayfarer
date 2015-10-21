@@ -22,7 +22,7 @@ module Wayfarer
                       else val
                       end
       end
-  
+
       def locals
         @locals ||= {}
       end

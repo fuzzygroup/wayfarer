@@ -4,11 +4,6 @@ describe Wayfarer::Locals do
   let(:klass) { Class.new.include(Locals) }
 
   describe "::let" do
-    it "adds a local" do
-      klass.let(:foo) { :bar }
-      expect(klass.locals[:foo]).to be :bar
-    end
-
     it "proxies locals via method_missing" do
       obj = Object.new
       klass.let(:foo) { obj }

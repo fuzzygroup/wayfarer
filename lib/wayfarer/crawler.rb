@@ -29,7 +29,7 @@ module Wayfarer
 
       Wayfarer.log.debug("[#{self}] Running Processor")
       # Create a new sub-class so each job has its own locals
-      processor.run(klass)
+      processor.run(klass.clone)
 
       Wayfarer.log.debug("[#{self}] Terminating Processor")
       processor.terminate
