@@ -4,27 +4,19 @@ class FindHitler < Wayfarer::Job
   # Wayfarer.log.level = Logger::DEBUG
   config.connection_count = 16
 
-  let(:pages) { [] }
-
-  before_crawl do
-    puts pages.count
-  end
+  let(:hits) { [] }
 
   after_crawl do
-    puts "I crawled #{pages.count} pages!"
+    puts "I found Hitler at #{hits.first}"
   end
 
   draw host: "en.wikipedia.org"
   def article
-    pages << "lel"
-    puts pages.count
-
     if page.body =~ /Hitler/
-      log "Found the dictator at #{page.uri}"
+      hits << page.uri
       halt
     else
       stage page.links
-      log "No trace of Hitler at #{page.uri}"
     end
   end
 end
