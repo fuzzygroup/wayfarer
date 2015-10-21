@@ -28,6 +28,7 @@ module Wayfarer
       frontier.stage(*uris)
 
       Wayfarer.log.debug("[#{self}] Running Processor")
+      # Create a new sub-class so each job has its own locals
       processor.run(klass)
 
       Wayfarer.log.debug("[#{self}] Terminating Processor")
