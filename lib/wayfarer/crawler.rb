@@ -9,12 +9,13 @@ module Wayfarer
     # @param [Job] klass the job to run.
     # @param [*Array<URI>, *Array<String>] *uris the URIs to stage for the first cycle.
     def crawl(klass, *uris)
-      config = klass.config
-      config.uuid = @uuid = SecureRandom.uuid
+      job_klass = klass.clone
+      config = job_klass.config
+      config.uuid = SecureRandom.uuid
 
       Wayfarer.log.debug("[#{self}] Hello from Wayfarer #{Wayfarer::VERSION}")
       Wayfarer.log.debug(
-        "[#{self}] Running job #{klass} #{@uuid}"
+        "[#{self}] Running job #{job_klass} #{config.uuid}"
       )
 
       config.each_pair do |key, val|
@@ -27,16 +28,15 @@ module Wayfarer
       Wayfarer.log.debug("[#{self}] Staging initial URIs")
       frontier.stage(*uris)
 
-      Wayfarer.log.debug("[#{self}] Running Processor")
-      job_klass = klass.clone
-
       job_klass.run_hook(:before_crawl)
+
+      Wayfarer.log.debug("[#{self}] Running Processor")
       processor.run(klass.clone)
-      job_klass.run_hook(:after_crawl)
 
       Wayfarer.log.debug("[#{self}] Terminating Processor")
       processor.terminate
 
+      job_klass.run_hook(:after_crawl)
       Wayfarer.log.debug("[#{self}] Done")
     end
 

@@ -6,12 +6,8 @@ module Wayfarer
       base.extend(ClassMethods)
     end
 
-    def method_missing(key)
-      self.class.locals[key] || super
-    end
-
-    def respond_to_missing?(key, private = false)
-      self.class.locals.key?(key)
+    def locals
+      self.class.locals
     end
 
     module ClassMethods
@@ -21,6 +17,9 @@ module Wayfarer
                       when Hash  then ThreadSafe::Hash.new(val)
                       else val
                       end
+
+        define_method(key) { locals[key] }
+        define_singleton_method(key) { locals[key] }
       end
 
       def locals

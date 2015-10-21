@@ -4,10 +4,6 @@ describe Wayfarer::Job do
   let(:adapter) { NetHTTPAdapter.instance }
   subject(:job) { Job.new }
 
-  describe "::prepare" do
-    
-  end
-
   describe "::config" do
     it "allows manipulating the configuration" do
       job.class.config do |c|

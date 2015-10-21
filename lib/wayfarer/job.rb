@@ -6,6 +6,7 @@ module Wayfarer
     include Hooks
     include Locals
 
+    # TODO Use ActiveSupport::Callbacks and remove the dep on "hooks"
     define_hooks :before_crawl, :after_crawl
 
     Mismatch = Struct.new(:uri)
@@ -14,10 +15,6 @@ module Wayfarer
     Error    = Struct.new(:exception, :backtrace)
 
     class << self
-      def prepare
-        []
-      end
-
       def config
         @config ||= Wayfarer.config.clone
         yield(@config) if block_given?

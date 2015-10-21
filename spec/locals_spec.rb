@@ -4,7 +4,13 @@ describe Wayfarer::Locals do
   let(:klass) { Class.new.include(Locals) }
 
   describe "::let" do
-    it "proxies locals via method_missing" do
+    it "defines class reader methods" do
+      obj = Object.new
+      klass.let(:foo) { obj }
+      expect(klass.foo).to be obj
+    end
+
+    it "defines instance reader methods" do
       obj = Object.new
       klass.let(:foo) { obj }
       inst = klass.new
