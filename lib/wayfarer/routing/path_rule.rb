@@ -3,6 +3,7 @@ require "mustermann"
 
 module Wayfarer
   module Routing
+    # @private
     class PathRule < Rule
       attr_reader :pattern
 

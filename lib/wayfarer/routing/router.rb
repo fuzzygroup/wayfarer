@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# rubocop:disable Style/CaseEquality
 module Wayfarer
   module Routing
     class Router

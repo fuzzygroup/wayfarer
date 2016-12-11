@@ -3,6 +3,7 @@ require "uri"
 
 module Wayfarer
   module Routing
+    # @private
     class URIRule < Rule
       def initialize(uri_str, opts = {}, &proc)
         @uri = URI(uri_str)

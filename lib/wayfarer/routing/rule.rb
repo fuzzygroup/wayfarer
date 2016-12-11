@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 module Wayfarer
   module Routing
-    # Really just a tree in disguise
+    # @private
     class Rule
       include Enumerable
 

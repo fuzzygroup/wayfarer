@@ -3,6 +3,7 @@ require "cgi"
 
 module Wayfarer
   module Routing
+    # @private
     class QueryRule < Rule
       def initialize(field_constraints, opts = {}, &proc)
         @field_constraints = field_constraints
