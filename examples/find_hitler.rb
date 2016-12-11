@@ -1,7 +1,8 @@
 require_relative "../lib/wayfarer"
 
 class FindHitler < Wayfarer::Job
-  config.connection_count = 16
+  config.http_adapter = :selenium
+  config.connection_count = 2
 
   after_crawl do
     puts "I found Hitler at #{hits.first}"

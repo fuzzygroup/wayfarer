@@ -125,6 +125,7 @@ module Wayfarer
 
     # Registers a signal handler for SIGINT that waits for running threads.
     def trap_signals
+      puts "TRAPPING!"
       @cached_sigint_handler = trap(:INT) do
         halt!
 

@@ -20,8 +20,8 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "connection_pool",            "~> 2.2"
   s.add_runtime_dependency "nokogiri",                   "~> 1.6"
-  s.add_runtime_dependency "selenium-webdriver",         "~> 2.47"
-  s.add_runtime_dependency "selenium-emulated_features", "~> 2.0"
+  s.add_runtime_dependency "selenium-webdriver",         "~> 3.0"
+  s.add_runtime_dependency "selenium-emulated_features", "2.0.1"
   s.add_runtime_dependency "net-http-persistent",        "~> 2.9"
   s.add_runtime_dependency "mime-types",                 "~> 2.6"
   s.add_runtime_dependency "pismo",                      "~> 0.7"
