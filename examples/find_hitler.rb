@@ -9,6 +9,7 @@ class FindHitler < Wayfarer::Job
 
   draw host: "en.wikipedia.org"
   def article
+    puts "ARTICLE!"
     if page.body =~ /Hitler/
       halt
     else

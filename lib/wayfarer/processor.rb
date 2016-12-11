@@ -6,7 +6,7 @@ module Wayfarer
     include Observable
 
     def initialize(config)
-      @config = config
+      @config = config.dup
       @halted = false
       @threads = []
       @mutex = Mutex.new
@@ -45,24 +45,25 @@ module Wayfarer
         changed
         notify_observers(:new_cycle, frontier.current_uris.count)
 
-        Wayfarer.log.debug("[#{self}] LEL")
-
         @workers = @config.connection_count.times.map do
           Thread.new do
-            Wayfarer.log.info("THREAD!")
-            @mutex.synchronize do
-              uri = frontier.current_uris.shift
-              Thread.stop if not uri or halted?
+            loop do
+              uri = struct = nil
+
+              @mutex.synchronize do
+                uri = frontier.current_uris.shift
+                break if not uri or halted?
+              end
+
+              @adapter_pool.with do |adapter|
+                struct = klass.new.invoke(uri, adapter)
+              end
+
+              handle_job_result(struct)
+
+              changed
+              notify_observers(:processed_uri)
             end
-
-            @adapter_pool.with do |adapter|
-              ret_val = klass.new.invoke(uri, adapter)
-            end
-
-            handle_job_result(ret_val)
-
-            changed
-            notify_observers(:processed_uri)
           end
         end
 
@@ -79,9 +80,26 @@ module Wayfarer
 
     private
 
-    def handle_job_result(ret_val)
-      case ret_val
-      when Mismatch then
+    def handle_job_result(struct)
+      case struct
+      when Job::Mismatch
+        Wayfarer.log.debug("[#{self}] No matching route for #{struct.uri}")
+
+      when Job::Halt
+        Wayfarer.log.debug("[#{self}] Halt initiated from #{struct.uri}")
+        halt!
+
+      when Job::Stage
+        @mutex.synchronize { @frontier.stage(*struct.uris) }
+
+      when Job::Error
+        @mutex.synchronize do
+          if @config.print_stacktraces
+            Wayfarer.log.debug("[#{self}] Halt initiated from #{struct.uri}")
+          elsif @config.reraise_exceptions
+            raise struct.exception
+          end
+        end
       end
     end
   end
