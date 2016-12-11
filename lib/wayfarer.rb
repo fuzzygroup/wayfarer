@@ -58,7 +58,7 @@ module Wayfarer
   end
 end
 
-# Unbuffered writes to stdout
+# Don't buffer writes to stdout
 STDOUT.sync = true
 
 # Don't print debug messages by default

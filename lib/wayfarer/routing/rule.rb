@@ -23,9 +23,9 @@ module Wayfarer
         opts.reduce(self) { |rule, (key, val)| rule.send(key, val) }
       end
 
-      def ===(uri)
+      def matches?(uri)
         return false unless match!(uri)
-        none? || any? { |child_rule| child_rule === uri }
+        none? || any? { |child_rule| child_rule.matches?(uri) }
       end
 
       def =~(uri)
@@ -41,7 +41,7 @@ module Wayfarer
       def matching_rule_chain(uri, chain = [])
         if match!(uri) && none?
           chain << self
-        elsif matching_child = detect { |child_rule| child_rule === uri }
+        elsif matching_child = detect { |child_rule| child_rule.matches?(uri) }
           matching_child.matching_rule_chain(uri, chain << self)
         else
           []

@@ -76,7 +76,7 @@ draw uri: "https://example.com"
 … matches only `https://example.com`.
 
 ### Host rules
-A URI rule takes either a `String` or a `Regexp` and compares it with `uri.host` by calling `#===`.
+A URI rule takes either a `String` or a `Regexp` and compares it with `uri.host` by calling `#matches?`.
 
 #### Strings
 The following host rule:

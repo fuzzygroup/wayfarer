@@ -4,12 +4,12 @@ require "spec_helpers"
 describe Wayfarer::Routing::URIRule do
   subject(:rule) { URIRule.new("http://example.com/foo/bar") }
 
-  describe "#===" do
+  describe "#matches?" do
     context "with matching URI" do
       let(:uri) { URI("http://example.com/foo/bar") }
 
       it "returns true" do
-        expect(rule === uri).to be true
+        expect(rule.matches?(uri)).to be true
       end
     end
 
@@ -17,7 +17,7 @@ describe Wayfarer::Routing::URIRule do
       let(:uri) { URI("http://example.com/foo/qux") }
 
       it "returns true" do
-        expect(rule === uri).to be false
+        expect(rule.matches?(uri)).to be false
       end
     end
   end

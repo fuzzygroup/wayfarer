@@ -65,7 +65,7 @@ module Wayfarer
 
       # Returns the associated instance method of the first {Rule} that matches
       # a URI and the collected parameter hash from the rule chain.
-      # @return [[true, Hash]] if a matching rule exists.
+      # @return [[Symbol, Hash]] if a matching rule exists.
       # @return [false] if no matching rule exists or the URI is forbidden.
       def route(uri)
         return false if forbids?(uri)
@@ -89,7 +89,7 @@ module Wayfarer
       # Whether the URI is matched by the blacklist {Rule}.
       # @see #forbid
       def forbids?(uri)
-        @blacklist === uri
+        @blacklist.matches?(uri)
       end
 
       # Whether the URI is allowed.

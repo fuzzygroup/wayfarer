@@ -4,12 +4,12 @@ require "spec_helpers"
 describe Wayfarer::Routing::PathRule, mri: true do
   subject(:rule) { PathRule.new("/{alpha}/{beta}") }
 
-  describe "#===" do
+  describe "#matches?" do
     context "with matching URI" do
       let(:uri) { URI("http://example.com/foo/bar") }
 
       it "returns true" do
-        expect(rule === uri).to be true
+        expect(rule.matches?(uri)).to be true
       end
     end
   end
@@ -18,7 +18,7 @@ describe Wayfarer::Routing::PathRule, mri: true do
     let(:uri) { URI("http://example.com/foo") }
 
     it "returns false" do
-      expect(rule === uri).to be false
+      expect(rule.matches?(uri)).to be false
     end
   end
 

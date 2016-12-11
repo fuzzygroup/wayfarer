@@ -4,7 +4,7 @@ require "spec_helpers"
 describe Wayfarer::Routing::HostRule do
   subject(:rule) { HostRule.new(str_or_regexp) }
 
-  describe "#===" do
+  describe "#matches?" do
     describe "String matching" do
       let(:str_or_regexp) { "example.com" }
 
@@ -12,7 +12,7 @@ describe Wayfarer::Routing::HostRule do
         let(:uri) { URI("http://example.com/foo/bar") }
 
         it "returns true" do
-          expect(rule === uri).to be true
+          expect(rule.matches?(uri)).to be true
         end
       end
 
@@ -20,19 +20,19 @@ describe Wayfarer::Routing::HostRule do
         let(:uri) { URI("http://google.com/bar/qux") }
 
         it "returns false" do
-          expect(rule === uri).to be false
+          expect(rule.matches?(uri)).to be false
         end
       end
     end
 
-    describe "Regexp matching" do
+    describe "RegExp matching" do
       let(:str_or_regexp) { /example.com/ }
 
       context "with matching URI" do
         let(:uri) { URI("http://sub.example.com") }
 
         it "returns true" do
-          expect(rule === uri).to be true
+          expect(rule.matches?(uri)).to be true
         end
       end
 
@@ -40,7 +40,7 @@ describe Wayfarer::Routing::HostRule do
         let(:uri) { URI("http://example.sub.com") }
 
         it "returns false" do
-          expect(rule === uri).to be false
+          expect(rule.matches?(uri)).to be false
         end
       end
     end
