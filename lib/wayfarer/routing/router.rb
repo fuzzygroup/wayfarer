@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# rubocop:disable Style/CaseEquality
 module Wayfarer
   module Routing
     class Router
@@ -9,7 +8,7 @@ module Wayfarer
       Route = Struct.new(:method, :rule)
 
       def initialize
-        @routes    = []
+        @routes = []
         @blacklist = Rule.new
       end
 

@@ -8,9 +8,7 @@ module Wayfarer
       attr_reader :pattern
 
       def initialize(str, opts = {}, &proc)
-        @pattern = Mustermann.new(
-          str, type: Wayfarer.config.mustermann_type
-        )
+        @pattern = Mustermann.new(str, type: Wayfarer.config.mustermann_type)
         super(opts, &proc)
       end
 
