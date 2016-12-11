@@ -11,3 +11,6 @@ Style/StringLiterals:
 
 Metrics/MethodLength:
   Max: 25
+
+Metrics/PerceivedComplexity:
+  Max: 10
