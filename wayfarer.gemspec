@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.license       = "MIT"
 
   s.homepage      = "http://github.com/bauerd/wayfarer"
-  s.description   = "A web crawling/scraping framework"
+  s.description   = "Versatile web crawling with Ruby"
   s.summary       = s.description
 
   s.date          = "2014-11-12"
