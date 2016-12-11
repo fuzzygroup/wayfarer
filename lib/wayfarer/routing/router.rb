@@ -71,7 +71,7 @@ module Wayfarer
         return false if forbids?(uri)
 
         @routes.each do |route|
-          is_matching, params = route.rule =~ uri
+          is_matching, params = route.rule.invoke(uri)
           return route.method, params if is_matching && params
         end
 

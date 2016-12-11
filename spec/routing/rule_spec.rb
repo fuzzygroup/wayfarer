@@ -91,7 +91,7 @@ describe Wayfarer::Routing::Rule do
     end
   end
 
-  describe "#=~" do
+  describe "#invoke" do
     let(:uri) { URI("http://example.com/foo/bar") }
 
     context "with matching Rule" do
@@ -102,11 +102,11 @@ describe Wayfarer::Routing::Rule do
       end
 
       it "returns a truthy value" do
-        expect(rule =~ uri).to be_truthy
+        expect(rule.invoke(uri)).to be_truthy
       end
 
       it "returns the URI parameters" do
-        _, params = rule =~ uri
+        _, params = rule.invoke(uri)
         expect(params).to eq("alpha" => "foo", "beta" => "bar")
       end
     end
@@ -119,7 +119,7 @@ describe Wayfarer::Routing::Rule do
       end
 
       it "returns false" do
-        expect(rule =~ uri).to be false
+        expect(rule.invoke(uri)).to be false
       end
     end
   end

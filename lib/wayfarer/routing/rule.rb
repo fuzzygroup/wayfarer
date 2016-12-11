@@ -28,7 +28,7 @@ module Wayfarer
         none? || any? { |child_rule| child_rule.matches?(uri) }
       end
 
-      def =~(uri)
+      def invoke(uri)
         rule_chain = matching_rule_chain(uri)
 
         if rule_chain.any?
