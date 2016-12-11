@@ -114,6 +114,7 @@ module Wayfarer
     end
 
     def handle_error(error)
+      puts "ERRRRRROR"
       @mutex.synchronize do
         if @config.print_stacktraces
           Wayfarer.log.debug("[#{self}] Unhandled exception: #{error.backtrace}")
@@ -125,7 +126,6 @@ module Wayfarer
 
     # Registers a signal handler for SIGINT that waits for running threads.
     def trap_signals
-      puts "TRAPPING!"
       @cached_sigint_handler = trap(:INT) do
         halt!
 

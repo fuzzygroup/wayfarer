@@ -22,8 +22,8 @@ module Wayfarer
       # Which frontier to use. Supported are :memory and :redis
       frontier: :memory,
 
-      # How long a Scraper thread may hold an adapter.
-      # Scrapers that exceed this limit fail with an exception.
+      # How long a thread may hold an HTP adapter.
+      # Threads that exceed this limit fail with an exception.
       connection_timeout: 10.0,
 
       # How many 3xx redirects to follow. Has no effect when using Selenium

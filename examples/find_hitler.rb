@@ -1,7 +1,6 @@
 require_relative "../lib/wayfarer"
 
 class FindHitler < Wayfarer::Job
-  config.http_adapter = :selenium
   config.connection_count = 2
 
   after_crawl do
@@ -10,6 +9,7 @@ class FindHitler < Wayfarer::Job
 
   draw host: "en.wikipedia.org"
   def article
+    sleep 100
     if page.body =~ /Hitler/
       puts "Found the dicator @ #{page.uri}"
       halt
