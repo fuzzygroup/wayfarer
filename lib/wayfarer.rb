@@ -26,6 +26,7 @@ require_relative "wayfarer/frontiers/memory_frontier"
 require_relative "wayfarer/frontiers/redis_frontier"
 
 # Processing
+require_relative "wayfarer/locals"
 require_relative "wayfarer/job"
 require_relative "wayfarer/finders"
 require_relative "wayfarer/page"

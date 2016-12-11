@@ -7,9 +7,11 @@ class FindHitler < Wayfarer::Job
     puts "I found Hitler at #{hits.first}"
   end
 
+  let(:hits) { [] }
+
   draw host: "en.wikipedia.org"
   def article
-    sleep 100
+    require "pry"; binding.pry
     if page.body =~ /Hitler/
       puts "Found the dicator @ #{page.uri}"
       halt

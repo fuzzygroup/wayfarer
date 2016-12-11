@@ -5,6 +5,7 @@ require "capybara"
 module Wayfarer
   class Job < ActiveJob::Base
     include Hooks
+    include Locals
 
     define_hooks :before_crawl, :after_crawl
 

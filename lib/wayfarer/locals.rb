@@ -1,0 +1,30 @@
+require "thread_safe"
+
+module Wayfarer
+  module Locals
+    def self.included(base)
+      base.extend(ClassMethods)
+    end
+
+    def locals
+      self.class.locals
+    end
+
+    module ClassMethods
+      def let(key, &proc)
+        locals[key] = case val = proc.call
+                      when Array then ThreadSafe::Array.new(val)
+                      when Hash  then ThreadSafe::Hash.new(val)
+                      else val
+                      end
+
+        define_method(key) { locals[key] }
+        define_singleton_method(key) { locals[key] }
+      end
+
+      def locals
+        @locals ||= {}
+      end
+    end
+  end
+end
