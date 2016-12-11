@@ -3,7 +3,7 @@ require "nokogiri"
 
 module Wayfarer
   module Parsers
-    # A wrapper class for parsing HTML/XML
+    # A wrapper class for parsing HTML/XML.
     # @private
     module XMLParser
       module_function

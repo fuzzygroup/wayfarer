@@ -2,9 +2,10 @@
 require "logger"
 require "pathname"
 require "time"
-
 require "active_support/inflector"
 require "thor"
+
+require_relative "../lib/wayfarer"
 
 module Wayfarer
   class CLI < Thor
@@ -12,10 +13,8 @@ module Wayfarer
 
     option :progress, type: :boolean, default: true
     desc "exec FILE URI",
-         "Runs the job defined in FILE starting with URI"
+         "Run the job defined in FILE starting from URI(s)"
     def exec(file, uri)
-      require_relative "../lib/wayfarer"
-
       Wayfarer.log.level = log_level_from_string(options[:log_level])
 
       klass = load_class_from_file(file)
@@ -33,10 +32,8 @@ module Wayfarer
     option :queue_adapter, type: :string, default: "inline"
     option :wait, type: :string
     desc "enqueue FILE URI",
-         "Run the job defined in FILE starting with URI"
+         "Run the job defined in FILE starting from URI(s)"
     def enqueue(file, uri)
-      require_relative "../lib/wayfarer"
-
       Wayfarer.log.level = log_level_from_string(options[:log_level])
 
       ActiveJob::Base.queue_adapter = options[:queue_adapter].to_sym
@@ -54,8 +51,6 @@ module Wayfarer
     desc "route FILE URI",
          "Output the first matching route from FILE for URI"
     def route(file, uri)
-      require_relative "../lib/wayfarer"
-
       Wayfarer.log.level = log_level_from_string(options[:log_level])
 
       klass = load_class_from_file(file)
@@ -71,8 +66,6 @@ module Wayfarer
 
     desc "version", "Print the version"
     def version
-      require_relative "../lib/wayfarer"
-
       puts Wayfarer::VERSION
     end
 
@@ -92,7 +85,7 @@ module Wayfarer
     def differing_seconds_from_string(str)
       if secs = Integer(secs) rescue nil
         secs
-      if time = Time.parse(str) rescue nil
+      elsif time = Time.parse(str) rescue nil
         time - Time.now
       else
         require "chronic"

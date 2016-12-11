@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 module Wayfarer
   module Parsers
-    # A wrapper class for parsing JSON
+    # A wrapper class for parsing JSON.
     # @private
     module JSONParser
       module_function
