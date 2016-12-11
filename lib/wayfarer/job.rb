@@ -1,11 +1,11 @@
 require "hooks"
 require "active_job"
+require "capybara"
 
 module Wayfarer
   class Job < ActiveJob::Base
     include Hooks
 
-    # TODO Use ActiveSupport::Callbacks and remove the dep on "hooks"
     define_hooks :before_crawl, :after_crawl
 
     Mismatch = Struct.new(:uri)
@@ -107,8 +107,6 @@ module Wayfarer
     end
 
     def instantiate_capybara_driver
-      require "capybara"
-
       Capybara.run_server = false
       Capybara.current_driver = :selenium
 

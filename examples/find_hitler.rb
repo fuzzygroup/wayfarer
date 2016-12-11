@@ -1,7 +1,6 @@
 require_relative "../lib/wayfarer"
 
 class FindHitler < Wayfarer::Job
-  # Wayfarer.log.level = Logger::DEBUG
   config.connection_count = 16
 
   after_crawl do

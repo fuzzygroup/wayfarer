@@ -11,8 +11,6 @@ module Wayfarer
       @threads = []
       @mutex = Mutex.new
       @adapter_pool = HTTPAdapters::AdapterPool.new(config)
-
-      Wayfarer.log.debug("[#{self}] Spawning scraper pool")
     end
 
     # Returns the frontier.
@@ -40,36 +38,51 @@ module Wayfarer
 
     # Runs a job.
     # @param [Job] klass the job to run.
-    def run(klass)
+    def run(klass, *uris)
+      frontier.stage(*uris)
+
       while frontier.cycle
         changed
         notify_observers(:new_cycle, frontier.current_uris.count)
 
+        Wayfarer.log.debug("[#{self}] LEL")
+
         @workers = @config.connection_count.times.map do
           Thread.new do
-            
+            Wayfarer.log.info("THREAD!")
+            @mutex.synchronize do
+              uri = frontier.current_uris.shift
+              Thread.stop if not uri or halted?
+            end
+
+            @adapter_pool.with do |adapter|
+              ret_val = klass.new.invoke(uri, adapter)
+            end
+
+            handle_job_result(ret_val)
+
+            changed
+            notify_observers(:processed_uri)
           end
         end
 
-        futures = frontier.current_uris.map do |uri|
-          adapter_pool.with { |adapter| klass.new.invoke(uri, adapter) }
-        end
-
-        futures.each do |future|
-          handle_future(future)
-
-          changed
-          notify_observers(:processed_uri)
-        end
+        Wayfarer.log.debug("[#{self}] WAITING")
+        @workers.each(&:join)
       end
 
+      Wayfarer.log.debug("[#{self}] All done")
       @halted = true
-
-      Wayfarer.log.debug("[#{self}] Terminating workers")
-      worker_pool.terminate
 
       Wayfarer.log.debug("[#{self}] Freeing adapter pool")
       @adapter_pool.free
+    end
+
+    private
+
+    def handle_job_result(ret_val)
+      case ret_val
+      when Mismatch then
+      end
     end
   end
 end

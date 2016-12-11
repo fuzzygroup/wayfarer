@@ -42,8 +42,11 @@ module Wayfarer
       mustermann_type: :sinatra
     }
 
+    attr_reader :uuid
+
     def initialize(overrides = {})
       super(DEFAULTS.merge(overrides))
+      @uuid = SecureRandom.uuid
     end
 
     def reset!
