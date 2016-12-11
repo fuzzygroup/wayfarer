@@ -38,6 +38,7 @@ module Wayfarer
         end
       end
 
+      # rubocop:disable Lint/AssignmentInCondition
       def matching_rule_chain(uri, chain = [])
         if match!(uri) && none?
           chain << self
@@ -47,6 +48,7 @@ module Wayfarer
           []
         end
       end
+      # rubocop:enable Lint/AssignmentInCondition
 
       def params(*)
         {}
@@ -71,7 +73,8 @@ module Wayfarer
       private
 
       def append_child_rule(other)
-        @child_rules << other; other
+        @child_rules << other
+        other
       end
 
       def match!(*)
@@ -79,7 +82,7 @@ module Wayfarer
       end
 
       def params_from_rule_chain(rule_chain, uri)
-        rule_chain.inject({}) { |hash, rule| hash.merge(rule.params(uri)) }
+        rule_chain.reduce({}) { |hash, rule| hash.merge(rule.params(uri)) }
       end
     end
   end

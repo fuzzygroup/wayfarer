@@ -1,9 +1,11 @@
 # Wayfarer
 [![Build Status](https://travis-ci.org/bauerd/wayfarer.svg)](https://travis-ci.org/bauerd/wayfarer)
 
-Versatile web crawling with Ruby that feels familiar.
+Versatile web crawling with Ruby
 
-[__API documentation__]()
+* [__GitHub wiki__]()
+* [__Code examples__]()
+* [__API documentation__]()
 
 ## Features
 * Non-circular, breadth-first and multithreaded traversal of page graphs
@@ -13,6 +15,7 @@ Versatile web crawling with Ruby that feels familiar.
 * Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s API so you can use your favorite job queue
 * Keeps track of URIs internally with an in-memory or [Redis]() frontier
 * Leaves data extraction and storage up to you
+* MIT-licensed
 
 __Shortcomings:__
 
@@ -22,11 +25,6 @@ __Shortcomings:__
 * Does not run on JRuby
 
 … and probably never will.
-
-## FAQ
-Question: Is it production-ready?
-
-Answer: __NO__.
 
 ## Installation
 Install with Bundler by adding the following line to your `Gemfile`:
@@ -124,20 +122,6 @@ You can run or enqueue jobs from the command line, too:
 
 See [examples/](examples/) and [docs/](docs/) for details.
 
-## Howto
-* [Getting started](guides/GETTING_STARTED.md)
-* [Page objects](guides/PAGE_OBJECTS.md)
-* [Routing](guides/ROUTING.md)
-* [Halting](guides/HALTING.md)
-* [Configuration](guides/CONFIGURATION.md)
-* [Using Selenium](guides/SELENIUM.md)
-* [Using Capybara](guides/CAPYBARA.md)
-* [Using the Redis frontier](guides/REDIS_FRONTIER.md)
-* [Error handling](guides/ERROR_HANDLING.md)
-* [Thread safety](guides/THREAD_SAFETY.md)
-* [Adapter timeouts](guides/ADAPTER_TIMEOUTS.md)
-* [Optional MRI-only features](guides/MRI_FEATURES.md)
-
 ## Testing
 ```
 rake test           # Run all tests
@@ -147,4 +131,4 @@ rake test:redis     # Run only Redis tests
 ```
 
 Selenium tests are run locally with [PhantomJS]().
-In order to run Redis tests, you need `redis-server` listening on the default port 6379.
+In order to run Redis tests, you need a Redis server listening on port 6379.
