@@ -5,10 +5,6 @@ module Wayfarer
     # TODO Store strings instead of URI objects
     # A naive in-memory frontier
     class MemoryFrontier
-      include Celluloid
-
-      task_class Task::Threaded
-
       def initialize(config)
         @config = config
         @current_uris = Set.new([])

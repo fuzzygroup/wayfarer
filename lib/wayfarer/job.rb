@@ -4,7 +4,6 @@ require "active_job"
 module Wayfarer
   class Job < ActiveJob::Base
     include Hooks
-    include Locals
 
     # TODO Use ActiveSupport::Callbacks and remove the dep on "hooks"
     define_hooks :before_crawl, :after_crawl

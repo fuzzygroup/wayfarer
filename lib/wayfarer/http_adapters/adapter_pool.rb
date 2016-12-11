@@ -7,7 +7,7 @@ module Wayfarer
       def initialize(config)
         @config = config
 
-        size    = @config.connection_count
+        size = @config.connection_count
         timeout = @config.connection_timeout
 
         @pool = ConnectionPool.new(

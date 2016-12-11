@@ -21,16 +21,11 @@ module Wayfarer
       def fetch(uri)
         @driver.navigate.to(uri)
 
-        uri         = @driver.current_url
-        status_code = @driver.response_code
-        body        = @driver.page_source
-        headers     = @driver.response_headers
-
         Page.new(
-          uri: uri,
-          status_code: status_code,
-          body: body,
-          headers: headers
+          uri: @driver.current_url,
+          status_code: @driver.response_code,
+          body: @driver.page_source,
+          headers: @driver.response_headers
         )
       end
 

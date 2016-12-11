@@ -43,7 +43,7 @@ task :install do
   sh "gem install build/*.gem"
 end
 
-desc "Remove build/ directory"
+desc "Remove build directory"
 task :clean do
   sh "rm -rf build"
 end

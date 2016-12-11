@@ -1,10 +1,8 @@
 require "logger"
 require "uri"
-require "celluloid/current"
 
 # Plumbing
 require_relative "wayfarer/configuration"
-require_relative "wayfarer/locals"
 
 # Routing
 require_relative "wayfarer/routing/rule"
@@ -29,7 +27,6 @@ require_relative "wayfarer/frontiers/redis_frontier"
 
 # Processing
 require_relative "wayfarer/job"
-require_relative "wayfarer/worker"
 require_relative "wayfarer/finders"
 require_relative "wayfarer/page"
 require_relative "wayfarer/uri_set"
@@ -46,7 +43,7 @@ module Wayfarer
     attr_writer :logger
 
     def logger
-      @logger || Celluloid.logger || Logger.new(STDOUT)
+      @logger ||= Logger.new(STDOUT)
     end
 
     alias_method :log, :logger
