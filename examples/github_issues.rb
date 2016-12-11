@@ -9,15 +9,18 @@ class DummyJob < Wayfarer::Job
   end
 
   def overview
+    puts "OVERVIEEW, #{issue_listing_uri}"
     visit issue_listing_uri
   end
 
   def issue_listing
+    puts "LISTING"
     visit issue_uris
     visit next_issue_listing_uri
   end
 
   def issue
+    puts "ISSUE"
     id = params["issue_id"]
     title = doc.css(".js-issue-title").text
     puts "#{id}: #{title}"
@@ -38,4 +41,4 @@ class DummyJob < Wayfarer::Job
   end
 end
 
-DummyJob.crawl("https://github.com/rails/rails")
+DummyJob.perform_now("https://github.com/rails/rails")

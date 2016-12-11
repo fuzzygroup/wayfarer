@@ -24,7 +24,7 @@ module Wayfarer
 
       # How long a Scraper thread may hold an adapter.
       # Scrapers that exceed this limit fail with an exception.
-      connection_timeout: 5.0,
+      connection_timeout: 10.0,
 
       # How many 3xx redirects to follow. Has no effect when using Selenium
       max_http_redirects: 3,

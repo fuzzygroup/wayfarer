@@ -32,9 +32,7 @@ module Wayfarer
     # Sets a halt flag and frees the frontier.
     def halt!
       @halted = true
-
-      @workers.each(&:kill) if @workers.any?
-
+      @workers.each(&:join) if @workers.any?
       frontier.free
     end
 
@@ -108,7 +106,7 @@ module Wayfarer
 
     def handle_stage(stage)
       Wayfarer.log.debug("[#{self}] Staging #{stage.uris.count} URIs")
-      @mutex.synchronize { @frontier.stage(*stage.uris) }
+      @mutex.synchronize { @frontier.stage(*stage.uris) unless halted? }
     end
 
     def handle_error(error)
