@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 module Wayfarer
-  # A set that considers trailing slashes and fragment identifiers of URIs as insignifcant
-  # TODO Documentation
+  # A set that considers trailing slashes and fragment identifiers of URIs as
+  # insignifcant.
+  # @private
   class URISet
     def initialize(enumerable = [])
       @set = Set.new(enumerable)

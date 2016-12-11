@@ -33,10 +33,9 @@ module Wayfarer
       @halted
     end
 
-    # Sets a halt flag, waits for remaining threads and frees the frontier.
+    # Sets a halt flag and frees the frontier.
     def halt!
       @halted = true
-      @workers.each(&:join) if @workers.any?
       frontier.free
     end
 
@@ -46,7 +45,9 @@ module Wayfarer
     def run(klass, *uris)
       frontier.stage(*uris)
 
-      while frontier.cycle && !halted?
+      Wayfarer.log.debug("[#{self}] About to cycle")
+
+      while !halted? && frontier.cycle
         current_uris = frontier.current_uris
 
         changed
@@ -54,7 +55,7 @@ module Wayfarer
 
         klass.run_hook(:before_crawl)
 
-        @workers = Array.new(@config.connection_count) do
+        @threads = Array.new(@config.connection_count) do
           Thread.new do
             loop do
               uri = has_halted = struct = nil
@@ -75,7 +76,7 @@ module Wayfarer
           end
         end
 
-        @workers.each(&:join)
+        @threads.each(&:join)
 
         Wayfarer.log.debug("[#{self}] About to cycle")
       end

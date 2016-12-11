@@ -2,28 +2,26 @@
 require_relative "../lib/wayfarer"
 
 class FindHitler < Wayfarer::Job
-  config.connection_count = 2
+  config.connection_count = 32
   # config.reraise_exceptions = true
   config.print_stacktraces = false
 
   before_crawl do
-    # require "pry"; binding.pry
   end
 
   after_crawl do
+    require "pry"; binding.pry
   end
 
   let(:hits) { [] }
 
   draw host: "en.wikipedia.org"
   def article
-    raise "FUCK"
     if page.body =~ /Hitler/
       puts "Found the dicator @ #{page.uri}"
       halt
     else
-      puts "No trace of Hitler @ #{page.uri}"
-      hits << page.url
+      hits << page.uri
       stage page.links
     end
   end

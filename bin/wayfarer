@@ -1,13 +1,10 @@
 #!/usr/bin/env ruby
-
 require "logger"
 require "pathname"
 require "time"
 
 require "active_support/inflector"
 require "thor"
-
-# This is a complete clusterfuck
 
 module Wayfarer
   class CLI < Thor

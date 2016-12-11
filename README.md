@@ -1,7 +1,7 @@
 # Wayfarer
 [![Build Status](https://travis-ci.org/bauerd/wayfarer.svg)](https://travis-ci.org/bauerd/wayfarer)
 
-Versatile web crawling with Ruby
+Versatile web crawling with Ruby that feels familiar.
 
 [__API documentation__]()
 
