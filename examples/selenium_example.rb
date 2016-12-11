@@ -3,7 +3,6 @@ require_relative "../lib/wayfarer"
 class SeleniumExample < Wayfarer::Job
   config do |c|
     c.http_adapter = :selenium
-    c.selenium_argv = [:firefox]
   end
 
   draw uri: "https://example.com"
@@ -14,6 +13,6 @@ class SeleniumExample < Wayfarer::Job
   end
 end
 
-SeleniumExample.perform_now("https://example.com")
+Wayfarer.log.level = 923743287489
 
-Wayfarer.log.level = -1
+SeleniumExample.perform_now("https://example.com")

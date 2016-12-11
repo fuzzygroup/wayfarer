@@ -10,6 +10,8 @@ module Wayfarer
       @halted = false
       @mutex = Mutex.new
       @adapter_pool = HTTPAdapters::AdapterPool.new(config)
+
+      trap_signals
     end
 
     # Returns the frontier.
@@ -29,7 +31,7 @@ module Wayfarer
       @halted
     end
 
-    # Sets a halt flag and frees the frontier.
+    # Sets a halt flag, waits for remaining threads and frees the frontier.
     def halt!
       @halted = true
       @workers.each(&:join) if @workers.any?
@@ -79,6 +81,8 @@ module Wayfarer
 
       Wayfarer.log.debug("[#{self}] Freeing adapter pool")
       @adapter_pool.free
+
+      untrap_signals
     end
 
     private
@@ -117,6 +121,22 @@ module Wayfarer
           raise error.exception
         end
       end
+    end
+
+    # Registers a signal handler for SIGINT that waits for running threads.
+    def trap_signals
+      @cached_sigint_handler = trap(:INT) do
+        halt!
+
+        @cached_sigint_handler.try(:call)
+
+        exit(-1)
+      end
+    end
+
+    # Unregisters the signal handler for SIGINT.
+    def untrap_signals
+      trap(:INT) { @cached_sigint_handler.try(:call) }
     end
   end
 end
