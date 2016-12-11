@@ -1,4 +1,5 @@
 require "observer"
+require "pp"
 
 module Wayfarer
   # Runs jobs
@@ -50,6 +51,8 @@ module Wayfarer
         changed
         notify_observers(:new_cycle, current_uris.count)
 
+        klass.run_hook(:before_crawl)
+
         @workers = @config.connection_count.times.map do
           Thread.new do
             loop do
@@ -60,7 +63,7 @@ module Wayfarer
                 has_halted = halted?
               end
 
-              break if !uri || has_halted
+              break if uri.nil? or has_halted
 
               @adapter_pool.with do |adapter|
                 struct = klass.new.invoke(uri, adapter)
@@ -75,6 +78,8 @@ module Wayfarer
 
         Wayfarer.log.debug("[#{self}] About to cycle")
       end
+
+      klass.run_hook(:after_crawl)
 
       Wayfarer.log.debug("[#{self}] All done")
       @halted = true
@@ -114,12 +119,20 @@ module Wayfarer
     end
 
     def handle_error(error)
-      puts "ERRRRRROR"
+      Wayfarer.log.debug(
+        "[#{self}] Unhandled exception: #{error.exception.inspect}"
+      )
+
       @mutex.synchronize do
         if @config.print_stacktraces
-          Wayfarer.log.debug("[#{self}] Unhandled exception: #{error.backtrace}")
-        elsif @config.reraise_exceptions
+          pp error.exception.backtrace
+        end
+
+        if @config.reraise_exceptions
+          Wayfarer.log.debug("[#{self}] Reraising #{error.exception.inspect}")
           raise error.exception
+        else
+          Wayfarer.log.debug("[#{self}] Swallowing #{error.exception.inspect}")
         end
       end
     end

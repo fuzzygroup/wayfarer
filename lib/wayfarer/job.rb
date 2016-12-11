@@ -12,7 +12,7 @@ module Wayfarer
     Mismatch = Struct.new(:uri)
     Halt     = Struct.new(:uri, :method)
     Stage    = Struct.new(:uris)
-    Error    = Struct.new(:exception, :backtrace)
+    Error    = Struct.new(:exception)
 
     class << self
       def config
