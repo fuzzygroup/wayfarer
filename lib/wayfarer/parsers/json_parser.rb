@@ -2,6 +2,7 @@
 module Wayfarer
   module Parsers
     # A wrapper class for parsing JSON
+    # @private
     module JSONParser
       module_function
 

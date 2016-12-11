@@ -4,6 +4,7 @@ require "redis"
 module Wayfarer
   module Frontiers
     # A Redis frontier
+    # @private
     class RedisFrontier
       def initialize(config)
         @config = config

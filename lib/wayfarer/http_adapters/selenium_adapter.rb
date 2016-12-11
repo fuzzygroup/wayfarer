@@ -5,6 +5,7 @@ require "selenium/emulated_features"
 module Wayfarer
   module HTTPAdapters
     # An adapter for Selenium WebDrivers
+    # @private
     class SeleniumAdapter
       # @!attribute [r] driver
       # @return [URI] the Selenium WebDriver.

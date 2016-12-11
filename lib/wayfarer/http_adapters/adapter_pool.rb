@@ -4,6 +4,7 @@ require "connection_pool"
 module Wayfarer
   module HTTPAdapters
     # A connection pool that hands out HTTP adapters
+    # @private
     class AdapterPool
       def initialize(config)
         @config = config

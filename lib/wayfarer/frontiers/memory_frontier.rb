@@ -3,8 +3,9 @@ require "set"
 
 module Wayfarer
   module Frontiers
-    # TODO: Store strings instead of URI objects
     # A naive in-memory frontier
+    # TODO Store strings instead of URI objects
+    # @private
     class MemoryFrontier
       def initialize(config)
         @config = config
@@ -34,14 +35,6 @@ module Wayfarer
       # Stages URIs for processing in the next cycle.
       # @param [*Array<URI>, *Array<String>] *uris
       def stage(*uris)
-        require "pry" if @staged_uris.nil?
-
-        dups = @staged_uris.dup
-
-        dups |= uris.map { |uri| URI(uri) }
-
-        require "pry" if dups == true
-
         @staged_uris |= uris.map { |uri| URI(uri) }
       end
 
@@ -51,8 +44,8 @@ module Wayfarer
         @cached_uris |= uris.map { |uri| URI(uri) }
       end
 
-      # TODO: Documentation
       # Caches current URIs and sets staged URIs as current.
+      # TODO: Documentation
       def cycle
         unless @config.allow_circulation
           cache(*current_uris)

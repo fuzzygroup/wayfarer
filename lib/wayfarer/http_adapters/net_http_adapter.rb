@@ -6,6 +6,7 @@ require "net/http/persistent"
 module Wayfarer
   module HTTPAdapters
     # A singleton adapter for `net-http-persistent`
+    # @private
     class NetHTTPAdapter
       include Singleton
 
