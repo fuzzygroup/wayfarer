@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "selenium-webdriver"
 require "selenium/emulated_features"
 

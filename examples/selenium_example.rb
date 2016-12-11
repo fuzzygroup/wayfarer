@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative "../lib/wayfarer"
 
 class SeleniumExample < Wayfarer::Job
@@ -13,6 +14,6 @@ class SeleniumExample < Wayfarer::Job
   end
 end
 
-Wayfarer.log.level = 923743287489
+Wayfarer.log.level = 923_743_287_489
 
 SeleniumExample.perform_now("https://example.com")

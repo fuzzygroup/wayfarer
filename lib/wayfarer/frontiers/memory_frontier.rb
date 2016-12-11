@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 require "set"
 
 module Wayfarer
   module Frontiers
-    # TODO Store strings instead of URI objects
+    # TODO: Store strings instead of URI objects
     # A naive in-memory frontier
     class MemoryFrontier
       def initialize(config)
@@ -33,17 +34,13 @@ module Wayfarer
       # Stages URIs for processing in the next cycle.
       # @param [*Array<URI>, *Array<String>] *uris
       def stage(*uris)
-        if @staged_uris.nil?
-          require "pry"; binding.pry
-        end
+        require "pry" if @staged_uris.nil?
 
         dups = @staged_uris.dup
 
         dups |= uris.map { |uri| URI(uri) }
 
-        if dups == true
-          require "pry"; binding.pry
-        end
+        require "pry" if dups == true
 
         @staged_uris |= uris.map { |uri| URI(uri) }
       end
@@ -54,7 +51,7 @@ module Wayfarer
         @cached_uris |= uris.map { |uri| URI(uri) }
       end
 
-      # TODO Documentation
+      # TODO: Documentation
       # Caches current URIs and sets staged URIs as current.
       def cycle
         unless @config.allow_circulation
@@ -63,7 +60,8 @@ module Wayfarer
         end
 
         return false if @staged_uris.empty?
-        @current_uris, @staged_uris = @staged_uris, Set.new([])
+        @current_uris = @staged_uris
+        @staged_uris = Set.new([])
 
         true
       end

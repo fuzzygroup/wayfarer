@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "spec_helpers"
 
 describe Wayfarer::Job do
@@ -74,7 +75,7 @@ describe Wayfarer::Job do
         job.class.class_eval do
           draw path: "/hello_world"
           def foo
-            fail
+            raise
           end
         end
 

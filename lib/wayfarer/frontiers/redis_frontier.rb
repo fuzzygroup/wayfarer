@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "redis"
 
 module Wayfarer
@@ -39,7 +40,7 @@ module Wayfarer
         @conn.sadd(cached_uris_key, uris.map(&:to_s))
       end
 
-      # TODO Documentation
+      # TODO: Documentation
       # Caches current URIs and sets staged URIs as current.
       def cycle
         unless @config.allow_circulation

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Wayfarer
   module Routing
     # Really just a tree in disguise
@@ -23,7 +24,7 @@ module Wayfarer
 
       def ===(uri)
         return false unless match!(uri)
-        none? || any? { |child_rule| child_rule === (uri) }
+        none? || any? { |child_rule| child_rule === uri }
       end
 
       def =~(uri)
@@ -39,7 +40,7 @@ module Wayfarer
       def matching_rule_chain(uri, chain = [])
         if match!(uri) && none?
           chain << self
-        elsif matching_child = detect { |child_rule| child_rule === (uri) }
+        elsif matching_child = detect { |child_rule| child_rule === uri }
           matching_child.matching_rule_chain(uri, chain << self)
         else
           []

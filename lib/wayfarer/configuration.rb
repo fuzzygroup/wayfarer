@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "ostruct"
 require "securerandom"
 
@@ -40,7 +41,7 @@ module Wayfarer
 
       # Which Mustermann pattern type to use when matching URI paths
       mustermann_type: :sinatra
-    }
+    }.freeze
 
     attr_reader :uuid
 

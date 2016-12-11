@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "observer"
 require "pp"
 
@@ -45,7 +46,7 @@ module Wayfarer
     def run(klass, *uris)
       frontier.stage(*uris)
 
-      while frontier.cycle and not halted?
+      while frontier.cycle && !halted?
         current_uris = frontier.current_uris
 
         changed
@@ -53,7 +54,7 @@ module Wayfarer
 
         klass.run_hook(:before_crawl)
 
-        @workers = @config.connection_count.times.map do
+        @workers = Array.new(@config.connection_count) do
           Thread.new do
             loop do
               uri = has_halted = struct = nil
@@ -63,7 +64,7 @@ module Wayfarer
                 has_halted = halted?
               end
 
-              break if uri.nil? or has_halted
+              break if uri.nil? || has_halted
 
               @adapter_pool.with do |adapter|
                 struct = klass.new.invoke(uri, adapter)
@@ -124,9 +125,7 @@ module Wayfarer
       )
 
       @mutex.synchronize do
-        if @config.print_stacktraces
-          pp error.exception.backtrace
-        end
+        pp error.exception.backtrace if @config.print_stacktraces
 
         if @config.reraise_exceptions
           Wayfarer.log.debug("[#{self}] Reraising #{error.exception.inspect}")

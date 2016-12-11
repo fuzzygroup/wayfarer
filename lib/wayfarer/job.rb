@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "hooks"
 require "active_job"
 require "capybara"
@@ -27,15 +28,15 @@ module Wayfarer
         @router
       end
 
-      alias_method :route,  :router
-      alias_method :routes, :router
+      alias route router
+      alias routes router
 
       def draw(rule_opts = {}, &proc)
         @head = [rule_opts, proc]
       end
 
       def crawl(*uris)
-        processor = Processor.new(self.config)
+        processor = Processor.new(config)
         processor.run(self, *uris)
       end
 

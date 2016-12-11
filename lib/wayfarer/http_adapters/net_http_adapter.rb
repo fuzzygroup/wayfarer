@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "singleton"
 require "net/http"
 require "net/http/persistent"
@@ -12,7 +13,7 @@ module Wayfarer
       RECOGNIZED_URI_TYPES = [
         URI::HTTP,
         URI::HTTPS
-      ]
+      ].freeze
 
       class MalformedURI < StandardError; end
       class MalformedRedirectURI < StandardError; end
@@ -29,9 +30,9 @@ module Wayfarer
       # @raise [MaximumRedirectCountReached] if too many redirections are encountered.
       def fetch(uri, redirects_followed = 0)
         if !RECOGNIZED_URI_TYPES.include?(uri.class)
-          fail redirects_followed > 0 ? MalformedRedirectURI : MalformedURI
+          raise redirects_followed > 0 ? MalformedRedirectURI : MalformedURI
         elsif redirects_followed > Wayfarer.config.max_http_redirects
-          fail MaximumRedirectCountReached
+          raise MaximumRedirectCountReached
         end
 
         res = @conn.request(uri)

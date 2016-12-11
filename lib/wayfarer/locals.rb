@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "thread_safe"
 
 module Wayfarer
@@ -11,8 +12,8 @@ module Wayfarer
     end
 
     module ClassMethods
-      def let(key, &proc)
-        locals[key] = case val = proc.call
+      def let(key)
+        locals[key] = case val = yield
                       when Array then ThreadSafe::Array.new(val)
                       when Hash  then ThreadSafe::Hash.new(val)
                       else val

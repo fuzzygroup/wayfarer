@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Wayfarer
   # A set that considers trailing slashes and fragment identifiers of URIs as insignifcant
   # TODO Documentation
@@ -10,13 +11,13 @@ module Wayfarer
       @set << normalize(uri.to_s)
     end
 
-    alias_method :<<, :add
+    alias << add
 
     def include?(uri)
       @set.include?(normalize(uri.to_s))
     end
 
-    alias_method :member, :include?
+    alias member include?
 
     def to_a
       @set.to_a.map { |uri_str| URI(uri_str) }

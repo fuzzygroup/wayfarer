@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Wayfarer
   module Finders
     # Returns the expanded `href` attribute URIs from all or targeted `<a>` tags.
@@ -22,7 +23,7 @@ module Wayfarer
       query("script", "src", *rules)
     end
 
-    alias_method :scripts, :javascripts
+    alias scripts javascripts
 
     # Returns the expanded `src` attribute URIs from all or targeted `<img>` tags.
     # TODO Tests
@@ -37,7 +38,13 @@ module Wayfarer
 
     def query(selector, attr, *rules)
       (rules.any? ? doc.search(*rules).css(selector) : doc.css(selector))
-        .map { |node| URI.join(uri, node.attr(attr)) rescue nil }
+        .map do |node|
+          begin
+            URI.join(uri, node.attr(attr))
+          rescue
+            nil
+          end
+        end
         .find_all { |uri| uri.is_a?(URI) }
         .uniq
     end

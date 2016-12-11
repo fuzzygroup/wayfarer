@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative "../lib/wayfarer"
 
 class FindHitler < Wayfarer::Job
@@ -16,7 +17,7 @@ class FindHitler < Wayfarer::Job
 
   draw host: "en.wikipedia.org"
   def article
-    fail "FUCK"
+    raise "FUCK"
     if page.body =~ /Hitler/
       puts "Found the dicator @ #{page.uri}"
       halt

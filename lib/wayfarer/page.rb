@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "ostruct"
 require "mime/types"
 require "mime-types"
@@ -47,10 +48,10 @@ module Wayfarer
       content_type = @headers["content-type"].first
       sub_type = MIME::Types[content_type].first.sub_type
 
-      # TODO Tests
+      # TODO: Tests
       @doc = case sub_type
              when "json"
-               # TODO Return a Hash instead of an OpenStruct
+               # TODO: Return a Hash instead of an OpenStruct
                OpenStruct.new(Parsers::JSONParser.parse(@body))
              when "xml"
                Parsers::XMLParser.parse_xml(@body)

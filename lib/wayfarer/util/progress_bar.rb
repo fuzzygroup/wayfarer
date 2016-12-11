@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require "logger"
 require "ruby-progressbar"
 
 module Wayfarer
   module Utils
+    # @private
     class ProgressBar
       attr_accessor :level
 
@@ -18,11 +21,12 @@ module Wayfarer
         end
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity
       def add(severity, message = nil, progname = nil, &proc)
         msg = if message
                 message
               elsif proc
-                proc.call
+                yield
               else
                 progname
               end
@@ -37,7 +41,7 @@ module Wayfarer
         end
       end
 
-      alias_method :log, :add
+      alias log add
 
       LEVELS = {
         Logger::UNKNOWN => :unknown,
@@ -46,7 +50,7 @@ module Wayfarer
         Logger::FATAL   => :fatal,
         Logger::INFO    => :info,
         Logger::WARN    => :warn
-      }
+      }.freeze
 
       LEVELS.each do |level, sym|
         define_method(sym) do |message|
@@ -66,7 +70,7 @@ module Wayfarer
       end
 
       def handle_new_cycle(uri_count)
-        @bar.finish if @bar
+        @bar&.finish
 
         opts = options.merge(total: uri_count)
 

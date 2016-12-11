@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 require "spec_helpers"
 
-# TODO: Use shared examples for HTTP adapters
 describe Wayfarer::HTTPAdapters::SeleniumAdapter, selenium: true do
   subject(:adapter) { Wayfarer::HTTPAdapters::SeleniumAdapter.new }
   after { adapter.free }
@@ -45,7 +45,7 @@ describe Wayfarer::HTTPAdapters::SeleniumAdapter, selenium: true do
 
       context "when encountering a redirect loop" do
         it "returns `nil` as HTTP status code" do
-          pending; fail
+          pending; raise
         end
       end
     end

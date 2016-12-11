@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # require "wayfarer"
 require_relative "../lib/wayfarer"
 

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "logger"
 require "uri"
 
@@ -46,7 +47,7 @@ module Wayfarer
       @logger ||= Logger.new(STDOUT)
     end
 
-    alias_method :log, :logger
+    alias log logger
 
     def config
       @config ||= Configuration.new
