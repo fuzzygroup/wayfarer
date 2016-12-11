@@ -9,12 +9,11 @@ class FindHitler < Wayfarer::Job
 
   draw host: "en.wikipedia.org"
   def article
-    puts "ARTICLE!"
     if page.body =~ /Hitler/
-      puts "No trace of Hitler"
+      puts "Found the dicator @ #{page.uri}"
       halt
     else
-      puts "Staging all"
+      puts "No trace of Hitler @ #{page.uri}"
       stage page.links
     end
   end

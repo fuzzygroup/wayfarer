@@ -12,7 +12,7 @@ require_relative "wayfarer/routing/path_rule"
 require_relative "wayfarer/routing/query_rule"
 require_relative "wayfarer/routing/router"
 
-# HTTP adapters
+# Networking
 require_relative "wayfarer/http_adapters/net_http_adapter"
 require_relative "wayfarer/http_adapters/selenium_adapter"
 require_relative "wayfarer/http_adapters/adapter_pool"

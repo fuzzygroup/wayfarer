@@ -33,6 +33,18 @@ module Wayfarer
       # Stages URIs for processing in the next cycle.
       # @param [*Array<URI>, *Array<String>] *uris
       def stage(*uris)
+        if @staged_uris.nil?
+          require "pry"; binding.pry
+        end
+
+        dups = @staged_uris.dup
+
+        dups |= uris.map { |uri| URI(uri) }
+
+        if dups == true
+          require "pry"; binding.pry
+        end
+
         @staged_uris |= uris.map { |uri| URI(uri) }
       end
 
@@ -52,6 +64,7 @@ module Wayfarer
 
         return false if @staged_uris.empty?
         @current_uris, @staged_uris = @staged_uris, Set.new([])
+
         true
       end
 

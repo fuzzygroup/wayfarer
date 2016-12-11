@@ -32,6 +32,9 @@ module Wayfarer
     # Sets a halt flag and frees the frontier.
     def halt!
       @halted = true
+
+      @workers.each(&:kill) if @workers.any?
+
       frontier.free
     end
 
@@ -41,13 +44,13 @@ module Wayfarer
     def run(klass, *uris)
       frontier.stage(*uris)
 
-      while frontier.cycle
+      while frontier.cycle and not halted?
         current_uris = frontier.current_uris
 
         changed
         notify_observers(:new_cycle, current_uris.count)
 
-        workers = @config.connection_count.times.map do
+        @workers = @config.connection_count.times.map do
           Thread.new do
             loop do
               uri = has_halted = struct = nil
@@ -57,8 +60,6 @@ module Wayfarer
                 has_halted = halted?
               end
 
-              puts "URI: #{uri}"
-
               break if !uri || has_halted
 
               @adapter_pool.with do |adapter|
@@ -66,14 +67,13 @@ module Wayfarer
               end
 
               handle_job_result(struct)
-
-              changed
-              notify_observers(:processed_uri)
             end
           end
         end
 
-        workers.each(&:join)
+        @workers.each(&:join)
+
+        Wayfarer.log.debug("[#{self}] About to cycle")
       end
 
       Wayfarer.log.debug("[#{self}] All done")
@@ -86,25 +86,37 @@ module Wayfarer
     private
 
     def handle_job_result(struct)
+      changed
+      notify_observers(:processed_uri)
+
       case struct
-      when Job::Mismatch
-        Wayfarer.log.debug("[#{self}] No matching route for #{struct.uri}")
+      when Job::Mismatch then handle_mismatch(struct)
+      when Job::Halt     then handle_halt(struct)
+      when Job::Stage    then handle_stage(struct)
+      when Job::Error    then handle_error(struct)
+      end
+    end
 
-      when Job::Halt
-        Wayfarer.log.debug("[#{self}] Halt initiated from #{struct.uri}")
-        @mutex.synchronize { halt! }
+    def handle_mismatch(mismatch)
+      Wayfarer.log.debug("[#{self}] No matching route for #{mismatch.uri}")
+    end
 
-      when Job::Stage
-        Wayfarer.log.debug("[#{self}] Staging #{struct.uris.count} URIS")
-        @mutex.synchronize { @frontier.stage(*struct.uris) }
+    def handle_halt(halt)
+      Wayfarer.log.debug("[#{self}] Halt initiated from #{halt.uri}")
+      @mutex.synchronize { halt! unless halted? }
+    end
 
-      when Job::Error
-        @mutex.synchronize do
-          if @config.print_stacktraces
-            Wayfarer.log.debug("[#{self}] Unhandled exception: #{struct.backtrace}")
-          elsif @config.reraise_exceptions
-            raise struct.exception
-          end
+    def handle_stage(stage)
+      Wayfarer.log.debug("[#{self}] Staging #{stage.uris.count} URIs")
+      @mutex.synchronize { @frontier.stage(*stage.uris) }
+    end
+
+    def handle_error(error)
+      @mutex.synchronize do
+        if @config.print_stacktraces
+          Wayfarer.log.debug("[#{self}] Unhandled exception: #{error.backtrace}")
+        elsif @config.reraise_exceptions
+          raise error.exception
         end
       end
     end

@@ -7,6 +7,8 @@ require "time"
 require "active_support/inflector"
 require "thor"
 
+# This is a complete clusterfuck
+
 module Wayfarer
   class CLI < Thor
     class_option :log_level, type: :string, default: "info"
@@ -53,7 +55,7 @@ module Wayfarer
     end
 
     desc "route FILE URI",
-         "Load the job defined in FILE and output the first matching route for URI"
+         "Output the first matching route from FILE for URI"
     def route(file, uri)
       require_relative "../lib/wayfarer"
 

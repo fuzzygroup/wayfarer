@@ -1,5 +1,6 @@
 module Wayfarer
   module Routing
+    # Really just a tree in disguise
     class Rule
       include Enumerable
 
