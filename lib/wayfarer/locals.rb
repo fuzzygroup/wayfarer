@@ -2,6 +2,7 @@
 require "thread_safe"
 
 module Wayfarer
+  # @private
   module Locals
     def self.included(base)
       base.extend(ClassMethods)
@@ -11,6 +12,7 @@ module Wayfarer
       self.class.locals
     end
 
+    # @private
     module ClassMethods
       def let(key)
         locals[key] = case val = yield

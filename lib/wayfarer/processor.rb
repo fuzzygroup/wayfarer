@@ -3,7 +3,7 @@ require "observer"
 require "pp"
 
 module Wayfarer
-  # Runs jobs
+  # Runs jobs.
   class Processor
     include Observable
 

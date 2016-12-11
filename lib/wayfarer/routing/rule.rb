@@ -1,10 +1,15 @@
 # frozen_string_literal: true
+require "forwardable"
+
 module Wayfarer
   module Routing
     # A tree in disguise.
     # @private
     class Rule
       include Enumerable
+      extend Forwardable
+
+      def_delegators :@child_rules, :each
 
       attr_reader :child_rules
 
@@ -13,10 +18,6 @@ module Wayfarer
 
         build_child_rule_chain_from_options(opts)
         instance_eval(&proc) if block_given?
-      end
-
-      def each(&proc)
-        child_rules.each(&proc)
       end
 
       def build_child_rule_chain_from_options(opts)
