@@ -34,7 +34,8 @@ module Wayfarer
       end
 
       def crawl(*uris)
-        Crawler.new.crawl(self, *uris)
+        processor = Processor.new(self.config)
+        processor.run(self, *uris)
       end
 
       private

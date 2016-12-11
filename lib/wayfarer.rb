@@ -31,7 +31,6 @@ require_relative "wayfarer/finders"
 require_relative "wayfarer/page"
 require_relative "wayfarer/uri_set"
 require_relative "wayfarer/processor"
-require_relative "wayfarer/crawler"
 
 # CLI
 require_relative "wayfarer/util/progress_bar"

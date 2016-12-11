@@ -11,8 +11,10 @@ class FindHitler < Wayfarer::Job
   def article
     puts "ARTICLE!"
     if page.body =~ /Hitler/
+      puts "No trace of Hitler"
       halt
     else
+      puts "Staging all"
       stage page.links
     end
   end

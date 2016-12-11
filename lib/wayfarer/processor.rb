@@ -8,7 +8,6 @@ module Wayfarer
     def initialize(config)
       @config = config.dup
       @halted = false
-      @threads = []
       @mutex = Mutex.new
       @adapter_pool = HTTPAdapters::AdapterPool.new(config)
     end
@@ -38,22 +37,29 @@ module Wayfarer
 
     # Runs a job.
     # @param [Job] klass the job to run.
+    # @param [*Array<URI>, *Array<String>] *uris
     def run(klass, *uris)
       frontier.stage(*uris)
 
       while frontier.cycle
-        changed
-        notify_observers(:new_cycle, frontier.current_uris.count)
+        current_uris = frontier.current_uris
 
-        @workers = @config.connection_count.times.map do
+        changed
+        notify_observers(:new_cycle, current_uris.count)
+
+        workers = @config.connection_count.times.map do
           Thread.new do
             loop do
-              uri = struct = nil
+              uri = has_halted = struct = nil
 
               @mutex.synchronize do
-                uri = frontier.current_uris.shift
-                break if not uri or halted?
+                uri = current_uris.shift
+                has_halted = halted?
               end
+
+              puts "URI: #{uri}"
+
+              break if !uri || has_halted
 
               @adapter_pool.with do |adapter|
                 struct = klass.new.invoke(uri, adapter)
@@ -67,8 +73,7 @@ module Wayfarer
           end
         end
 
-        Wayfarer.log.debug("[#{self}] WAITING")
-        @workers.each(&:join)
+        workers.each(&:join)
       end
 
       Wayfarer.log.debug("[#{self}] All done")
@@ -87,15 +92,16 @@ module Wayfarer
 
       when Job::Halt
         Wayfarer.log.debug("[#{self}] Halt initiated from #{struct.uri}")
-        halt!
+        @mutex.synchronize { halt! }
 
       when Job::Stage
+        Wayfarer.log.debug("[#{self}] Staging #{struct.uris.count} URIS")
         @mutex.synchronize { @frontier.stage(*struct.uris) }
 
       when Job::Error
         @mutex.synchronize do
           if @config.print_stacktraces
-            Wayfarer.log.debug("[#{self}] Halt initiated from #{struct.uri}")
+            Wayfarer.log.debug("[#{self}] Unhandled exception: #{struct.backtrace}")
           elsif @config.reraise_exceptions
             raise struct.exception
           end
