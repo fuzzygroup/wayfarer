@@ -29,13 +29,13 @@ module Wayfarer
     # TODO Tests
     # @param [*Array<String>] *rules CSS/XPath expressions.
     # @return [Array<URI>]
-    # TODO Tests
     def images(*rules)
       query("img", "src", *rules)
     end
 
     private
 
+    # Lord have mercy
     def query(selector, attr, *rules)
       (rules.any? ? doc.search(*rules).css(selector) : doc.css(selector))
         .map do |node|

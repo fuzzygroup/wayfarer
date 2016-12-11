@@ -16,14 +16,15 @@ module Wayfarer
         CGI.parse(uri.query).none? { |field, vals| violates?(field, vals) }
       rescue NoMethodError
         # CGI::parse throws a NoMethodError if uri.query is an empty string
-        # TODO: Test
+        false
       end
 
+      # rubocop:disable Lint/AssignmentInCondition
       def violates?(field, vals)
-        if constraint = @field_constraints[field.to_sym]
-          violates_constraint?(constraint, vals)
-        end
+        return false unless constraint = @field_constraints[field.to_sym]
+        violates_constraint?(constraint, vals)
       end
+      # rubocop:enable Lint/AssignmentInCondition
 
       def violates_constraint?(constraint, vals)
         case constraint
@@ -45,7 +46,7 @@ module Wayfarer
       end
 
       def violates_regexp?(regexp, vals)
-        vals.none? { |val| regexp === val }
+        vals.none? { |val| regexp.match(val) }
       end
 
       def violates_range?(range, vals)

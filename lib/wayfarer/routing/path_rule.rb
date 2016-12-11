@@ -18,9 +18,11 @@ module Wayfarer
 
       private
 
+      # rubocop:disable Style/CaseEquality
       def match!(uri)
         @pattern === uri.path
       end
+      # rubocop:enable Style/CaseEquality
     end
   end
 end

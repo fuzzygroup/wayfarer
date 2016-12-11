@@ -8,9 +8,11 @@ module Wayfarer
         super(opts, &proc)
       end
 
+      # rubocop:disable Style/CaseEquality
       def match!(uri)
         @str_or_regexp === uri.host
       end
+      # rubocop:enable Style/CaseEquality
     end
   end
 end
