@@ -4,8 +4,6 @@ class FindHitler < Wayfarer::Job
   # Wayfarer.log.level = Logger::DEBUG
   config.connection_count = 16
 
-  let(:hits) { [] }
-
   after_crawl do
     puts "I found Hitler at #{hits.first}"
   end
@@ -13,7 +11,6 @@ class FindHitler < Wayfarer::Job
   draw host: "en.wikipedia.org"
   def article
     if page.body =~ /Hitler/
-      hits << page.uri
       halt
     else
       stage page.links
@@ -21,4 +18,4 @@ class FindHitler < Wayfarer::Job
   end
 end
 
-FindHitler.perform_later("https://en.wikipedia.org/wiki/Special:Random")
+FindHitler.perform_now("https://en.wikipedia.org/wiki/Special:Random")
