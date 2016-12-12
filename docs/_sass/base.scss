@@ -47,7 +47,7 @@ h5, h6 {
 }
 
 ul, ol, p {
-  margin-bottom: rem($alh);
+  margin: rem($alh * 0.5) 0;
 }
 
 ul, ol {
@@ -113,9 +113,24 @@ pre {
   font-size: rem(12);
 }
 
-.watch-button {
+.badges {
+  @include clearfix;
   height: rem(34);
   margin-bottom: rem($alh);
+}
+
+.watch-button,
+.build-status {
+  display: inline-block;
+  float: left;
+}
+
+.watch-button {
+  margin-right: rem($alh * 0.5);
+}
+
+.build-status {
+  margin-top: rem(4);
 }
 
 .page-content {
@@ -124,13 +139,16 @@ pre {
   padding: 2em 3em;
 
   background-color: white;
-  border-left: rem(1) solid rgba(black, 0.1);
 }
 
 .page-content {
-  h1 {
+  h1, h2 {
     padding-bottom: rem($alh * 0.25);
-    border-bottom: rem(1) solid $athens-gray;
+    border-bottom: rem(1) solid tint(#708395, 70%);
+
+    &:not(:first-child) {
+      margin-top: rem($alh * 2);
+    }
   }
 }
 
