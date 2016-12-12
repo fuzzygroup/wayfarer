@@ -1,0 +1,150 @@
+@import url("https://fonts.googleapis.com/css?family=Bitter:400,700");
+@import url("https://fonts.googleapis.com/css?family=Anonymous+Pro:400,700");
+
+html, body {
+  font-family: "Bitter", sans-serif;
+  line-height: $rlh;
+  color: shade(#708395, 60%);
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  font-size: rem($fs);
+  background-color: tint(#708395, 95%);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: rem($alh);
+  font-weight: normal;
+  color: shade(#708395, 50%);
+}
+
+h1 {
+  font-size: rem(32);
+  line-height: rem($alh * 1.5);
+}
+
+h2 {
+  font-size: rem(26);
+  line-height: rem($alh);
+}
+
+h3 {
+  font-size: rem(20);
+  line-height: rem($alh);
+}
+
+h4 {
+  font-size: rem(18);
+  line-height: rem($alh);
+}
+
+h5, h6 {
+  font: inherit;
+}
+
+ul, ol, p {
+  margin-bottom: rem($alh);
+}
+
+ul, ol {
+  padding-left: rem($alh * 0.75);
+}
+
+a {
+  color: #887544;
+
+  &:hover {
+    color: #708395;
+    text-decoration: none;
+  }
+
+  // &:visited {
+  //   color: #A83374;
+  // }
+}
+
+code {
+  font-family: "Anonymous Pro", monospace;
+}
+
+pre {
+  margin: 0;
+}
+
+.highlight {
+  margin-bottom: rem($alh);
+}
+
+.wrapper {
+  @include outer-container;
+
+  max-width: rem(1080);
+  margin: 0 auto;
+}
+
+.sidebar {
+  @include span-columns(3);
+  padding-top: rem($alh * 1.5);
+}
+
+.site-header {
+  margin-bottom: rem($alh * 0.5);
+}
+
+.site-header__title {
+  font: {
+    size: rem(24);
+    weight: 500;
+  }
+  margin-bottom: 0;
+  line-height: rem($alh);
+}
+
+.site-header__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-header__subtitle {
+  font-size: rem(12);
+}
+
+.watch-button {
+  height: rem(34);
+  margin-bottom: rem($alh);
+}
+
+.page-content {
+  @include span-columns(8);
+
+  padding: 2em 3em;
+
+  background-color: white;
+  border-left: rem(1) solid rgba(black, 0.1);
+}
+
+.page-content {
+  h1 {
+    padding-bottom: rem($alh * 0.25);
+    border-bottom: rem(1) solid $athens-gray;
+  }
+}
+
+.navigation__list {
+  padding: 0;
+  list-style: none;
+}
+
+.navigation__list .navigation__list {
+  font-size: rem(14);
+}
+
+.navigation__category__title {
+  margin-bottom: rem($alh * 0.25);
+  font-size: inherit;
+  line-height: inherit;
+}

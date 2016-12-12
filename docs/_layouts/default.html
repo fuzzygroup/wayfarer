@@ -1,20 +1,29 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
   {% include head.html %}
 
   <body>
+    <div class="wrapper">
+      <aside class="sidebar">
+        <header class="site-header">
+          <h1 class="site-header__title">
+            <a href="/" class="site-header__link">{{ site.title }}</a>
+          </h1>
+          <span class="site-header__subtitle">
+            Versatile web crawling with Ruby
+          </span>
+        </header>
 
-    {% include header.html %}
+        <div class="watch-button">
+          <a class="github-button" href="https://github.com/bauerd/wayfarer/subscription" data-icon="octicon-eye" data-style="mega" data-count-href="/bauerd/wayfarer/watchers" data-count-api="/repos/bauerd/wayfarer#subscribers_count" data-count-aria-label="# watchers on GitHub" aria-label="Watch bauerd/wayfarer on GitHub">Watch</a>
+        </div>
 
-    <div class="page-content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
+        {% include navigation.html %}
+      </aside>
+
+      <main class="page-content">
+        {{content}}
+      </main>
     </div>
-
-    {% include footer.html %}
-
   </body>
-
 </html>
