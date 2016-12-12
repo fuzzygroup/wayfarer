@@ -4,7 +4,67 @@ require "active_job"
 require "capybara"
 
 module Wayfarer
+  # A {Job} is a class that has a {Routing::Router} with many {Routing::Rule}s
+  # which are matched against a URI. If a rule matches the URI, the {Page} is
+  # retrieved and the instance method associated with the matching rule is
+  # called.
+  #
+  # Under the hood, jobs are instantiated within separate threads by a
+  # {Processor}. Every instance gets its own thread.
+  #
+  # Because only jobs know whether URIs match their rules, jobs are responsible
+  # for fetching pages. Jobs check out a HTTP adapter from
+  # {HTTPAdapters::AdapterPool} over the whole invocation of their instance
+  # methods. The adapter pool keeps track of how long adapters get checked out
+  # and if a time limit is exceeded, an exception is raised. The time limit can
+  # be set with the `connection_timeout` configuration key.
+  #
+  # Jobs implement ActiveJob's job api and are therefore compatible with a wide
+  # range of job queues. To run a job immediately, call {#perform_now}. To
+  # enqueue a job, run {#perform_later}.
+  #
+  # ## Configuring routes
+  # @example By accessing the {router} directly
+  #   class DummyJob < Wayfarer::Job
+  #     route.draw :foo, uri: "https://example.com"
+  #     route.draw :bar, uri: "https://w3c.org"
+  #
+  #     def foo; end
+  #     def bar; end
+  #   end
+  #
+  # @example By passing in a block
+  #   class DummyJob < Wayfarer::Job
+  #     routes do
+  #       draw :foo, uri: "https://example.com"
+  #       draw :bar, uri: "https://w3c.org"
+  #     end
+  #
+  #     def foo; end
+  #     def bar; end
+  #   end
+  #
+  # @example By nesting blocks
+  #   class DummyJob < Wayfarer::Job
+  #     routes do
+  #       draw :foo do
+  #         uri "https://example.com"
+  #       end
+  #
+  #       draw :bar do
+  #         uri "https://w3c.org"
+  #       end
+  #     end
+  #
+  #     def foo; end
+  #     def bar; end
+  #   end
   class Job < ActiveJob::Base
+    # @!method perform_later(username, message = "Quit")
+    #   Sends a quit message to the server for a +username+.
+    #   @param [String] username the username to quit
+    #   @param [String] message the quit message
+
     include Hooks
     include Locals
 
@@ -16,12 +76,16 @@ module Wayfarer
     Error    = Struct.new(:exception)
 
     class << self
+      # The class' configuration, based off the global {Wayfarer::config}.
+      # @yield [Routing::Router]
       def config
         @config ||= Wayfarer.config.clone
         yield(@config) if block_given?
         @config
       end
 
+      # The class' router.
+      # @yield [Routing::Router]
       def router(&proc)
         @router ||= Routing::Router.new
         @router.instance_eval(&proc) if block_given?
@@ -31,6 +95,11 @@ module Wayfarer
       alias route router
       alias routes router
 
+      # Adds a new route.
+      # @see Routing::Rule#uri
+      # @see Routing::Rule#host
+      # @see Routing::Rule#path
+      # @see Routing::Rule#query
       def draw(rule_opts = {}, &proc)
         @head = [rule_opts, proc]
       end
@@ -78,10 +147,13 @@ module Wayfarer
       return Error.new(error)
     end
 
-    # ActiveJob
+    # Implements ActiveJob's job API.
     def perform(*argv)
       self.class.crawl(*argv)
     end
+
+    # @!method method1
+    # @!method method2
 
     private
 

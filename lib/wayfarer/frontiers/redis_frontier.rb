@@ -30,13 +30,13 @@ module Wayfarer
       end
 
       # Stages URIs for processing in the next cycle.
-      # @param [*Array<URI>, *Array<String>] *uris
+      # @param [*Array<URI>, *Array<String>] uris
       def stage(*uris)
         @conn.sadd(staged_uris_key, uris.map(&:to_s))
       end
 
       # Caches URIs so they don't get processed again.
-      # @param [*Array<URI>, *Array<String>] *uris
+      # @param [*Array<URI>, *Array<String>] uris
       def cache(*uris)
         @conn.sadd(cached_uris_key, uris.map(&:to_s))
       end

@@ -3,7 +3,7 @@ require "set"
 
 module Wayfarer
   module Frontiers
-    # A naive in-memory frontier
+    # A naive in-memory frontier.
     # TODO Store strings instead of URI objects
     # @private
     class MemoryFrontier
@@ -33,13 +33,13 @@ module Wayfarer
       end
 
       # Stages URIs for processing in the next cycle.
-      # @param [*Array<URI>, *Array<String>] *uris
+      # @param [*Array<URI>, *Array<String>] uris
       def stage(*uris)
         @staged_uris |= uris.map { |uri| URI(uri) }
       end
 
       # Caches URIs so they don't get processed again.
-      # @param [*Array<URI>, *Array<String>] *uris
+      # @param [*Array<URI>, *Array<String>] uris
       def cache(*uris)
         @cached_uris |= uris.map { |uri| URI(uri) }
       end

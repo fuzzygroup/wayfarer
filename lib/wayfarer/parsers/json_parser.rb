@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require "json" unless defined?(Oj)
+
 module Wayfarer
   module Parsers
     # A wrapper class for parsing JSON.
@@ -7,15 +9,10 @@ module Wayfarer
       module_function
 
       # Parses a JSON string.
-      # @param [String] the JSON string to parse.
+      # @param [String] json_str the JSON string to parse.
       # @return [OpenStruct]
       def parse(json_str)
-        if defined?(Oj)
-          Oj.load(json_str)
-        else
-          require "json"
-          JSON.parse(json_str)
-        end
+        defined?(Oj) ? Oj.load(json_str) : JSON.parse(json_str)
       end
     end
   end

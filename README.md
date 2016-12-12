@@ -3,9 +3,11 @@
 
 Versatile web crawling with Ruby
 
+* [__Getting started__]()
 * [__GitHub wiki__]()
 * [__Code examples__]()
 * [__API documentation__]()
+* [__Issue tracker__]()
 
 ## Features
 * Non-circular, breadth-first and multithreaded traversal of page graphs
@@ -15,7 +17,7 @@ Versatile web crawling with Ruby
 * Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s API so you can use your favorite job queue
 * Keeps track of URIs internally with an in-memory or [Redis]() frontier
 * Leaves data extraction and storage up to you
-* MIT-licensed
+* Comes with stellar documentation
 
 __Shortcomings:__
 

@@ -16,7 +16,7 @@ module Wayfarer
       trap_signals
     end
 
-    # Returns the frontier.
+    # The frontier.
     # @return [MemoryFrontier, RedisFrontier]
     def frontier
       @frontier ||= case @config.frontier
@@ -41,7 +41,7 @@ module Wayfarer
 
     # Runs a job.
     # @param [Job] klass the job to run.
-    # @param [*Array<URI>, *Array<String>] *uris
+    # @param [*Array<URI>, *Array<String>] uris
     def run(klass, *uris)
       frontier.stage(*uris)
 
@@ -137,7 +137,6 @@ module Wayfarer
       end
     end
 
-    # Registers a signal handler for SIGINT that waits for running threads.
     def trap_signals
       @cached_sigint_handler = trap(:INT) do
         halt!
@@ -148,7 +147,6 @@ module Wayfarer
       end
     end
 
-    # Unregisters the signal handler for SIGINT.
     def untrap_signals
       trap(:INT) { @cached_sigint_handler.try(:call) }
     end

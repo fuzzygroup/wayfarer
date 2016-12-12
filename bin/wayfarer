@@ -19,14 +19,12 @@ module Wayfarer
 
       klass = load_class_from_file(file)
 
-      crawler = Wayfarer::Crawler.new
-
       if options[:progress]
         bar = Wayfarer::Util::ProgressBar.new
         crawler.processor.add_observer(bar)
       end
 
-      crawler.crawl(klass, uri)
+      klass.crawl(uri)
     end
 
     option :queue_adapter, type: :string, default: "inline"

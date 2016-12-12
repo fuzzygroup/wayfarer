@@ -16,7 +16,7 @@ module Wayfarer
       def update(type, *argv)
         case type
         when :new_cycle      then handle_new_cycle(*argv)
-        when :processed_uri  then handle_processed_uri(*argv)
+        when :processed_uri  then handle_processed_uri
         end
       end
 
@@ -39,6 +39,7 @@ module Wayfarer
         when Logger::WARN    then warn(msg)
         end
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
 
       alias log add
 
@@ -69,7 +70,7 @@ module Wayfarer
       end
 
       def handle_new_cycle(uri_count)
-        @bar&.finish
+        @bar.finish
 
         opts = options.merge(total: uri_count)
 
