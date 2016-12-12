@@ -14,11 +14,11 @@ module Wayfarer
   # {Processor}. Every instance gets its own thread.
   #
   # Because only jobs know whether URIs match their rules, jobs are responsible
-  # for fetching pages. Jobs check out a HTTP adapter from
-  # {HTTPAdapters::AdapterPool} over the whole invocation of their instance
-  # methods. The adapter pool keeps track of how long adapters get checked out
-  # and if a time limit is exceeded, an exception is raised. The time limit can
-  # be set with the `connection_timeout` configuration key.
+  # for fetching pages. Jobs hold a checked out HTTP adapter over the whole
+  # invocation of their instance methods. The adapter pool keeps track of how
+  # long adapters get checked out. If a time limit is exceeded, an exception is
+  # raised. The time limit can be set with the `connection_timeout`
+  # configuration key.
   #
   # Jobs implement ActiveJob's job api and are therefore compatible with a wide
   # range of job queues. To run a job immediately, call #perform_now. To
