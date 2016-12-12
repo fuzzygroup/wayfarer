@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "forwardable"
 require "hooks"
 require "active_job"
 require "capybara"
@@ -20,8 +21,8 @@ module Wayfarer
   # be set with the `connection_timeout` configuration key.
   #
   # Jobs implement ActiveJob's job api and are therefore compatible with a wide
-  # range of job queues. To run a job immediately, call {#perform_now}. To
-  # enqueue a job, run {#perform_later}.
+  # range of job queues. To run a job immediately, call #perform_now. To
+  # enqueue a job, run #perform_later.
   #
   # ## Configuring routes
   # @example By accessing the {router} directly
@@ -59,33 +60,50 @@ module Wayfarer
   #     def foo; end
   #     def bar; end
   #   end
+  #
+  # @see https://github.com/rails/rails/tree/master/activejob rails/activejob
+  # @see http://edgeguides.rubyonrails.org/active_job_basics.html ActiveJob Basics
   class Job < ActiveJob::Base
-    # @!method perform_later(username, message = "Quit")
-    #   Sends a quit message to the server for a +username+.
-    #   @param [String] username the username to quit
-    #   @param [String] message the quit message
+    extend Forwardable
 
     include Hooks
     include Locals
 
+    # @!group Callbacks
+    # @!scope class
+
+    # Callback that fires __once__ serially on the main thread before any pages
+    # are retrieved.
+    # @method before_crawl
+    # @scope class
+
+    # Callback that fires __once__ serially on the main thread after all pages
+    # have been retrieved and processing is done.
+    # @method after_crawl
+    # @scope class
     define_hooks :before_crawl, :after_crawl
 
+    # @!endgroup
+
+    # Result types that a {Processor} operates upon.
     Mismatch = Struct.new(:uri)
     Halt     = Struct.new(:uri, :method)
     Stage    = Struct.new(:uris)
     Error    = Struct.new(:exception)
 
     class << self
-      # The class' configuration, based off the global {Wayfarer::config}.
-      # @yield [Routing::Router]
+      # A configuration based off the global {Wayfarer.config}.
+      # @yield [Configuration]
+      # @return [Configuration]
       def config
         @config ||= Wayfarer.config.clone
         yield(@config) if block_given?
         @config
       end
 
-      # The class' router.
-      # @yield [Routing::Router]
+      # A router.
+      # If a block is passed in, it is evaluated within the {Router}'s instance.
+      # @return [Routing::Router]
       def router(&proc)
         @router ||= Routing::Router.new
         @router.instance_eval(&proc) if block_given?
@@ -95,15 +113,15 @@ module Wayfarer
       alias route router
       alias routes router
 
-      # Adds a new route.
-      # @see Routing::Rule#uri
-      # @see Routing::Rule#host
-      # @see Routing::Rule#path
-      # @see Routing::Rule#query
+      # Draws a new route to the next defined instance method.
+      # @param [Routing::Router]
       def draw(rule_opts = {}, &proc)
         @head = [rule_opts, proc]
       end
 
+      # Draws a new route to the next defined instance method.
+      # @param [*Array<String>, *Array<URI>] uris
+      # @api private
       def crawl(*uris)
         processor = Processor.new(config)
         processor.run(self, *uris)
@@ -119,6 +137,9 @@ module Wayfarer
       end
     end
 
+    # @!attribute [r] staged_uris
+    # @return [Array<String>, Array<URI>] URIs staged for the next cycle.
+    # @see #stage
     attr_reader :staged_uris
 
     def initialize(*argv)
@@ -127,10 +148,17 @@ module Wayfarer
       @staged_uris = []
     end
 
+    # @see ::config
     def config(&proc)
       self.class.config(&proc)
     end
 
+    # Invokes this job. Matches an URI against the rules of its router. If a
+    # rule matches, the page is retrieved, and the instance method associated
+    # with the route is called.
+    # @param [URI] uri
+    # @param [HTTPAdapters::NetHTTPAdapter, SeleniumAdapter] adapter
+    # @api private
     def invoke(uri, adapter)
       method, @params = self.class.router.route(uri)
       return Mismatch.new(uri) unless method
@@ -152,34 +180,58 @@ module Wayfarer
       self.class.crawl(*argv)
     end
 
-    # @!method method1
-    # @!method method2
+    protected
 
-    private
-
-    attr_reader :adapter
+    # @!attribute [r] page
+    # @return [Page] The retrieved page.
     attr_reader :page
+
+    # @!attribute [r] params
+    # @return [Hash] The parameters, if any, extracted from the matching rule.
     attr_reader :params
 
+    # Signals the processor to stop its work.
+    def halt
+      @halts = true
+    end
+
+    # Adds URIs to process in the next cycle.
+    # @param [String, URI, Array<String>, Array<URI>]
+    def stage(uris)
+      @staged_uris += uris.respond_to?(:each) ? uris : [uris]
+    end
+
+    # Prints a log message with `info` level.
     def log(*argv)
       Wayfarer.log.info(*argv)
     end
 
-    def doc
-      page.doc
-    end
+    # The parsed response body.
+    # @method doc
+    # @see Page#doc
+    delegate [:doc] => :page
 
-    def pismo
-      page.pismo
-    end
+    # A Pismo document.
+    # @method pismo
+    # @see https://github.com/peterc/pismo Pismo
+    # @see Page#pismo
+    delegate [:pismo] => :page
 
-    def driver
-      adapter.driver
-    end
+    # The Selenium WebDriver.
+    # @method driver
+    # @see https://github.com/peterc/pismo Pismo
+    # @see Page#driver
+    delegate [:driver] => :adapter
 
+    # A Capybara driver that wraps the {#driver}.
+    # @see https://github.com/teamcapybara/capybara Capybara
     def browser
       @browser ||= instantiate_capybara_driver
     end
+
+    private
+
+    attr_reader :adapter
 
     def instantiate_capybara_driver
       Capybara.run_server = false
@@ -192,14 +244,6 @@ module Wayfarer
       session.instance_variable_set(:@driver, capybara_driver)
 
       session
-    end
-
-    def halt
-      @halts = true
-    end
-
-    def stage(uris)
-      @staged_uris += uris.respond_to?(:each) ? uris : [uris]
     end
   end
 end

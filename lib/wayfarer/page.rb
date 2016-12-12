@@ -32,7 +32,8 @@ module Wayfarer
       @headers     = attrs[:headers]
     end
 
-    # Returns a parsed representation of the fetched document depending on the Content-Type field.
+    # Returns a parsed representation of the fetched document depending on the
+    # Content-Type field.
     # @return [OpenStruct] if the Content-Type field's sub-type is "json".
     # @return [Nokogiri::XML::Document] if the Content-Type field's sub-type is "xml".
     # @return [Nokogiri::HTML::Document] otherwise.
