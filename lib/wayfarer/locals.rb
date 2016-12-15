@@ -28,6 +28,10 @@ module Wayfarer
       def locals
         @locals ||= {}
       end
+
+      def locals=(locals)
+        @locals = locals
+      end
     end
   end
 end

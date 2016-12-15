@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require "observer"
 require "pp"
+require "deep_clone"
 
 module Wayfarer
   # Runs jobs.
@@ -43,9 +44,9 @@ module Wayfarer
     # @param [Job] klass the job to run.
     # @param [*Array<URI>, *Array<String>] uris
     def run(klass, *uris)
-      # Class instance variables are local to a class and don't get inherited
-      # This enables locals not to intersect with etc pp blaaah
       job = Class.new(klass)
+      job.router = klass.router.dup
+      job.locals = klass.locals.dup
 
       frontier.stage(*uris)
 

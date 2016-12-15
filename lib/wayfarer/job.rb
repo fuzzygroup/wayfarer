@@ -55,6 +55,8 @@ module Wayfarer
     Error    = Struct.new(:exception)
 
     class << self
+      attr_writer :router
+
       # A configuration based off the global {Wayfarer.config}.
       # @yield [Configuration]
       # @return [Configuration]

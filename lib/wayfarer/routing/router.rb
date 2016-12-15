@@ -1,8 +1,14 @@
 # frozen_string_literal: true
+require "forwardable"
+
 module Wayfarer
   module Routing
     # A {Router} maps URIs onto a {Job}'s instance methods.
     class Router
+      include Enumerable
+
+      extend Forwardable
+
       # @!attribute [r] routes
       # @return [Array<Rule>]
       attr_reader :routes
@@ -18,13 +24,15 @@ module Wayfarer
         @blacklist = Rule.new
       end
 
-      
+      # TODO Documentation
+      delegate [:each] => :routes
+
       def draw(method, rule_opts = {}, &proc)
         @routes << Route.new(method, Rule.new(rule_opts, &proc))
       end
 
-      # Returns the associated instance method of the first {Rule} that matches
-      # a URI and the collected parameter hash from the rule chain.
+      # Returns the associated instance method of the first rule that matches a
+      # URI and the collected parameter hash from the rule chain.
       # @return [[Symbol, Hash]] if a matching rule exists.
       # @return [false] if no matching rule exists or the URI is forbidden.
       def route(uri)
@@ -46,7 +54,7 @@ module Wayfarer
         @blacklist
       end
 
-      # Whether the URI is matched by the blacklist {Rule}.
+      # Whether the URI is matched by the blacklist rule.
       # @see #forbid
       def forbids?(uri)
         @blacklist.matches?(uri)
