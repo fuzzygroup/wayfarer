@@ -28,9 +28,11 @@ describe Wayfarer::Page do
     end
   end
 
-  describe "#pismo", mri: true do
-    it "returns a Pismo::Document" do
-      expect(page.send(:pismo)).to be_a Pismo::Document
+  describe "Forwarding" do
+    it "forwards calls to Pismo" do
+      Pismo::Document::ATTRIBUTE_METHODS.each do |method|
+        expect(page).to respond_to(method)
+      end
     end
   end
 end

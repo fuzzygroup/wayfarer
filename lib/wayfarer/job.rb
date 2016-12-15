@@ -24,43 +24,6 @@ module Wayfarer
   # range of job queues. To run a job immediately, call #perform_now. To
   # enqueue a job, run #perform_later.
   #
-  # ## Configuring routes
-  # @example By accessing the {router} directly
-  #   class DummyJob < Wayfarer::Job
-  #     route.draw :foo, uri: "https://example.com"
-  #     route.draw :bar, uri: "https://w3c.org"
-  #
-  #     def foo; end
-  #     def bar; end
-  #   end
-  #
-  # @example By passing in a block
-  #   class DummyJob < Wayfarer::Job
-  #     routes do
-  #       draw :foo, uri: "https://example.com"
-  #       draw :bar, uri: "https://w3c.org"
-  #     end
-  #
-  #     def foo; end
-  #     def bar; end
-  #   end
-  #
-  # @example By nesting blocks
-  #   class DummyJob < Wayfarer::Job
-  #     routes do
-  #       draw :foo do
-  #         uri "https://example.com"
-  #       end
-  #
-  #       draw :bar do
-  #         uri "https://w3c.org"
-  #       end
-  #     end
-  #
-  #     def foo; end
-  #     def bar; end
-  #   end
-  #
   # @see https://github.com/rails/rails/tree/master/activejob rails/activejob
   # @see http://edgeguides.rubyonrails.org/active_job_basics.html ActiveJob Basics
   class Job < ActiveJob::Base

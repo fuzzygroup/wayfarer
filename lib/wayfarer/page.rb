@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require "ostruct"
+require "forwardable"
 require "mime/types"
 require "mime-types"
 require "pismo"
@@ -7,6 +8,8 @@ require "pismo"
 module Wayfarer
   # A representation of fetched pages
   class Page
+    extend Forwardable
+
     include Finders
 
     # @!attribute [r] uri
@@ -61,14 +64,19 @@ module Wayfarer
              end
     end
 
+    # TODO Documentation
+    # `#images` is provided by the Helpers module
+    # `#body` is already defined
+    delegate (Pismo::Document::ATTRIBUTE_METHODS - [:images, :body]) => :pismo
+
+    private
+
     # Returns a Pismo document.
     # @note Only succeeds when {#doc} returns a `Nokogiri::HTML::Document`.
     # @return [Pismo::Document]
     def pismo
       @pismo_doc ||= instantiate_pismo_document
     end
-
-    private
 
     def instantiate_pismo_document
       doc = Pismo::Document.allocate

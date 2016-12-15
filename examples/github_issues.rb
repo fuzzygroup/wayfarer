@@ -6,6 +6,7 @@ class CollectGithubIssues < Wayfarer::Job
   route.draw :overview, uri: "https://github.com/rails/rails"
 
   def overview
+    require "pry"; binding.pry
     puts "This looks like Rails to me!"
   end
 end
