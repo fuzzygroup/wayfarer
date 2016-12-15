@@ -43,6 +43,10 @@ module Wayfarer
     # @param [Job] klass the job to run.
     # @param [*Array<URI>, *Array<String>] uris
     def run(klass, *uris)
+      # Class instance variables are local to a class and don't get inherited
+      # This enables locals not to intersect with etc pp blaaah
+      job = Class.new(klass)
+
       frontier.stage(*uris)
 
       Wayfarer.log.debug("[#{self}] About to cycle")
@@ -53,7 +57,7 @@ module Wayfarer
         changed
         notify_observers(:new_cycle, current_uris.count)
 
-        klass.run_hook(:before_crawl)
+        job.run_hook(:before_crawl)
 
         @threads = Array.new(@config.connection_count) do
           Thread.new do
@@ -68,7 +72,7 @@ module Wayfarer
               break if uri.nil? || has_halted
 
               @adapter_pool.with do |adapter|
-                struct = klass.new.invoke(uri, adapter)
+                struct = job.new.invoke(uri, adapter)
               end
 
               handle_job_result(struct)
@@ -81,7 +85,7 @@ module Wayfarer
         Wayfarer.log.debug("[#{self}] About to cycle")
       end
 
-      klass.run_hook(:after_crawl)
+      job.run_hook(:after_crawl)
 
       Wayfarer.log.debug("[#{self}] All done")
       @halted = true

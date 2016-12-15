@@ -5,8 +5,10 @@ require_relative "../lib/wayfarer"
 class CollectGithubIssues < Wayfarer::Job
   route.draw :overview, uri: "https://github.com/rails/rails"
 
+  let(:foobar) { [] }
+
   def overview
-    require "pry"; binding.pry
+    foobar << 123
     puts "This looks like Rails to me!"
   end
 end
@@ -16,4 +18,12 @@ end
 Wayfarer.log.level = :debug
 
 # Perform this job now. I'll omit this line hereafter
-CollectGithubIssues.perform_now("https://github.com/rails/rails", "https://example.com")
+t = 2.times.map do
+  Thread.new do
+    CollectGithubIssues.perform_now("https://github.com/rails/rails", "https://example.com")
+  end
+end
+
+t.each(&:join)
+
+require "pry"; binding.pry
