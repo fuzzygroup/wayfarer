@@ -77,17 +77,18 @@ pre {
 
 .highlight {
   margin-bottom: rem($alh);
+  padding: rem(4) rem(8);
+  border: rem(1) solid tint(#708395, 80%);
+  font-size: rem(14);
 }
 
 .wrapper {
   @include outer-container;
-
-  max-width: rem(1080);
   margin: 0 auto;
 }
 
 .sidebar {
-  @include span-columns(3);
+  @include span-columns(4);
   padding-top: rem($alh * 1.5);
 }
 
@@ -134,7 +135,7 @@ pre {
 }
 
 .page-content {
-  @include span-columns(8);
+  @include span-columns(12);
 
   padding: 2em 3em;
 
@@ -153,6 +154,7 @@ pre {
 }
 
 .navigation__list {
+  margin: 0 0 rem($alh) 0;
   padding: 0;
   list-style: none;
 }

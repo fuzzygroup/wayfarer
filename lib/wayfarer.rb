@@ -62,4 +62,4 @@ end
 STDOUT.sync = true
 
 # Don't print debug messages by default
-Wayfarer.log.level = -1
+Wayfarer.log.level = 1
