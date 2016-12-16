@@ -49,10 +49,8 @@ module Wayfarer
 
       # Frees up memory.
       def free
-        @current_uris = @staged_uris = @cached_uris = nil
+        @current_uris = @staged_uris = nil
       end
-
-      private
 
       def reset_staged_uris!
         @staged_uris = Set.new([])

@@ -4,7 +4,6 @@ require "set"
 module Wayfarer
   module Frontiers
     # A naive in-memory frontier.
-    # TODO Store strings instead of URI objects
     # @private
     class MemoryFrontier < Frontier
       def initialize(config)
@@ -59,10 +58,12 @@ module Wayfarer
         @current_uris = @staged_uris = @cached_uris = nil
       end
 
-      private
-
       def reset_staged_uris!
         @staged_uris = Set.new([])
+      end
+
+      def swap!
+        @current_uris = @staged_uris
       end
 
       def filter_staged_uris!
