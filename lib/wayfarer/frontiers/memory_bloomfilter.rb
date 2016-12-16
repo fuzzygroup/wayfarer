@@ -5,35 +5,10 @@ module Wayfarer
   module Frontiers
     # An in-memory bloomfilter.
     # @private
-    class MemoryBloomfilter < Frontier
+    class MemoryBloomfilter < MemoryFrontier
       def initialize(config)
-        @config = config
-        @current_uris = Set.new([])
-        @staged_uris  = Set.new([])
+        super(config)
         @filter = BloomFilter::Native.new(*config.bloomfilter_argv)
-      end
-
-      # Returns the URIs to be scraped in the current cycle.
-      # @return [Array<URI>]
-      def current_uris
-        @current_uris.to_a
-      end
-
-      # Returns staged URIs.
-      # @return [Array<URI>]
-      def staged_uris
-        @staged_uris.to_a
-      end
-
-      # Stages URIs for processing in the next cycle.
-      # @param [*Array<URI>, *Array<String>] uris
-      def stage(*uris)
-        @staged_uris |= uris
-      end
-
-      # Whether a URI is staged.
-      def staged?(uri)
-        @staged_uris.include?(uri)
       end
 
       # Caches URIs so they don't get processed again.
@@ -45,19 +20,6 @@ module Wayfarer
       # Whether a URI is cached.
       def cached?(uri)
         @filter.include?(uri)
-      end
-
-      # Frees up memory.
-      def free
-        @current_uris = @staged_uris = nil
-      end
-
-      def reset_staged_uris!
-        @staged_uris = Set.new([])
-      end
-
-      def swap!
-        @current_uris = @staged_uris
       end
 
       def filter_staged_uris!
