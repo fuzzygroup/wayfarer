@@ -56,6 +56,10 @@ module Wayfarer
         @staged_uris = Set.new([])
       end
 
+      def swap!
+        @current_uris = @staged_uris
+      end
+
       def filter_staged_uris!
         @staged_uris.delete_if { |uri| @filter.include?(uri) }
       end
