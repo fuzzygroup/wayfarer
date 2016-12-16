@@ -104,6 +104,9 @@ module Wayfarer
     # @!attribute [w] page
     attr_writer :page
 
+    # @!attribute [w] adapter
+    attr_writer :adapter
+
     def initialize(*argv)
       super(*argv)
       @halts = false
@@ -170,7 +173,7 @@ module Wayfarer
       @browser ||= instantiate_capybara_driver
     end
 
-    private
+    protected
 
     attr_reader :adapter
 

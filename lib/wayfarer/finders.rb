@@ -2,42 +2,42 @@
 module Wayfarer
   module Finders
     # Returns the expanded `href` attribute URIs from all or targeted `<a>` tags.
-    # @param [*Array<String>] rules CSS/XPath expressions.
+    # @param [*Array<String>] filters CSS/XPath expressions.
     # @return [Array<URI>]
-    def links(*rules)
-      query("a", "href", *rules)
+    def links(*filters)
+      query("a", "href", *filters)
     end
 
     # Returns the expanded `href` attribute URIs from all or targeted `<link rel="stylesheet" ...>` tags.
-    # @param [*Array<String>] rules CSS/XPath expressions.
+    # @param [*Array<String>] filters CSS/XPath expressions.
     # @return [Array<URI>]
-    def stylesheets(*rules)
-      query("link[rel='stylesheet']", "href", *rules)
+    def stylesheets(*filters)
+      query("link[rel='stylesheet']", "href", *filters)
     end
 
     # Returns the expanded `src` attribute URIs from all or targeted `<script>` tags.
     # TODO Tests
-    # @param [*Array<String>] rules CSS/XPath expressions.
+    # @param [*Array<String>] filters CSS/XPath expressions.
     # @return [Array<URI>]
-    def javascripts(*rules)
-      query("script", "src", *rules)
+    def javascripts(*filters)
+      query("script", "src", *filters)
     end
 
     alias scripts javascripts
 
     # Returns the expanded `src` attribute URIs from all or targeted `<img>` tags.
     # TODO Tests
-    # @param [*Array<String>] rules CSS/XPath expressions.
+    # @param [*Array<String>] filters CSS/XPath expressions.
     # @return [Array<URI>]
-    def images(*rules)
-      query("img", "src", *rules)
+    def images(*filters)
+      query("img", "src", *filters)
     end
 
     private
 
     # Lord have mercy
-    def query(selector, attr, *rules)
-      (rules.any? ? doc.search(*rules).css(selector) : doc.css(selector))
+    def query(selector, attr, *filters)
+      (filters.any? ? doc.search(*filters).css(selector) : doc.css(selector))
         .map do |node|
           begin
             URI.join(uri, node.attr(attr))

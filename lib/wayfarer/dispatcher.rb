@@ -32,6 +32,7 @@ module Wayfarer
       @adapter_pool.with do |adapter|
         job_instance = job.new
         job_instance.page = adapter.fetch(uri)
+        job_instance.adapter = adapter
         job_instance.public_send(action)
 
         if job_instance.halts?
