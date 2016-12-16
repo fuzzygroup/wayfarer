@@ -1,20 +1,16 @@
 # frozen_string_literal: true
 require_relative "../lib/wayfarer"
 
-Wayfarer.log.level = :debug
+# Wayfarer.log.level = :debug
 
 class FindFoobar < Wayfarer::Job
   let(:keywords) { [] }
 
+  config.connection_count = 32
+
   draw host: "en.wikipedia.org"
   def article
-    if page.body =~ /Foobar/
-      puts "Foobar! @ #{page.uri}"
-      halt
-    else
-      keywords << page.keywords
-      stage page.links
-    end
+    stage page.links
   end
 end
 

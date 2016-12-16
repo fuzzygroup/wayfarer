@@ -83,7 +83,7 @@ module Wayfarer
       doc.instance_variable_set(:@options, {})
       doc.instance_variable_set(:@url, uri)
       doc.instance_variable_set(:@html, body)
-      doc.instance_variable_set(:@doc, doc)
+      doc.instance_variable_set(:@doc, self.doc)
       doc
     end
   end

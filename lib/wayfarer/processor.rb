@@ -55,9 +55,11 @@ module Wayfarer
 
       frontier.stage(*uris)
 
-      Wayfarer.log.debug("[#{self}] About to cycle")
+      Wayfarer.log.info("[#{self}] First cycle")
 
       while !halted? && frontier.cycle
+        Wayfarer.log.info("[#{self}] Current: #{frontier.current_uris.count}")
+
         current_uris = frontier.current_uris
 
         changed
@@ -84,7 +86,8 @@ module Wayfarer
 
         @threads.each(&:join)
 
-        Wayfarer.log.debug("[#{self}] About to cycle")
+        Wayfarer.log.info("[#{self}] About to cycle")
+        Wayfarer.log.info("[#{self}] Staged: #{frontier.staged_uris.count}")
       end
 
       job.run_hook(:after_crawl)
