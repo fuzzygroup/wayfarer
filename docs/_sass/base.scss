@@ -86,11 +86,24 @@ pre {
 .wrapper {
   @include outer-container;
   margin: 0 auto;
+
+  @include media($mobile) {
+    background: white;
+    padding: 0 rem($alh);
+  }
 }
 
 .sidebar {
-  @include span-columns(4);
-  padding-top: rem($alh * 1.5);
+  @include media($desktop) {
+    @include span-columns(4);
+    padding-top: rem($alh * 1.5);
+  }
+
+  @include media($mobile) {
+    @include span-columns(16);
+    padding-top: rem($alh * 0.5);
+    text-align: center;
+  }
 }
 
 .site-header {
@@ -119,6 +132,11 @@ pre {
   @include clearfix;
   height: rem(34);
   margin-bottom: rem($alh);
+
+  @include media($mobile) {
+    display: inline-block;
+    margin: 0 auto;
+  }
 }
 
 .watch-button,
@@ -136,9 +154,14 @@ pre {
 }
 
 .page-content {
-  @include span-columns(12);
+  @include media($mobile) {
+    @include span-columns(16);
+  }
 
-  padding: 2em 3em;
+  @include media($desktop) {
+    @include span-columns(12);
+    padding: 2em 3em;
+  }
 
   background-color: white;
 }

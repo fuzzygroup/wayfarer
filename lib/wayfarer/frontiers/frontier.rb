@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-require "bloomfilter-rb"
-
 module Wayfarer
   module Frontiers
     # The common behaviour of all frontiers.

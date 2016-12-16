@@ -2,6 +2,10 @@
 $max-width: rem(1080);
 $grid-columns: 16;
 
+// Breakpoints
+$desktop: min-width 1180px;
+$mobile:  max-width 1180px;
+
 // Typography
 $fs: 16;
 $rlh: 1.6;

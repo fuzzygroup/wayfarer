@@ -79,8 +79,12 @@ module Wayfarer
         @head = [rule_opts, proc]
       end
 
+      # TODO Documentation
+      # @api private
       def crawl(*uris)
-        processor = Processor.new
+        processor = Processor.new(config)
+        yield processor if block_given?
+        processor.run(self, *uris)
       end
 
       private
@@ -124,9 +128,8 @@ module Wayfarer
     end
 
     # Performs this job.
-    def perform(*argv)
-      processor = Processor.new(config)
-      processor.run(self.class, *argv)
+    def perform(*argv, &proc)
+      self.class.crawl(*argv, &proc)
     end
 
     protected

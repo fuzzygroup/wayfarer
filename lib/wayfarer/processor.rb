@@ -56,6 +56,7 @@ module Wayfarer
       frontier.stage(*uris)
 
       Wayfarer.log.info("[#{self}] First cycle")
+      Wayfarer.log.info("[#{self}] Frontier: #{frontier}")
 
       while !halted? && frontier.cycle
         Wayfarer.log.info("[#{self}] Current: #{frontier.current_uris.count}")
@@ -94,10 +95,13 @@ module Wayfarer
 
       Wayfarer.log.debug("[#{self}] All done")
       @halted = true
-
-      Wayfarer.log.debug("[#{self}] Freeing adapter pool")
     ensure
       untrap_signals
+
+      Wayfarer.log.debug("[#{self}] Freeing frontier")
+      frontier.free
+
+      Wayfarer.log.debug("[#{self}] Freeing adapter pool")
       @dispatcher.adapter_pool.free
     end
 

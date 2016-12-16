@@ -29,6 +29,7 @@ require_relative "wayfarer/frontiers/memory_frontier"
 require_relative "wayfarer/frontiers/redis_frontier"
 require_relative "wayfarer/frontiers/memory_bloomfilter"
 require_relative "wayfarer/frontiers/redis_bloomfilter"
+require_relative "wayfarer/frontiers/memory_trie_frontier"
 
 # Processing
 require_relative "wayfarer/locals"

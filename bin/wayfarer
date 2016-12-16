@@ -21,7 +21,8 @@ module Wayfarer
 
       if options[:progress]
         bar = Wayfarer::Util::ProgressBar.new
-        crawler.processor.add_observer(bar)
+        Wayfarer.logger = bar
+        job.crawl { |processor| processor.add_observer(bar) }
       end
 
       job.crawl(uri)

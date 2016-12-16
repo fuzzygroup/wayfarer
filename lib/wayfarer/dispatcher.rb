@@ -29,21 +29,44 @@ module Wayfarer
 
       Wayfarer.log.debug("[#{self}] Dispatching to ##{action}: #{uri}")
 
-      @adapter_pool.with do |adapter|
-        job_instance = job.new
-        job_instance.page = adapter.fetch(uri)
-        job_instance.adapter = adapter
-        job_instance.params = params
-        job_instance.public_send(action)
+      adapter = adapter_pool.checkout
 
-        if job_instance.halts?
-          Halt.new(uri, action)
-        else
-          Stage.new(job_instance.staged_uris)
-        end
+      job_instance = job.new
+      job_instance.page = adapter.fetch(uri)
+      job_instance.adapter = adapter
+      job_instance.params = params
+
+      begin
+        job_instance.public_send(action)
+      rescue => exception
+        return Error.new(exception)
       end
-    rescue => error
-      return Error.new(error)
+
+      if job_instance.halts?
+        Halt.new(uri, action)
+      else
+        Stage.new(job_instance.staged_uris)
+      end
+    rescue Net::ReadTimeout, Errno::ECONNREFUSED => exception
+      # The PhantomJS Selenium driver raises these when its client session times
+      # out
+      raise exception unless adapter.is_a? HTTPAdapters::SeleniumAdapter
+
+      Wayfarer.log.info("[#{self}] PhantomJS Selenium driver client timed out!")
+
+      adapter.reload!
+
+    rescue HTTPAdapters::NetHTTPAdapter::MalformedURI
+      Wayfarer.log.info("[#{self}] Encountered malformed URI: #{uri}")
+
+    rescue HTTPAdapters::NetHTTPAdapter::MalformedRedirectURI
+      Wayfarer.log.info("[#{self}] Encountered malformed redirect URI: #{uri}")
+
+    rescue HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
+      Wayfarer.log.info("[#{self}] Maximum redirect count reached @ #{uri}")
+
+    ensure
+      adapter_pool.checkin
     end
   end
 end

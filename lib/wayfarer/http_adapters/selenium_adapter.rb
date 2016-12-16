@@ -11,17 +11,14 @@ module Wayfarer
       # @return [URI] the Selenium WebDriver.
       attr_reader :driver
 
-      def initialize
-        @driver = Selenium::WebDriver.for(*Wayfarer.config.selenium_argv)
-        @driver.manage.window.size = Selenium::WebDriver::Dimension.new(
-          *Wayfarer.config.window_size
-        )
+      def initialize(config)
+        @config = config
       end
 
       # Fetches a page.
       # @return [Page]
       def fetch(uri)
-        @driver.navigate.to(uri)
+        driver.navigate.to(uri)
 
         Page.new(
           uri: @driver.current_url,
@@ -31,9 +28,31 @@ module Wayfarer
         )
       end
 
+      # Closes and unsets the current driver.
+      def reload!
+        @driver.close if @driver
+        @driver = nil
+      end
+
       # Quits the browser.
       def free
-        @driver.quit
+        @driver.quit if @driver
+        @driver = nil
+      end
+
+      # The WebDriver.
+      def driver
+        @driver ||= instantiate_driver
+      end
+
+      private
+
+      def instantiate_driver
+        driver = Selenium::WebDriver.for(*@config.selenium_argv)
+        driver.manage.window.size = Selenium::WebDriver::Dimension.new(
+          *@config.window_size
+        )
+        driver
       end
     end
   end

@@ -4,7 +4,7 @@ require "bloomfilter-rb"
 module Wayfarer
   module Frontiers
     # A Redis bloomfilter.
-    # @private
+    # @api private
     class RedisBloomfilter < MemoryBloomfilter
       def initialize(config)
         super(config)

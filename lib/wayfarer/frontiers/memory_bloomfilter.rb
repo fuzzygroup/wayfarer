@@ -22,8 +22,10 @@ module Wayfarer
         @filter.include?(uri)
       end
 
-      def filter_staged_uris!
-        @staged_uris.delete_if { |uri| @filter.include?(uri) }
+      # Frees up memory.
+      def free
+        super
+        @filter = nil
       end
     end
   end

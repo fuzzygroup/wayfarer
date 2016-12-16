@@ -10,7 +10,7 @@ module Wayfarer
     class NetHTTPAdapter
       include Singleton
 
-      # Supported sub-classes of the Ruby URI standard lib
+      # Supported subclasses of the Ruby URI standard lib
       RECOGNIZED_URI_TYPES = [
         URI::HTTP,
         URI::HTTPS

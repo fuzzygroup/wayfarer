@@ -4,8 +4,8 @@ require "redis"
 module Wayfarer
   module Frontiers
     # A Redis frontier
-    # @private
-    class RedisFrontier
+    # @api private
+    class RedisFrontier < Frontier
       def initialize(config)
         @config = config
         @conn = Redis.new(@config.redis_opts)
@@ -20,13 +20,13 @@ module Wayfarer
       # Returns the staged URIs.
       # @return [Array<URI>]
       def staged_uris
-        @conn.smembers(staged_uris_key).map { |str| URI(str) }
+        @conn.smembers(staged_uris_key)
       end
 
       # Returns all cached URIs.
       # @return [Array<URI>]
       def cached_uris
-        @conn.smembers(cached_uris_key).map { |str| URI(str) }
+        @conn.smembers(cached_uris_key)
       end
 
       # Stages URIs for processing in the next cycle.
@@ -64,6 +64,10 @@ module Wayfarer
       end
 
       private
+
+      def reset_staged_uris!
+        @staged_uris = Set.new([])
+      end
 
       def current_uris_key
         "#{@config.uuid}_current_uris"

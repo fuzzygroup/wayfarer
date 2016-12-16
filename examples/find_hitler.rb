@@ -1,17 +1,21 @@
 # frozen_string_literal: true
 require_relative "../lib/wayfarer"
+require "securerandom"
 
-# Wayfarer.log.level = :debug
+Wayfarer.log.level = :debug
 
 class FindFoobar < Wayfarer::Job
-  let(:keywords) { [] }
-
+  config.frontier = :memory_bloomfilter
   config.connection_count = 32
+  config.connection_timeout = 3
 
-  draw host: "en.wikipedia.org"
-  def article
+  draw host: //
+  def site
+    puts "LEL?"
+    puts page.uri
+    puts page.links.count
     stage page.links
   end
 end
 
-FindFoobar.perform_now("https://en.wikipedia.org/wiki/Special:Random")
+FindFoobar.perform_now("http://www.google.com")

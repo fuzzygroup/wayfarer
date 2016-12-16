@@ -3,17 +3,17 @@ require "logger"
 require "ruby-progressbar"
 
 module Wayfarer
-  module Utils
+  module Util
     # @private
     class ProgressBar
       attr_accessor :level
 
       def initialize
-        @level = Wayfarer.logger.level
-        Wayfarer.logger = self
+        @level = 1
       end
 
       def update(type, *argv)
+        puts "YESSSSSSSS"
         case type
         when :new_cycle      then handle_new_cycle(*argv)
         when :processed_uri  then handle_processed_uri

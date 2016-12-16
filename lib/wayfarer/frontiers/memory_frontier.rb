@@ -4,7 +4,7 @@ require "set"
 module Wayfarer
   module Frontiers
     # A naive in-memory frontier.
-    # @private
+    # @api private
     class MemoryFrontier < Frontier
       def initialize(config)
         @config = config
@@ -28,7 +28,7 @@ module Wayfarer
       # Stages URIs for processing in the next cycle.
       # @param [*Array<URI>, *Array<String>] uris
       def stage(*uris)
-        @staged_uris |= uris.map { |uri| uri }
+        @staged_uris |= uris
       end
 
       # Whether a URI is staged.
@@ -45,7 +45,7 @@ module Wayfarer
       # Caches URIs so they don't get processed again.
       # @param [*Array<URI>, *Array<String>] uris
       def cache(*uris)
-        @cached_uris |= uris.map { |uri| uri }
+        @cached_uris |= uris
       end
 
       # Whether a URI is cached.
@@ -58,6 +58,8 @@ module Wayfarer
         @current_uris = @staged_uris = @cached_uris = nil
       end
 
+      private
+
       def reset_staged_uris!
         @staged_uris = Set.new([])
       end
@@ -67,7 +69,7 @@ module Wayfarer
       end
 
       def filter_staged_uris!
-        @staged_uris.delete_if { |uri| @cached_uris.include?(uri) }
+        @staged_uris.delete_if { |uri| cached?(uri) }
       end
     end
   end
