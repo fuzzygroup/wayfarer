@@ -6,7 +6,7 @@ module Wayfarer
     # A naive in-memory frontier.
     # TODO Store strings instead of URI objects
     # @private
-    class MemoryFrontier
+    class MemoryFrontier < Frontier
       def initialize(config)
         @config = config
         @current_uris = Set.new([])
@@ -54,27 +54,16 @@ module Wayfarer
         @cached_uris.include?(uri)
       end
 
-      # Caches current URIs and sets staged URIs to current.
-      # TODO: Documentation
-      def cycle
-        unless @config.allow_circulation
-          cache(*current_uris)
-          filter_staged_uris!
-        end
-
-        return false if @staged_uris.empty?
-        @current_uris = @staged_uris
-        @staged_uris = Set.new([])
-
-        true
-      end
-
       # Frees up memory.
       def free
         @current_uris = @staged_uris = @cached_uris = nil
       end
 
       private
+
+      def reset_staged_uris!
+        @staged_uris = Set.new([])
+      end
 
       def filter_staged_uris!
         @staged_uris.delete_if { |uri| @cached_uris.include?(uri) }

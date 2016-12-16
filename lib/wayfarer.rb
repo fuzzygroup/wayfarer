@@ -24,6 +24,7 @@ require_relative "wayfarer/parsers/xml_parser"
 require_relative "wayfarer/parsers/json_parser"
 
 # Frontiers
+require_relative "wayfarer/frontiers/frontier"
 require_relative "wayfarer/frontiers/memory_frontier"
 require_relative "wayfarer/frontiers/redis_frontier"
 require_relative "wayfarer/frontiers/memory_bloomfilter"

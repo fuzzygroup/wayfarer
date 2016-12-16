@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "forwardable"
 require "connection_pool"
 
 module Wayfarer
@@ -6,6 +7,8 @@ module Wayfarer
     # A connection pool that hands out HTTP adapters
     # @private
     class AdapterPool
+      extend Forwardable
+
       def initialize(config)
         @config = config
 
