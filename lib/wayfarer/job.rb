@@ -49,6 +49,7 @@ module Wayfarer
     # @!endgroup
 
     class << self
+      # @!attribute [w] router
       attr_writer :router
 
       # A configuration based off the global {Wayfarer.config}.
@@ -76,6 +77,10 @@ module Wayfarer
       # @param [Routing::Router]
       def draw(rule_opts = {}, &proc)
         @head = [rule_opts, proc]
+      end
+
+      def crawl(*uris)
+        processor = Processor.new
       end
 
       private

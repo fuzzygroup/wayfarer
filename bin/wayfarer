@@ -15,16 +15,16 @@ module Wayfarer
     desc "exec FILE URI",
          "Run the job defined in FILE starting from URI(s)"
     def exec(file, uri)
-      Wayfarer.log.level = log_level_from_string(options[:log_level])
+      set_log_level(options)
 
-      klass = load_class_from_file(file)
+      job = load_class_from_file(file)
 
       if options[:progress]
         bar = Wayfarer::Util::ProgressBar.new
         crawler.processor.add_observer(bar)
       end
 
-      klass.crawl(uri)
+      job.crawl(uri)
     end
 
     option :queue_adapter, type: :string, default: "inline"
@@ -32,15 +32,12 @@ module Wayfarer
     desc "enqueue FILE URI",
          "Run the job defined in FILE starting from URI(s)"
     def enqueue(file, uri)
-      Wayfarer.log.level = log_level_from_string(options[:log_level])
-
-      ActiveJob::Base.queue_adapter = options[:queue_adapter].to_sym
+      set_log_level(options)
+      set_queue_adapter(options)
 
       if wait = options[:wait]
         delayed_seconds = differing_seconds_from_string(wait)
-        load_class_from_file(file)
-          .set(wait: delayed_seconds)
-          .perform_later(uri)
+        load_class_from_file(file).set(wait: delayed_seconds).perform_later(uri)
       else
         load_class_from_file(file).perform_later(uri)
       end
@@ -49,16 +46,16 @@ module Wayfarer
     desc "route FILE URI",
          "Output the first matching route from FILE for URI"
     def route(file, uri)
-      Wayfarer.log.level = log_level_from_string(options[:log_level])
+      set_log_level(options)
 
-      klass = load_class_from_file(file)
+      job = load_class_from_file(file)
 
-      method, params = klass.router.route(URI(uri))
+      action, params = job.router.route(URI(uri))
 
       if method
-        puts "Dispatching to :#{method} with parameters: #{params}"
+        puts "Dispatching to :#{action} with parameters: #{params}"
       else
-        puts "No matching route."
+        puts "No matching route"
       end
     end
 
@@ -68,6 +65,18 @@ module Wayfarer
     end
 
     private
+
+    def set_log_level(options)
+      if level = options[:log_level]
+        Wayfarer.log.level = log_level_from_string(level)
+      end
+    end
+
+    def set_queue_adapter(options)
+      if adapter = options[:queue_adapter]
+        ActiveJob::Base.queue_adapter = adapter
+      end
+    end
 
     def log_level_from_string(str)
       case str.downcase
