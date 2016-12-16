@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 module Wayfarer
+  # Creates job instances, retrieves pages and, if an URI matches a route, calls
+  # methods on the instances.
   class Dispatcher
     # Result types that a {Processor} operates upon.
     Mismatch = Struct.new(:uri)
@@ -7,6 +9,8 @@ module Wayfarer
     Stage    = Struct.new(:uris)
     Error    = Struct.new(:exception)
 
+    # @!attribute [r] adapter_pool
+    # @return [AdapterPool]
     attr_reader :adapter_pool
 
     def initialize(config)

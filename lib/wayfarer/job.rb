@@ -101,6 +101,7 @@ module Wayfarer
     # @see #stage
     attr_reader :staged_uris
 
+    # @!attribute [w] page
     attr_writer :page
 
     def initialize(*argv)
@@ -125,10 +126,6 @@ module Wayfarer
     end
 
     protected
-
-    # @!attribute [r] page
-    # @return [Page] The retrieved page.
-    attr_reader :page
 
     # @!attribute [r] params
     # @return [Hash] The parameters, if any, extracted from the matching rule.
