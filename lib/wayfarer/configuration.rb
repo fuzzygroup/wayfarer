@@ -34,7 +34,10 @@ module Wayfarer
       selenium_argv: [:firefox],
 
       # Argument vector for instantiating a Redis connection
-      redis_argv: [host: "localhost", port: 6379],
+      redis_opts: {
+        host: "localhost",
+        port: 6379
+      },
 
       # Size of browser windows
       window_size: [1024, 768],
@@ -43,7 +46,13 @@ module Wayfarer
       mustermann_type: :sinatra,
 
       # Argument vector for instantiating Bloomfilters
-      bloomfilter_argv: [size: 100, hashes: 2, seed: 1, bucket: 3, raise: false]
+      bloomfilter_opts: {
+        size: 100,
+        hashes: 2,
+        seed: 1,
+        bucket: 3,
+        raise: false
+      }
     }.freeze
 
     attr_reader :uuid

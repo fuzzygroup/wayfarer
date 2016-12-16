@@ -8,7 +8,7 @@ module Wayfarer
     class RedisFrontier
       def initialize(config)
         @config = config
-        @conn = Redis.new(*@config.redis_argv)
+        @conn = Redis.new(@config.redis_opts)
       end
 
       # Returns the URIs to be scraped in the current cycle.

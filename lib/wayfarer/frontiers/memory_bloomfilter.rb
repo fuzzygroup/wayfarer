@@ -8,7 +8,7 @@ module Wayfarer
     class MemoryBloomfilter < MemoryFrontier
       def initialize(config)
         super(config)
-        @filter = BloomFilter::Native.new(*config.bloomfilter_argv)
+        @filter = BloomFilter::Native.new(config.bloomfilter_opts)
       end
 
       # Caches URIs so they don't get processed again.

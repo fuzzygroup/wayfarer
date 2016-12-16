@@ -7,6 +7,7 @@ module Wayfarer
     # @private
     class Rule
       include Enumerable
+
       extend Forwardable
 
       def_delegators :@child_rules, :each

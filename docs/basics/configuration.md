@@ -108,7 +108,7 @@ Argument vector for instantiating Selenium drivers. See [Using Selenium](SELENIU
 
 --
 
-### `redis_argv`
+### `redis_opts`
 
 * Default: `[host: "localhost", port: 6379]`
 * Recognized values: [See documentation]()
