@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require "json" unless defined?(Oj)
+require "oj"
 
 module Wayfarer
   module Parsers
@@ -12,7 +12,7 @@ module Wayfarer
       # @param [String] json_str the JSON string to parse.
       # @return [OpenStruct]
       def parse(json_str)
-        defined?(Oj) ? Oj.load(json_str) : JSON.parse(json_str)
+        Oj.load(json_str)
       end
     end
   end

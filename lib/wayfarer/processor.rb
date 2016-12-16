@@ -14,8 +14,6 @@ module Wayfarer
       @config = config.dup
       @halted = false
       @mutex = Mutex.new
-
-      trap_signals
     end
 
     # The frontier.
@@ -26,6 +24,10 @@ module Wayfarer
                       Frontiers::MemoryFrontier.new(@config)
                     when :redis
                       Frontiers::RedisFrontier.new(@config)
+                    when :memory_bloomfilter
+                      Frontiers::MemoryBloomfilter.new(@config)
+                    when :redis_bloomfilter
+                      Frontiers::RedisBloomfilter.new(@config)
                     end
     end
 
@@ -45,6 +47,8 @@ module Wayfarer
     # @param [Job] klass the job to run.
     # @param [*Array<URI>, *Array<String>] uris
     def run(klass, *uris)
+      trap_signals
+
       job = Class.new(klass)
       job.router = klass.router.dup
       job.locals = klass.locals.dup
@@ -89,22 +93,22 @@ module Wayfarer
       @halted = true
 
       Wayfarer.log.debug("[#{self}] Freeing adapter pool")
-      @dispatcher.adapter_pool.free
-
+    ensure
       untrap_signals
+      @dispatcher.adapter_pool.free
     end
 
     private
 
-    def handle_dispatch_result(struct)
+    def handle_dispatch_result(result)
       changed
       notify_observers(:processed_uri)
 
-      case struct
-      when Dispatcher::Mismatch then handle_mismatch(struct)
-      when Dispatcher::Halt     then handle_halt(struct)
-      when Dispatcher::Stage    then handle_stage(struct)
-      when Dispatcher::Error    then handle_error(struct)
+      case result
+      when Dispatcher::Mismatch then handle_mismatch(result)
+      when Dispatcher::Halt     then handle_halt(result)
+      when Dispatcher::Stage    then handle_stage(result)
+      when Dispatcher::Error    then handle_error(result)
       end
     end
 
