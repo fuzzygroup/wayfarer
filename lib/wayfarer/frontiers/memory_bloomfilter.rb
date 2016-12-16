@@ -4,7 +4,7 @@ require "bloomfilter-rb"
 module Wayfarer
   module Frontiers
     # An in-memory bloomfilter.
-    # @private
+    # @api private
     class MemoryBloomfilter < MemoryFrontier
       def initialize(config)
         super(config)

@@ -34,5 +34,23 @@ describe Wayfarer::Processor do
         expect(processor.frontier).to be_a RedisFrontier
       end
     end
+
+    context "when memory bloomfilter is used" do
+      let(:config) { Configuration.new(frontier: :memory_bloomfilter) }
+      subject(:processor) { Processor.new(config) }
+
+      it "returns a MemoryBloomfilter" do
+        expect(processor.frontier).to be_a MemoryBloomfilter
+      end
+    end
+
+    context "when memory bloomfilter is used" do
+      let(:config) { Configuration.new(frontier: :redis_bloomfilter) }
+      subject(:processor) { Processor.new(config) }
+
+      it "returns a RedisBloomfilter" do
+        expect(processor.frontier).to be_a RedisBloomfilter
+      end
+    end
   end
 end

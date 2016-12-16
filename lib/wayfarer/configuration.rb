@@ -25,7 +25,7 @@ module Wayfarer
 
       # How long a thread may hold an HTP adapter.
       # Threads that exceed this limit fail with an exception.
-      connection_timeout: 10.0,
+      connection_timeout: Float::INFINITY,
 
       # How many 3xx redirects to follow. Has no effect when using Selenium
       max_http_redirects: 3,

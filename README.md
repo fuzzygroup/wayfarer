@@ -15,7 +15,7 @@ Versatile web crawling with Ruby
 * Parses HTML/XML with [Nokogiri](http://nokogiri.org) and JSON with `::JSON` or [oj](https://github.com/ohler55/oj)
 * Can extract metadata with [Pismo](https://github.com/peterc/pismo)
 * Implements [ActiveJob](https://github.com/rails/rails/tree/master/activejob)’s API so you can use your favorite job queue
-* Keeps track of URIs internally with an in-memory or [Redis]() frontier
+* Keeps track of URIs internally with an in-memory or [Redis]() frontier/bloomfilter
 * Leaves data extraction and storage up to you
 * Comes with stellar documentation
 

@@ -107,6 +107,9 @@ module Wayfarer
     # @!attribute [w] adapter
     attr_writer :adapter
 
+    # @!attribute [w] params
+    attr_writer :params
+
     def initialize(*argv)
       super(*argv)
       @halts = false
@@ -134,6 +137,10 @@ module Wayfarer
     # @return [Hash] The parameters, if any, extracted from the matching rule.
     attr_reader :params
 
+    # @!attribute [r] adapter
+    # TODO Documentation
+    attr_reader :adapter
+
     # Signals the processor to stop its work.
     def halt
       @halts = true
@@ -155,12 +162,6 @@ module Wayfarer
     # @see Page#doc
     delegate [:doc] => :page
 
-    # A Pismo document.
-    # @method pismo
-    # @see https://github.com/peterc/pismo Pismo
-    # @see Page#pismo
-    delegate [:pismo] => :page
-
     # The Selenium WebDriver.
     # @method driver
     # @see https://github.com/peterc/pismo Pismo
@@ -172,10 +173,6 @@ module Wayfarer
     def browser
       @browser ||= instantiate_capybara_driver
     end
-
-    protected
-
-    attr_reader :adapter
 
     def instantiate_capybara_driver
       Capybara.run_server = false

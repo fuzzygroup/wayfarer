@@ -24,7 +24,7 @@ module Wayfarer
     # @param [Job] job
     # @param [URI] uri
     def dispatch(job, uri)
-      action, @params = job.router.route(uri)
+      action, params = job.router.route(uri)
       return Mismatch.new(uri) unless action
 
       Wayfarer.log.debug("[#{self}] Dispatching to ##{action}: #{uri}")
@@ -33,6 +33,7 @@ module Wayfarer
         job_instance = job.new
         job_instance.page = adapter.fetch(uri)
         job_instance.adapter = adapter
+        job_instance.params = params
         job_instance.public_send(action)
 
         if job_instance.halts?
