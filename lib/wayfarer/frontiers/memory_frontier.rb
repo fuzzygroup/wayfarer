@@ -16,7 +16,7 @@ module Wayfarer
       # Returns the URIs to be scraped in the current cycle.
       # @return [Array<URI>]
       def current_uris
-        @current_uris.to_a
+        @current_uris.map { |uri| URI(uri) }
       end
 
       # Returns staged URIs.

@@ -78,14 +78,6 @@ module Wayfarer
         @head = [rule_opts, proc]
       end
 
-      # Draws a new route to the next defined instance method.
-      # @param [*Array<String>, *Array<URI>] uris
-      # @api private
-      def crawl(*uris)
-        processor = Processor.new(config)
-        processor.run(self, *uris)
-      end
-
       private
 
       def method_added(method, &proc)
@@ -101,14 +93,14 @@ module Wayfarer
     # @see #stage
     attr_reader :staged_uris
 
-    # @!attribute [w] page
-    attr_writer :page
+    # @!attribute [rw] page
+    attr_accessor :page
 
-    # @!attribute [w] adapter
-    attr_writer :adapter
+    # @!attribute [rw] adapter
+    attr_accessor :adapter
 
-    # @!attribute [w] params
-    attr_writer :params
+    # @!attribute [rw] params
+    attr_accessor :params
 
     def initialize(*argv)
       super(*argv)
@@ -126,20 +118,13 @@ module Wayfarer
       @halts
     end
 
-    # Implements ActiveJob's job API.
+    # Performs this job.
     def perform(*argv)
-      self.class.crawl(*argv)
+      processor = Processor.new(config)
+      processor.run(self.class, *argv)
     end
 
     protected
-
-    # @!attribute [r] params
-    # @return [Hash] The parameters, if any, extracted from the matching rule.
-    attr_reader :params
-
-    # @!attribute [r] adapter
-    # TODO Documentation
-    attr_reader :adapter
 
     # Signals the processor to stop its work.
     def halt

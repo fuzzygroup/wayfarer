@@ -42,7 +42,6 @@ module Wayfarer
           Stage.new(job_instance.staged_uris)
         end
       end
-
     rescue => error
       return Error.new(error)
     end

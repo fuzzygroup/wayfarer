@@ -3,7 +3,7 @@ require "bloomfilter-rb"
 
 module Wayfarer
   module Frontiers
-    # The common interface of all frontiers.
+    # The common behaviour of all frontiers.
     # @api private
     class Frontier
       attr_reader :config

@@ -16,7 +16,9 @@ module Wayfarer
         timeout = @config.connection_timeout
 
         @pool = ConnectionPool.new(
-          size: size, timeout: timeout, &method(:instantiate_adapter)
+          size: size,
+          timeout: timeout,
+          &method(:instantiate_adapter)
         )
       end
 

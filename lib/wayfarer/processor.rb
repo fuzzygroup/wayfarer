@@ -68,7 +68,7 @@ module Wayfarer
         @threads = Array.new(@config.connection_count) do
           Thread.new do
             loop do
-              uri = has_halted = struct = nil
+              uri = has_halted = nil
 
               @mutex.synchronize do
                 uri = current_uris.shift
@@ -127,7 +127,7 @@ module Wayfarer
     end
 
     def handle_error(error)
-      Wayfarer.log.debug(
+      Wayfarer.log.error(
         "[#{self}] Unhandled exception: #{error.exception.inspect}"
       )
 
@@ -135,7 +135,7 @@ module Wayfarer
         pp error.exception.backtrace if @config.print_stacktraces
 
         if @config.reraise_exceptions
-          Wayfarer.log.debug("[#{self}] Reraising #{error.exception.inspect}")
+          Wayfarer.log.error("[#{self}] Reraising #{error.exception.inspect}")
           raise error.exception
         else
           Wayfarer.log.debug("[#{self}] Swallowing #{error.exception.inspect}")

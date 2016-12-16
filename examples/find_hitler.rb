@@ -4,7 +4,7 @@ require_relative "../lib/wayfarer"
 Wayfarer.log.level = :debug
 
 class FindFoobar < Wayfarer::Job
-  let(:hits) { [1, 2, 3] }
+  let(:keywords) { [] }
 
   draw host: "en.wikipedia.org"
   def article
@@ -12,6 +12,7 @@ class FindFoobar < Wayfarer::Job
       puts "Foobar! @ #{page.uri}"
       halt
     else
+      keywords << page.keywords
       stage page.links
     end
   end
