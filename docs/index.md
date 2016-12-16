@@ -13,11 +13,14 @@ If you …
 * __Need to extract whatever data__
 * Don't want to visit a page twice
 * Do it multi-threaded
+* Integrate with Rails seamlessly
 * Want to automate a web-browser
 * Need to execute arbitrary JavaScript
 * Need to take screenshots
 * Want to use a job queue and make work happen later
-* Like OOP and testable objects
+* Like OOP and testability
+* Want bloomfilters!
+* Want Redis support
 * Value a small foot-print and thorough documentation
 
 … then you've come to the right place!

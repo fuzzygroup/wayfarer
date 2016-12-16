@@ -20,41 +20,31 @@ module Wayfarer
         @current_uris.to_a
       end
 
-      # Returns staged URIs.
-      # @return [Array<URI>]
-      def staged_uris
-        @staged_uris.to_a
-      end
-
-      # Stages URIs for processing in the next cycle.
-      # @param [*Array<URI>, *Array<String>] uris
-      def stage(*uris)
-        @staged_uris |= uris.map { |uri| uri }
-      end
-
-      # Whether a URI is staged.
-      def staged?(uri)
-        @staged_uris.include?(uri)
-      end
-
       # Returns the staged URIs.
       # @return [Array<URI>]
       def staged_uris
         @staged_uris.to_a
       end
 
+      # Returns all cached URIs.
+      # @return [Array<URI>]
+      def cached_uris
+        @cached_uris.to_a
+      end
+
+      # Stages URIs for processing in the next cycle.
+      # @param [*Array<URI>, *Array<String>] uris
+      def stage(*uris)
+        @staged_uris |= uris.map { |uri| URI(uri) }
+      end
+
       # Caches URIs so they don't get processed again.
       # @param [*Array<URI>, *Array<String>] uris
       def cache(*uris)
-        @cached_uris |= uris.map { |uri| uri }
+        @cached_uris |= uris.map { |uri| URI(uri) }
       end
 
-      # Whether a URI is cached.
-      def cached?(uri)
-        @cached_uris.include?(uri)
-      end
-
-      # Caches current URIs and sets staged URIs to current.
+      # Caches current URIs and sets staged URIs as current.
       # TODO: Documentation
       def cycle
         unless @config.allow_circulation

@@ -1,17 +1,16 @@
 # frozen_string_literal: true
-require "set"
+require "bloomfilter-rb"
 
 module Wayfarer
   module Frontiers
-    # A naive in-memory frontier.
-    # TODO Store strings instead of URI objects
+    # An in-memory bloomfilter.
     # @private
-    class MemoryFrontier
+    class MemoryBloomfilter
       def initialize(config)
         @config = config
         @current_uris = Set.new([])
         @staged_uris  = Set.new([])
-        @cached_uris  = URISet.new
+        @filter = BloomFilter::Native.new(*config.bloomfilter_argv)
       end
 
       # Returns the URIs to be scraped in the current cycle.
@@ -29,7 +28,7 @@ module Wayfarer
       # Stages URIs for processing in the next cycle.
       # @param [*Array<URI>, *Array<String>] uris
       def stage(*uris)
-        @staged_uris |= uris.map { |uri| uri }
+        @staged_uris |= uris
       end
 
       # Whether a URI is staged.
@@ -37,25 +36,18 @@ module Wayfarer
         @staged_uris.include?(uri)
       end
 
-      # Returns the staged URIs.
-      # @return [Array<URI>]
-      def staged_uris
-        @staged_uris.to_a
-      end
-
       # Caches URIs so they don't get processed again.
       # @param [*Array<URI>, *Array<String>] uris
       def cache(*uris)
-        @cached_uris |= uris.map { |uri| uri }
+        uris.each { |uri| @filter.insert(uri) }
       end
 
       # Whether a URI is cached.
       def cached?(uri)
-        @cached_uris.include?(uri)
+        @filter.include?(uri)
       end
 
       # Caches current URIs and sets staged URIs to current.
-      # TODO: Documentation
       def cycle
         unless @config.allow_circulation
           cache(*current_uris)
@@ -77,7 +69,7 @@ module Wayfarer
       private
 
       def filter_staged_uris!
-        @staged_uris.delete_if { |uri| @cached_uris.include?(uri) }
+        @staged_uris.delete_if { |uri| @filter.include?(uri) }
       end
     end
   end

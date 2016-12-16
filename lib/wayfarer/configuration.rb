@@ -40,7 +40,10 @@ module Wayfarer
       window_size: [1024, 768],
 
       # Which Mustermann pattern type to use when matching URI paths
-      mustermann_type: :sinatra
+      mustermann_type: :sinatra,
+
+      # Argument vector for instantiating Bloomfilters
+      bloomfilter_argv: [size: 100, hashes: 2, seed: 1, bucket: 3, raise: false]
     }.freeze
 
     attr_reader :uuid

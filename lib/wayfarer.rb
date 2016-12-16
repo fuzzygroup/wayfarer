@@ -26,6 +26,8 @@ require_relative "wayfarer/parsers/json_parser"
 # Frontiers
 require_relative "wayfarer/frontiers/memory_frontier"
 require_relative "wayfarer/frontiers/redis_frontier"
+require_relative "wayfarer/frontiers/memory_bloomfilter"
+
 
 # Processing
 require_relative "wayfarer/locals"
