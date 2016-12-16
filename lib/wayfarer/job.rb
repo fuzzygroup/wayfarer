@@ -48,12 +48,6 @@ module Wayfarer
 
     # @!endgroup
 
-    # Result types that a {Processor} operates upon.
-    Mismatch = Struct.new(:uri)
-    Halt     = Struct.new(:uri, :method)
-    Stage    = Struct.new(:uris)
-    Error    = Struct.new(:exception)
-
     class << self
       attr_writer :router
 
@@ -107,6 +101,8 @@ module Wayfarer
     # @see #stage
     attr_reader :staged_uris
 
+    attr_writer :page
+
     def initialize(*argv)
       super(*argv)
       @halts = false
@@ -118,26 +114,9 @@ module Wayfarer
       self.class.config(&proc)
     end
 
-    # Invokes this job. Matches an URI against the rules of its router. If a
-    # rule matches, the page is retrieved, and the instance method associated
-    # with the route is called.
-    # @param [URI] uri
-    # @param [HTTPAdapters::NetHTTPAdapter, SeleniumAdapter] adapter
-    # @api private
-    def invoke(uri, adapter)
-      method, @params = self.class.router.route(uri)
-      return Mismatch.new(uri) unless method
-
-      Wayfarer.log.debug("[#{self}] Dispatched to ##{method}: #{uri}")
-
-      @adapter = adapter
-      @page = adapter.fetch(uri)
-
-      public_send(method)
-
-      @halts ? Halt.new(uri, method) : Stage.new(@staged_uris)
-    rescue => error
-      return Error.new(error)
+    # Whether this job will stop processing.
+    def halts?
+      @halts
     end
 
     # Implements ActiveJob's job API.

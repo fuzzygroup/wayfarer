@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 require_relative "../lib/wayfarer"
 
+Wayfarer.log.level = :debug
+
 class FindFoobar < Wayfarer::Job
   let(:hits) { [1, 2, 3] }
 

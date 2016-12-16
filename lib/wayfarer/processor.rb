@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 require "observer"
 require "pp"
-require "deep_clone"
 
 module Wayfarer
   # Runs jobs.
@@ -9,10 +8,12 @@ module Wayfarer
     include Observable
 
     def initialize(config)
+      Thread.abort_on_exception = true
+
+      @dispatcher = Dispatcher.new(config)
       @config = config.dup
       @halted = false
       @mutex = Mutex.new
-      @adapter_pool = HTTPAdapters::AdapterPool.new(config)
 
       trap_signals
     end
@@ -72,11 +73,7 @@ module Wayfarer
 
               break if uri.nil? || has_halted
 
-              @adapter_pool.with do |adapter|
-                struct = job.new.invoke(uri, adapter)
-              end
-
-              handle_job_result(struct)
+              handle_dispatch_result(@dispatcher.dispatch(job, uri))
             end
           end
         end
@@ -92,22 +89,22 @@ module Wayfarer
       @halted = true
 
       Wayfarer.log.debug("[#{self}] Freeing adapter pool")
-      @adapter_pool.free
+      @dispatcher.adapter_pool.free
 
       untrap_signals
     end
 
     private
 
-    def handle_job_result(struct)
+    def handle_dispatch_result(struct)
       changed
       notify_observers(:processed_uri)
 
       case struct
-      when Job::Mismatch then handle_mismatch(struct)
-      when Job::Halt     then handle_halt(struct)
-      when Job::Stage    then handle_stage(struct)
-      when Job::Error    then handle_error(struct)
+      when Dispatcher::Mismatch then handle_mismatch(struct)
+      when Dispatcher::Halt     then handle_halt(struct)
+      when Dispatcher::Stage    then handle_stage(struct)
+      when Dispatcher::Error    then handle_error(struct)
       end
     end
 
