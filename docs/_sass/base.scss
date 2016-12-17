@@ -177,6 +177,45 @@ pre {
   }
 }
 
+@include media($mobile) {
+  .navigation {
+    position: relative;
+  }
+
+  .navigation__toggle-checkbox {
+    display: block;
+    background-color: gray;
+  }
+
+  .navigation__toggle-checkbox {
+    @include appearance(none);
+    margin: 0;
+
+    &:after {
+      color: #222;
+      position: absolute;
+      font-size: 150%;
+      right: 0.5em;
+      top: 0.1em;
+      display:inline;
+      font-weight:bold;
+      content:"+";
+    }
+
+    &:checked:after {
+      content: "–";
+    }
+  }
+
+  .navigation__toggle-checkbox + .navigation__main {
+    display: none;
+  }
+
+  .navigation__toggle-checkbox:checked + .navigation__main {
+    display: block;
+  }
+}
+
 .navigation__list {
   margin: 0 0 rem($alh) 0;
   padding: 0;
