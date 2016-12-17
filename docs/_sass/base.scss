@@ -1,15 +1,8 @@
-@import url("https://fonts.googleapis.com/css?family=Bitter:400,700");
-@import url("https://fonts.googleapis.com/css?family=Anonymous+Pro:400,700");
-
 html, body {
-  font-family: "Eau", sans-serif;
+  font-family: "Titillium", sans-serif;
   line-height: $rlh;
   color: shade(#708395, 60%);
   -webkit-font-smoothing: antialiased;
-}
-
-html {
-  font-size: 100%;
 }
 
 body {
@@ -70,7 +63,6 @@ a {
 
 code {
   font-family: "Anonymous Pro", monospace;
-  font-size: 1.1em;
 }
 
 pre {
@@ -167,6 +159,7 @@ b {
 
   @include media($desktop) {
     @include span-columns(12);
+    min-height: 100vh;
     padding: 2em 3em;
   }
 
@@ -184,12 +177,18 @@ b {
   }
 }
 
+.navigation__list {
+  margin: 0 0 rem($alh) 0;
+  padding: 0;
+  list-style: none;
+}
+
 @include media($mobile) {
   .navigation {
     @include clearfix;
 
     margin-bottom: rem($alh * 1.5);
-    background: tint(#708395, 95%);
+    background: #887544;
   }
 
   .navigation__toggle-checkbox,
@@ -213,12 +212,17 @@ b {
     cursor: pointer;
 
     &:hover {
-      background: tint(#708395, 90%);
+      background: #887544;
+      color: shade(#708395, 20%);
     }
   }
 
   .navigation__toggle-checkbox:checked ~ .navigation__toggle-label {
-    background: tint(#708395, 30%);
+    background: #887544;
+
+    &:hover {
+      background: tint(#887544, 5%);
+    }
   }
 
   .navigation__toggle-checkbox ~ .navigation__main {
@@ -230,7 +234,22 @@ b {
   }
 
   .navigation__main {
-    background: #708395;
+    background: tint(#708395, 95%);
+  }
+
+  .navigation__category__title {
+    margin-bottom: rem($alh * 0.25);
+    font-size: rem(14);
+    color: shade(#708395, 40%);
+  }
+
+  .navigation__link {
+    text-decoration: none;
+    margin-bottom: rem(1);
+    display: block;
+    padding: rem($alh * 0.25);
+    padding-top: rem($alh * 0.4);
+    background-color: rgba(#887544, 0.05);
   }
 }
 
@@ -239,21 +258,21 @@ b {
   .navigation__toggle-label {
     display: none;
   }
-}
 
-.navigation__list {
-  margin: 0 0 rem($alh) 0;
-  padding: 0;
-  list-style: none;
-}
+  .navigation__list {
+    margin: 0 0 rem($alh) 0;
+    padding: 0;
+    list-style: none;
+  }
 
-.navigation__list .navigation__list {
-  font-size: rem(14);
-}
+  .navigation__list .navigation__list {
+    font-size: rem(14);
+  }
 
-.navigation__category__title {
-  margin-bottom: rem($alh * 0.25);
-  font-size: inherit;
-  line-height: inherit;
-  color: shade(#708395, 40%);
+  .navigation__category__title {
+    margin-bottom: rem($alh * 0.25);
+    font-size: inherit;
+    line-height: inherit;
+    color: shade(#708395, 40%);
+  }
 }
