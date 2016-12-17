@@ -5,7 +5,7 @@ title: Versatile web crawling with Ruby
 
 # Web crawling that feels familiar
 
-Wayfarer is a small <b>web crawling framework for Ruby</b> that gets it right.
+Wayfarer is a small web crawling framework for Ruby that gets it right.
 
 If you …
 
@@ -13,14 +13,14 @@ If you …
 * __Need to extract whatever data__
 * Don't want to visit a page twice
 * Do it multi-threaded
-* Integrate with <b>Rails</b> seamlessly
+* Integrate with Rails seamlessly
 * Want to automate a web-browser
-* Need to execute <b>arbitrary JavaScript</b>
+* Need to execute arbitrary JavaScript
 * Need to take screenshots
-* Want to use a <b>job queue</b> and make work happen later
+* Want to use a job queue and make work happen later
 * Like OOP and testability
 * Want bloomfilters!
-* Want <b>Redis support</b>
+* Want Redis support
 * Value a small foot-print and thorough documentation
 
 … then you've come to the right place!

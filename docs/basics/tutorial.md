@@ -5,7 +5,7 @@ categories: [Basics]
 ---
 
 # Tutorial
-Hi there! This tutorial will teach you 96.333% of what's to know about Wayfarer. Along the (short) way, we'll write a reusable crawler that collects the titles of all open issues from an arbitrary GitHub repository.
+This tutorial walks you through 96.333% of what's to know about Wayfarer. Along the way, we'll write a reusable crawler that collects the titles of all open issues from an arbitrary GitHub repository.
 
 You can view the end-result at [examples/github.rb]().
 
