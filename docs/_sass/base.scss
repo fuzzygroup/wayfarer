@@ -179,40 +179,49 @@ pre {
 
 @include media($mobile) {
   .navigation {
-    position: relative;
+    @include clearfix;
+    background-color: tint(#708395, 95%);
   }
 
-  .navigation__toggle-checkbox {
+  .navigation__toggle-checkbox,
+  .navigation__toggle,
+  .navigation__main {
     display: block;
-    background-color: gray;
+    float: left;
+    width: 100%;
   }
 
   .navigation__toggle-checkbox {
     @include appearance(none);
-    margin: 0;
+  }
 
-    &:after {
-      color: #222;
-      position: absolute;
-      font-size: 150%;
-      right: 0.5em;
-      top: 0.1em;
-      display:inline;
-      font-weight:bold;
-      content:"+";
-    }
+  .navigation__toggle-label {
+    display: block;
+    padding: rem($alh * 0.5) rem($alh * 0.25);
 
-    &:checked:after {
-      content: "–";
+    background: blue;
+
+    cursor: pointer;
+
+    &:hover {
+      background: green;
     }
   }
 
-  .navigation__toggle-checkbox + .navigation__main {
+  .navigation__toggle-checkbox:checked ~ .navigation__toggle-label {
+    color: red;
+  }
+
+  .navigation__toggle-checkbox ~ .navigation__main {
     display: none;
   }
 
-  .navigation__toggle-checkbox:checked + .navigation__main {
+  .navigation__toggle-checkbox:checked ~ .navigation__main {
     display: block;
+  }
+
+  .navigation__main {
+    background: #708395;
   }
 }
 
