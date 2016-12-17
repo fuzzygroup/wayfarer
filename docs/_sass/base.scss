@@ -53,8 +53,7 @@ a {
   text-decoration: none;
 
   &:hover {
-    color: inherit;
-    background: $mikado;
+    color: $amaranth;
   }
 
   // &:visited {
@@ -64,6 +63,8 @@ a {
 
 code {
   font-family: "Roboto Mono", monospace;
+  font-size: 0.95em;
+  letter-spacing: rem(-0.5);
 }
 
 pre {
@@ -71,10 +72,12 @@ pre {
 }
 
 .highlight {
-  margin-bottom: rem($alh);
-  padding: rem(4) rem(8);
-  border: rem(1) solid tint(#708395, 80%);
   font-size: rem(14);
+  background-color: tint($mine-shaft, 98%);
+
+  pre {
+    padding: rem($alh * 0.5);
+  }
 }
 
 .wrapper {
@@ -107,22 +110,29 @@ pre {
 }
 
 .site-header__title {
+  display: inline-block;
   font: {
     size: rem(24);
-    weight: 500;
+    weight: bold;
   }
   margin-bottom: 0;
+  margin-right: rem($alh * 0.5);
   line-height: 1.2;
+  text-decoration: uppercase;
   line-height: rem($alh);
 }
 
 .site-header__link {
   color: white;
   text-decoration: none;
+
+  &:hover {
+    color: rgba(white, 0.8);
+  }
 }
 
-.site-header__subtitle {
-  font-size: rem(12);
+.site-header__version {
+  color: tint($mine-shaft, 60%);
 }
 
 .badges {
@@ -177,6 +187,7 @@ pre {
 .navigation__list {
   margin: 0 0 rem($alh) 0;
   padding: 0;
+  list-style: none;
 }
 
 @include media($mobile) {
@@ -257,23 +268,7 @@ pre {
   .navigation__list {
     margin: 0 0 rem($alh) 0;
     padding: 0;
-
-    list-style: none;
-
-    .navigation__list {
-      .navigation__page {
-        list-style: disc;
-        color: tint($mine-shaft, 25%);
-
-        &:hover {
-          color: $mikado;
-          list-style: circle;
-        }
-      }
-    }
   }
-
-  .navigation__page {}
 
   .navigation__category__title {
     margin-bottom: rem($alh * 0.25);
@@ -287,8 +282,8 @@ pre {
     color: $emerald;
 
     &:hover {
-      background: transparent;
       color: $mikado;
+      font-weight: bold;
     }
   }
 }

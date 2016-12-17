@@ -6,7 +6,7 @@ categories: [Basics]
 
 # `Page` objects
 
-Retrieved pages are represented by a `Page` object and made accessible by `#page` within instance methods.
+Retrieved pages are represented by a `Page` object and made accessible by `#page` within actions.
 
 A `Page` brings to the table all you'd wish for when doing web scraping:
 
@@ -37,7 +37,7 @@ class DummyJob < Wayfarer::Job
     # All previous four methods accept arbitrary many CSS selectors
     page.links ".my-target", ".my-other-target"
 
-    
+
   end
 end
 {% endhighlight %}

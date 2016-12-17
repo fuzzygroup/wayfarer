@@ -3,7 +3,7 @@ layout: default
 title: Versatile web crawling with Ruby
 ---
 
-# Web crawling that feels familiar
+# Versatile web crawling with Ruby
 
 Wayfarer is a small web crawling framework for Ruby that gets it right.
 

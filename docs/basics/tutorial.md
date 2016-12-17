@@ -33,7 +33,7 @@ end
 
 This will do. We set up a single route which maps the repository URI (and only this URI) to `CollectGithubIssues#overview`. Whenever we feed the job that URI, that very method takes the stage.
 
-Let's have our job do some work. Instead of instantiating jobs on your own, call `::perform_now` and pass an arbitrary number of URIs:
+Let's do this. Instead of instantiating jobs on your own, call `::perform_now` and pass an arbitrary number of URIs:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
