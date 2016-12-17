@@ -2,9 +2,10 @@
 @import url("https://fonts.googleapis.com/css?family=Anonymous+Pro:400,700");
 
 html, body {
-  font-family: "Bitter", sans-serif;
+  font-family: "Eau", sans-serif;
   line-height: $rlh;
   color: shade(#708395, 60%);
+  -webkit-font-smoothing: antialiased;
 }
 
 html {
@@ -13,7 +14,7 @@ html {
 
 body {
   font-size: rem($fs);
-  background-color: tint(#708395, 95%);
+  background: tint(#708395, 95%);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -76,6 +77,11 @@ pre {
   margin: 0;
 }
 
+b {
+  font-weight: normal;
+  background-color: tint(#FBCB43, 70%);
+}
+
 .highlight {
   margin-bottom: rem($alh);
   padding: rem(4) rem(8);
@@ -136,6 +142,7 @@ pre {
   @include media($mobile) {
     display: inline-block;
     margin: 0 auto;
+    margin-bottom: rem($alh * 0.5);
   }
 }
 
@@ -180,11 +187,13 @@ pre {
 @include media($mobile) {
   .navigation {
     @include clearfix;
-    background-color: tint(#708395, 95%);
+
+    margin-bottom: rem($alh * 1.5);
+    background: tint(#708395, 95%);
   }
 
   .navigation__toggle-checkbox,
-  .navigation__toggle,
+  .navigation__toggle-label,
   .navigation__main {
     display: block;
     float: left;
@@ -199,17 +208,17 @@ pre {
     display: block;
     padding: rem($alh * 0.5) rem($alh * 0.25);
 
-    background: blue;
+    background: tint(#708395, 95%);
 
     cursor: pointer;
 
     &:hover {
-      background: green;
+      background: tint(#708395, 90%);
     }
   }
 
   .navigation__toggle-checkbox:checked ~ .navigation__toggle-label {
-    color: red;
+    background: tint(#708395, 30%);
   }
 
   .navigation__toggle-checkbox ~ .navigation__main {
@@ -222,6 +231,13 @@ pre {
 
   .navigation__main {
     background: #708395;
+  }
+}
+
+@include media($desktop) {
+  .navigation__toggle-checkbox,
+  .navigation__toggle-label {
+    display: none;
   }
 }
 
@@ -239,4 +255,5 @@ pre {
   margin-bottom: rem($alh * 0.25);
   font-size: inherit;
   line-height: inherit;
+  color: shade(#708395, 40%);
 }
