@@ -23,9 +23,9 @@ Suppose we’re interested in the Rails repository, which is located at `https:/
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
-  route.draw :overview, uri: "https://github.com/rails/rails"
+  route.draw :repository, uri: "https://github.com/rails/rails"
 
-  def overview
+  def repository
     puts "This looks like Rails to me!"
   end
 end
@@ -37,9 +37,9 @@ Let's do this. Instead of instantiating jobs on your own, call `::perform_now` a
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
-  route.draw :overview, uri: "https://github.com/rails/rails"
+  route.draw :repository, uri: "https://github.com/rails/rails"
 
-  def overview
+  def repository
     puts "This looks like Rails to me!"
   end
 end
@@ -80,37 +80,37 @@ The instance of our job that matched and processed `https://github.com/rails/rai
 4. `[#<Wayfarer::Processor:...>] All done`
 The `Processor` cycled, and because we haven't staged any URIs, there are no URIs to set as current. The job then terminates.
 
-Let’s print the page title instead of that dumb hard-coded string. Inside our instance method, we call `#doc` to get ahold of a [`Nokogiri::HTML::Document`](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/HTML/Document). [Nokogiri]() is a HTML/XML library, and a parsed document allows us to access the page title without further kung-foo:
+Let’s replace the hard-coded string with the page `<title>`. Inside our instance method, we call `#doc` to get ahold of a [`Nokogiri::HTML::Document`](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/HTML/Document). [Nokogiri]() is a HTML/XML library, and a parsed document allows us to access the title easily:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
-  route.draw :overview, uri: "https://github.com/rails/rails"
+  route.draw :repository, uri: "https://github.com/rails/rails"
 
-  def overview
+  def repository
     # Outputs the <title> attribute value
     puts doc.title
   end
 end
 {% endhighlight %}
 
-Wayfarer does not attempt to do black magic on top of Nokogiri. When it comes to extracting specific data from pages, you’re mostly on your own. There are helpers (see [Finders]()) for finding links, CSS/JavaScript files and images. But figuring out what HTML elements you're interested in is still up to you. Wayfarer will happily parse JSON, too. You'll get a `Hash` returned by `#doc` instead of a parsed Nokogiri document instead.
+Wayfarer does not attempt to do black magic on top of Nokogiri. When it comes to extracting specific data from pages, you’re mostly on your own. There are helpers (see [Finders]()) for finding links, CSS/JavaScript files and images. But figuring out what HTML elements you're interested in is still up to you. Wayfarer will happily parse JSON, too. You'll get a `Hash` returned by `#doc` instead of a parsed Nokogiri document.
 
-Rails’ issues are located at `https://github.com/rails/rails/issues`. We need a new route and a new instance method to handle the issue listing. By calling `#stage` and passing in an arbitrary number of URIs, we can stage URIs for processing. Note that just because a URI gets staged does not mean it will be fetched—a matching route is required for every URI. Also, Wayfarer will by default ensure that no URI gets processed twice. This can be turned off, though (see [Configuration]()).
+Rails’ issues are located at `https://github.com/rails/rails/issues`. We need a new route and a new instance method to handle this issue index. By calling `#stage` and passing in an arbitrary number of URIs, we can stage URIs for processing. Note that just because a URI gets staged does not mean it will be fetched—a matching route is required for every URI. Also, Wayfarer will by default ensure that no URI gets processed twice. This can be turned off, though (see [Configuration]()).
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
   routes do
-    draw :overview,      uri: "https://github.com/rails/rails"
-    draw :issue_listing, uri: "https://github.com/rails/rails/issues"
+    draw :repository,  uri: "https://github.com/rails/rails"
+    draw :issue_index, uri: "https://github.com/rails/rails/issues"
   end
 
-  def overview
+  def repository
     # This is where we want to head at
     stage "https://github.com/rails/rails/issues"
   end
 
-  def issue_listing
-    # We've arrived at the issue listing!
+  def issue_index
+    # We've arrived at the issue index!
     puts "Rails got some issues."
   end
 end
@@ -118,7 +118,7 @@ end
 
 What we have so far works fine for the Rails repository, but not for others, because the URIs are hardcoded. That's a real pity, because there are more than 10 million repositories on GitHub. Surely we can do better! Instead of using a URI rule, we switch to a host and path rule.
 
-A host rule narrows down the host portion of a URI, and a path rule … well, it narrows down the path. Instead of hard-coding the path, we can use pattern matching and have interesting parts of the path extracted for us:
+A host rule narrows down the host portion of a URI, and a path rule the path. Instead of hard-coding the path, we can use pattern matching and have interesting parts of the path extracted for us:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
@@ -126,25 +126,26 @@ class CollectGithubIssues < Wayfarer::Job
     # Both routes match only if
     # (1) The host is github.com and
     # (2) The path is as specified
-    draw :overview,      host: "github.com", path: "/:user/:repo"
-    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
+    draw :repository,  host: "github.com", path: "/:user/:repo"
+    draw :issue_index, host: "github.com", path: "/:user/:repo/issues"
   end
 
-  def overview
+  def repository
     stage "https://github.com/rails/rails/issues"
   end
 
-  def issue_listing
-    # Prints 'rails belongs to rails'. Who would've guessed
+  def issue_index
+    # You have access to the extracted path parameters: params # => { repo: ...}
+    # Prints 'rails belongs to rails'.
     puts "#{params['repo']} belongs to #{params['user']}"
   end
 end
 {% endhighlight %}
 
-Note that the issue listing's URI is still hard-coded. Usually, when doing web scraping, there are two possibilities you identify URIs on a page that you want to crawl:
+Note that the issue index's URI is still hard-coded. Usually, when doing web scraping, there are two possibilities you identify URIs on a page that you want to follow:
 
 1. You can construct the next URI from the current URI.
-2. The link you're interested in is contained in the response, e.g. in a `<a>` tag's `href` property.
+2. The URI you're interested in is contained in the response, e.g. in a `<a>` tag's `href` property.
 
 For the first case, say we're on `https://github.com/:user/:repo` and want to go to `https://github.com/:user/:repo/issues`. All that separates both URIs is the last path segment, and you can simply append it at runtime:
 
@@ -152,7 +153,7 @@ For the first case, say we're on `https://github.com/:user/:repo` and want to go
 class CollectGithubIssues < Wayfarer::Job
   # ...
 
-  def overview
+  def repository
     stage page.uri << "/issues"
   end
 
@@ -168,7 +169,8 @@ The second case is where Wayfarer's routing really shines. You know that the pat
 class CollectGithubIssues < Wayfarer::Job
   # ...
 
-  def overview
+  def repository
+    # But only route-matching one's get processed
     stage page.links
   end
 
@@ -176,26 +178,26 @@ class CollectGithubIssues < Wayfarer::Job
 end
 {% endhighlight %}
 
-`Page#links` returns all links of the current site. But staging all links brings overhead with it, and you'll want to narrow down the links you stage, especially when you're crawling large page structures. `Page#links` lets you narrow down the links you want to stage by passing in an arbitrary number of CSS selectors. For clarity, let's give the interesting link its own private helper method:
+`Page#links` returns all links of the current site. But staging all links brings overhead with it, and you'll want to narrow down the links you stage, especially when crawling large page structures. `Page#links` lets you narrow down the links you want to stage by passing in an arbitrary number of CSS selectors. For clarity, let's give the interesting link its own private helper method:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
   routes do
-    draw :overview,      host: "github.com", path: "/:user/:repo"
-    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
+    draw :repository,  host: "github.com", path: "/:user/:repo"
+    draw :issue_index, host: "github.com", path: "/:user/:repo/issues"
   end
 
-  def overview
-    stage issue_listing_uri
+  def repository
+    stage issue_index_uri
   end
 
-  def issue_listing
+  def issue_index
     puts "#{params['repo']} belongs to #{params['user']}"
   end
 
   private
 
-  def issue_listing_uri
+  def issue_index_uri
     page.links ".reponav-item"
   end
 end
@@ -203,21 +205,21 @@ end
 
 URIs never get dispatched to private instance methods.
 
-We're prepared to go for the individual issues now. We add a new instance method, `#issue`, and route to it with a host and path rule. Links to an issue have the class `.issue-title-link`, so we can apply the same technique as above:
+We're prepared to go after the individual issues now. We add the `#issue` action, and route to it with a host and path rule. Links to an issue have the class `.issue-title-link`, so we can apply the same technique as above:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
   routes do
-    draw :overview,      host: "github.com", path: "/:user/:repo"
-    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
-    draw :issue,         host: "github.com", path: "/:user/:repo/issues/:id"
+    draw :repository,  host: "github.com", path: "/:user/:repo"
+    draw :issue_index, host: "github.com", path: "/:user/:repo/issues"
+    draw :issue,       host: "github.com", path: "/:user/:repo/issues/:id"
   end
 
-  def overview
-    stage issue_listing_uri
+  def repository
+    stage issue_index_uri
   end
 
-  def issue_listing
+  def issue_index
     stage issue_uris
   end
 
@@ -227,7 +229,7 @@ class CollectGithubIssues < Wayfarer::Job
 
   private
 
-  def issue_listing_uri
+  def issue_index_uri
     page.links ".reponav-item"
   end
 
@@ -239,22 +241,22 @@ end
 CollectGithubIssues.perform_now("https://github.com/rails/rails")
 {% endhighlight %}
 
-Nothing new here. What’s left is paginating through all issue listings:
+Nothing new here. What’s left is paginating through all issue indexs:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
   routes do
-    draw :overview,      host: "github.com", path: "/:user/:repo"
-    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
-    draw :issue,         host: "github.com", path: "/:user/:repo/issues/:id"
+    draw :repository,  host: "github.com", path: "/:user/:repo"
+    draw :issue_index, host: "github.com", path: "/:user/:repo/issues"
+    draw :issue,       host: "github.com", path: "/:user/:repo/issues/:id"
   end
 
-  def overview
-    stage issue_listing_uri
+  def repository
+    stage issue_index_uri
   end
 
-  def issue_listing
-    stage issue_uris, next_issue_listing_uri
+  def issue_index
+    stage issue_uris, next_issue_index_uri
   end
 
   def issue
@@ -263,7 +265,7 @@ class CollectGithubIssues < Wayfarer::Job
 
   private
 
-  def issue_listing_uri
+  def issue_index_uri
     page.links ".reponav-item"
   end
 
@@ -271,7 +273,7 @@ class CollectGithubIssues < Wayfarer::Job
     page.links ".Box-row-link"
   end
 
-  def next_issue_listing_uri
+  def next_issue_index_uri
     page.links ".next_page"
   end
 end
@@ -294,21 +296,21 @@ While we're at it, why not collect all these issues, instead of writing them to 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
   routes do
-    draw :overview,      host: "github.com", path: "/:user/:repo"
-    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
-    draw :issue,         host: "github.com", path: "/:user/:repo/issues/:id"
+    draw :repository,  host: "github.com", path: "/:user/:repo"
+    draw :issue_index, host: "github.com", path: "/:user/:repo/issues"
+    draw :issue,       host: "github.com", path: "/:user/:repo/issues/:id"
   end
 
   # Locals are accessible from your instance methods
   let(:issues) { {} }
 
-  def overview
-    stage issue_listing_uri
+  def repository
+    stage issue_index_uri
   end
 
-  def issue_listing
+  def issue_index
     stage issue_uris
-    stage next_issue_listing_uri
+    stage next_issue_index_uri
   end
 
   def issue
@@ -317,7 +319,7 @@ class CollectGithubIssues < Wayfarer::Job
 
   private
 
-  def issue_listing_uri
+  def issue_index_uri
     page.links ".reponav-item"
   end
 
@@ -325,7 +327,7 @@ class CollectGithubIssues < Wayfarer::Job
     page.links ".Box-row-link"
   end
 
-  def next_issue_listing_uri
+  def next_issue_index_uri
     page.links ".next_page"
   end
 end
@@ -342,8 +344,8 @@ Now we're collecting issue titles, but we haven't had the chance to do anything 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
   routes do
-    draw :overview,      host: "github.com", path: "/:user/:repo"
-    draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
+    draw :repository,      host: "github.com", path: "/:user/:repo"
+    draw :issue_index, host: "github.com", path: "/:user/:repo/issues"
     draw :issue,         host: "github.com", path: "/:user/:repo/issues/:id"
   end
 
@@ -355,13 +357,13 @@ class CollectGithubIssues < Wayfarer::Job
     end
   end
 
-  def overview
-    stage issue_listing_uri
+  def repository
+    stage issue_index_uri
   end
 
-  def issue_listing
+  def issue_index
     stage issue_uris
-    stage next_issue_listing_uri
+    stage next_issue_index_uri
   end
 
   def issue
@@ -370,7 +372,7 @@ class CollectGithubIssues < Wayfarer::Job
 
   private
 
-  def issue_listing_uri
+  def issue_index_uri
     page.links ".reponav-item"
   end
 
@@ -378,7 +380,7 @@ class CollectGithubIssues < Wayfarer::Job
     page.links ".Box-row-link"
   end
 
-  def next_issue_listing_uri
+  def next_issue_index_uri
     page.links ".next_page"
   end
 end

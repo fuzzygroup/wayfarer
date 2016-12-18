@@ -17,7 +17,7 @@ module Wayfarer
     end
 
     # The frontier.
-    # @return [MemoryFrontier, RedisFrontier]
+    # @return [Frontier]
     def frontier
       @frontier ||= case @config.frontier
                     when :memory
@@ -28,6 +28,8 @@ module Wayfarer
                       Frontiers::MemoryBloomfilter.new(@config)
                     when :redis_bloomfilter
                       Frontiers::RedisBloomfilter.new(@config)
+                    else
+                      Frontiers::MemoryTrieFrontier.new(@config)
                     end
     end
 
@@ -139,7 +141,9 @@ module Wayfarer
       )
 
       @mutex.synchronize do
-        pp error.exception.backtrace if @config.print_stacktraces
+        if @config.print_stacktraces
+          STDERR.puts PP.pp(error.exception.backtrace)
+        end
 
         if @config.reraise_exceptions
           Wayfarer.log.error("[#{self}] Reraising #{error.exception.inspect}")

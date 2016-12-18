@@ -29,17 +29,18 @@ module Wayfarer
 
       Wayfarer.log.debug("[#{self}] Dispatching to ##{action}: #{uri}")
 
-      adapter = adapter_pool.checkout
-
       job_instance = job.new
-      job_instance.page = adapter.fetch(uri)
-      job_instance.adapter = adapter
-      job_instance.params = params
 
-      begin
-        job_instance.public_send(action)
-      rescue => exception
-        return Error.new(exception)
+      adapter_pool.with do |adapter|
+        job_instance.page = adapter.fetch(uri)
+        job_instance.adapter = adapter
+        job_instance.params = params
+
+        begin
+          job_instance.public_send(action)
+        rescue => exception
+          return Error.new(exception)
+        end
       end
 
       if job_instance.halts?
@@ -47,28 +48,32 @@ module Wayfarer
       else
         Stage.new(job_instance.staged_uris)
       end
-    # TODO Handle these in the HTTP adapter itself, and raise a more descriptive
-    # own exception
-    rescue Net::ReadTimeout, Errno::ECONNREFUSED => exception
-      # The PhantomJS Selenium driver raises these when its client session times
-      # out
-      raise exception unless adapter.is_a? HTTPAdapters::SeleniumAdapter
+    rescue Errno::EHOSTUNREACH
+      Wayfarer.log.warn("[#{self}] Host unreachable: #{uri}")
 
-      Wayfarer.log.info("[#{self}] PhantomJS Selenium driver client timed out!")
+    rescue Net::OpenTimeout, Net::ReadTimeout
+      Wayfarer.log.warn("[#{self}] ::Net timeout while processing: #{uri}")
 
-      adapter.reload!
+    # SSL verification failed due to a missing certificate
+    rescue OpenSSL::SSL::SSLError
+      Wayfarer.log.warn("[#{self}] SSL verification failed for: #{uri}")
 
-    rescue HTTPAdapters::NetHTTPAdapter::MalformedURI
-      Wayfarer.log.info("[#{self}] Encountered malformed URI: #{uri}")
+    # Ruby/zlib encountered a Z_DATA_ERROR.
+    # Usually if a stream was prematurely freed.
+    # Probably has to do with net-http-persistent
+    rescue Zlib::DataError
+      Wayfarer.log.warn("[#{self}] Z_DATA_ERROR")
+
+    # Ruby's URI implementation rejects URIs with two consecutive anchors (#)
+    # in their path
+    rescue HTTPAdapters::NetHTTPAdapter::MalformedURI, URI::InvalidURIError
+      Wayfarer.log.info("[warn#{self}] Malformed URI: #{uri}")
 
     rescue HTTPAdapters::NetHTTPAdapter::MalformedRedirectURI
-      Wayfarer.log.info("[#{self}] Encountered malformed redirect URI: #{uri}")
+      Wayfarer.log.info("[#{self}] Malformed redirect URI from: #{uri}")
 
     rescue HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
       Wayfarer.log.info("[#{self}] Maximum redirect count reached @ #{uri}")
-
-    ensure
-      adapter_pool.checkin
     end
   end
 end

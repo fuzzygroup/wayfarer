@@ -5,7 +5,7 @@ categories: [Basics]
 ---
 
 # Halting
-You can stop processing any time by calling `#halt` within an instance method of your job class. Note that `#halt` does _not_ immediately return from the instance method. Instead, it sets a halting flag internally, and once your instance method returns, the `Processor` will halt.
+You can stop processing any time by calling `#halt` within actions. Note that `#halt` does __not__ immediately return from the instance method. Instead, it sets a halting flag internally, and once your instance method returns, the processor reacts to your halt intent.
 
 {% highlight ruby %}
 class DummyJob < Wayfarer::Job
