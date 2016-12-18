@@ -15,8 +15,20 @@ module Wayfarer
       end
     end
 
+    # Caches URIs so they don't get processed again.
+    # @param [*Array<URI>, *Array<String>] uris
+    def cache(*uris)
+      uris.each { |uri| @filter.insert(uri) }
+    end
+
+    # Whether a URI is cached.
+    def cached?(uri)
+      @filter.include?(uri)
+    end
+
     # Deletes all used Redis keys and disconnects the client.
     def free
+      super
       @filter.clear
       @conn.disconnect!
     end

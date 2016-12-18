@@ -110,10 +110,28 @@ Argument vector for instantiating Selenium drivers. See [Using Selenium](SELENIU
 
 ### `redis_opts`
 
-* Default: `[host: "localhost", port: 6379]`
+* Default: `{ host: "localhost", port: 6379 }`
 * Recognized values: [See documentation]()
 
-Argument vector for instantiating Redis connections.
+Options for instantiating Redis connections.
+
+--
+
+### `bloomfilter_opts`
+
+* Default:
+```
+{
+  size: 100,
+  hashes: 2,
+  seed: 1,
+  bucket: 3,
+  raise: false
+}
+```
+* Recognized values: [See documentation]()
+
+Options for [bloomfilter-rb](https://github.com/igrigorik/bloomfilter-rb).
 
 --
 

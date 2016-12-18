@@ -25,7 +25,8 @@ module Wayfarer
       # Frees up memory.
       def free
         super
-        @filter = nil
+        @filter.clear
+        @conn.disconnect!
       end
     end
   end
