@@ -30,4 +30,4 @@ end
 {% endhighlight %}
 
 ## Multithreading considerations
-Every job instance runs inside its own thread. When a job signals the `Processor` that it should halt, all other threads will finish their current URI, and process no further URIs. Thus, halting is not "immediate", rather the job terminates as soon as possible and your other instances have the chance to get their work done.
+Every job instance runs inside its own thread. When a job signals the `Processor` that it should halt, all other threads will finish their current URI, and process no further URIs. Halting is not "immediate", rather your other instances have the chance to get their work done.

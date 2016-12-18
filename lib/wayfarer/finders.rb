@@ -35,7 +35,7 @@ module Wayfarer
 
     private
 
-    # Lord have mercy
+    # TODO Lord have mercy
     def query(selector, attr, *filters)
       (filters.any? ? doc.search(*filters).css(selector) : doc.css(selector))
         .map do |node|

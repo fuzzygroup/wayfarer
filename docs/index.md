@@ -19,7 +19,7 @@ If you …
 * Need to take screenshots
 * Want to use a job queue and make work happen later
 * Like OOP and testability
-* Want bloomfilters!
+* Want Bloom filters!
 * Want Redis support
 * Value a small foot-print and thorough documentation
 

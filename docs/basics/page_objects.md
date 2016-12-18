@@ -37,7 +37,21 @@ class DummyJob < Wayfarer::Job
     # All previous four methods accept arbitrary many CSS selectors
     page.links ".my-target", ".my-other-target"
 
-
+    # The following methods get dispatched to a Pismo::Document
+    # See https://github.com/peterc/pismo
+    page.title
+    page.titles
+    page.author
+    page.lede
+    page.keywords
+    page.sentences(qty)
+    page.body
+    page.html_body
+    page.feed
+    page.feeds
+    page.favicon
+    page.description
+    page.datetime  page.
   end
 end
 {% endhighlight %}

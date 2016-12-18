@@ -1,3 +1,19 @@
+
+
+html {
+  @include media($mobile) {
+    font-size: 87.5%;
+  }
+
+  @include media(min-width 560px) {
+    font-size: 112.5%;
+  }
+
+  @include media($desktop) {
+    font-size: 100%;
+  }
+}
+
 body {
   font: {
     family: "Titillium", sans-serif;
@@ -8,6 +24,8 @@ body {
 
   background: $mine-shaft;
   color: $mine-shaft;
+
+  -webkit-tap-highlight-color: rgba($emerald, 0.8);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -83,11 +101,6 @@ pre {
 .wrapper {
   @include outer-container;
   margin: 0 auto;
-
-  @include media($mobile) {
-    background: white;
-    padding: 0 rem($alh);
-  }
 }
 
 .sidebar {
@@ -164,6 +177,7 @@ pre {
 .page-content {
   @include media($mobile) {
     @include span-columns(16);
+    padding: rem($alh * 0.5) rem($alh);
   }
 
   @include media($desktop) {
@@ -176,7 +190,7 @@ pre {
 
   h1, h2 {
     padding-bottom: rem($alh * 0.25);
-    border-bottom: rem(1) solid tint($mine-shaft, 90%);
+    border-bottom: 1px solid tint($mine-shaft, 90%);
 
     &:not(:first-child) {
       margin-top: rem($alh * 2);
@@ -193,9 +207,6 @@ pre {
 @include media($mobile) {
   .navigation {
     @include clearfix;
-
-    margin-bottom: rem($alh * 1.5);
-    background: #887544;
   }
 
   .navigation__toggle-checkbox,
@@ -214,20 +225,38 @@ pre {
     display: block;
     padding: rem($alh * 0.5) rem($alh * 0.25);
 
-    background: tint(#708395, 95%);
+    background: rgba(white, 0.05);
 
     cursor: pointer;
 
     &:hover {
-      background: tint(#708395, 90%);
+      background: rgba(white, 0.1);
+    }
+  }
+
+  .navigation__toggle-checkbox ~ .navigation__toggle-label {
+    .show {
+      display: block;
+    }
+
+    .hide {
+      display: none;
     }
   }
 
   .navigation__toggle-checkbox:checked ~ .navigation__toggle-label {
-    background: #887544;
+    background: $amaranth;
 
     &:hover {
-      background: tint(#887544, 5%);
+      background: rgba($amaranth, 0.9);
+    }
+
+    .show {
+      display: none;
+    }
+
+    .hide {
+      display: block;
     }
   }
 
@@ -240,22 +269,43 @@ pre {
   }
 
   .navigation__main {
-    background: tint(#708395, 95%);
+    background: white;
   }
 
   .navigation__category__title {
     margin-bottom: rem($alh * 0.25);
     font-size: rem(14);
-    color: shade(#708395, 40%);
+    text-transform: uppercase;
+    letter-spacing: rem(2);
   }
 
   .navigation__link {
-    text-decoration: none;
-    margin-bottom: rem(1);
     display: block;
+    margin-bottom: 1px;
     padding: rem($alh * 0.25);
     padding-top: rem($alh * 0.4);
-    background-color: rgba(#887544, 0.05);
+
+    background-color: tint($mine-shaft, 95%);
+
+    &:hover {
+      background-color: $mikado;
+      color: $mine-shaft;
+    }
+  }
+
+  .navigation__close-bottom {
+    font-size: rem(14);
+    display: inline-block;
+    color: $amaranth;
+    border: 1px solid $amaranth;
+    border-radius: 1em;
+    padding: rem(2) rem($alh * 0.5) 0 rem($alh  * 0.5);
+    cursor: pointer;
+
+    &:hover {
+      background: $amaranth;
+      color: white;
+    }
   }
 }
 
@@ -278,6 +328,7 @@ pre {
   }
 
   .navigation__link {
+    display: block;
     font-size: rem(16);
     color: $emerald;
 

@@ -4,7 +4,7 @@ $grid-columns: 16;
 
 // Breakpoints
 $desktop: min-width 1180px;
-$mobile:  max-width 1180px;
+$mobile:  max-width 1179px;
 
 // Typography
 $fs: 18;
@@ -17,3 +17,8 @@ $blue: #4F67FF;
 $amaranth: #E93C4F;
 $emerald: #18CDCA;
 $mikado: #FFDE20;
+
+// These are used in the Pygments theme
+// #333333
+// #2F3661 (literals)
+// #727273 (Comments)

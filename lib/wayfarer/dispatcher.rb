@@ -47,6 +47,8 @@ module Wayfarer
       else
         Stage.new(job_instance.staged_uris)
       end
+    # TODO Handle these in the HTTP adapter itself, and raise a more descriptive
+    # own exception
     rescue Net::ReadTimeout, Errno::ECONNREFUSED => exception
       # The PhantomJS Selenium driver raises these when its client session times
       # out

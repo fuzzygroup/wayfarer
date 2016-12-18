@@ -33,7 +33,7 @@ module Wayfarer
 
       # Whether a URI is staged.
       def staged?(uri)
-        @staged_uris.include?(uri)
+        @staged_uris.include?(uri.to_s)
       end
 
       # Returns the staged URIs.
@@ -45,12 +45,12 @@ module Wayfarer
       # Caches URIs so they don't get processed again.
       # @param [*Array<URI>, *Array<String>] uris
       def cache(*uris)
-        @cached_uris |= uris
+        @cached_uris |= uris.map { |uri| uri.to_s }
       end
 
       # Whether a URI is cached.
       def cached?(uri)
-        @cached_uris.include?(uri)
+        @cached_uris.include?(uri.to_s)
       end
 
       # Frees up memory.

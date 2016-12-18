@@ -60,7 +60,7 @@ RSpec.shared_examples "Frontier" do |klass|
 
       it "swaps current and staged URIs" do
         frontier.cycle
-        expect(frontier.current_uris).to eq [uri]
+        expect(frontier.current_uris).to eq [URI(uri)]
         expect(frontier.staged_uris).to eq []
       end
 
@@ -92,7 +92,7 @@ RSpec.shared_examples "Frontier" do |klass|
         3.times do
           frontier.stage(uri)
           frontier.cycle
-          expect(frontier.current_uris).to eq [uri]
+          expect(frontier.current_uris).to eq [URI(uri)]
         end
       end
     end

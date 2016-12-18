@@ -13,11 +13,7 @@ module Wayfarer
       end
     end
 
-    def current_uris
-
-    end
-
-    # Caches URIs so they don't get processed again.
+    # Adds URIs to the trie so they don't get processed again.
     # @param [*Array<URI>, *Array<String>] uris
     def cache(*uris)
       uris.each { |uri| @trie.add(uri.to_s) }

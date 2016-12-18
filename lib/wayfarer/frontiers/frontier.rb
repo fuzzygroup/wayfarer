@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 module Wayfarer
   module Frontiers
-    # The common behaviour of all frontiers.
+    # @abstract The common behaviour of all frontiers.
     # @api private
     class Frontier
       attr_reader :config
