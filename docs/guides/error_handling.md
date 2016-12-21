@@ -5,7 +5,7 @@ categories: [Basics]
 ---
 
 # Error handling
-By default, all exceptions raised within Job instances are swallowed and only their stacktraces printed to stderr. You can change this behaviour with two configuration keys (see [Configuration]()):
+By default, all exceptions raised within actions are swallowed and only their stacktraces printed to stderr. You can change this behaviour with two configuration keys (see [Configuration]()):
 
 1. `print_stacktraces`: Whether to print stacktraces (default: `true`)
 2. `reraise_exceptions`: Whether to crash when encountering unhandled exceptions (default: `false`)

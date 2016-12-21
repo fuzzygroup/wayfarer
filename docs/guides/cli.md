@@ -5,14 +5,17 @@ categories: [Basics]
 ---
 
 # Command-line interface
-Wayfarer ships with a small executable, `wayfarer` (you may have guessed so).
+Wayfarer ships with a small executable, `wayfarer`.
 
 Ruby job classes are loaded by naming convention, e.g. if you pass `./directory/foo_bar.rb` as the `FILE` parameter, that file is expected to define the class `FooBar`. You can leave off the `.rb` extension.
+
+## `% wayfarer route FILE URI`
+Loads the job defined in `FILE`, and prints the first matching route for `URI`.
 
 ## `% wayfarer exec FILE URI`
 Runs the job defined in `FILE`, starting from `URI`.
 
-* `--log_level`
+* `--log_level LEVEL`
   Option. Which log messages to print.
 
   * Default: `info`
@@ -24,17 +27,17 @@ Runs the job defined in `FILE`, starting from `URI`.
 ## `% wayfarer enqueue FILE URI`
 Loads and enqueues the job in `FILE`, starting from `URI`.
 
-* `--log_level`
+* `--log_level LEVEL`
   Option. Which log messages to print.
 
   * Default: `info`
   * Recognized values: `unknown`, `debug`, `error`, `fatal`, `info`, `warn`
 
-* `--queue_adapter`
+* `--queue_adapter ADAPTER`
   Option. Which ActiveJob queue adapter to use (e.g. `sidekiq`, `resque`).
   * Recognized values: strings, see [documentation](http://api.rubyonrails.org/)
 
-* `--wait`
+* `--wait VALUE`
   Option. Point of time when the enqueued job should be run.
 
     1. If the value can be converted to an integer, it represents the seconds from now.
@@ -60,6 +63,3 @@ Tomorrow:
 ```
 % wayfarer enqueue ./foo_bar http://google.com --wait tomorrow
 ```
-
-## `% wayfarer route FILE URI`
-Loads the job defined in `FILE`, and prints the first matching route for `URI`.

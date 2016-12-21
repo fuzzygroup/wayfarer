@@ -1,27 +1,28 @@
 # frozen_string_literal: true
 require "singleton"
+require "securerandom"
 require "net/http"
 require "net/http/persistent"
 
 module Wayfarer
   module HTTPAdapters
     # A singleton adapter for `net-http-persistent`
-    # @private
+    # @api private
     class NetHTTPAdapter
       include Singleton
 
-      # Supported subclasses of the Ruby URI standard lib
+      # Supported classes of the Ruby URI standard lib
       RECOGNIZED_URI_TYPES = [
         URI::HTTP,
         URI::HTTPS
       ].freeze
 
-      class MalformedURI < StandardError; end
-      class MalformedRedirectURI < StandardError; end
-      class MaximumRedirectCountReached < StandardError; end
+      MalformedURI = Class.new(StandardError)
+      MalformedRedirectURI = Class.new(StandardError)
+      MaximumRedirectCountReached = Class.new(StandardError)
 
       def initialize
-        @conn = Net::HTTP::Persistent.new("schablone")
+        @conn = Net::HTTP::Persistent.new("wayfarer-#{SecureRandom.uuid}")
       end
 
       # Fetches a page.

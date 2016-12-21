@@ -91,9 +91,39 @@ pre {
   background: rgba($mikado, 0.6);
 }
 
-.highlight {
+.note {
+  margin: rem($alh * 0.25) 0;
+  padding: rem($alh * 0.25) rem($alh * 0.3);
+
+  background-color: tint($mikado, 90%);
+  color: shade($mikado, 75%);
+
   font-size: rem(14);
+
+  &:before {
+    content: "Note";
+    display: inline-block;
+    margin-right: 0.25em;
+    padding: rem(4) rem(4) rem(2) rem(4);
+    border-radius: rem(2);
+
+    background: $mikado;
+
+    font: {
+      size: rem(12);
+      weight: bold;
+    }
+    text-transform: uppercase;
+    letter-spacing: rem(0.5);
+    line-height: 1;
+  }
+}
+
+.highlight {
+  margin-bottom: rem($alh * 0.5);
+
   background-color: tint($mine-shaft, 98%);
+  font-size: rem(14);
 
   pre {
     padding: rem($alh * 0.5);

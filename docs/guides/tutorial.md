@@ -5,11 +5,9 @@ categories: [Basics]
 ---
 
 # Tutorial
-This tutorial walks you through 96.333% of what's to know about Wayfarer. Along the way, we'll write a reusable crawler that collects the titles of all open issues from an arbitrary GitHub repository.
+This tutorial walks you through 96.333% of what's to know about Wayfarer, a web crawling framework for Ruby. Along the way, we'll write a reusable crawler that collects the titles of all open issues from an arbitrary GitHub repository.
 
-You can view the end-result at [examples/github.rb]().
-
-First things first, we get ourselves a subclass of `Wayfarer::Job`. If you've ever worked with a typical MVC web framework, think of a job as a self-contained controller with routes.
+To begin we get ourselves a subclass of `Wayfarer::Job`. If you've ever worked with a typical MVC web framework, think of a job as a self-contained controller with routes.
 
 {% highlight ruby %}
 # I'll omit this line hereafter
@@ -19,7 +17,7 @@ class CollectGithubIssues < Wayfarer::Job
 end
 {% endhighlight %}
 
-Suppose we’re interested in the Rails repository, which is located at `https://github.com/rails/rails`. We need two things to start off: A route that matches that URI, and an instance method which handles that page:
+Suppose we’re interested in Rails' GitHub repository, which is located at `https://github.com/rails/rails`. We need two things: A route that matches that URI, and an instance method (action) which handles that page:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
@@ -31,9 +29,9 @@ class CollectGithubIssues < Wayfarer::Job
 end
 {% endhighlight %}
 
-This will do. We set up a single route which maps the repository URI (and only this URI) to `CollectGithubIssues#overview`. Whenever we feed the job that URI, that very method takes the stage.
+We set up a single route which maps the repository URI (and only that URI) to `CollectGithubIssues#overview`. When feed the job that URI, that action is called.
 
-Let's do this. Instead of instantiating jobs on your own, call `::perform_now` and pass an arbitrary number of URIs:
+Instead of instantiating jobs on your own, call `::perform_now` and pass an arbitrary number of URIs:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
@@ -48,11 +46,10 @@ end
 # I'll omit this line hereafter
 Wayfarer.log.level = :debug
 
-# I'll omit this line hereafter. Make sure you don't!
 CollectGithubIssues.perform_now("https://github.com/rails/rails", "https://example.com")
 {% endhighlight %}
 
-Note that we’re passing a URI we have no matching route for, `https://example.com`. Run this file (as you would with every other Ruby file) and you'll end up with output similiar to this:
+Note that we pass a URI we have no matching route for, `https://example.com`. Run this file (as you would with every other Ruby file) and you'll end up with output similiar to this:
 
 ```
 [ActiveJob] [CollectGithubIssues] [...] Performing CollectGithubIssues from Inline(default) with arguments: "https://github.com/rails/rails", "https://example.com"
@@ -93,9 +90,11 @@ class CollectGithubIssues < Wayfarer::Job
 end
 {% endhighlight %}
 
-Wayfarer does not attempt to do black magic on top of Nokogiri. When it comes to extracting specific data from pages, you’re mostly on your own. There are helpers (see [Finders]()) for finding links, CSS/JavaScript files and images. But figuring out what HTML elements you're interested in is still up to you. Wayfarer will happily parse JSON, too. You'll get a `Hash` returned by `#doc` instead of a parsed Nokogiri document.
+Wayfarer does not attempt to do black magic on top of Nokogiri. When it comes to extracting specific data from pages, you’re mostly on your own. There are helpers for finding links, CSS/JavaScript files and images (see [`Page` objects](page_objects.html)). But figuring out what the interesting parts of a HTTP response are is still up to you.
 
-Rails’ issues are located at `https://github.com/rails/rails/issues`. We need a new route and a new instance method to handle this issue index. By calling `#stage` and passing in an arbitrary number of URIs, we can stage URIs for processing. Note that just because a URI gets staged does not mean it will be fetched—a matching route is required for every URI. Also, Wayfarer will by default ensure that no URI gets processed twice. This can be turned off, though (see [Configuration]()).
+Wayfarer parses JSON, too. You'll get a `Hash` returned by `#doc` instead of a  Nokogiri document.
+
+Rails’ issues are located at `https://github.com/rails/rails/issues`. We need a new route and a new instance method to handle this issue index. By calling `#stage` and passing in an arbitrary number of URIs, we can stage URIs for processing. Note that just because a URI gets staged does not mean it will be fetched—a matching route is required for every URI. Also, Wayfarer will by default ensure that no URI gets processed twice. This behaviour can be turned off, though (see [Configuration](configuration.html)).
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
@@ -116,9 +115,9 @@ class CollectGithubIssues < Wayfarer::Job
 end
 {% endhighlight %}
 
-What we have so far works fine for the Rails repository, but not for others, because the URIs are hardcoded. That's a real pity, because there are more than 10 million repositories on GitHub. Surely we can do better! Instead of using a URI rule, we switch to a host and path rule.
+What we have so far works fine for the Rails repository, but not for others, because the URIs are hardcoded. That's a real pity, because there are more than 10 million repositories on GitHub. We can do better quite easily. Instead of using a URI rule, we switch to a host and path rule.
 
-A host rule narrows down the host portion of a URI, and a path rule the path. Instead of hard-coding the path, we can use pattern matching and have interesting parts of the path extracted for us:
+A host rule narrows down the host portion of a URI, and a path rule the path. Instead of hard-coding the path, we use pattern matching and have interesting parts of the path extracted for us:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job

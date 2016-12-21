@@ -24,9 +24,9 @@ module Wayfarer
                       Frontiers::MemoryFrontier.new(@config)
                     when :redis
                       Frontiers::RedisFrontier.new(@config)
-                    when :memory_bloomfilter
+                    when :memory_bloom
                       Frontiers::MemoryBloomfilter.new(@config)
-                    when :redis_bloomfilter
+                    when :redis_bloom
                       Frontiers::RedisBloomfilter.new(@config)
                     else
                       Frontiers::MemoryTrieFrontier.new(@config)

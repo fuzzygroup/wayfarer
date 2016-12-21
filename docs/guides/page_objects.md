@@ -6,7 +6,15 @@ categories: [Basics]
 
 # `Page` objects
 
-Retrieved pages are represented by a `Page` object and made accessible by `#page` within actions.
+Retrieved pages are represented by `Page` objects and made accessible by `#page` within actions. `Page`s support the same set of features regardless of the HTTP adapter in use.
+
+<aside class="note">
+HTTP response headers and status codes are not supported by Selenium WebDrivers. Wayfarer emulates both by having the WebDriver fire an AJAX request to the current page. Clearly this is a hack, but it works quite reliably. See <a href="https://github.com/bauerd/selenium-emulated_features">bauerd/selenium-emulated_features</a>.
+</aside>
+
+<aside class="note">
+Even after having followed redirects, <code>Page#uri</code> always returns the URI that originally initiated the redirects. This behaviour stems from redirects being opaque to WebDrivers.
+</aside>
 
 A `Page` brings to the table all you'd wish for when doing web scraping:
 
