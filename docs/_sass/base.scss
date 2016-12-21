@@ -343,7 +343,8 @@ pre {
 
 @include media($desktop) {
   .navigation__toggle-checkbox,
-  .navigation__toggle-label {
+  .navigation__toggle-label,
+  .navigation__close-bottom {
     display: none;
   }
 
@@ -368,5 +369,12 @@ pre {
       color: $mikado;
       font-weight: bold;
     }
+  }
+
+  .navigation__link.navigation__link--active {
+    font-weight: bold;
+    color: tint($emerald, 90%);
+    cursor: default;
+    pointer-events: none;
   }
 }
