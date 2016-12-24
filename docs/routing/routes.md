@@ -6,9 +6,18 @@ categories: [Routing]
 
 # Routes
 
-Routes act as filters for URIs that you're interested in. They map certain URIs to instance methods (actions). Every route has a rule tree. A rule imposes conditions on URIs that they must fulfill.
+Routes are filters for URIs that you're interested in. They map certain URIs to instance methods (actions). Every route has a rule tree. A rule imposes conditions on URIs that they must fulfill in order to get processed. Rules can have sub-rules.
 
-## Declaring routes
+Routes match in declaration order.
+
+Roues can be fordidden. Forbidden routes are never processed.
+
+## Example
+
+Suppose you want to route the following URI:
+  `https://example.com/resource?foo=bar&page=42`
+
+## Declaration styles
 
 The following four snippets all set up the same routes:
 

@@ -15,13 +15,14 @@ module Wayfarer
       allow_circulation: false,
 
       # How many HTTP connections/Selenium drivers to use
-      connection_count: 4,
+      # 1:1 correspondence with spawned threads
+      connection_count: 1,
 
       # Which HTTP adapter to use. Supported are :net_http and :selenium
       http_adapter: :net_http,
 
       # Which frontier to use. Supported are :memory and :redis
-      frontier: :memory,
+      frontier: :memory_trie,
 
       # How long a thread may hold an HTP adapter.
       # Threads that exceed this limit fail with an exception.
@@ -37,7 +38,7 @@ module Wayfarer
       redis_opts: {
         host: "localhost",
         port: 6379
-      },
+      }.freeze,
 
       # Size of browser windows
       window_size: [1024, 768],

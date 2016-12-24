@@ -51,6 +51,7 @@ module Wayfarer
     def run(klass, *uris)
       trap_signals
 
+      # TODO Move away from here
       job = Class.new(klass)
       job.router = klass.router.dup
       job.locals = klass.locals.dup

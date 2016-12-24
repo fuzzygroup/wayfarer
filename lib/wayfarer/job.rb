@@ -20,9 +20,9 @@ module Wayfarer
   # raised. The time limit can be set with the `connection_timeout`
   # configuration key.
   #
-  # Jobs implement ActiveJob's job api and are therefore compatible with a wide
-  # range of job queues. To run a job immediately, call #perform_now. To
-  # enqueue a job, run #perform_later.
+  # Jobs implement ActiveJob's job API and are therefore compatible with a wide
+  # range of job queues. To run a job immediately, call ::perform_now.
+  # enqueue a job, call ::perform_later.
   #
   # @see https://github.com/rails/rails/tree/master/activejob rails/activejob
   # @see http://edgeguides.rubyonrails.org/active_job_basics.html ActiveJob Basics
@@ -35,12 +35,12 @@ module Wayfarer
     # @!group Callbacks
     # @!scope class
 
-    # Callback that fires __once__ serially on the main thread before any pages
+    # Callback that fires __once__ on the main thread before any pages
     # are retrieved.
     # @method before_crawl
     # @scope class
 
-    # Callback that fires __once__ serially on the main thread after all pages
+    # Callback that fires __once__ on the main thread after all pages
     # have been retrieved and processing is done.
     # @method after_crawl
     # @scope class
@@ -143,11 +143,6 @@ module Wayfarer
     # @param [String, URI, Array<String>, Array<URI>]
     def stage(uris)
       @staged_uris += uris.respond_to?(:each) ? uris : [uris]
-    end
-
-    # Prints a log message with `info` level.
-    def log(*argv)
-      Wayfarer.log.info(*argv)
     end
 
     # The parsed response body.

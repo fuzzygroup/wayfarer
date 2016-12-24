@@ -5,3 +5,5 @@ categories: [Basics]
 ---
 
 # Locals
+
+Locals are Wayfarer's replacement for job instance variables.

@@ -10,9 +10,9 @@ module Wayfarer
 
       extend Forwardable
 
-      def_delegators :@child_rules, :each
-
       attr_reader :child_rules
+
+      delegate [:each] => :child_rules
 
       def initialize(opts = {}, &proc)
         @child_rules = []

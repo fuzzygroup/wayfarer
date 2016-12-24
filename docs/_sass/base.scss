@@ -182,7 +182,8 @@ pre {
 
 .badges {
   @include clearfix;
-  height: rem(34);
+
+  height: rem(20);
   margin-bottom: rem($alh);
 
   @include media($mobile) {
@@ -192,18 +193,15 @@ pre {
   }
 }
 
-.watch-button,
+
+.star-button,
 .build-status {
   display: inline-block;
   float: left;
 }
 
-.watch-button {
-  margin-right: rem($alh * 0.5);
-}
-
-.build-status {
-  margin-top: rem(4);
+.star-button {
+  margin-right: rem($alh * 0.25);
 }
 
 .page-content {
@@ -373,7 +371,7 @@ pre {
 
   .navigation__link.navigation__link--active {
     font-weight: bold;
-    color: tint($emerald, 90%);
+    color: white;
     cursor: default;
     pointer-events: none;
   }

@@ -9,19 +9,14 @@
           <h1 class="site-header__title">
             <a href="/" class="site-header__link">{{ site.title }}</a>
           </h1>
-          <span class="site-header__version">
+          <div class="site-header__version">
             0.0.1
-          </span>
+          </div>
         </header>
 
         <section class="badges">
-          <div class="watch-button">
-            <a class="github-button" href="https://github.com/bauerd/wayfarer/subscription" data-icon="octicon-eye" data-style="mega" data-count-href="/bauerd/wayfarer/watchers" data-count-api="/repos/bauerd/wayfarer#subscribers_count" data-count-aria-label="# watchers on GitHub" aria-label="Watch bauerd/wayfarer on GitHub">Watch</a>
-          </div>
-
-          <div class="build-status">
-            <img src="https://travis-ci.org/bauerd/wayfarer.svg?branch=dev">
-          </div>
+          <iframe class="star-button" src="https://ghbtns.com/github-btn.html?user=bauerd&repo=wayfarer&type=star" frameborder="0" scrolling="0" width="50px" height="20px"></iframe>
+          <img class="build-status" src="https://travis-ci.org/bauerd/wayfarer.svg?branch=dev">
         </section>
 
         {% include navigation.html %}
