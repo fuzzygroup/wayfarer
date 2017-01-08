@@ -130,6 +130,13 @@ pre {
   }
 }
 
+
+.illustration {
+  margin-bottom: rem($alh * 0.5);
+  font-size: rem(14);
+  line-height: 1;
+}
+
 .wrapper {
   @include outer-container;
   margin: 0 auto;

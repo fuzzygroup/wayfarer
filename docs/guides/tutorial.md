@@ -29,9 +29,9 @@ class CollectGithubIssues < Wayfarer::Job
 end
 {% endhighlight %}
 
-We set up a single route which maps the repository URI (and only that URI) to `CollectGithubIssues#overview`. When feed the job that URI, that action is called.
+We set up a single route which maps the repository URI (and only that URI) to `CollectGithubIssues#overview`. When we feed the job this URI, that action is called.
 
-Instead of instantiating jobs on your own, call `::perform_now` and pass an arbitrary number of URIs:
+Don't create job instances on your own. Instead, call `::perform_now` on your job class and pass an arbitrary number of URIs to start with:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
@@ -64,7 +64,7 @@ D, [...] DEBUG -- : [#<Wayfarer::Processor:...>] Freeing adapter pool
 [ActiveJob] [CollectGithubIssues] [...] Performed CollectGithubIssues from Inline(default) in 816.34ms
 ```
 
-The debugging output nicely demonstrates how Wayfarer's internals work. Wayfarer is easy to grasp. I'll walk you through some lines:
+The debugging output nicely demonstrates how Wayfarer's internals work. I'll walk you through some lines:
 
 1. `[#<Wayfarer::Processor:...>] About to cycle`
 The URIs you pass to `#perform_now` get staged, i.e. added to a list of URIs that you potentially want to visit. Because there are no current URIs, only staged ones, the `Processor` cycles: All staged URIs that have not been processed yet become current URIs. All others are ignored.
@@ -77,7 +77,7 @@ The instance of our job that matched and processed `https://github.com/rails/rai
 4. `[#<Wayfarer::Processor:...>] All done`
 The `Processor` cycled, and because we haven't staged any URIs, there are no URIs to set as current. The job then terminates.
 
-Let’s replace the hard-coded string with the page `<title>`. Inside our instance method, we call `#doc` to get ahold of a [`Nokogiri::HTML::Document`](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/HTML/Document). [Nokogiri]() is a HTML/XML library, and a parsed document allows us to access the title easily:
+Currently we print a static string, but let’s exchange it for the actual page `<title>`. Inside our instance method, we call `#doc` to get ahold of a [`Nokogiri::HTML::Document`](http://www.rubydoc.info/github/sparklemotion/nokogiri/Nokogiri/HTML/Document). [Nokogiri]() is a HTML/XML library, and a parsed document allows us to access the title tag easily:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job

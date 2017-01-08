@@ -12,6 +12,40 @@ Frontiers keep track of three sets of URIs:
 * Staged URIs that might be processed in the next cycle
 * Cached URIs that have been processed
 
+All frontiers expose the same behaviour. 
+
+<pre class="illustration">
+┌──────────────────────────────────────────────────────────┐
+│                          STAGED                          │
+│          {https://alpha.com, https://beta.com}           │
+└──────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│                         CURRENT                          │
+│                   {https://gamma.com}                    │
+└──────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│                          CACHED                          │
+│                    {https://beta.com}                    │
+└──────────────────────────────────────────────────────────┘
+                             │
+                           Cycle
+                             │
+                             ▼
+┌──────────────────────────────────────────────────────────┐
+│                         STAGED'                          │
+│                          {...}                           │
+└──────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│                CURRENT' = STAGED \ CACHED                │
+│                   {https://alpha.com}                    │
+└──────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│                CACHED' = CACHED ∪ CURRENT                │
+│          {https://beta.com, https://gamma.com}           │
+└──────────────────────────────────────────────────────────┘
+</pre>
+
+
 ## Available frontiers
 Currently, there are 5 frontiers available:
 

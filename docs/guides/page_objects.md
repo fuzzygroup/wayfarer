@@ -9,7 +9,7 @@ categories: [Basics]
 Retrieved pages are represented by `Page` objects and made accessible by `#page` within actions. `Page`s support the same set of features regardless of the HTTP adapter in use.
 
 <aside class="note">
-HTTP response headers and status codes are not supported by Selenium WebDrivers. Wayfarer emulates both by having the WebDriver fire an AJAX request to the current page. Clearly this is a hack, but it works quite reliably. See <a href="https://github.com/bauerd/selenium-emulated_features">bauerd/selenium-emulated_features</a>.
+HTTP response headers and status codes are not supported by Selenium WebDrivers. Wayfarer emulates both by having the WebDriver fire an AJAX request to the current page and extracting them from the response. Clearly this is a hack, but it might even work for you. See <a href="https://github.com/bauerd/selenium-emulated_features">selenium-emulated_features</a>.
 </aside>
 
 <aside class="note">
