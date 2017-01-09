@@ -64,13 +64,4 @@ FindFoobar.perform_later("https://en.wikipedia.org/wiki/Special:Random")
 ### Where to go from here
 
 * [The tutorial]() shows how to collect all open issues from a GitHub repository
-* Read through some [example code]()
 * Read the [API documentation]()
-
-## Ingredients
-
-Wayfarer glues together the best tools in Rubyland to get the job done. The cumbersome stuff is hidden from you beneath a simple DSL. In detail, …
-
-* HTTP requests are fired with [net-http-persistent]()
-* Browsers are automated with [Selenium WebDriver](): Firefox, Chrome, PhantomJS …
-* Capybara is on board so you can `fill_in("textfields", with: "some text")`

@@ -36,7 +36,7 @@ describe Wayfarer::Processor do
     end
 
     context "when memory bloomfilter is used" do
-      let(:config) { Configuration.new(frontier: :memory_bloomfilter) }
+      let(:config) { Configuration.new(frontier: :memory_bloom) }
       subject(:processor) { Processor.new(config) }
 
       it "returns a MemoryBloomfilter" do
@@ -44,12 +44,21 @@ describe Wayfarer::Processor do
       end
     end
 
-    context "when memory bloomfilter is used" do
-      let(:config) { Configuration.new(frontier: :redis_bloomfilter) }
+    context "when Redis bloomfilter is used" do
+      let(:config) { Configuration.new(frontier: :redis_bloom) }
       subject(:processor) { Processor.new(config) }
 
       it "returns a RedisBloomfilter" do
         expect(processor.frontier).to be_a RedisBloomfilter
+      end
+    end
+
+    context "with other value" do
+      let(:config) { Configuration.new(frontier: :foobar) }
+      subject(:processor) { Processor.new(config) }
+
+      it "returns a MemoryTrieFrontier" do
+        expect(processor.frontier).to be_a MemoryTrieFrontier
       end
     end
   end

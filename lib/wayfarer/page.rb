@@ -46,7 +46,7 @@ module Wayfarer
       # If no Content-Type field is present, assume HTML/XML
       # TODO Test
       unless @headers["content-type"]
-        return Parsers::XMLParser.parse_html(@body)
+        return @doc = Parsers::XMLParser.parse_html(@body)
       end
 
       content_type = @headers["content-type"].first
@@ -64,7 +64,6 @@ module Wayfarer
              end
     end
 
-    # TODO Documentation
     # `#images` is provided by the Helpers module
     # `#body` is already defined
     delegate (Pismo::Document::ATTRIBUTE_METHODS - [:images, :body]) => :pismo

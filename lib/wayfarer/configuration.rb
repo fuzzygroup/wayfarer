@@ -44,6 +44,7 @@ module Wayfarer
       window_size: [1024, 768],
 
       # Which Mustermann pattern type to use when matching URI paths
+      # TODO Mention this somewhere in the docs
       mustermann_type: :sinatra,
 
       # Argument vector for instantiating Bloomfilters

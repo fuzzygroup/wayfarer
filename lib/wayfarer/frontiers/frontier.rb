@@ -2,7 +2,6 @@
 module Wayfarer
   module Frontiers
     # @abstract The common behaviour of all frontiers.
-    # @api private
     class Frontier
       attr_reader :config
 

@@ -36,15 +36,11 @@ module Wayfarer
     private
 
     # TODO Lord have mercy
+    # But this works
+    # Sooo
     def query(selector, attr, *filters)
       (filters.any? ? doc.search(*filters).css(selector) : doc.css(selector))
-        .map do |node|
-          begin
-            URI.join(uri, node.attr(attr))
-          rescue
-            nil
-          end
-        end
+        .map { |node| URI.join(uri, node.attr(attr)) rescue nil }
         .find_all { |uri| uri.is_a?(URI) }
         .uniq
     end

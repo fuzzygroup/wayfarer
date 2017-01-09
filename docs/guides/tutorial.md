@@ -169,7 +169,7 @@ class CollectGithubIssues < Wayfarer::Job
   # ...
 
   def repository
-    # But only route-matching one's get processed
+    # But only route-matching ones get processed
     stage page.links
   end
 
@@ -280,7 +280,7 @@ end
 CollectGithubIssues.perform_now("https://github.com/rails/rails")
 {% endhighlight %}
 
-By default, all this work happens within a single thread. Let's bump up the number of threads to 16:
+By default, all this work happens within a single thread. We can speed this up. Let's bump up the number of threads to 16:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job
@@ -290,7 +290,7 @@ class CollectGithubIssues < Wayfarer::Job
 end
 {% endhighlight %}
 
-While we're at it, why not collect all these issues, instead of writing them to stdout immediately? We'll use a Hash and store the page titles keyed by the issue's ID:
+While we're at it, why not collect all these issues, instead of printing them to stdout immediately? We'll use a Hash and store the page titles keyed by the issue's ID:
 
 {% highlight ruby %}
 class CollectGithubIssues < Wayfarer::Job

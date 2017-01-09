@@ -6,11 +6,11 @@ categories: [Routing]
 
 # Routes
 
-Routes are filters for URIs that you're interested in. They map certain URIs to instance methods (actions). Every route has a rule tree. A rule imposes conditions on URIs that they must fulfill in order to get processed. Rules can have sub-rules.
+Routes are filters for URIs that you're interested in. They map certain URIs to instance methods (actions). Every route has a rule tree. A rule imposes conditions on URIs that they must fulfill in order to get processed. Rules can have sub-rules. For a rule to match when it has at least one sub-rule, at least one of the sub-rules has to match.
 
-Routes match in declaration order.
+All routes match in declaration order.
 
-Roues can be fordidden. Forbidden routes are never processed.
+Routes can be fordidden. URIs that match forbidden rules are never processed.
 
 ## Example
 

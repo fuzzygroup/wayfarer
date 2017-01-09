@@ -10,7 +10,7 @@ module Wayfarer
         @config = config
         @current_uris = Set.new([])
         @staged_uris  = Set.new([])
-        @cached_uris  = URISet.new
+        @cached_uris  = Set.new([])
       end
 
       # Returns the URIs to be scraped in the current cycle.
