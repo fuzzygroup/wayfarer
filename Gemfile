@@ -8,4 +8,6 @@ group :development, :jekyll_plugins do
   gem "github-pages", group: :jekyll_plugins
 end
 
+gem "github-pages", "115", group: :jekyll_plugins
+
 gemspec

@@ -6,6 +6,10 @@ class CollectGithubIssues < Wayfarer::Job
     draw :overview,      host: "github.com", path: "/:user/:repo"
     draw :issue_listing, host: "github.com", path: "/:user/:repo/issues"
     draw :issue,         host: "github.com", path: "/:user/:repo/issues/:id"
+
+    host "github.com" do
+      draw :overview, path: "/:user/:repo"
+    end
   end
 
   def overview

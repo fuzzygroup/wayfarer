@@ -35,7 +35,8 @@ describe Wayfarer::Job do
       expect(job.class.router.routes.any? { |(method, _)| method == :example })
     end
   end
-  # 
+
+  #
   # describe "#invoke" do
   #   context "with matching route" do
   #     it "returns a Stage" do

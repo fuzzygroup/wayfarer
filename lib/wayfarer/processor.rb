@@ -8,8 +8,6 @@ module Wayfarer
     include Observable
 
     def initialize(config)
-      Thread.abort_on_exception = true
-
       @dispatcher = Dispatcher.new(config)
       @config = config.dup
       @halted = false
@@ -51,10 +49,9 @@ module Wayfarer
     def run(klass, *uris)
       trap_signals
 
-      # TODO Move away from here
-      job = Class.new(klass)
-      job.router = klass.router.dup
-      job.locals = klass.locals.dup
+      job = klass.dup
+      job.router = klass.router.clone
+      job.locals = klass.locals.clone
 
       frontier.stage(*uris)
 

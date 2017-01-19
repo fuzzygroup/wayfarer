@@ -4,6 +4,22 @@ require "spec_helpers"
 describe Wayfarer::Processor do
   subject!(:processor) { Processor.new(Wayfarer.config) }
 
+  describe "#halt!" do
+    it "sets a halting flag" do
+      processor.halt!
+      expect(processor).to be_halted
+    end
+
+    it "frees the frontier" do
+      frontier = spy
+      processor.instance_variable_set(:@frontier, frontier)
+
+      processor.halt!
+
+      expect(frontier).to have_received(:free)
+    end
+  end
+
   describe "#halted?" do
     context "when not halted" do
       it "returns false" do
@@ -61,5 +77,9 @@ describe Wayfarer::Processor do
         expect(processor.frontier).to be_a MemoryTrieFrontier
       end
     end
+  end
+
+  describe "#run" do
+    
   end
 end

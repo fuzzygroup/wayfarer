@@ -79,14 +79,6 @@ module Wayfarer
         @head = [rule_opts, proc]
       end
 
-      # TODO Documentation
-      # @api private
-      def crawl(*uris)
-        processor = Processor.new(config)
-        yield processor if block_given?
-        processor.run(self, *uris)
-      end
-
       private
 
       def method_added(method, &proc)
@@ -128,6 +120,7 @@ module Wayfarer
     end
 
     # Performs this job.
+    # This method is called by ActiveJob.
     def perform(*argv, &proc)
       self.class.crawl(*argv, &proc)
     end
