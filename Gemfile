@@ -5,9 +5,7 @@ group :development, :jekyll_plugins do
   gem "bourbon"
   gem "neat"
   gem "rouge"
-  gem "github-pages", group: :jekyll_plugins
+  gem "github-pages", "115"
 end
-
-gem "github-pages", "115", group: :jekyll_plugins
 
 gemspec
