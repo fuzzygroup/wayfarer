@@ -49,7 +49,6 @@ module Wayfarer
       trap_signals
 
       job = klass.dup
-      require "pry"; binding.pry
       job.router = klass.router.clone
       job.locals = klass.locals.clone
 

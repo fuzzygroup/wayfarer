@@ -26,7 +26,6 @@ module Wayfarer
       def free
         super
         @filter.clear
-        @conn.disconnect!
       end
     end
   end
