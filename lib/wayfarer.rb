@@ -39,9 +39,6 @@ require_relative "wayfarer/page"
 require_relative "wayfarer/dispatcher"
 require_relative "wayfarer/processor"
 
-# CLI
-require_relative "wayfarer/util/progress_bar"
-
 module Wayfarer
   VERSION = "0.0.0"
 

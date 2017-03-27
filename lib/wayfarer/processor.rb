@@ -1,12 +1,9 @@
 # frozen_string_literal: true
-require "observer"
 require "pp"
 
 module Wayfarer
   # Runs jobs.
   class Processor
-    include Observable
-
     def initialize(config)
       @dispatcher = Dispatcher.new(config)
       @config = config.dup
@@ -62,11 +59,6 @@ module Wayfarer
 
         current_uris = frontier.current_uris # Expensive call!
 
-        changed
-        notify_observers(:new_cycle, current_uris.count)
-
-        job.run_hook(:before_crawl)
-
         @threads = Array.new(@config.connection_count) do
           Thread.new do
             loop do
@@ -90,8 +82,6 @@ module Wayfarer
         Wayfarer.log.info("[#{self}] Staged: #{frontier.staged_uris.count}")
       end
 
-      job.run_hook(:after_crawl)
-
       Wayfarer.log.debug("[#{self}] All done")
       @halted = true
     ensure
@@ -107,9 +97,6 @@ module Wayfarer
     private
 
     def handle_dispatch_result(result)
-      changed
-      notify_observers(:processed_uri)
-
       case result
       when Dispatcher::Mismatch then handle_mismatch(result)
       when Dispatcher::Halt     then handle_halt(result)

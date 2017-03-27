@@ -11,21 +11,11 @@ module Wayfarer
   class CLI < Thor
     class_option :log_level, type: :string, default: "info"
 
-    option :progress, type: :boolean, default: true
     desc "exec FILE URI",
          "Run the job defined in FILE starting from URI(s)"
     def exec(file, uri)
       set_log_level(options)
-
-      job = load_class_from_file(file)
-
-      if options[:progress]
-        bar = Wayfarer::Util::ProgressBar.new
-        Wayfarer.logger = bar
-        job.crawl { |processor| processor.add_observer(bar) }
-      end
-
-      job.crawl(uri)
+      load_class_from_file(file).perform(uri)
     end
 
     option :queue_adapter, type: :string, default: "inline"

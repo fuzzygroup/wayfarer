@@ -79,6 +79,10 @@ module Wayfarer
         @head = [rule_opts, proc]
       end
 
+      def perform(*uris)
+        self.new.perform(*uris)
+      end
+
       private
 
       def method_added(method, &proc)
@@ -117,6 +121,14 @@ module Wayfarer
     # Whether this job will stop processing.
     def halts?
       @halts
+    end
+
+    # Performs this job.
+    def perform(*uris)
+      processor = Processor.new(config)
+      run_hook(:before_crawl)
+      processor.run(self.class, *uris)
+      run_hook(:after_crawl)
     end
 
     protected
