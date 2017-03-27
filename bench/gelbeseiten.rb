@@ -1,7 +1,23 @@
 require_relative "../lib/wayfarer"
+require "rethinkdb"
+
+Entry = Struct.new(
+  :id,
+  :slug,
+  :city,
+  :locality,
+  :name,
+  :address,
+  :zipcode,
+  :geo_locality,
+  :phone,
+  :website
+)
 
 class Gelbeseiten < Wayfarer::Job
-  config.connection_count = 4
+  include RethinkDB::Shortcuts
+
+  config.connection_count = 12
   config.reraise_exceptions = true
   config.frontier = :sidekiq
   config.ignore_uri_fragments = true
@@ -10,7 +26,11 @@ class Gelbeseiten < Wayfarer::Job
 
   queue_as :gelbeseiten
 
-  let(:entries) { [] }
+  before_crawl do
+    locals[:conn] = r.connect(host: "localhost", port: 28015)
+    # r.db_create("gelbeseiten").run(@conn)
+    # r.db("gelbeseiten").table_create("barbershops").run(@conn)
+  end
 
   routes do
     draw :index do
@@ -28,33 +48,36 @@ class Gelbeseiten < Wayfarer::Job
   end
 
   def index
-    puts "HIIIII"
-    puts "INDEX: #{page.uri}"
     stage "/branchenbuch/friseur"
     stage page.links
   end
 
   def entry
-    puts "ENTRY: #{page.uri}"
+    doc = {
+      id: params[:id],
+      slug: params[:slug],
+      city: params[:city],
+      locality: params[:locality]
+    }
 
-    name = doc.at_css(".name span").try(:text)
-    address = doc.at_css(".adresse span").try(:text)
-    zipcode = doc.at_css(".adresse span").try(:text)
-    locality = doc.at_css(".adresse span").try(:text)
-
-    number = doc.at_css(".teilnehmertelefon .nummer_ganz .nummer").try(:text)
-    suffix = doc.at_css(".teilnehmertelefon .nummer_ganz .suffix").try(:text)
-
-    website = doc.at_css(".website .link .text").try(:text)
-
-    puts "#{name} at #{address}"
-
-    stage page.links
+    r.db("gelbeseiten").table("barbershops").insert(doc).run(locals[:conn])
   end
 
   private
 
-  def index_uri(city)
-    "/friseur/foobar"
+  def entry_name
+    doc.at_css(".name span").try(:text)
+  end
+
+  def entry_address
+    doc.at_css(".adresse span").try(:text)
+  end
+
+  def entry_zipcode
+    doc.at_css(".adresse span").try(:text)
+  end
+
+  def entry_geolocation
+    at_css(".adresse span").try(:text)
   end
 end

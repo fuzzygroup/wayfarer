@@ -1,3 +1,5 @@
+require "active_support/core_ext/hash/indifferent_access"
+
 # frozen_string_literal: true
 module Wayfarer
   # Creates job instances, retrieves pages and, if an URI matches a route, calls
@@ -27,7 +29,9 @@ module Wayfarer
       action, params = job.router.route(uri)
       return Mismatch.new(uri) unless action
 
-      Wayfarer.log.debug("[#{self}] Dispatching to ##{action}: #{uri}")
+      params = ActiveSupport::HashWithIndifferentAccess.new(params)
+
+      Wayfarer.log.info("[#{self}] Dispatching to ##{action}: #{uri}")
 
       job_instance = job.new
 

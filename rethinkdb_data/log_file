@@ -1,0 +1,35 @@
+2017-03-27T20:37:16.647107000 0.010939s notice: Recursively removing directory /Users/bauerd/Repositories/wayfarer/rethinkdb_data/tmp
+2017-03-27T20:37:16.648925000 0.012763s notice: Initializing directory /Users/bauerd/Repositories/wayfarer/rethinkdb_data
+2017-03-27T20:37:16.649042000 0.012874s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/bauerd/Repositories/wayfarer/rethinkdb_data' did not already exist or is empty.)
+2017-03-27T20:37:16.649075000 0.012907s notice: Running rethinkdb 2.3.5 (CLANG 8.0.0 (clang-800.0.38))...
+2017-03-27T20:37:16.658829000 0.022661s notice: Running on Darwin 16.4.0 x86_64
+2017-03-27T20:37:16.658897000 0.022729s notice: Loading data from directory /Users/bauerd/Repositories/wayfarer/rethinkdb_data
+2017-03-27T20:37:16.812712000 0.176544s info: Automatically using cache size of 1151 MB
+2017-03-27T20:37:16.813127000 0.176958s notice: Listening for intracluster connections on port 29015
+2017-03-27T20:37:16.814278000 0.178109s notice: Listening for client driver connections on port 28015
+2017-03-27T20:37:16.814393000 0.178225s notice: Listening for administrative HTTP connections on port 8080
+2017-03-27T20:37:16.814396000 0.178228s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2017-03-27T20:37:16.814400000 0.178231s notice: Listening on driver addresses: 127.0.0.1, ::1
+2017-03-27T20:37:16.814401000 0.178233s notice: Listening on http addresses: 127.0.0.1, ::1
+2017-03-27T20:37:16.814404000 0.178236s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-03-27T20:37:16.814407000 0.178239s notice: Server ready, "abacus_local_bva" 260c9ad3-ac34-42a2-8d49-808f5521bfde
+2017-03-27T20:46:14.225519000 537.571442s notice: Server got SIGINT from pid 31143, uid 501; shutting down...
+2017-03-27T20:46:14.225836000 537.571759s notice: Shutting down client connections...
+2017-03-27T20:46:14.225976000 537.571898s notice: All client connections closed.
+2017-03-27T20:46:14.225980000 537.571903s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2017-03-27T20:46:14.226227000 537.572150s notice: Storage engine shut down.
+2017-03-27T20:46:15.311729000 0.163101s notice: Running rethinkdb 2.3.5 (CLANG 8.0.0 (clang-800.0.38))...
+2017-03-27T20:46:15.317454000 0.168823s notice: Running on Darwin 16.4.0 x86_64
+2017-03-27T20:46:15.317505000 0.168872s notice: Loading data from directory /Users/bauerd/Repositories/wayfarer/rethinkdb_data
+2017-03-27T20:46:15.348110000 0.199478s info: Automatically using cache size of 1029 MB
+2017-03-27T20:46:15.348603000 0.199970s notice: Listening for intracluster connections on port 29015
+2017-03-27T20:46:15.349738000 0.201105s notice: Listening for client driver connections on port 28015
+2017-03-27T20:46:15.349829000 0.201197s notice: Listening for administrative HTTP connections on port 8080
+2017-03-27T20:46:15.349831000 0.201199s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2017-03-27T20:46:15.349836000 0.201203s notice: Listening on driver addresses: 127.0.0.1, ::1
+2017-03-27T20:46:15.349837000 0.201204s notice: Listening on http addresses: 127.0.0.1, ::1
+2017-03-27T20:46:15.349840000 0.201207s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-03-27T20:46:15.349843000 0.201210s notice: Server ready, "abacus_local_bva" 260c9ad3-ac34-42a2-8d49-808f5521bfde
+2017-03-27T20:46:19.261738000 4.112989s info: Table c93106ce-b399-480b-bc2d-ea143718b0b9: Starting a new Raft election for term 1.
+2017-03-27T20:46:19.262091000 4.113342s info: Table c93106ce-b399-480b-bc2d-ea143718b0b9: Added replica on this server.
+2017-03-27T20:46:19.286524000 4.137775s info: Table c93106ce-b399-480b-bc2d-ea143718b0b9: This server is Raft leader for term 1. Latest log index is 0.
