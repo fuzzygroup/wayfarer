@@ -52,7 +52,7 @@ module Wayfarer
       content_type = @headers["content-type"].first
       sub_type = MIME::Types[content_type].first.sub_type
 
-      # TODO: Tests
+      # TODO Tests
       @doc = case sub_type
              when "json"
                # TODO: Return a Hash instead of an OpenStruct
@@ -65,7 +65,7 @@ module Wayfarer
     end
 
     # `#images` is provided by the Helpers module
-    # `#body` is already defined
+    # `#body` is an attribute reader defined above
     delegate (Pismo::Document::ATTRIBUTE_METHODS - [:images, :body]) => :pismo
 
     private

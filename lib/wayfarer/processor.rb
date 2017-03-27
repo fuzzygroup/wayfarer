@@ -14,7 +14,6 @@ module Wayfarer
       @mutex = Mutex.new
     end
 
-    # The frontier.
     # @return [Frontier]
     def frontier
       @frontier ||= case @config.frontier
@@ -50,6 +49,7 @@ module Wayfarer
       trap_signals
 
       job = klass.dup
+      require "pry"; binding.pry
       job.router = klass.router.clone
       job.locals = klass.locals.clone
 
@@ -61,7 +61,7 @@ module Wayfarer
       while !halted? && frontier.cycle
         Wayfarer.log.info("[#{self}] Current: #{frontier.current_uris.count}")
 
-        current_uris = frontier.current_uris
+        current_uris = frontier.current_uris # Expensive call!
 
         changed
         notify_observers(:new_cycle, current_uris.count)

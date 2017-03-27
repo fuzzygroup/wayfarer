@@ -119,12 +119,6 @@ module Wayfarer
       @halts
     end
 
-    # Performs this job.
-    # This method is called by ActiveJob.
-    def perform(*argv, &proc)
-      self.class.crawl(*argv, &proc)
-    end
-
     protected
 
     # Signals the processor to stop its work.

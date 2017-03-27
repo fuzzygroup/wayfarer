@@ -37,7 +37,6 @@ module Wayfarer
 
     # TODO Lord have mercy
     # But this works
-    # Sooo
     def query(selector, attr, *filters)
       (filters.any? ? doc.search(*filters).css(selector) : doc.css(selector))
         .map { |node| URI.join(uri, node.attr(attr)) rescue nil }
