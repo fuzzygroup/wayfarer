@@ -55,8 +55,7 @@ module Wayfarer
       # TODO Tests
       @doc = case sub_type
              when "json"
-               # TODO: Return a Hash instead of an OpenStruct
-               OpenStruct.new(Parsers::JSONParser.parse(@body))
+               Parsers::JSONParser.parse(@body)
              when "xml"
                Parsers::XMLParser.parse_xml(@body)
              else

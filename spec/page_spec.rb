@@ -22,8 +22,8 @@ describe Wayfarer::Page do
     context "when Content-Type is JSON" do
       subject(:page) { fetch_page(test_app("/json/dummy.json")) }
 
-      it "returns an OpenStruct" do
-        expect(page.doc).to be_an OpenStruct
+      it "returns a Hash" do
+        expect(page.doc).to be_a Hash
       end
     end
   end
