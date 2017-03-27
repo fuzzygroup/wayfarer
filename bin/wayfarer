@@ -43,7 +43,7 @@ module Wayfarer
 
       action, params = job.router.route(URI(uri))
 
-      if method
+      if action
         puts "Dispatching to :#{action} with parameters: #{params}"
       else
         puts "No matching route"

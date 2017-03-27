@@ -139,9 +139,23 @@ module Wayfarer
     end
 
     # Adds URIs to process in the next cycle.
+    # If a relative URI is given, the page's protocl and hostname get prepended.
     # @param [String, URI, Array<String>, Array<URI>]
     def stage(uris)
-      @staged_uris += uris.respond_to?(:each) ? uris : [uris]
+      uris = [uris] unless uris.respond_to?(:each)
+
+      uris = uris.map do |uri|
+        u = URI(uri)
+
+        if u.host.nil? && u.scheme != "javascript"
+          u.scheme = page.uri.scheme
+          u.host = page.uri.host
+        end
+
+        u.to_s
+      end
+
+      @staged_uris += uris
     end
 
     # The parsed response body.
