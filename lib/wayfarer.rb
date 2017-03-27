@@ -30,6 +30,7 @@ require_relative "wayfarer/frontiers/redis_frontier"
 require_relative "wayfarer/frontiers/memory_bloomfilter"
 require_relative "wayfarer/frontiers/redis_bloomfilter"
 require_relative "wayfarer/frontiers/memory_trie_frontier"
+require_relative "wayfarer/frontiers/ignore_uri_fragments"
 
 # Processing
 require_relative "wayfarer/locals"

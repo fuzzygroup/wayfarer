@@ -25,6 +25,10 @@ module Wayfarer
                     else
                       Frontiers::MemoryTrieFrontier.new(@config)
                     end
+
+      if @config.ignore_uri_fragments
+        @frontier = Frontiers::IgnoreURIFragments.new(@frontier) 
+      end
     end
 
     # Whether processing is done.

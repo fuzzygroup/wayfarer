@@ -14,13 +14,13 @@ class Integration < Wayfarer::Job
 
   after_crawl do
     puts "Collected:"
-    require "pry"; binding.pry
     puts locals[:data]
   end
 
   draw host: "salomatic.de"
   def article
-    locals[:data] << page_details
+    puts page.uri
+    # locals[:data] << page_details
     stage page.links
   end
 
