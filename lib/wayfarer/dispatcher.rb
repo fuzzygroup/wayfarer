@@ -50,32 +50,32 @@ module Wayfarer
       end
     # What follows are exceptions whose origin I don't care about at the moment
     rescue Net::HTTP::Persistent::Error
-      Wayfarer.log.warn("[#{self}] Connection reset by peer: #{uri}")
+      Wayfarer.log.warn("[#{self}] Net::HTTP::Persistent::Error @ #{uri}")
 
     rescue Errno::EHOSTUNREACH
-      Wayfarer.log.warn("[#{self}] Host unreachable: #{uri}")
+      Wayfarer.log.warn("[#{self}] Host unreachable @ #{uri}")
 
     rescue Errno::ENETUNREACH
-      Wayfarer.log.warn("[#{self}] No route to network present: #{uri}")
+      Wayfarer.log.warn("[#{self}] No route to network present @ #{uri}")
 
     rescue Net::OpenTimeout, Net::ReadTimeout
-      Wayfarer.log.warn("[#{self}] ::Net timeout while processing: #{uri}")
+      Wayfarer.log.warn("[#{self}] ::Net timeout while processing @ #{uri}")
 
     # SSL verification failed due to a missing certificate
     rescue OpenSSL::SSL::SSLError
-      Wayfarer.log.warn("[#{self}] SSL verification failed for: #{uri}")
+      Wayfarer.log.warn("[#{self}] SSL verification failed @ #{uri}")
 
     # Ruby/zlib encountered a Z_DATA_ERROR.
     # Usually if a stream was prematurely freed.
-    # Probably has to do with net-http-persistent
+    # Probably has to do with net-http-persistent?
     rescue Zlib::DataError
       Wayfarer.log.warn("[#{self}] Z_DATA_ERROR")
 
     rescue HTTPAdapters::NetHTTPAdapter::MalformedURI, URI::InvalidURIError
-      Wayfarer.log.info("[warn#{self}] Malformed URI: #{uri}")
+      Wayfarer.log.info("[warn#{self}] Malformed URI @ #{uri}")
 
     rescue HTTPAdapters::NetHTTPAdapter::MalformedRedirectURI
-      Wayfarer.log.info("[#{self}] Malformed redirect URI from: #{uri}")
+      Wayfarer.log.info("[#{self}] Malformed redirect URI @ #{uri}")
 
     rescue HTTPAdapters::NetHTTPAdapter::MaximumRedirectCountReached
       Wayfarer.log.info("[#{self}] Maximum redirect count reached @ #{uri}")

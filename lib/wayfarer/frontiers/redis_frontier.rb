@@ -7,8 +7,8 @@ module Wayfarer
     # @api private
     class RedisFrontier < Frontier
       def initialize(config)
-        @config = config
         @conn = Redis.new(@config.redis_opts)
+        super(config)
       end
 
       # Returns the URIs to be scraped in the current cycle.

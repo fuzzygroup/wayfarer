@@ -8,17 +8,9 @@ module Wayfarer
       base.extend(ClassMethods)
     end
 
-    def locals
-      self.class.locals
-    end
-
     module InstanceMethods
-      def method_missing(method, *argv, &proc)
-        locals.keys.include?(method) ? locals[method] : super
-      end
-
-      def respond_to_missing?(method, private = false)
-        locals.keys.include?(method) || super
+      def locals
+        self.class.locals
       end
     end
 

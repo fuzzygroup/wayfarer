@@ -7,10 +7,10 @@ module Wayfarer
     # @api private
     class MemoryFrontier < Frontier
       def initialize(config)
-        @config = config
         @current_uris = Set.new([])
         @staged_uris  = Set.new([])
         @cached_uris  = Set.new([])
+        super(config)
       end
 
       # Returns the URIs to be scraped in the current cycle.

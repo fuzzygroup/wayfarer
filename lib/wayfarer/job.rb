@@ -65,7 +65,7 @@ module Wayfarer
       # If a block is passed in, it is evaluated within the {Router}'s instance.
       # @return [Routing::Router]
       def router(&proc)
-        @router ||= Routing::Router.new
+        @router ||= Routing::Router.new(@config)
         @router.instance_eval(&proc) if block_given?
         @router
       end

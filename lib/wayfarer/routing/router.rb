@@ -19,7 +19,8 @@ module Wayfarer
 
       Route = Struct.new(:method, :rule)
 
-      def initialize
+      def initialize(config)
+        @config = config
         @routes = []
         @blacklist = Rule.new
       end

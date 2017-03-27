@@ -5,7 +5,9 @@ module Wayfarer
     class Frontier
       attr_reader :config
 
-      def initialize(config); end
+      def initialize(config)
+        @config = config
+      end
 
       # TODO Documentation!
       def cycle

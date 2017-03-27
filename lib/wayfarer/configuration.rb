@@ -54,7 +54,9 @@ module Wayfarer
         seed: 1,
         bucket: 3,
         raise: false
-      }
+      },
+
+      ignore_uri_fragments: false
     }.freeze
 
     attr_reader :uuid
