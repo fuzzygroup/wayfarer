@@ -41,9 +41,7 @@ RSpec.shared_examples "Frontier" do |klass|
       frontier.stage(uri)
       frontier.stage(uri)
 
-      expect do
-        frontier.cycle
-      end.to change { frontier.current_uris.count }.by(1)
+      expect { frontier.cycle }.to change { frontier.current_uris.count }.by(1)
     end
 
     it "caches URIs" do
