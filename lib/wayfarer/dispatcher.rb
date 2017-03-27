@@ -49,8 +49,14 @@ module Wayfarer
         Stage.new(job_instance.staged_uris)
       end
     # What follows are exceptions whose origin I don't care about at the moment
+    rescue Net::HTTP::Persistent::Error
+      Wayfarer.log.warn("[#{self}] Connection reset by peer: #{uri}")
+
     rescue Errno::EHOSTUNREACH
       Wayfarer.log.warn("[#{self}] Host unreachable: #{uri}")
+
+    rescue Errno::ENETUNREACH
+      Wayfarer.log.warn("[#{self}] No route to network present: #{uri}")
 
     rescue Net::OpenTimeout, Net::ReadTimeout
       Wayfarer.log.warn("[#{self}] ::Net timeout while processing: #{uri}")
