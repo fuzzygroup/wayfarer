@@ -2,17 +2,14 @@ require_relative "../lib/wayfarer"
 require "securerandom"
 
 class FindHitler < Wayfarer::Job
-  config.connection_count = 12
-  config.http_adapter = :selenium
-  config.selenium_argv = [:chrome]
+  config.connection_count = 4
   config.reraise_exceptions = true
 
-  draw host: /./
+  always_route content_type: :json, to: :article
+  always_route response_code: 500,  to: :error
+
   def article
-    puts page.keywords
-    puts "============================================"
+    puts page.lede
     stage page.links
   end
 end
-
-FindHitler.perform_now("https://www.google.de/#q=that+is+funny")
