@@ -20,38 +20,29 @@ module Wayfarer
       # Returns the staged URIs.
       # @return [Array<URI>]
       def staged_uris
-        @conn.smembers(staged_uris_key)
-      end
-
-      # Returns all cached URIs.
-      # @return [Array<URI>]
-      def cached_uris
-        @conn.smembers(cached_uris_key)
+        @conn.smembers(staged_uris_key).map { |str| URI(str) }
       end
 
       # Stages URIs for processing in the next cycle.
       # @param [*Array<URI>, *Array<String>] uris
       def stage(*uris)
-        @conn.sadd(staged_uris_key, uris.map(&:to_s))
+        @conn.sadd(staged_uris_key, uris.map(&:to_s)) if uris.any?
+      end
+
+      # Whether a URI is cached.
+      def staged?(uri)
+        @conn.sismember(staged_uris_key, uri.to_s)
       end
 
       # Caches URIs so they don't get processed again.
       # @param [*Array<URI>, *Array<String>] uris
       def cache(*uris)
-        @conn.sadd(cached_uris_key, uris.map(&:to_s))
+        @conn.sadd(cached_uris_key, uris.map(&:to_s)) if uris.any?
       end
 
-      # TODO: Documentation
-      # Caches current URIs and sets staged URIs as current.
-      def cycle
-        unless @config.allow_circulation
-          @conn.sunionstore(current_uris_key, cached_uris_key, current_uris_key)
-          @conn.sdiffstore(staged_uris_key, staged_uris_key, cached_uris_key)
-        end
-
-        return false if @conn.scard(staged_uris_key).zero?
-        @conn.rename(staged_uris_key, current_uris_key)
-        true
+      # Whether a URI is cached.
+      def cached?(uri)
+        @conn.sismember(cached_uris_key, uri.to_s)
       end
 
       # Deletes all used Redis keys and disconnects the client.
@@ -66,7 +57,17 @@ module Wayfarer
       private
 
       def reset_staged_uris!
-        @staged_uris = Set.new([])
+        @conn.del(cached_uris_key)
+      end
+
+      def swap!
+        @conn.rename(current_uris_key, swap_key)
+        @conn.rename(cached_uris_key, current_uris_key)
+        @conn.rename(swap_key, cached_uris_key)
+      end
+
+      def filter_staged_uris!
+        @conn.sdiffstore(staged_uris_key, cached_uris_key, staged_uris_key)
       end
 
       def current_uris_key
@@ -79,6 +80,10 @@ module Wayfarer
 
       def cached_uris_key
         "#{@config.uuid}_cached_uris"
+      end
+
+      def swap_key
+        "#{@config.uuid}_swap"
       end
     end
   end

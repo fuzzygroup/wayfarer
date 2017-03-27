@@ -22,7 +22,7 @@ module Wayfarer
       # Returns staged URIs.
       # @return [Array<URI>]
       def staged_uris
-        @staged_uris.to_a
+        @staged_uris.to_a # These are assumed to be URIs already, so no map
       end
 
       # Stages URIs for processing in the next cycle.
@@ -34,12 +34,6 @@ module Wayfarer
       # Whether a URI is staged.
       def staged?(uri)
         @staged_uris.include?(uri.to_s)
-      end
-
-      # Returns the staged URIs.
-      # @return [Array<URI>]
-      def staged_uris
-        @staged_uris.to_a
       end
 
       # Caches URIs so they don't get processed again.

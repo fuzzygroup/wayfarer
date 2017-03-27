@@ -7,11 +7,11 @@ module Wayfarer
     # @api private
     class RedisBloomfilter < MemoryBloomfilter
       def initialize(config)
-        super(config)
-        @conn = Redis.new(@config.redis_opts)
+        @conn = Redis.new(config.redis_opts)
         @filter = BloomFilter::Redis.new(config.bloomfilter_opts.merge({
           db: @conn
         }))
+        super(config)
       end
     end
 
