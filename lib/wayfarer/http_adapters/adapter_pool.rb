@@ -31,7 +31,7 @@ module Wayfarer
 
       def instantiate_adapter
         case @config.http_adapter
-        when :net_http then HTTPAdapters::NetHTTPAdapter.instance
+        when :net_http then HTTPAdapters::NetHTTPAdapter.instance(@config)
         when :selenium then HTTPAdapters::SeleniumAdapter.new(@config)
         end
       end

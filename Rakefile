@@ -49,8 +49,8 @@ task :clean do
   sh "rm -rf build"
 end
 
-desc "Start a Ruby shell"
-task :shell do
+desc "Start a Ruby REPL"
+task :repl do
   require_relative "lib/wayfarer"
 
   include Wayfarer

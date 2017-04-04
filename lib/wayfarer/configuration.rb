@@ -44,7 +44,7 @@ module Wayfarer
       window_size: [1024, 768],
 
       # Which Mustermann pattern type to use when matching URI paths
-      # TODO Mention this somewhere in the docs
+      # TODO: Mention this somewhere in the docs
       mustermann_type: :sinatra,
 
       # Argument vector for instantiating Bloomfilters
@@ -56,7 +56,11 @@ module Wayfarer
         raise: false
       },
 
-      ignore_uri_fragments: false
+      # Whether the frontier ignores fragments
+      ignore_uri_fragments: false,
+
+      # Headers set on every request
+      request_header_overrides: {}
     }.freeze
 
     attr_reader :uuid

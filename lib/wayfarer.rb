@@ -41,7 +41,7 @@ require_relative "wayfarer/dispatcher"
 require_relative "wayfarer/processor"
 
 module Wayfarer
-  VERSION = "0.0.0"
+  VERSION = "1.0.0"
 
   class << self
     attr_writer :logger

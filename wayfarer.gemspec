@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 Gem::Specification.new do |s|
   s.name          = "wayfarer"
-  s.version       = "0.0.0"
+  s.version       = "1.0.0"
   s.license       = "MIT"
 
   s.homepage      = "http://github.com/bauerd/wayfarer"
-  s.description   = "Versatile web crawling with Ruby"
+  s.description   = "Versatile web crawling"
   s.summary       = s.description
 
   s.date          = "2014-11-12"

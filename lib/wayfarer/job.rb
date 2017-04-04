@@ -147,9 +147,11 @@ module Wayfarer
       uris = uris.map do |uri|
         u = URI(uri)
 
+        # TODO: Rewrite
         if u.host.nil? && u.scheme != "javascript"
-          u.scheme = page.uri.scheme
-          u.host = page.uri.host
+          pu = URI(page.uri)
+          u.scheme = pu.scheme
+          u.host = pu.host
         end
 
         u.to_s
