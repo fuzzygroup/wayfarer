@@ -86,6 +86,7 @@ module Wayfarer
       elsif time = Time.parse(str) rescue nil
         time - Time.now
       else
+        # TODO: Get rid of this
         require "chronic"
         Chronic.parse(str) - Time.now
       end

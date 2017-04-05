@@ -10,6 +10,10 @@ module Wayfarer
         super(opts, &proc)
       end
 
+      def params(uri)
+        
+      end
+
       private
 
       def match!(uri)
